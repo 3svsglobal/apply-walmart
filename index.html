@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -32,6 +32,13 @@
   --radius: 8px;
   --content-max: 1200px;
 }
+
+/* ─── LANGUAGE TOGGLE ─── */
+html[lang="ko"] .en{display:none}
+html[lang="en"] .ko{display:none}
+.lang-toggle{display:flex;align-items:center;margin-left:auto;gap:0;border:1px solid var(--border);border-radius:999px;overflow:hidden;flex-shrink:0}
+.lang-toggle button{padding:6px 14px;font-family:var(--mono);font-size:11px;font-weight:500;border:none;background:transparent;color:var(--text-muted);cursor:pointer;transition:all .2s;letter-spacing:0.3px}
+.lang-toggle button.active{background:var(--bg-dark);color:#fff}
 
 *{margin:0;padding:0;box-sizing:border-box}
 body{font-family:var(--font);background:var(--bg);color:var(--text);-webkit-font-smoothing:antialiased;overflow-x:hidden;letter-spacing:-0.3px}
@@ -72,7 +79,7 @@ button{cursor:pointer;font-family:var(--font)}
 .hero-inner{max-width:900px;margin:0 auto;width:100%;position:relative;z-index:2;display:flex;flex-direction:column;align-items:center}
 .hero-badge{display:inline-flex;align-items:center;gap:8px;padding:8px 18px;border:1px solid rgba(255,255,255,0.15);border-radius:999px;font-family:var(--mono);font-size:11px;font-weight:400;text-transform:uppercase;letter-spacing:1px;color:rgba(255,255,255,0.5);margin-bottom:32px;background:rgba(255,255,255,0.04)}
 .hero-badge::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--accent);flex-shrink:0}
-.hero h1{font-family:var(--font);font-size:clamp(48px,7vw,88px);font-weight:900;line-height:.95;letter-spacing:-0.05em;margin-bottom:24px;word-break:keep-all;color:#fff}
+.hero h1{font-family:var(--font);font-size:clamp(40px,5.5vw,68px);font-weight:900;line-height:.95;letter-spacing:-0.05em;margin-bottom:24px;word-break:keep-all;color:#fff}
 .hero h1 em{font-style:normal;color:var(--accent)}
 .hero-desc{font-size:19px;color:rgba(255,255,255,0.55);line-height:1.6;margin-bottom:40px;font-weight:400;word-break:keep-all;max-width:600px}
 .hero-btns{display:flex;gap:12px;align-items:center;flex-wrap:wrap;justify-content:center}
@@ -169,7 +176,8 @@ button{cursor:pointer;font-family:var(--font)}
 .phase-goal-box{margin:24px 0 0;padding:24px 28px;border-radius:var(--radius);border-left:4px solid var(--accent);background:var(--accent-light);display:flex;align-items:start;gap:16px}
 .phase-goal-box.green{border-left-color:var(--lime);background:var(--lime-light)}
 .phase-goal-box.orange{border-left-color:var(--accent-orange);background:#fff8ee}
-.pgb-icon{font-size:22px;flex-shrink:0;margin-top:2px}
+.pgb-icon{width:56px;height:56px;flex-shrink:0;display:flex;align-items:center;justify-content:center}
+.pgb-icon img{width:56px;height:56px;object-fit:contain}
 .pgb-body{flex:1}
 .pgb-title{font-size:14px;font-weight:800;letter-spacing:-0.3px;color:var(--text);margin-bottom:4px}
 .pgb-desc{font-size:14px;color:var(--text-muted);line-height:1.6}
@@ -197,6 +205,17 @@ button{cursor:pointer;font-family:var(--font)}
 .form-step.completed{color:var(--lime)}
 .fs-num{display:inline-flex;align-items:center;justify-content:center;width:20px;height:20px;border-radius:50%;background:var(--bg-alt);font-size:11px;font-weight:600;margin-right:6px;color:var(--text-muted);font-family:var(--mono)}
 .form-step.active .fs-num{background:var(--accent);color:#fff}
+.file-upload-zone{border:2px dashed var(--border);border-radius:var(--radius);padding:32px 24px;text-align:center;cursor:pointer;transition:all .2s;margin-bottom:8px}
+.file-upload-zone:hover,.file-upload-zone.dragover{border-color:var(--accent);background:var(--accent-light)}
+.fuz-icon{font-size:28px;margin-bottom:8px}
+.fuz-text{font-size:14px;color:var(--text-muted)}
+.fuz-hint{font-size:12px;color:rgba(0,0,0,0.25);margin-top:4px}
+.file-preview{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px}
+.file-item{display:flex;align-items:center;gap:8px;padding:8px 14px;background:var(--bg-alt);border:1px solid var(--border);border-radius:var(--radius);font-size:13px;color:var(--text)}
+.file-item .file-remove{color:var(--red);cursor:pointer;font-weight:700;margin-left:4px}
+.form-input.error{border-color:var(--red);background:#fff5f5}
+.form-radio-inline.error{outline:2px solid var(--red);outline-offset:4px;border-radius:4px}
+.form-validation-msg{font-size:13px;color:var(--red);margin-top:8px;display:none}
 .form-step.completed .fs-num{background:var(--lime);color:#fff}
 .form-panel{}
 .form-sec-title{font-size:24px;font-weight:900;letter-spacing:-1.2px;margin-bottom:8px;color:var(--text)}
@@ -443,6 +462,64 @@ button{cursor:pointer;font-family:var(--font)}
 .login-success h3{font-size:22px;font-weight:800;letter-spacing:-0.5px;margin-bottom:8px}
 .login-success p{font-size:15px;color:var(--text-muted);line-height:1.5}
 
+/* ─── PORTAL MESSAGE THREAD ─── */
+.msg-thread{max-height:480px;overflow-y:auto;padding:4px 0;display:flex;flex-direction:column;gap:16px}
+.msg-bubble{max-width:85%;padding:14px 18px;border-radius:12px;font-size:14px;line-height:1.6;position:relative}
+.msg-bubble.brand{align-self:flex-end;background:var(--accent);color:#fff;border-bottom-right-radius:4px}
+.msg-bubble.admin{align-self:flex-start;background:rgba(255,255,255,0.08);color:rgba(255,255,255,0.85);border-bottom-left-radius:4px}
+.msg-meta{font-size:11px;margin-top:6px;opacity:0.5}
+.msg-bubble.brand .msg-meta{text-align:right}
+.msg-input-row{display:flex;gap:8px;margin-top:16px;padding-top:16px;border-top:1px solid rgba(255,255,255,0.06)}
+.msg-input{flex:1;padding:12px 16px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);border-radius:var(--radius);color:#fff;font-family:inherit;font-size:14px;outline:none;resize:none}
+.msg-input::placeholder{color:rgba(255,255,255,0.25)}
+.msg-input:focus{border-color:var(--accent)}
+.msg-send-btn{padding:12px 20px;background:var(--accent);border:none;border-radius:var(--radius);color:#fff;font-weight:600;font-size:14px;cursor:pointer;white-space:nowrap;transition:background .2s}
+.msg-send-btn:hover{background:#005bb5}
+
+/* ─── PORTAL PHASE CHECKLIST ─── */
+.phase-checklist{display:flex;flex-direction:column;gap:6px}
+.phase-cl-group{margin-bottom:16px}
+.phase-cl-group-title{font-size:13px;font-weight:700;color:rgba(255,255,255,0.5);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:10px;font-family:var(--mono);display:flex;align-items:center;gap:8px}
+.phase-cl-group-title .cl-phase-badge{font-size:11px;padding:3px 10px;border-radius:999px;font-weight:500;letter-spacing:0}
+.cl-phase-badge.done{background:rgba(0,135,90,0.2);color:var(--lime)}
+.cl-phase-badge.active{background:rgba(0,113,220,0.2);color:var(--accent)}
+.cl-phase-badge.pending{background:rgba(255,255,255,0.06);color:rgba(255,255,255,0.3)}
+.cl-item{display:flex;align-items:center;gap:12px;padding:12px 16px;border-radius:var(--radius);background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.06);cursor:pointer;transition:all .2s}
+.cl-item:hover{background:rgba(255,255,255,0.06);border-color:rgba(255,255,255,0.1)}
+.cl-check{width:22px;height:22px;border-radius:50%;border:2px solid rgba(255,255,255,0.15);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:12px;transition:all .2s}
+.cl-item.done .cl-check{background:var(--lime);border-color:var(--lime);color:#fff}
+.cl-item.active .cl-check{background:var(--accent);border-color:var(--accent);color:#fff;animation:pulse-check 2s infinite}
+.cl-item.pending .cl-check{opacity:0.3}
+@keyframes pulse-check{0%,100%{box-shadow:0 0 0 0 rgba(0,113,220,0.4)}50%{box-shadow:0 0 0 6px rgba(0,113,220,0)}}
+.cl-body{flex:1;min-width:0}
+.cl-title{font-size:14px;font-weight:600;color:rgba(255,255,255,0.85);letter-spacing:-0.3px}
+.cl-item.done .cl-title{color:rgba(255,255,255,0.4);text-decoration:line-through}
+.cl-item.pending .cl-title{color:rgba(255,255,255,0.25)}
+.cl-desc{font-size:12px;color:rgba(255,255,255,0.3);margin-top:2px}
+.cl-item.done .cl-desc{color:rgba(255,255,255,0.15)}
+.cl-status{font-family:var(--mono);font-size:11px;padding:4px 10px;border-radius:999px;white-space:nowrap;flex-shrink:0}
+.cl-status.done{background:rgba(0,135,90,0.15);color:var(--lime)}
+.cl-status.active{background:rgba(0,113,220,0.15);color:var(--accent)}
+.cl-status.pending{background:rgba(255,255,255,0.04);color:rgba(255,255,255,0.2)}
+
+/* ─── SKU MANAGEMENT ─── */
+.sku-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:12px}
+.sku-card{padding:20px;border:1px solid rgba(255,255,255,0.08);border-radius:var(--radius);background:rgba(255,255,255,0.03);transition:all .2s;position:relative}
+.sku-card:hover{border-color:rgba(255,255,255,0.15);background:rgba(255,255,255,0.05)}
+.sku-img{width:100%;height:140px;border-radius:6px;background:rgba(255,255,255,0.06);display:flex;align-items:center;justify-content:center;margin-bottom:14px;overflow:hidden;font-size:13px;color:rgba(255,255,255,0.2)}
+.sku-img img{width:100%;height:100%;object-fit:cover}
+.sku-name{font-size:15px;font-weight:700;color:#fff;letter-spacing:-0.3px;margin-bottom:4px}
+.sku-meta{font-size:12px;color:rgba(255,255,255,0.35);line-height:1.6}
+.sku-meta span{display:inline-block;padding:2px 8px;border-radius:4px;background:rgba(255,255,255,0.06);margin:2px 4px 2px 0;font-family:var(--mono);font-size:11px}
+.sku-status{position:absolute;top:12px;right:12px;font-family:var(--mono);font-size:10px;padding:3px 10px;border-radius:999px}
+.sku-status.live{background:rgba(0,135,90,0.2);color:var(--lime)}
+.sku-status.pending{background:rgba(255,149,0,0.2);color:var(--accent-orange)}
+.sku-status.draft{background:rgba(255,255,255,0.06);color:rgba(255,255,255,0.3)}
+.sku-add{padding:20px;border:2px dashed rgba(255,255,255,0.1);border-radius:var(--radius);display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:200px;cursor:pointer;transition:all .2s;color:rgba(255,255,255,0.2);gap:8px}
+.sku-add:hover{border-color:var(--accent);color:var(--accent);background:rgba(0,113,220,0.05)}
+.sku-add-icon{font-size:28px;font-weight:300}
+.sku-add-text{font-size:13px;font-weight:500}
+
 /* ─── RESPONSIVE ─── */
 @media(max-width:1200px){.dash-grid{grid-template-columns:1fr}.stat-grid{grid-template-columns:repeat(2,1fr)}.pipeline-summary{grid-template-columns:repeat(3,1fr)}.portal-cost-grid{grid-template-columns:1fr}.review-body{grid-template-columns:1fr}}
 @media(max-width:768px){:root{--sec-px:20px;--sec-py:80px}.tab-nav{height:56px;padding:0 16px}.hero{padding:0 20px}.hero h1{font-size:40px;letter-spacing:-2px}.hero-desc{font-size:16px}.st{font-size:28px;letter-spacing:-1px}.sd{font-size:16px;margin-bottom:36px}.login-section{grid-template-columns:1fr}.login-right{display:none}.login-left{padding:48px 20px}.dash-layout{grid-template-columns:1fr}.sidebar{display:none}.dash-content{padding:20px}.cta-apply-cards{grid-template-columns:1fr}.type-radio-group{grid-template-columns:1fr}.form-row{grid-template-columns:1fr}.proc-cards{grid-template-columns:1fr}.stats-bar-row{gap:36px}.stat-num{font-size:36px}.cta-sec h2{font-size:32px;letter-spacing:-1.2px}.cta-sec{padding:80px 20px 60px}.why-walmart-stats{grid-template-columns:1fr}.ww-stat .ww-num{font-size:36px}.compare-grid{grid-template-columns:1fr;gap:24px}.compare-vs{display:none}.compare-brand .cb-num{font-size:40px}.compare-section{padding:32px 20px}.success-cards{grid-template-columns:1fr}.hero-partners{display:none}.phase-deep{padding:24px}.phase-deep-header{flex-direction:column;gap:20px}.phase-deep-meta{justify-content:flex-start}.phase-steps-grid{grid-template-columns:1fr}.role-matrix{padding:24px}.role-matrix-header,.role-matrix-row{grid-template-columns:60px 1fr 1fr;gap:8px}.rmr-cell{font-size:13px}.review-type-select{grid-template-columns:1fr}.review-actions{flex-direction:column}.form-radio-inline{flex-direction:column}.form-nav{flex-direction:column;gap:12px}.form-nav .btn-outline,.form-nav .btn-primary{width:100%;justify-content:center}#form-steps{gap:0;overflow-x:auto;-webkit-overflow-scrolling:touch}.form-step{font-size:12px;padding:12px 12px}}
@@ -455,8 +532,12 @@ button{cursor:pointer;font-family:var(--font)}
   <div class="tab-logo">3SVS <span>Walmart Program</span></div>
   <div class="tab-sep"></div>
   <button class="tab-btn active" onclick="switchTab('landing')">Home</button>
-  <button class="tab-btn" onclick="switchTab('apply')">프로그램 신청</button>
-  <button class="tab-btn" onclick="switchTab('login')">로그인</button>
+  <button class="tab-btn" onclick="switchTab('apply')"><span class="ko">프로그램 신청</span><span class="en">Apply</span></button>
+  <button class="tab-btn" onclick="switchTab('login')"><span class="ko">로그인</span><span class="en">Login</span></button>
+  <div class="lang-toggle">
+    <button onclick="setLang('ko')">KR</button>
+    <button class="active" onclick="setLang('en')">EN</button>
+  </div>
 </div>
 
 <!-- ═══════════════════════════════════════ -->
@@ -468,11 +549,11 @@ button{cursor:pointer;font-family:var(--font)}
     <div class="hero-overlay"></div>
     <div class="hero-inner">
       <div class="hero-badge" id="cms-hero-badge">Walmart Marketplace Entry Program</div>
-      <h1 id="cms-hero-title">한국 브랜드의<br><em>월마트</em> 입점을 실현합니다</h1>
-      <p class="hero-desc" id="cms-hero-desc">3Stripe Venture Studio와 Startup Junkie Consulting이 함께하는 공식 입점 프로그램. 검증된 3-Phase 시스템으로 미국 대중시장에 진출하세요.</p>
+      <h1 id="cms-hero-title"><span class="ko">한국 브랜드의<br><em>월마트</em> 입점을 실현합니다</span><span class="en">We Make <em>Walmart</em> Entry Happen<br>for Korean Brands</span></h1>
+      <p class="hero-desc" id="cms-hero-desc"><span class="ko">3Stripe Venture Studio와 Startup Junkie Consulting이 함께하는 공식 입점 프로그램. 검증된 3-Phase 시스템으로 미국 대중시장에 진출하세요.</span><span class="en">Official entry program by 3Stripe Venture Studio and Startup Junkie Consulting. Enter the US mass market through our proven 3-Phase system.</span></p>
       <div class="hero-btns">
-        <button class="btn-primary" onclick="switchTab('apply')" id="cms-hero-cta">프로그램 신청하기 →</button>
-        <button class="btn-dark" onclick="switchTab('login')">기존 참여사 로그인</button>
+        <button class="btn-primary" onclick="switchTab('apply')" id="cms-hero-cta"><span class="ko">프로그램 신청하기 →</span><span class="en">Apply Now →</span></button>
+        <button class="btn-dark" onclick="switchTab('login')"><span class="ko">기존 참여사 로그인</span><span class="en">Participant Login</span></button>
       </div>
       <div class="hero-partners">
         <div class="hero-partners-label">Operated with</div>
@@ -489,44 +570,44 @@ button{cursor:pointer;font-family:var(--font)}
   <div class="stats-bar">
     <div class="stats-bar-cap" id="cms-stats-cap">Walmart at a Glance</div>
     <div class="stats-bar-row">
-      <div class="stat-item"><div class="stat-num" id="cms-stat-1-num">$650<em>B</em></div><div class="stat-lbl" id="cms-stat-1-lbl">연간 매출</div></div>
-      <div class="stat-item"><div class="stat-num" id="cms-stat-2-num">10,060<em>+</em></div><div class="stat-lbl" id="cms-stat-2-lbl">전세계 매장</div></div>
-      <div class="stat-item"><div class="stat-num" id="cms-stat-3-num">150<em>M</em></div><div class="stat-lbl" id="cms-stat-3-lbl">월간 활성 사용자</div></div>
-      <div class="stat-item"><div class="stat-num" id="cms-stat-4-num">19</div><div class="stat-lbl" id="cms-stat-4-lbl">진출 국가</div></div>
+      <div class="stat-item"><div class="stat-num" id="cms-stat-1-num">$650<em>B</em></div><div class="stat-lbl" id="cms-stat-1-lbl"><span class="ko">연간 매출</span><span class="en">Annual Revenue</span></div></div>
+      <div class="stat-item"><div class="stat-num" id="cms-stat-2-num">10,060<em>+</em></div><div class="stat-lbl" id="cms-stat-2-lbl"><span class="ko">전세계 매장</span><span class="en">Global Stores</span></div></div>
+      <div class="stat-item"><div class="stat-num" id="cms-stat-3-num">150<em>M</em></div><div class="stat-lbl" id="cms-stat-3-lbl"><span class="ko">월간 활성 사용자</span><span class="en">Monthly Active Users</span></div></div>
+      <div class="stat-item"><div class="stat-num" id="cms-stat-4-num">19</div><div class="stat-lbl" id="cms-stat-4-lbl"><span class="ko">진출 국가</span><span class="en">Countries</span></div></div>
     </div>
   </div>
 
   <!-- WHY WALMART -->
   <section class="sec"><div class="si">
     <div class="lb">/Why Walmart</div>
-    <h2 class="st" id="cms-why-title">왜 월마트인가</h2>
-    <p class="sd" id="cms-why-desc">미국 대중시장 진출의 가장 확실한 채널. 전세계 1위 리테일러의 스케일을 활용하세요.</p>
+    <h2 class="st" id="cms-why-title"><span class="ko">왜 월마트인가</span><span class="en">Why Walmart</span></h2>
+    <p class="sd" id="cms-why-desc"><span class="ko">미국 대중시장 진출의 가장 확실한 채널. 전세계 1위 리테일러의 스케일을 활용하세요.</span><span class="en">The most reliable channel to enter the US mass market. Leverage the scale of the world's #1 retailer.</span></p>
 
     <div class="why-walmart-stats">
       <div class="ww-stat">
         <div class="ww-num">4,606</div>
-        <div class="ww-label">미국 내 슈퍼센터</div>
+        <div class="ww-label"><span class="ko">미국 내 슈퍼센터</span><span class="en">US Supercenters</span></div>
         <div class="ww-sub">+ 5,454 international</div>
       </div>
       <div class="ww-stat">
         <div class="ww-num">37<em>M+</em></div>
-        <div class="ww-label">일일 매장 방문 고객</div>
-        <div class="ww-sub">연간 ~13.5 billion visits</div>
+        <div class="ww-label"><span class="ko">일일 매장 방문 고객</span><span class="en">Daily Store Visitors</span></div>
+        <div class="ww-sub"><span class="ko">연간 ~13.5 billion visits</span><span class="en">~13.5 billion visits/year</span></div>
       </div>
       <div class="ww-stat">
         <div class="ww-num">380<em>M</em></div>
-        <div class="ww-label">월간 온라인 방문</div>
+        <div class="ww-label"><span class="ko">월간 온라인 방문</span><span class="en">Monthly Online Visits</span></div>
         <div class="ww-sub">~12.7M visits per day</div>
       </div>
       <div class="ww-stat">
         <div class="ww-num">600<em>+</em></div>
-        <div class="ww-label">Sam's Club 회원제 매장</div>
+        <div class="ww-label"><span class="ko">Sam's Club 회원제 매장</span><span class="en">Sam's Club Locations</span></div>
         <div class="ww-sub">~97 million members</div>
       </div>
       <div class="ww-stat">
         <div class="ww-num">1,400<em>+</em></div>
-        <div class="ww-label">Bentonville 인근 공급업체</div>
-        <div class="ww-sub">30분 거리 내 밀집</div>
+        <div class="ww-label"><span class="ko">Bentonville 인근 공급업체</span><span class="en">Suppliers near Bentonville</span></div>
+        <div class="ww-sub"><span class="ko">30분 거리 내 밀집</span><span class="en">Within 30-min drive</span></div>
       </div>
       <div class="ww-stat">
         <div class="ww-num">#1</div>
@@ -555,38 +636,38 @@ button{cursor:pointer;font-family:var(--font)}
         <div style="flex:5;background:var(--accent);height:6px;border-radius:3px"></div>
         <div style="flex:1;background:rgba(255,255,255,0.1);height:6px;border-radius:3px"></div>
       </div>
-      <div class="compare-insight" id="cms-compare-insight">월마트의 사용자 기반은 쿠팡보다 <strong>4~5배</strong> 크며, 글로벌 19개국에 걸쳐 있습니다.</div>
+      <div class="compare-insight" id="cms-compare-insight"><span class="ko">월마트의 사용자 기반은 쿠팡보다 <strong>4~5배</strong> 크며, 글로벌 19개국에 걸쳐 있습니다.</span><span class="en">Walmart's user base is <strong>4-5x larger</strong> than Coupang, spanning 19 countries globally.</span></div>
     </div>
 
     <!-- Success Stories -->
     <div style="margin-top:80px">
       <div class="lb">/Success Stories</div>
-      <h2 class="st" style="font-size:32px;letter-spacing:-1.5px">아시아 브랜드의 월마트 성공 사례</h2>
-      <p class="sd">이미 아시아 브랜드들이 월마트에서 성과를 내고 있습니다.</p>
+      <h2 class="st" style="font-size:32px;letter-spacing:-1.5px"><span class="ko">아시아 브랜드의 월마트 성공 사례</span><span class="en">Asian Brand Success Stories at Walmart</span></h2>
+      <p class="sd"><span class="ko">이미 아시아 브랜드들이 월마트에서 성과를 내고 있습니다.</span><span class="en">Asian brands are already achieving results at Walmart.</span></p>
       <div class="success-cards" id="cms-success-cards">
         <div class="success-card">
           <div class="sc-flag" id="cms-sc1-flag">🇰🇷</div>
           <div class="sc-brand" id="cms-sc1-brand">CJ Bibigo</div>
-          <div class="sc-origin" id="cms-sc1-origin">South Korea — 냉동 만두</div>
+          <div class="sc-origin" id="cms-sc1-origin"><span class="ko">South Korea — 냉동 만두</span><span class="en">South Korea — Frozen Dumplings</span></div>
           <div class="sc-result" id="cms-sc1-result">2×</div>
-          <div class="sc-result-label" id="cms-sc1-result-label">카테고리 평균 대비 판매 속도</div>
-          <div class="sc-detail" id="cms-sc1-detail">500개 테스트 매장에서 시작, 18개월 만에 냉동 만두 부문 1위 달성. EDI 기반 재고보충과 매장 내 샘플링 전략.</div>
+          <div class="sc-result-label" id="cms-sc1-result-label"><span class="ko">카테고리 평균 대비 판매 속도</span><span class="en">Sales velocity vs category avg</span></div>
+          <div class="sc-detail" id="cms-sc1-detail"><span class="ko">500개 테스트 매장에서 시작, 18개월 만에 냉동 만두 부문 1위 달성. EDI 기반 재고보충과 매장 내 샘플링 전략.</span><span class="en">Started in 500 test stores, reached #1 in frozen dumplings within 18 months. EDI-based replenishment and in-store sampling strategy.</span></div>
         </div>
         <div class="success-card">
           <div class="sc-flag" id="cms-sc2-flag">🇨🇳</div>
           <div class="sc-brand" id="cms-sc2-brand">Fly By Jing</div>
-          <div class="sc-origin" id="cms-sc2-origin">USA/China — 칠리 크리스프</div>
+          <div class="sc-origin" id="cms-sc2-origin"><span class="ko">USA/China — 칠리 크리스프</span><span class="en">USA/China — Chili Crisp</span></div>
           <div class="sc-result" id="cms-sc2-result">3×</div>
-          <div class="sc-result-label" id="cms-sc2-result-label">일반 조미료 론칭 대비 판매 속도</div>
-          <div class="sc-detail" id="cms-sc2-detail">2,000개 매장에서 시작, 6개월 만에 전국 4,600개 매장으로 확대. SEO 최적화 리스팅과 Walmart Connect 광고 활용.</div>
+          <div class="sc-result-label" id="cms-sc2-result-label"><span class="ko">일반 조미료 론칭 대비 판매 속도</span><span class="en">Sales velocity vs typical condiment launch</span></div>
+          <div class="sc-detail" id="cms-sc2-detail"><span class="ko">2,000개 매장에서 시작, 6개월 만에 전국 4,600개 매장으로 확대. SEO 최적화 리스팅과 Walmart Connect 광고 활용.</span><span class="en">Started in 2,000 stores, expanded to all 4,600 stores within 6 months. Leveraged SEO-optimized listings and Walmart Connect ads.</span></div>
         </div>
         <div class="success-card">
           <div class="sc-flag" id="cms-sc3-flag">🇯🇵</div>
           <div class="sc-brand" id="cms-sc3-brand">Bachan's BBQ Sauce</div>
-          <div class="sc-origin" id="cms-sc3-origin">Japan — 일본식 바비큐 소스</div>
+          <div class="sc-origin" id="cms-sc3-origin"><span class="ko">Japan — 일본식 바비큐 소스</span><span class="en">Japan — Japanese BBQ Sauce</span></div>
           <div class="sc-result" id="cms-sc3-result">&lt;1<span style="font-size:16px;color:var(--accent)">yr</span></div>
-          <div class="sc-result-label" id="cms-sc3-result-label">전체 매장 배치 소요 기간</div>
-          <div class="sc-detail" id="cms-sc3-detail">4,600개 슈퍼센터 전체에 동시 입점. 앱 전용 쿠폰과 시즌별 엔드캡 진열로 경쟁사 대비 2배 빠른 확산.</div>
+          <div class="sc-result-label" id="cms-sc3-result-label"><span class="ko">전체 매장 배치 소요 기간</span><span class="en">Time to full store rollout</span></div>
+          <div class="sc-detail" id="cms-sc3-detail"><span class="ko">4,600개 슈퍼센터 전체에 동시 입점. 앱 전용 쿠폰과 시즌별 엔드캡 진열로 경쟁사 대비 2배 빠른 확산.</span><span class="en">Simultaneous entry across all 4,600 supercenters. App-exclusive coupons and seasonal endcap displays drove 2x faster expansion vs competitors.</span></div>
         </div>
       </div>
     </div>
@@ -595,14 +676,14 @@ button{cursor:pointer;font-family:var(--font)}
   <!-- Process — 3-Phase Deep Dive -->
   <section class="sec-alt"><div class="si">
     <div class="lb">/Process</div>
-    <h2 class="st" id="cms-proc-title">3-Phase 입점 프로세스</h2>
-    <p class="sd" id="cms-proc-desc">온라인 론칭부터 오프라인 매장 입점까지. 각 Phase는 검증을 거쳐야 다음으로 넘어갑니다 — 리스크를 최소화하면서 확실하게 진행합니다.</p>
+    <h2 class="st" id="cms-proc-title"><span class="ko">3-Phase 입점 프로세스</span><span class="en">3-Phase Entry Process</span></h2>
+    <p class="sd" id="cms-proc-desc"><span class="ko">온라인 론칭부터 오프라인 매장 입점까지. 각 Phase는 검증을 거쳐야 다음으로 넘어갑니다 — 리스크를 최소화하면서 확실하게 진행합니다.</span><span class="en">From online launch to in-store entry. Each Phase must be validated before moving forward — minimizing risk while ensuring solid progress.</span></p>
 
     <!-- Phase Overview Cards -->
     <div class="proc-wrap"><div class="proc-cards">
-      <div class="pc phase-tab active" onclick="showPhase(0)"><div class="sn">01</div><h4>Phase 1</h4><p>Foundation & Online Setup</p><span style="font-family:var(--mono);font-size:11px;color:var(--text-muted);margin-top:4px;display:block">4~8주 · $8,000</span></div>
-      <div class="pc phase-tab" onclick="showPhase(1)"><div class="sn">02</div><h4>Phase 2</h4><p>Market Experiment & Data</p><span style="font-family:var(--mono);font-size:11px;color:var(--text-muted);margin-top:4px;display:block">4~8주 · $8,000</span></div>
-      <div class="pc phase-tab" onclick="showPhase(2)"><div class="sn">03</div><h4>Phase 3</h4><p>Test P.O. & Store Launch</p><span style="font-family:var(--mono);font-size:11px;color:var(--text-muted);margin-top:4px;display:block">4~8주 · $8,000</span></div>
+      <div class="pc phase-tab active" onclick="showPhase(0)"><div class="sn">01</div><h4>Phase 1</h4><p>Foundation & Online Setup</p><span style="font-family:var(--mono);font-size:11px;color:var(--text-muted);margin-top:4px;display:block"><span class="ko">4~8주</span><span class="en">4-8 weeks</span> · $8,000</span></div>
+      <div class="pc phase-tab" onclick="showPhase(1)"><div class="sn">02</div><h4>Phase 2</h4><p>Market Experiment & Data</p><span style="font-family:var(--mono);font-size:11px;color:var(--text-muted);margin-top:4px;display:block"><span class="ko">4~8주</span><span class="en">4-8 weeks</span> · $8,000</span></div>
+      <div class="pc phase-tab" onclick="showPhase(2)"><div class="sn">03</div><h4>Phase 3</h4><p>Test P.O. & Store Launch</p><span style="font-family:var(--mono);font-size:11px;color:var(--text-muted);margin-top:4px;display:block"><span class="ko">4~8주</span><span class="en">4-8 weeks</span> · $8,000</span></div>
     </div></div>
 
     <!-- ── Phase 1 Detail ── -->
@@ -611,101 +692,101 @@ button{cursor:pointer;font-family:var(--font)}
         <div>
           <div class="phase-deep-badge" style="background:var(--accent-light);color:var(--accent)">Phase 1</div>
           <h3 class="phase-deep-title">Foundation & Online Setup</h3>
-          <p class="phase-deep-desc" id="cms-phase1-desc">브랜드사의 제품이 Walmart.com 마켓플레이스에 정식 등록되어 온라인에서 판매 가능한 상태를 만드는 것이 Phase 1의 핵심 목표입니다.</p>
+          <p class="phase-deep-desc" id="cms-phase1-desc"><span class="ko">브랜드사의 제품이 Walmart.com 마켓플레이스에 정식 등록되어 온라인에서 판매 가능한 상태를 만드는 것이 Phase 1의 핵심 목표입니다.</span><span class="en">The core goal of Phase 1 is to officially list the brand's products on Walmart.com marketplace, making them ready for online sales.</span></p>
           <div class="phase-goal-box">
-            <div class="pgb-icon">🎯</div>
+            <div class="pgb-icon"><img src="https://fonts.gstatic.com/s/e/notoemoji/latest/1f3af/512.png" alt="target"></div>
             <div class="pgb-body">
-              <div class="pgb-title">Phase 1 완료 기준</div>
-              <div class="pgb-desc">브랜드사의 제품이 <strong>Walmart.com에 정식 등록</strong>되고, <strong>온라인 판매가 가능한 상태</strong>가 되면 Phase 1이 완료됩니다. 계정 생성, 리스팅, 물류 셋업, 컴플라이언스까지 모든 준비가 완료된 상태입니다.</div>
+              <div class="pgb-title"><span class="ko">Phase 1 완료 기준</span><span class="en">Phase 1 Completion Criteria</span></div>
+              <div class="pgb-desc"><span class="ko">브랜드사의 제품이 <strong>Walmart.com에 정식 등록</strong>되고, <strong>온라인 판매가 가능한 상태</strong>가 되면 Phase 1이 완료됩니다. 계정 생성, 리스팅, 물류 셋업, 컴플라이언스까지 모든 준비가 완료된 상태입니다.</span><span class="en">Phase 1 is complete when products are <strong>officially listed on Walmart.com</strong> and <strong>ready for online sales</strong>. This includes account setup, listings, logistics, and compliance.</span></div>
             </div>
           </div>
         </div>
         <div class="phase-deep-meta">
-          <div class="pdm-item"><div class="pdm-val">14</div><div class="pdm-lbl">단계</div></div>
-          <div class="pdm-item"><div class="pdm-val">4~8주</div><div class="pdm-lbl">예상 기간</div></div>
-          <div class="pdm-item"><div class="pdm-val">$8,000</div><div class="pdm-lbl">Phase 비용</div></div>
+          <div class="pdm-item"><div class="pdm-val">14</div><div class="pdm-lbl"><span class="ko">단계</span><span class="en">Steps</span></div></div>
+          <div class="pdm-item"><div class="pdm-val"><span class="ko">4~8주</span><span class="en">4-8 wks</span></div><div class="pdm-lbl"><span class="ko">예상 기간</span><span class="en">Duration</span></div></div>
+          <div class="pdm-item"><div class="pdm-val">$8,000</div><div class="pdm-lbl"><span class="ko">Phase 비용</span><span class="en">Phase Cost</span></div></div>
         </div>
       </div>
       <div class="phase-steps-grid">
         <div class="phase-step-card">
           <div class="psc-num">01</div>
           <h4>Marketplace Application</h4>
-          <p>Walmart 마켓플레이스 공식 셀러 신청 및 계정 승인</p>
+          <p><span class="ko">Walmart 마켓플레이스 공식 셀러 신청 및 계정 승인</span><span class="en">Official Walmart marketplace seller application and account approval</span></p>
         </div>
         <div class="phase-step-card">
           <div class="psc-num">02</div>
           <h4>Seller Center & API 연동</h4>
-          <p>Seller Center 접속 권한 설정, API 키 발급 및 시스템 연동</p>
+          <p><span class="ko">Seller Center 접속 권한 설정, API 키 발급 및 시스템 연동</span><span class="en">Seller Center access setup, API key issuance and system integration</span></p>
         </div>
         <div class="phase-step-card">
           <div class="psc-num">03</div>
           <h4>Partner Profile 구축</h4>
-          <p>브랜드 프로필, 회사 정보, 인증서 등 파트너 정보 등록</p>
+          <p><span class="ko">브랜드 프로필, 회사 정보, 인증서 등 파트너 정보 등록</span><span class="en">Register brand profile, company info, certifications as partner data</span></p>
         </div>
         <div class="phase-step-card">
           <div class="psc-num">04</div>
           <h4>Item 360 & Supplier One</h4>
-          <p>제품 마스터 데이터 등록 (GTIN, UPC, 규격, 이미지, 속성)</p>
+          <p><span class="ko">제품 마스터 데이터 등록 (GTIN, UPC, 규격, 이미지, 속성)</span><span class="en">Product master data registration (GTIN, UPC, specs, images, attributes)</span></p>
         </div>
         <div class="phase-step-card">
           <div class="psc-num">05</div>
           <h4>Packaging & SRP Design</h4>
-          <p>미국 시장 기준 패키징 디자인 및 SRP(Shelf-Ready Packaging) 설계</p>
+          <p><span class="ko">미국 시장 기준 패키징 디자인 및 SRP(Shelf-Ready Packaging) 설계</span><span class="en">US market packaging design and SRP (Shelf-Ready Packaging) development</span></p>
         </div>
         <div class="phase-step-card">
           <div class="psc-num">06</div>
           <h4>DAM System</h4>
-          <p>디지털 에셋 관리 시스템에 제품 이미지, 영상, 마케팅 소재 등록</p>
+          <p><span class="ko">디지털 에셋 관리 시스템에 제품 이미지, 영상, 마케팅 소재 등록</span><span class="en">Register product images, videos, marketing assets in Digital Asset Management system</span></p>
         </div>
         <div class="phase-step-card">
           <div class="psc-num">07</div>
           <h4>Listings & SEO A/B Testing</h4>
-          <p>제품 리스팅 최적화 — 키워드, 제목, 설명, 이미지 A/B 테스트</p>
+          <p><span class="ko">제품 리스팅 최적화 — 키워드, 제목, 설명, 이미지 A/B 테스트</span><span class="en">Product listing optimization — keyword, title, description, image A/B testing</span></p>
         </div>
         <div class="phase-step-card">
           <div class="psc-num">08</div>
           <h4>Sponsored Products Campaign</h4>
-          <p>Walmart Connect 광고 캠페인 세팅 및 초기 운영</p>
+          <p><span class="ko">Walmart Connect 광고 캠페인 세팅 및 초기 운영</span><span class="en">Walmart Connect ad campaign setup and initial operations</span></p>
         </div>
         <div class="phase-step-card">
           <div class="psc-num">09</div>
           <h4>Scintilla Dashboard</h4>
-          <p>실시간 판매 모니터링 대시보드 구축 및 KPI 트래킹</p>
+          <p><span class="ko">실시간 판매 모니터링 대시보드 구축 및 KPI 트래킹</span><span class="en">Real-time sales monitoring dashboard setup and KPI tracking</span></p>
         </div>
         <div class="phase-step-card">
           <div class="psc-num">10</div>
           <h4>OTIF & SQEP</h4>
-          <p>On-Time In-Full 배송 기준 충족 및 품질 인증(SQEP) 준비</p>
+          <p><span class="ko">On-Time In-Full 배송 기준 충족 및 품질 인증(SQEP) 준비</span><span class="en">Meet On-Time In-Full delivery standards and prepare quality certification (SQEP)</span></p>
         </div>
         <div class="phase-step-card">
           <div class="psc-num">11</div>
           <h4>Supplier Training</h4>
-          <p>Walmart 시스템 교육, 커뮤니케이션 프로토콜 수립</p>
+          <p><span class="ko">Walmart 시스템 교육, 커뮤니케이션 프로토콜 수립</span><span class="en">Walmart system training and communication protocol establishment</span></p>
         </div>
         <div class="phase-step-card">
           <div class="psc-num">12</div>
           <h4>Product Compliance</h4>
-          <p>FDA, FSMA, 라벨링, 성분 규정 등 미국 시장 컴플라이언스 충족</p>
+          <p><span class="ko">FDA, FSMA, 라벨링, 성분 규정 등 미국 시장 컴플라이언스 충족</span><span class="en">Meet US market compliance: FDA, FSMA, labeling, ingredient regulations</span></p>
         </div>
         <div class="phase-step-card">
           <div class="psc-num">13</div>
           <h4>Sustainability & CSR</h4>
-          <p>Walmart ESG 기준에 맞는 지속가능성 및 CSR 요건 확인</p>
+          <p><span class="ko">Walmart ESG 기준에 맞는 지속가능성 및 CSR 요건 확인</span><span class="en">Verify sustainability and CSR requirements per Walmart ESG standards</span></p>
         </div>
         <div class="phase-step-card">
           <div class="psc-num">14</div>
           <h4>Operational SLAs & Metrics</h4>
-          <p>서비스 수준 계약(SLA) 설정 및 운영 지표 모니터링 체계 구축</p>
+          <p><span class="ko">서비스 수준 계약(SLA) 설정 및 운영 지표 모니터링 체계 구축</span><span class="en">Service Level Agreement (SLA) setup and operational metrics monitoring</span></p>
         </div>
       </div>
       <div class="phase-deep-output">
-        <div class="pdo-label">Phase 1 산출물</div>
+        <div class="pdo-label"><span class="ko">Phase 1 산출물</span><span class="en">Phase 1 Deliverables</span></div>
         <div class="pdo-tags">
-          <span>Walmart.com 라이브 리스팅</span>
-          <span>온라인 판매 가능 상태 확보</span>
-          <span>셀러 계정 & 물류 셋업 완료</span>
-          <span>컴플라이언스 인증</span>
-          <span>초기 광고 캠페인 세팅</span>
+          <span><span class="ko">Walmart.com 라이브 리스팅</span><span class="en">Live Walmart.com Listings</span></span>
+          <span><span class="ko">온라인 판매 가능 상태 확보</span><span class="en">Online Sales Readiness</span></span>
+          <span><span class="ko">셀러 계정 & 물류 셋업 완료</span><span class="en">Seller Account & Logistics Setup</span></span>
+          <span><span class="ko">컴플라이언스 인증</span><span class="en">Compliance Certification</span></span>
+          <span><span class="ko">초기 광고 캠페인 세팅</span><span class="en">Initial Ad Campaign Setup</span></span>
         </div>
       </div>
     </div>
@@ -716,80 +797,80 @@ button{cursor:pointer;font-family:var(--font)}
         <div>
           <div class="phase-deep-badge" style="background:var(--accent-light);color:var(--accent)">Phase 2</div>
           <h3 class="phase-deep-title">Market Experiment & Data Collection</h3>
-          <p class="phase-deep-desc" id="cms-phase2-desc">실제 Walmart 온라인 마켓에서 제품을 판매하면서 미국 시장에 맞는 다양한 마케팅 전략을 실험하고, 판매 데이터를 수집합니다. 오프라인 입점 가능 여부를 판단하고 전략을 수립하는 단계입니다.</p>
+          <p class="phase-deep-desc" id="cms-phase2-desc"><span class="ko">실제 Walmart 온라인 마켓에서 제품을 판매하면서 미국 시장에 맞는 다양한 마케팅 전략을 실험하고, 판매 데이터를 수집합니다. 오프라인 입점 가능 여부를 판단하고 전략을 수립하는 단계입니다.</span><span class="en">Sell products on Walmart online marketplace while experimenting with various marketing strategies for the US market and collecting sales data. This phase determines offline entry feasibility and develops strategy.</span></p>
           <div class="phase-goal-box orange">
-            <div class="pgb-icon">📊</div>
+            <div class="pgb-icon"><img src="https://fonts.gstatic.com/s/e/notoemoji/latest/1f4ca/512.png" alt="chart"></div>
             <div class="pgb-body">
-              <div class="pgb-title">Phase 2 완료 기준</div>
-              <div class="pgb-desc">온라인 판매 데이터 수집, 마케팅 전략 실행, <strong>오프라인 판매 가능 여부 판단 및 전략 수립</strong>이 완료되면 Phase 2가 종료됩니다. Walmart Buyer에게 제출할 리뷰 데이터 패키지가 핵심 산출물입니다.</div>
+              <div class="pgb-title"><span class="ko">Phase 2 완료 기준</span><span class="en">Phase 2 Completion Criteria</span></div>
+              <div class="pgb-desc"><span class="ko">온라인 판매 데이터 수집, 마케팅 전략 실행, <strong>오프라인 판매 가능 여부 판단 및 전략 수립</strong>이 완료되면 Phase 2가 종료됩니다. Walmart Buyer에게 제출할 리뷰 데이터 패키지가 핵심 산출물입니다.</span><span class="en">Online sales data collection, marketing strategy execution, and <strong>offline sales feasibility assessment and strategy development</strong> complete Phase 2. The key deliverable is a review data package for the Walmart Buyer.</span></div>
             </div>
           </div>
           <div class="phase-note">
-            <span>💡</span>
-            <span>기본 <strong>4주 진행</strong>이며, 브랜드사 또는 벤더사 요청 시 양측 합의 하에 <strong>4주 추가 연장</strong>이 가능합니다. 연장 시 <strong>추가적인 Phase 운영비용</strong>이 발생합니다.</span>
+            <img src="https://fonts.gstatic.com/s/e/notoemoji/latest/1f4a1/512.png" alt="note" style="width:28px;height:28px;flex-shrink:0">
+            <span><span class="ko">기본 <strong>4주 진행</strong>이며, 브랜드사 또는 벤더사 요청 시 양측 합의 하에 <strong>4주 추가 연장</strong>이 가능합니다. 연장 시 <strong>추가적인 Phase 운영비용</strong>이 발생합니다.</span><span class="en">Default <strong>4-week duration</strong>, extendable by <strong>4 additional weeks</strong> with mutual agreement. Extension incurs <strong>additional Phase operating costs</strong>.</span></span>
           </div>
         </div>
         <div class="phase-deep-meta">
-          <div class="pdm-item"><div class="pdm-val">9</div><div class="pdm-lbl">단계</div></div>
-          <div class="pdm-item"><div class="pdm-val">4~8주</div><div class="pdm-lbl">예상 기간</div></div>
-          <div class="pdm-item"><div class="pdm-val">$8,000</div><div class="pdm-lbl">Phase 비용</div></div>
+          <div class="pdm-item"><div class="pdm-val">9</div><div class="pdm-lbl"><span class="ko">단계</span><span class="en">Steps</span></div></div>
+          <div class="pdm-item"><div class="pdm-val"><span class="ko">4~8주</span><span class="en">4-8 wks</span></div><div class="pdm-lbl"><span class="ko">예상 기간</span><span class="en">Duration</span></div></div>
+          <div class="pdm-item"><div class="pdm-val">$8,000</div><div class="pdm-lbl"><span class="ko">Phase 비용</span><span class="en">Phase Cost</span></div></div>
         </div>
       </div>
       <div class="phase-steps-grid">
         <div class="phase-step-card">
           <div class="psc-num">01</div>
           <h4>Listing Health 최적화</h4>
-          <p>제품 리스팅 품질 점수 분석 및 개선 — 이미지, 키워드, 리뷰 전략</p>
+          <p><span class="ko">제품 리스팅 품질 점수 분석 및 개선 — 이미지, 키워드, 리뷰 전략</span><span class="en">Product listing quality score analysis and optimization — images, keywords, review strategy</span></p>
         </div>
         <div class="phase-step-card">
           <div class="psc-num">02</div>
           <h4>Consumer Insights 분석</h4>
-          <p>고객 리뷰, 검색 트렌드, 구매 패턴 분석으로 타겟 소비자 프로파일링</p>
+          <p><span class="ko">고객 리뷰, 검색 트렌드, 구매 패턴 분석으로 타겟 소비자 프로파일링</span><span class="en">Target consumer profiling through customer reviews, search trends, and purchase pattern analysis</span></p>
         </div>
         <div class="phase-step-card">
           <div class="psc-num">03</div>
           <h4>Advanced Ads 운영</h4>
-          <p>Sponsored Brands, Display Ads 등 고급 광고 전략 실행</p>
+          <p><span class="ko">Sponsored Brands, Display Ads 등 고급 광고 전략 실행</span><span class="en">Execute advanced ad strategies including Sponsored Brands and Display Ads</span></p>
         </div>
         <div class="phase-step-card">
           <div class="psc-num">04</div>
           <h4>Dynamic Pricing 전략</h4>
-          <p>경쟁 가격 모니터링 및 동적 가격 최적화 시스템 적용</p>
+          <p><span class="ko">경쟁 가격 모니터링 및 동적 가격 최적화 시스템 적용</span><span class="en">Competitive price monitoring and dynamic pricing optimization system</span></p>
         </div>
         <div class="phase-step-card">
           <div class="psc-num">05</div>
           <h4>Demand Forecast</h4>
-          <p>판매 데이터 기반 수요 예측 모델 구축 — 오프라인 확장 시 발주 근거</p>
+          <p><span class="ko">판매 데이터 기반 수요 예측 모델 구축 — 오프라인 확장 시 발주 근거</span><span class="en">Build demand forecast model from sales data — basis for offline expansion orders</span></p>
         </div>
         <div class="phase-step-card">
           <div class="psc-num">06</div>
           <h4>Replenishment Alerts</h4>
-          <p>재고 부족 알림 시스템 구축 및 자동 보충 프로세스 최적화</p>
+          <p><span class="ko">재고 부족 알림 시스템 구축 및 자동 보충 프로세스 최적화</span><span class="en">Build stock-out alert system and optimize auto-replenishment process</span></p>
         </div>
         <div class="phase-step-card">
           <div class="psc-num">07</div>
           <h4>Seller Center Reports</h4>
-          <p>Buyer 미팅용 종합 판매 리포트 및 성과 데이터 패키지 작성</p>
+          <p><span class="ko">Buyer 미팅용 종합 판매 리포트 및 성과 데이터 패키지 작성</span><span class="en">Comprehensive sales report and performance data package for Buyer meetings</span></p>
         </div>
         <div class="phase-step-card">
           <div class="psc-num">08</div>
           <h4>Buyer Portal Automation</h4>
-          <p>Walmart Buyer Portal 자동화 및 리뷰 자료 사전 등록</p>
+          <p><span class="ko">Walmart Buyer Portal 자동화 및 리뷰 자료 사전 등록</span><span class="en">Walmart Buyer Portal automation and pre-registration of review materials</span></p>
         </div>
         <div class="phase-step-card">
           <div class="psc-num">09</div>
           <h4>Offline Buyer Coordination</h4>
-          <p>Walmart Buyer와의 공식 미팅 주선 및 오프라인 입점 리뷰 제출</p>
+          <p><span class="ko">Walmart Buyer와의 공식 미팅 주선 및 오프라인 입점 리뷰 제출</span><span class="en">Arrange official meetings with Walmart Buyer and submit offline entry review</span></p>
         </div>
       </div>
       <div class="phase-deep-output">
-        <div class="pdo-label">Phase 2 산출물</div>
+        <div class="pdo-label"><span class="ko">Phase 2 산출물</span><span class="en">Phase 2 Deliverables</span></div>
         <div class="pdo-tags">
-          <span>온라인 판매 데이터 리포트</span>
-          <span>마케팅 전략 실험 결과</span>
-          <span>오프라인 진출 판단 보고서</span>
-          <span>Buyer 제출용 데이터 패키지</span>
-          <span>수요 예측 & 가격 전략</span>
+          <span><span class="ko">온라인 판매 데이터 리포트</span><span class="en">Online Sales Data Report</span></span>
+          <span><span class="ko">마케팅 전략 실험 결과</span><span class="en">Marketing Strategy Test Results</span></span>
+          <span><span class="ko">오프라인 진출 판단 보고서</span><span class="en">Offline Entry Feasibility Report</span></span>
+          <span><span class="ko">Buyer 제출용 데이터 패키지</span><span class="en">Buyer Review Data Package</span></span>
+          <span><span class="ko">수요 예측 & 가격 전략</span><span class="en">Demand Forecast & Pricing Strategy</span></span>
         </div>
       </div>
     </div>
@@ -800,109 +881,109 @@ button{cursor:pointer;font-family:var(--font)}
         <div>
           <div class="phase-deep-badge" style="background:var(--lime-light);color:var(--lime)">Phase 3</div>
           <h3 class="phase-deep-title">Test P.O. & Store Launch</h3>
-          <p class="phase-deep-desc" id="cms-phase3-desc">Phase 2에서 수집한 데이터와 전략을 기반으로 Walmart Buyer의 최종 검토를 거쳐, 실제 Test P.O.(Purchase Order)가 발생하는 단계입니다. Test P.O. 이후에는 수수료 기반 모델로 전환됩니다.</p>
+          <p class="phase-deep-desc" id="cms-phase3-desc"><span class="ko">Phase 2에서 수집한 데이터와 전략을 기반으로 Walmart Buyer의 최종 검토를 거쳐, 실제 Test P.O.(Purchase Order)가 발생하는 단계입니다. Test P.O. 이후에는 수수료 기반 모델로 전환됩니다.</span><span class="en">Based on data and strategy from Phase 2, the Walmart Buyer conducts a final review, leading to an actual Test P.O. (Purchase Order). After the Test P.O., the model transitions to a commission-based structure.</span></p>
           <div class="phase-goal-box green">
-            <div class="pgb-icon">🚀</div>
+            <div class="pgb-icon"><img src="https://fonts.gstatic.com/s/e/notoemoji/latest/1f680/512.png" alt="rocket"></div>
             <div class="pgb-body">
-              <div class="pgb-title">Phase 3 완료 기준</div>
-              <div class="pgb-desc">실제 <strong>Test P.O.(Purchase Order)가 발생</strong>하면 Phase 3가 완료됩니다. 이후 3SVS는 <strong>수수료(커미션) 기반</strong>으로 전환되어 브랜드의 지속적인 성장을 지원합니다.</div>
+              <div class="pgb-title"><span class="ko">Phase 3 완료 기준</span><span class="en">Phase 3 Completion Criteria</span></div>
+              <div class="pgb-desc"><span class="ko">실제 <strong>Test P.O.(Purchase Order)가 발생</strong>하면 Phase 3가 완료됩니다. 이후 3SVS는 <strong>수수료(커미션) 기반</strong>으로 전환되어 브랜드의 지속적인 성장을 지원합니다.</span><span class="en">Phase 3 is complete when an actual <strong>Test P.O. (Purchase Order) is issued</strong>. Afterward, 3SVS transitions to a <strong>commission-based model</strong> to support the brand's continued growth.</span></div>
             </div>
           </div>
         </div>
         <div class="phase-deep-meta">
-          <div class="pdm-item"><div class="pdm-val">11</div><div class="pdm-lbl">단계</div></div>
-          <div class="pdm-item"><div class="pdm-val">4~8주</div><div class="pdm-lbl">예상 기간</div></div>
-          <div class="pdm-item"><div class="pdm-val">$8,000</div><div class="pdm-lbl">Phase 비용</div></div>
+          <div class="pdm-item"><div class="pdm-val">11</div><div class="pdm-lbl"><span class="ko">단계</span><span class="en">Steps</span></div></div>
+          <div class="pdm-item"><div class="pdm-val"><span class="ko">4~8주</span><span class="en">4-8 wks</span></div><div class="pdm-lbl"><span class="ko">예상 기간</span><span class="en">Duration</span></div></div>
+          <div class="pdm-item"><div class="pdm-val">$8,000</div><div class="pdm-lbl"><span class="ko">Phase 비용</span><span class="en">Phase Cost</span></div></div>
         </div>
       </div>
       <div class="phase-steps-grid">
         <div class="phase-step-card">
           <div class="psc-num">01</div>
           <h4>Final Line Review</h4>
-          <p>Walmart Buyer의 최종 라인 리뷰 — 오프라인 입점 확정 여부 결정</p>
+          <p><span class="ko">Walmart Buyer의 최종 라인 리뷰 — 오프라인 입점 확정 여부 결정</span><span class="en">Walmart Buyer's final line review — determine offline entry confirmation</span></p>
         </div>
         <div class="phase-step-card">
           <div class="psc-num">02</div>
           <h4>Onboarding & Access Audit</h4>
-          <p>오프라인 유통을 위한 시스템 접근 권한 및 온보딩 최종 점검</p>
+          <p><span class="ko">오프라인 유통을 위한 시스템 접근 권한 및 온보딩 최종 점검</span><span class="en">Final system access permissions and onboarding audit for offline distribution</span></p>
         </div>
         <div class="phase-step-card">
           <div class="psc-num">03</div>
           <h4>Transaction Monitoring</h4>
-          <p>주문-결제-배송 전체 트랜잭션 모니터링 시스템 가동</p>
+          <p><span class="ko">주문-결제-배송 전체 트랜잭션 모니터링 시스템 가동</span><span class="en">Activate full order-payment-shipping transaction monitoring system</span></p>
         </div>
         <div class="phase-step-card">
           <div class="psc-num">04</div>
           <h4>Ship-Point Network Stress Test</h4>
-          <p>물류 네트워크 스트레스 테스트 — 대량 발주 대응 역량 검증</p>
+          <p><span class="ko">물류 네트워크 스트레스 테스트 — 대량 발주 대응 역량 검증</span><span class="en">Logistics network stress test — verify bulk order handling capacity</span></p>
         </div>
         <div class="phase-step-card">
           <div class="psc-num">05</div>
           <h4>Verify SRP Packaging</h4>
-          <p>매장 진열용 SRP 패키징 최종 검증 및 승인</p>
+          <p><span class="ko">매장 진열용 SRP 패키징 최종 검증 및 승인</span><span class="en">Final verification and approval of shelf-ready packaging (SRP)</span></p>
         </div>
         <div class="phase-step-card">
           <div class="psc-num">06</div>
           <h4>PO Forecast & SSO Simulation</h4>
-          <p>대량 발주 예측 및 공급망 시뮬레이션으로 안정적 납품 보장</p>
+          <p><span class="ko">대량 발주 예측 및 공급망 시뮬레이션으로 안정적 납품 보장</span><span class="en">Bulk order forecasting and supply chain simulation to ensure stable delivery</span></p>
         </div>
         <div class="phase-step-card">
           <div class="psc-num">07</div>
           <h4>Sales Launch Coordination</h4>
-          <p>런칭 일정 조율, 매장 내 프로모션, 마케팅 캠페인 동기화</p>
+          <p><span class="ko">런칭 일정 조율, 매장 내 프로모션, 마케팅 캠페인 동기화</span><span class="en">Launch schedule coordination, in-store promotions, and marketing campaign sync</span></p>
         </div>
         <div class="phase-step-card">
           <div class="psc-num">08</div>
           <h4>Buyer Store Allocation</h4>
-          <p>500~1,000개 테스트 매장 배정 확정 및 지역별 배분 전략</p>
+          <p><span class="ko">500~1,000개 테스트 매장 배정 확정 및 지역별 배분 전략</span><span class="en">Confirm 500-1,000 test store allocations and regional distribution strategy</span></p>
         </div>
         <div class="phase-step-card">
           <div class="psc-num">09</div>
           <h4>Scintilla Updates</h4>
-          <p>오프라인 매장 판매 데이터까지 통합한 대시보드 업데이트</p>
+          <p><span class="ko">오프라인 매장 판매 데이터까지 통합한 대시보드 업데이트</span><span class="en">Dashboard update integrating offline store sales data</span></p>
         </div>
         <div class="phase-step-card">
           <div class="psc-num">10</div>
           <h4>Post-Launch Store Scan</h4>
-          <p>입점 매장 현장 스캔 — 진열 상태, 재고, 가격 태그 확인</p>
+          <p><span class="ko">입점 매장 현장 스캔 — 진열 상태, 재고, 가격 태그 확인</span><span class="en">On-site store scan — check display status, inventory, and price tags</span></p>
         </div>
         <div class="phase-step-card">
           <div class="psc-num">11</div>
           <h4>Post-Launch 360° Review</h4>
-          <p>런칭 후 종합 성과 리뷰 — 전국 확대 또는 전략 조정 결정</p>
+          <p><span class="ko">런칭 후 종합 성과 리뷰 — 전국 확대 또는 전략 조정 결정</span><span class="en">Post-launch comprehensive performance review — decide nationwide expansion or strategy adjustment</span></p>
         </div>
       </div>
       <div class="phase-deep-output">
-        <div class="pdo-label">Phase 3 산출물</div>
+        <div class="pdo-label"><span class="ko">Phase 3 산출물</span><span class="en">Phase 3 Deliverables</span></div>
         <div class="pdo-tags">
-          <span>Test P.O. 수주</span>
-          <span>오프라인 매장 입점</span>
-          <span>커미션 모델 전환</span>
-          <span>Post-Launch 성과 리포트</span>
-          <span>전국 확대 로드맵</span>
+          <span><span class="ko">Test P.O. 수주</span><span class="en">Test P.O. Received</span></span>
+          <span><span class="ko">오프라인 매장 입점</span><span class="en">Offline Store Entry</span></span>
+          <span><span class="ko">커미션 모델 전환</span><span class="en">Commission Model Transition</span></span>
+          <span><span class="ko">Post-Launch 성과 리포트</span><span class="en">Post-Launch Performance Report</span></span>
+          <span><span class="ko">전국 확대 로드맵</span><span class="en">Nationwide Expansion Roadmap</span></span>
         </div>
       </div>
     </div>
 
     <!-- Role Matrix -->
     <div class="role-matrix">
-      <div class="role-matrix-title">각 Phase에서 누가 무엇을 하나요?</div>
+      <div class="role-matrix-title"><span class="ko">각 Phase에서 누가 무엇을 하나요?</span><span class="en">Who Does What in Each Phase?</span></div>
       <div class="role-matrix-grid">
         <div class="role-matrix-header"><div></div><div>3SVS & Vendor Partner</div><div>Walmart Buyer</div></div>
         <div class="role-matrix-row">
           <div class="rmr-phase">Phase 1</div>
-          <div class="rmr-cell" id="cms-rm-p1-3svs">계정 셋업, 리스팅, 물류, 광고, 컴플라이언스 전 과정 실행</div>
-          <div class="rmr-cell rmr-muted" id="cms-rm-p1-buyer">모니터링 (직접 관여 없음)</div>
+          <div class="rmr-cell" id="cms-rm-p1-3svs"><span class="ko">계정 셋업, 리스팅, 물류, 광고, 컴플라이언스 전 과정 실행</span><span class="en">Execute full process: account setup, listings, logistics, ads, compliance</span></div>
+          <div class="rmr-cell rmr-muted" id="cms-rm-p1-buyer"><span class="ko">모니터링 (직접 관여 없음)</span><span class="en">Monitoring (no direct involvement)</span></div>
         </div>
         <div class="role-matrix-row">
           <div class="rmr-phase">Phase 2</div>
-          <div class="rmr-cell" id="cms-rm-p2-3svs">데이터 분석, 리포트 작성, Buyer 미팅 주선 및 동행</div>
-          <div class="rmr-cell" id="cms-rm-p2-buyer">판매 데이터 검토, 미팅 참석, 오프라인 입점 검토</div>
+          <div class="rmr-cell" id="cms-rm-p2-3svs"><span class="ko">데이터 분석, 리포트 작성, Buyer 미팅 주선 및 동행</span><span class="en">Data analysis, report creation, Buyer meeting arrangement and attendance</span></div>
+          <div class="rmr-cell" id="cms-rm-p2-buyer"><span class="ko">판매 데이터 검토, 미팅 참석, 오프라인 입점 검토</span><span class="en">Sales data review, meeting attendance, offline entry evaluation</span></div>
         </div>
         <div class="role-matrix-row">
           <div class="rmr-phase">Phase 3</div>
-          <div class="rmr-cell" id="cms-rm-p3-3svs">물류 스트레스테스트, PO 실행, 런칭 조율, 성과 리포트</div>
-          <div class="rmr-cell" id="cms-rm-p3-buyer">매장 배정 확정, P.O. 발행, 전국 확대 의사결정</div>
+          <div class="rmr-cell" id="cms-rm-p3-3svs"><span class="ko">물류 스트레스테스트, PO 실행, 런칭 조율, 성과 리포트</span><span class="en">Logistics stress test, PO execution, launch coordination, performance report</span></div>
+          <div class="rmr-cell" id="cms-rm-p3-buyer"><span class="ko">매장 배정 확정, P.O. 발행, 전국 확대 의사결정</span><span class="en">Store allocation confirmation, P.O. issuance, nationwide expansion decision</span></div>
         </div>
       </div>
     </div>
@@ -937,26 +1018,14 @@ button{cursor:pointer;font-family:var(--font)}
   <section class="cta-apply-section" id="cta-apply">
     <div class="cta-apply-inner">
       <div class="lb" style="color:rgba(255,255,255,0.4)">/Get Started</div>
-      <h2 class="st" style="font-size:44px;letter-spacing:-2.5px;color:#fff" id="cms-cta-title">지금 신청하세요</h2>
-      <p style="font-size:17px;color:rgba(255,255,255,0.4);max-width:520px;margin:0 auto;line-height:1.6" id="cms-cta-desc">프로그램 상세 조건과 비용 구조는 신청 후 담당자 검토를 거쳐 안내드립니다.<br>먼저 기업 정보를 접수해주세요.</p>
-      <div class="cta-apply-cards">
-        <div class="cta-apply-card">
-          <div class="sn">A</div>
-          <h3>직접 참여 기업</h3>
-          <p class="type-sub">자체 비용으로 프로그램에 참여하는<br>중견·대기업 및 해외 수출 경험 보유 기업</p>
-        </div>
-        <div class="cta-apply-card">
-          <div class="sn">B</div>
-          <h3>수출바우처 연계 기업</h3>
-          <p class="type-sub">정부 수출바우처 사업과 연계하여<br>참여하는 중소기업</p>
-        </div>
-      </div>
-      <button class="btn-primary" onclick="switchTab('apply')" style="font-size:17px;padding:18px 48px" id="cms-cta-btn">프로그램 신청하기 →</button>
-      <p style="font-size:13px;color:rgba(255,255,255,0.2);margin-top:16px">접수 후 2영업일 이내 담당자가 연락드립니다.</p>
+      <h2 class="st" style="font-size:44px;letter-spacing:-2.5px;color:#fff" id="cms-cta-title"><span class="ko">지금 신청하세요</span><span class="en">Apply Now</span></h2>
+      <p style="font-size:17px;color:rgba(255,255,255,0.4);max-width:520px;margin:0 auto 40px;line-height:1.6" id="cms-cta-desc"><span class="ko">프로그램 상세 조건과 비용 구조는 신청 후 담당자 검토를 거쳐 안내드립니다.<br>먼저 기업 정보를 접수해주세요.</span><span class="en">Detailed program terms and cost structure will be provided after review by our team.<br>Please submit your company information first.</span></p>
+      <button class="btn-primary" onclick="switchTab('apply')" style="font-size:17px;padding:18px 48px" id="cms-cta-btn"><span class="ko">프로그램 신청하기 →</span><span class="en">Apply for the Program →</span></button>
+      <p style="font-size:13px;color:rgba(255,255,255,0.2);margin-top:16px"><span class="ko">접수 후 2영업일 이내 담당자가 연락드립니다.</span><span class="en">Our team will contact you within 2 business days.</span></p>
     </div>
   </section>
 
-  <div class="footer"><div class="footer-inner"><div class="footer-copy">&copy; 2026 3STRIPE Venture Studio — Walmart Entry Program</div><div class="footer-admin" onclick="showAdminModal()">관리자</div></div></div>
+  <div class="footer"><div class="footer-inner"><div class="footer-copy">&copy; 2026 3STRIPE Venture Studio — Walmart Entry Program</div><div class="footer-admin" onclick="showAdminModal()"><span class="ko">관리자</span><span class="en">Admin</span></div></div></div>
 </div>
 
 <!-- ═══════════════════════════════════════ -->
@@ -967,19 +1036,19 @@ button{cursor:pointer;font-family:var(--font)}
   <div style="padding:100px var(--sec-px) 48px;background:var(--bg-dark);color:#fff">
     <div style="max-width:720px;margin:0 auto">
       <div class="lb" style="color:rgba(255,255,255,0.35)">/Apply</div>
-      <h1 style="font-size:clamp(32px,5vw,52px);font-weight:900;letter-spacing:-0.04em;line-height:.95;margin-bottom:16px;color:#fff">입점 프로그램 신청</h1>
-      <p style="font-size:17px;color:rgba(255,255,255,0.4);line-height:1.6;max-width:520px">아래 정보를 작성해주세요. 검토 후 승인된 기업에 한하여 전용 포털에서 프로그램 상세와 비용을 확인하실 수 있습니다.</p>
+      <h1 style="font-size:clamp(32px,5vw,52px);font-weight:900;letter-spacing:-0.04em;line-height:.95;margin-bottom:16px;color:#fff"><span class="ko">입점 프로그램 신청</span><span class="en">Program Application</span></h1>
+      <p style="font-size:17px;color:rgba(255,255,255,0.4);line-height:1.6;max-width:520px"><span class="ko">아래 정보를 작성해주세요. 검토 후 승인된 기업에 한하여 전용 포털에서 프로그램 상세와 비용을 확인하실 수 있습니다.</span><span class="en">Please fill out the information below. Approved companies will access program details and costs through a dedicated portal.</span></p>
     </div>
   </div>
   <!-- Progress Indicator -->
   <div style="padding:0 var(--sec-px);background:var(--bg);border-bottom:1px solid var(--border)">
     <div style="max-width:720px;margin:0 auto;display:flex;gap:0;overflow-x:auto" id="form-steps">
-      <button class="form-step active" onclick="goFormStep(0)"><span class="fs-num">1</span> 참여 유형</button>
-      <button class="form-step" onclick="goFormStep(1)"><span class="fs-num">2</span> 브랜드 정보</button>
-      <button class="form-step" onclick="goFormStep(2)"><span class="fs-num">3</span> 수출 & 물류</button>
-      <button class="form-step" onclick="goFormStep(3)"><span class="fs-num">4</span> 제조 & 생산</button>
-      <button class="form-step" onclick="goFormStep(4)"><span class="fs-num">5</span> 매출 & 마케팅</button>
-      <button class="form-step" onclick="goFormStep(5)"><span class="fs-num">6</span> 자료 & 담당자</button>
+      <button class="form-step active" onclick="goFormStep(0)"><span class="fs-num">1</span> <span class="ko">참여 유형</span><span class="en">Type</span></button>
+      <button class="form-step" onclick="goFormStep(1)"><span class="fs-num">2</span> <span class="ko">브랜드 정보</span><span class="en">Brand</span></button>
+      <button class="form-step" onclick="goFormStep(2)"><span class="fs-num">3</span> <span class="ko">수출 & 물류</span><span class="en">Export</span></button>
+      <button class="form-step" onclick="goFormStep(3)"><span class="fs-num">4</span> <span class="ko">제조 & 생산</span><span class="en">Mfg</span></button>
+      <button class="form-step" onclick="goFormStep(4)"><span class="fs-num">5</span> <span class="ko">매출 & 마케팅</span><span class="en">Revenue</span></button>
+      <button class="form-step" onclick="goFormStep(5)"><span class="fs-num">6</span> <span class="ko">자료 & 담당자</span><span class="en">Docs</span></button>
     </div>
   </div>
 
@@ -987,56 +1056,55 @@ button{cursor:pointer;font-family:var(--font)}
 
     <!-- ── STEP 0: 참여 유형 ── -->
     <div class="form-panel" id="step-0">
-      <h3 class="form-sec-title">참여 유형을 선택해주세요</h3>
-      <p class="form-sec-desc">해당하는 유형을 선택하세요. 정확하지 않아도 괜찮습니다 — 최종 유형은 담당자가 검토 후 확정합니다.</p>
+      <h3 class="form-sec-title">Select Participation Type</h3>
+      <p class="form-sec-desc">Please select your participation type. The final type will be confirmed by our team after review.</p>
       <div class="type-radio-group">
         <label class="type-radio">
           <input type="radio" name="apply-type" value="direct" checked>
           <div class="type-radio-card">
             <div class="type-radio-dot"></div>
-            <h4>직접 참여 기업 (A Type)</h4>
-            <p>자체 비용으로 프로그램에 참여하는 중견·대기업 및 해외 수출 경험 보유 기업</p>
+            <h4>Direct Participation (A Type)</h4>
+            <p>Mid-to-large enterprises participating with own budget and prior export experience</p>
           </div>
         </label>
         <label class="type-radio">
           <input type="radio" name="apply-type" value="voucher">
           <div class="type-radio-card">
             <div class="type-radio-dot"></div>
-            <h4>수출바우처 연계 기업 (B Type)</h4>
-            <p>정부 수출바우처 사업과 연계하여 참여하는 중소기업</p>
+            <h4>Export Voucher Program (B Type)</h4>
+            <p>SMEs participating through the Korean government's export voucher program</p>
           </div>
         </label>
       </div>
-      <!-- 바우처 추가 필드 -->
       <div id="voucher-fields" style="display:none;margin-top:24px">
-        <div class="form-field-label">수출바우처 세부 정보</div>
-        <div class="form-row"><input class="form-input" placeholder="바우처 사업명 (예: 2026 수출바우처)"><input class="form-input" placeholder="바우처 잔액 (원)"></div>
-        <div style="margin-bottom:12px"><input class="form-input" placeholder="수행기관 지정 가능 여부"></div>
+        <div class="form-field-label">Export Voucher Details</div>
+        <div class="form-row"><input class="form-input" placeholder="Voucher Program Name (e.g., 2026 Export Voucher)" data-req="voucher"><input class="form-input number-format" placeholder="Remaining Voucher Balance (KRW)" data-req="voucher"></div>
+        <div style="margin-bottom:12px"><input class="form-input" placeholder="Can you designate a service provider? (Yes/No)" data-req="voucher"></div>
       </div>
       <div style="padding:16px 20px;border:1px solid rgba(0,113,220,0.15);border-radius:var(--radius);margin-top:24px;background:var(--accent-light)">
-        <p style="font-size:14px;color:var(--accent);line-height:1.6;font-weight:500">프로그램 상세 비용과 진행 조건은 신청서 검토 후 승인된 기업에 한하여 전용 포털에서 안내됩니다.</p>
+        <p style="font-size:14px;color:var(--accent);line-height:1.6;font-weight:500">Detailed program costs and terms will be shared via your dedicated portal after application approval.</p>
       </div>
-      <div class="form-nav"><div></div><button class="btn-primary" onclick="goFormStep(1)">다음: 브랜드 정보 →</button></div>
+      <div class="form-nav"><div></div><button class="btn-primary" onclick="validateAndGo(0, 1)">Next: Brand Info →</button></div>
     </div>
 
     <!-- ── STEP 1: 브랜드 기본 정보 ── -->
     <div class="form-panel" id="step-1" style="display:none">
-      <h3 class="form-sec-title">브랜드 정보</h3>
-      <p class="form-sec-desc">브랜드와 제품에 대한 기본 정보를 입력해주세요.</p>
+      <h3 class="form-sec-title">Brand Information</h3>
+      <p class="form-sec-desc">Please provide basic information about your brand and products.</p>
 
-      <div class="form-field-label">브랜드명 *</div>
-      <div style="margin-bottom:12px"><input class="form-input" placeholder="Brand Name (영문)"></div>
+      <div class="form-field-label">브랜드명 / Brand Name *</div>
+      <div style="margin-bottom:12px"><input class="form-input" name="Brand Name" placeholder="Please enter in English (e.g., Bibigo, Sulwhasoo)" data-req="1"></div>
 
-      <div class="form-field-label">브랜드 소개 (1-2문장) *</div>
-      <div style="margin-bottom:12px"><textarea class="form-input" placeholder="간단한 제품/브랜드 설명을 입력해주세요" rows="2" style="resize:vertical"></textarea></div>
+      <div class="form-field-label">브랜드 소개 / Brand Description (1-2 sentences) *</div>
+      <div style="margin-bottom:12px"><textarea class="form-input" name="Brand Description" placeholder="Please enter in English — Brief description of your brand and key products" rows="2" style="resize:vertical" data-req="1"></textarea></div>
 
-      <div class="form-field-label">브랜드 스토리 / 비전</div>
-      <div style="margin-bottom:12px"><textarea class="form-input" placeholder="브랜드가 추구하는 가치, 스토리, 비전을 알려주세요" rows="3" style="resize:vertical"></textarea></div>
+      <div class="form-field-label">브랜드 스토리 / Brand Story & Vision</div>
+      <div style="margin-bottom:12px"><textarea class="form-input" name="Brand Story" placeholder="Please enter in English — Share your brand's story, values, and vision" rows="3" style="resize:vertical"></textarea></div>
 
-      <div class="form-field-label">카테고리 *</div>
+      <div class="form-field-label">카테고리 / Category *</div>
       <div style="margin-bottom:12px">
-        <select class="form-input" style="appearance:auto">
-          <option value="" disabled selected>카테고리를 선택해주세요</option>
+        <select class="form-input" name="Category" style="appearance:auto" data-req="1">
+          <option value="" disabled selected>Select a category</option>
           <option>Food and Beverage</option>
           <option>Health and Wellness</option>
           <option>Beauty and Personal Care</option>
@@ -1047,14 +1115,14 @@ button{cursor:pointer;font-family:var(--font)}
         </select>
       </div>
 
-      <div class="form-field-label">온라인 링크</div>
-      <div style="margin-bottom:12px"><input class="form-input" placeholder="홈페이지 URL"></div>
-      <div class="form-row"><input class="form-input" placeholder="Amazon 페이지 (해당 시)"><input class="form-input" placeholder="Instagram 링크 (해당 시)"></div>
+      <div class="form-field-label">온라인 채널 / Online Presence</div>
+      <div style="margin-bottom:12px"><input class="form-input" name="Website" placeholder="Website URL"></div>
+      <div class="form-row"><input class="form-input" name="Amazon URL" placeholder="Amazon Page URL (if applicable)"><input class="form-input" name="Instagram URL" placeholder="Instagram URL (if applicable)"></div>
 
-      <div class="form-field-label">Instagram 팔로워 수</div>
+      <div class="form-field-label">인스타그램 팔로워 / Instagram Followers</div>
       <div style="margin-bottom:12px">
-        <select class="form-input" style="appearance:auto">
-          <option value="" disabled selected>해당 범위를 선택해주세요</option>
+        <select class="form-input" name="Instagram Followers" style="appearance:auto">
+          <option value="" disabled selected>Select a range</option>
           <option>N/A</option>
           <option>Under 1,000</option>
           <option>1,000 to 5,000</option>
@@ -1065,121 +1133,153 @@ button{cursor:pointer;font-family:var(--font)}
         </select>
       </div>
 
-      <div class="form-nav"><button class="btn-outline" onclick="goFormStep(0)">← 이전</button><button class="btn-primary" onclick="goFormStep(2)">다음: 수출 & 물류 →</button></div>
+      <div class="form-nav"><button class="btn-outline" onclick="goFormStep(0)">← Previous</button><button class="btn-primary" onclick="validateAndGo(1, 2)">Next: Export & Logistics →</button></div>
     </div>
 
     <!-- ── STEP 2: 수출 & 물류 ── -->
     <div class="form-panel" id="step-2" style="display:none">
-      <h3 class="form-sec-title">수출 경험 & 물류</h3>
-      <p class="form-sec-desc">해외 수출 경험과 미국 내 물류 인프라에 대해 알려주세요.</p>
+      <h3 class="form-sec-title">Export Experience & Logistics</h3>
+      <p class="form-sec-desc">Tell us about your export experience and US logistics infrastructure.</p>
 
-      <div class="form-field-label">한국 외 수출/판매 경험이 있습니까? *</div>
-      <div class="form-radio-inline">
+      <div class="form-field-label">해외 수출/판매 경험이 있으신가요? / Export experience outside Korea? *</div>
+      <div class="form-radio-inline" data-radio-req="2" data-radio-name="export-exp">
         <label class="form-radio-pill"><input type="radio" name="export-exp" value="yes"><span>Yes</span></label>
         <label class="form-radio-pill"><input type="radio" name="export-exp" value="no"><span>No</span></label>
       </div>
 
-      <div class="form-field-label">현재 제품이 판매되고 있는 해외 국가</div>
-      <div style="margin-bottom:12px"><input class="form-input" placeholder="예: Japan, Taiwan, USA (쉼표로 구분)"></div>
+      <div class="form-field-label">현재 판매 중인 국가 / Countries currently selling in</div>
+      <div style="margin-bottom:12px"><input class="form-input" name="Export Countries" placeholder="Please enter in English (e.g., Japan, Taiwan, USA)"></div>
 
-      <div class="form-field-label">미국 내 물류(창고) 운영 여부 *</div>
-      <div class="form-radio-inline">
+      <div class="form-field-label">미국 내 창고/물류 보유 여부 / US warehouse or logistics? *</div>
+      <div class="form-radio-inline" data-radio-req="2" data-radio-name="us-warehouse">
         <label class="form-radio-pill"><input type="radio" name="us-warehouse" value="yes"><span>Yes</span></label>
         <label class="form-radio-pill"><input type="radio" name="us-warehouse" value="no"><span>No</span></label>
-        <label class="form-radio-pill"><input type="radio" name="us-warehouse" value="planned"><span>준비 중</span></label>
+        <label class="form-radio-pill"><input type="radio" name="us-warehouse" value="planned"><span>In Progress</span></label>
       </div>
 
-      <div class="form-field-label">패키징 변경 가능 여부 * <span style="font-weight:400;color:var(--text-muted)">(디자인, 사이즈, 언어 등)</span></div>
-      <div class="form-radio-inline">
+      <div class="form-field-label">패키징 변경 가능 여부 / Can you modify packaging? * <span style="font-weight:400;color:var(--text-muted)">(디자인, 사이즈, 언어 등)</span></div>
+      <div class="form-radio-inline" data-radio-req="2" data-radio-name="packaging">
         <label class="form-radio-pill"><input type="radio" name="packaging" value="yes"><span>Yes</span></label>
         <label class="form-radio-pill"><input type="radio" name="packaging" value="no"><span>No</span></label>
-        <label class="form-radio-pill"><input type="radio" name="packaging" value="partial"><span>부분 가능</span></label>
+        <label class="form-radio-pill"><input type="radio" name="packaging" value="partial"><span>Partially</span></label>
       </div>
 
-      <div class="form-nav"><button class="btn-outline" onclick="goFormStep(1)">← 이전</button><button class="btn-primary" onclick="goFormStep(3)">다음: 제조 & 생산 →</button></div>
+      <div class="form-nav"><button class="btn-outline" onclick="goFormStep(1)">← Previous</button><button class="btn-primary" onclick="validateAndGo(2, 3)">Next: Manufacturing →</button></div>
     </div>
 
     <!-- ── STEP 3: 제조 & 생산 ── -->
     <div class="form-panel" id="step-3" style="display:none">
-      <h3 class="form-sec-title">제조 & 생산 역량</h3>
-      <p class="form-sec-desc">생산 방식과 생산 역량에 대해 알려주세요.</p>
+      <h3 class="form-sec-title">Manufacturing & Production</h3>
+      <p class="form-sec-desc">Tell us about your manufacturing capabilities.</p>
 
-      <div class="form-field-label">제조 방식 *</div>
-      <div class="form-radio-inline">
-        <label class="form-radio-pill"><input type="radio" name="mfg-type" value="own"><span>자사 공장 보유</span></label>
-        <label class="form-radio-pill"><input type="radio" name="mfg-type" value="outsource"><span>외주 생산 (OEM)</span></label>
-        <label class="form-radio-pill"><input type="radio" name="mfg-type" value="both"><span>자사 + 외주 병행</span></label>
+      <div class="form-field-label">제조 유형 / Manufacturing Type *</div>
+      <div class="form-radio-inline" data-radio-req="3" data-radio-name="mfg-type">
+        <label class="form-radio-pill"><input type="radio" name="mfg-type" value="own"><span>Own Factory</span></label>
+        <label class="form-radio-pill"><input type="radio" name="mfg-type" value="outsource"><span>Outsourced (OEM)</span></label>
+        <label class="form-radio-pill"><input type="radio" name="mfg-type" value="both"><span>Both</span></label>
       </div>
 
-      <div class="form-field-label">시간/일당 생산 가능 수량 *</div>
-      <div style="margin-bottom:12px"><input class="form-input" placeholder="예: 10,000 packs per day"></div>
+      <div class="form-field-label">생산 능력 / Production Capacity *</div>
+      <div style="margin-bottom:12px"><input class="form-input" name="Production Capacity" placeholder="Please enter in English (e.g., 10,000 packs per day)" data-req="3"></div>
 
-      <div class="form-field-label">제조 리드타임 — 발주부터 출하 준비까지 평균 소요 기간 *</div>
-      <div style="margin-bottom:12px"><input class="form-input" placeholder="예: 2개월, 6주"></div>
+      <div class="form-field-label">제조 리드타임 / Lead Time (주문~출하 준비) *</div>
+      <div style="margin-bottom:12px"><input class="form-input" name="Lead Time" placeholder="Please enter in English (e.g., 2 months, 6 weeks)" data-req="3"></div>
 
-      <div class="form-nav"><button class="btn-outline" onclick="goFormStep(2)">← 이전</button><button class="btn-primary" onclick="goFormStep(4)">다음: 매출 & 마케팅 →</button></div>
+      <div class="form-nav"><button class="btn-outline" onclick="goFormStep(2)">← Previous</button><button class="btn-primary" onclick="validateAndGo(3, 4)">Next: Revenue & Marketing →</button></div>
     </div>
 
     <!-- ── STEP 4: 매출 & 마케팅 ── -->
     <div class="form-panel" id="step-4" style="display:none">
-      <h3 class="form-sec-title">매출 실적 & 마케팅</h3>
-      <p class="form-sec-desc">최근 12개월 매출 실적과 마케팅 준비 상황을 알려주세요.</p>
+      <h3 class="form-sec-title">Revenue & Marketing</h3>
+      <p class="form-sec-desc">Share your recent revenue performance and marketing readiness.</p>
 
-      <div class="form-field-label">최근 12개월 총 매출액 (USD 기준) *</div>
-      <div style="margin-bottom:4px"><input class="form-input" placeholder="예: 6,200,000"></div>
-      <div style="font-size:12px;color:var(--text-muted);margin-bottom:12px">환율 기준: 1,300 KRW = 1 USD. 매출이 없는 경우 "N/A" 입력</div>
+      <div class="form-field-label">최근 12개월 총 매출 / Total Revenue in Last 12 Months (USD) *</div>
+      <div style="margin-bottom:4px"><input class="form-input number-format" name="Annual Revenue USD" placeholder="e.g., 6,200,000" data-req="4"></div>
+      <div style="font-size:12px;color:var(--text-muted);margin-bottom:12px">환율 기준: 1,300 KRW = 1 USD / Enter "N/A" if not applicable.</div>
 
-      <div class="form-field-label">최근 12개월 총 판매 수량 (units)</div>
-      <div style="margin-bottom:12px"><input class="form-input" placeholder="예: 500,000 units"></div>
+      <div class="form-field-label">최근 12개월 총 판매 수량 / Total Units Sold in Last 12 Months</div>
+      <div style="margin-bottom:12px"><input class="form-input number-format" name="Annual Units Sold" placeholder="e.g., 500,000"></div>
 
-      <div class="form-field-label">영어 구사 가능한 팀원 유무 *</div>
-      <div class="form-radio-inline">
+      <div class="form-field-label">영어 가능한 팀원 보유 여부 / English-speaking team members? *</div>
+      <div class="form-radio-inline" data-radio-req="4" data-radio-name="eng-team">
         <label class="form-radio-pill"><input type="radio" name="eng-team" value="yes"><span>Yes</span></label>
         <label class="form-radio-pill"><input type="radio" name="eng-team" value="no"><span>No</span></label>
       </div>
 
-      <div class="form-field-label">미국 시장 마케팅 예산 보유 여부 *</div>
-      <div class="form-radio-inline">
+      <div class="form-field-label">미국 마케팅 예산 보유 여부 / US marketing budget? *</div>
+      <div class="form-radio-inline" data-radio-req="4" data-radio-name="mkt-budget">
         <label class="form-radio-pill"><input type="radio" name="mkt-budget" value="yes"><span>Yes</span></label>
         <label class="form-radio-pill"><input type="radio" name="mkt-budget" value="no"><span>No</span></label>
-        <label class="form-radio-pill"><input type="radio" name="mkt-budget" value="considering"><span>검토 중</span></label>
+        <label class="form-radio-pill"><input type="radio" name="mkt-budget" value="considering"><span>Considering</span></label>
       </div>
 
-      <div class="form-nav"><button class="btn-outline" onclick="goFormStep(3)">← 이전</button><button class="btn-primary" onclick="goFormStep(5)">다음: 자료 & 담당자 →</button></div>
+      <div class="form-nav"><button class="btn-outline" onclick="goFormStep(3)">← Previous</button><button class="btn-primary" onclick="validateAndGo(4, 5)">Next: Documents & Contact →</button></div>
     </div>
 
     <!-- ── STEP 5: 자료 제출 & 담당자 ── -->
     <div class="form-panel" id="step-5" style="display:none">
-      <h3 class="form-sec-title">자료 제출 & 담당자 정보</h3>
-      <p class="form-sec-desc">브랜드 소개 자료와 의사결정권자(영어 가능) 정보를 입력해주세요.</p>
+      <h3 class="form-sec-title">Documents & Contact Information</h3>
+      <p class="form-sec-desc">Upload your brand materials and provide key contact details (English-speaking decision maker).</p>
 
-      <div class="form-field-label">브랜드 소개 자료 (PPT 또는 PDF) *</div>
-      <div style="margin-bottom:4px"><input class="form-input" placeholder="Google Drive, Dropbox 등 공유 링크"></div>
-      <div style="font-size:12px;color:var(--text-muted);margin-bottom:12px">파일 업로드 대신 링크를 넣어주세요. 접근 권한을 열어두세요.</div>
+      <div class="form-field-label">브랜드 소개서 / Brand Deck (PPT or PDF) *</div>
+      <div class="file-upload-zone" id="file-zone-deck" onclick="document.getElementById('file-deck').click()" ondragover="event.preventDefault();this.classList.add('dragover')" ondragleave="this.classList.remove('dragover')" ondrop="event.preventDefault();this.classList.remove('dragover');handleFileDrop(event,'deck')">
+        <input type="file" id="file-deck" accept=".pdf,.ppt,.pptx" style="display:none" onchange="handleFileSelect(this,'deck')">
+        <div class="fuz-icon">📎</div>
+        <div class="fuz-text">Drag & drop your file here, or <span style="color:var(--accent);font-weight:600">click to browse</span></div>
+        <div class="fuz-hint">PDF, PPT, PPTX — Max 20MB</div>
+      </div>
+      <div class="file-preview" id="file-preview-deck" style="display:none"></div>
 
-      <div class="form-field-label">추가 회사 자료 (선택)</div>
-      <div style="margin-bottom:24px"><input class="form-input" placeholder="인증서, 제품 카탈로그 등 공유 링크"></div>
+      <div class="form-field-label" style="margin-top:20px">추가 서류 / Additional Documents (optional)</div>
+      <div class="file-upload-zone" id="file-zone-extra" onclick="document.getElementById('file-extra').click()" ondragover="event.preventDefault();this.classList.add('dragover')" ondragleave="this.classList.remove('dragover')" ondrop="event.preventDefault();this.classList.remove('dragover');handleFileDrop(event,'extra')">
+        <input type="file" id="file-extra" accept=".pdf,.ppt,.pptx,.jpg,.png,.xlsx" multiple style="display:none" onchange="handleFileSelect(this,'extra')">
+        <div class="fuz-icon">📂</div>
+        <div class="fuz-text">Certifications, product catalogs, etc.</div>
+        <div class="fuz-hint">Multiple files allowed — Max 20MB each</div>
+      </div>
+      <div class="file-preview" id="file-preview-extra" style="display:none"></div>
 
       <div style="height:1px;background:var(--border);margin:32px 0"></div>
 
-      <div class="form-field-label" style="margin-top:0">담당자 정보 (의사결정권자 & 영어 가능자) *</div>
-      <div class="form-row"><input class="form-input" placeholder="이름 (First Name) *"><input class="form-input" placeholder="성 (Last Name) *"></div>
-      <div style="margin-bottom:12px"><input class="form-input" placeholder="직책 / 역할 *"></div>
-      <div class="form-row"><input class="form-input" placeholder="이메일 *"><input class="form-input" placeholder="연락처 (전화번호) *"></div>
+      <div class="form-field-label" style="margin-top:0">주요 담당자 / Key Contact (의사결정권자, 영어 가능) *</div>
+      <div class="form-row"><input class="form-input" name="First Name" placeholder="First Name *" data-req="5"><input class="form-input" name="Last Name" placeholder="Last Name *" data-req="5"></div>
+      <div style="margin-bottom:12px"><input class="form-input" name="Title" placeholder="Title / Role *" data-req="5"></div>
+      <div class="form-row" style="gap:8px">
+        <input class="form-input" name="Email" placeholder="Email Address *" data-req="5" type="email" style="flex:1">
+      </div>
+      <div class="form-field-label">전화번호 / Phone Number *</div>
+      <div class="form-row" style="gap:8px">
+        <select class="form-input" name="Phone Country Code" id="phone-country" style="appearance:auto;flex:0 0 160px;font-size:14px">
+          <option value="+82">🇰🇷 +82</option>
+          <option value="+1">🇺🇸 +1</option>
+          <option value="+81">🇯🇵 +81</option>
+          <option value="+86">🇨🇳 +86</option>
+          <option value="+44">🇬🇧 +44</option>
+          <option value="+49">🇩🇪 +49</option>
+          <option value="+33">🇫🇷 +33</option>
+          <option value="+61">🇦🇺 +61</option>
+          <option value="+65">🇸🇬 +65</option>
+          <option value="+852">🇭🇰 +852</option>
+          <option value="+84">🇻🇳 +84</option>
+          <option value="+66">🇹🇭 +66</option>
+          <option value="+91">🇮🇳 +91</option>
+        </select>
+        <input class="form-input" name="Phone" id="phone-input" placeholder="10-1234-5678" data-req="5" style="flex:1">
+      </div>
 
       <div style="height:1px;background:var(--border);margin:32px 0"></div>
 
       <div style="padding:16px;border:1px solid var(--border);border-radius:var(--radius);margin-bottom:24px;background:var(--bg-alt)">
         <label style="display:flex;align-items:start;gap:10px;cursor:pointer;font-size:14px;color:var(--text-muted)">
-          <input type="checkbox" style="margin-top:3px">
-          프로그램 참여 약관에 동의합니다. 상세 비용 및 계약 조건은 신청 승인 후 전용 포털에서 확인하실 수 있습니다.
+          <input type="checkbox" id="agree-check" style="margin-top:3px">
+          I agree to the program terms and conditions. Detailed costs and contract terms will be available on the dedicated portal after approval.
         </label>
       </div>
 
-      <button class="btn-primary" style="width:100%;justify-content:center;font-size:16px;padding:18px 32px" onclick="submitApply()">신청서 제출하기 →</button>
-      <p style="font-size:13px;color:var(--text-muted);text-align:center;margin-top:16px">접수 후 2영업일 이내 담당자가 연락드립니다.</p>
+      <button class="btn-primary" style="width:100%;justify-content:center;font-size:16px;padding:18px 32px" onclick="submitApply()">Submit Application →</button>
+      <p style="font-size:13px;color:var(--text-muted);text-align:center;margin-top:16px">Our team will contact you within 2 business days.</p>
 
-      <div class="form-nav" style="border-top:none;padding-top:0;margin-top:24px"><button class="btn-outline" onclick="goFormStep(4)">← 이전</button><div></div></div>
+      <div class="form-nav" style="border-top:none;padding-top:0;margin-top:24px"><button class="btn-outline" onclick="goFormStep(4)">← Previous</button><div></div></div>
     </div>
 
   </div></section>
@@ -1193,23 +1293,36 @@ button{cursor:pointer;font-family:var(--font)}
     <div class="login-left">
       <div style="max-width:400px">
         <div class="lb">/Login</div>
-        <h2 class="st" style="font-size:32px;margin-bottom:8px">로그인</h2>
-        <p style="font-size:16px;color:var(--text-muted);margin-bottom:36px;line-height:1.5">Walmart Entry Program 관리 시스템에 접속합니다.</p>
+        <h2 class="st" style="font-size:32px;margin-bottom:8px"><span class="ko">로그인</span><span class="en">Login</span></h2>
+        <p style="font-size:16px;color:var(--text-muted);margin-bottom:36px;line-height:1.5"><span class="ko">Walmart Entry Program 관리 시스템에 접속합니다.</span><span class="en">Access the Walmart Entry Program management system.</span></p>
         <div class="login-tabs">
-          <button class="login-tab active">브랜드 기업</button>
-          <button class="login-tab">3SVS 관리자</button>
-          <button class="login-tab">Walmart</button>
+          <button class="login-tab active" data-role="brand"><span class="ko">브랜드 기업</span><span class="en">Brand</span></button>
+          <button class="login-tab" data-role="admin"><span class="ko">3SVS 관리자</span><span class="en">Admin</span></button>
+          <button class="login-tab" data-role="walmart">Walmart</button>
         </div>
         <div style="margin-bottom:12px"><input class="form-input" placeholder="이메일"></div>
         <div style="margin-bottom:24px"><input class="form-input" type="password" placeholder="비밀번호" onkeydown="if(event.key==='Enter')handleLogin()"></div>
-        <button class="btn-primary" style="width:100%;justify-content:center;margin-bottom:16px;padding:16px 32px" onclick="handleLogin()">로그인</button>
-        <div style="text-align:center;font-size:13px;color:var(--text-muted)">비밀번호를 잊으셨나요?</div>
+        <button class="btn-primary" style="width:100%;justify-content:center;margin-bottom:16px;padding:16px 32px" onclick="handleLogin()"><span class="ko">로그인</span><span class="en">Login</span></button>
+        <div style="text-align:center;font-size:13px;color:var(--text-muted);margin-bottom:12px"><span class="ko">비밀번호를 잊으셨나요?</span><span class="en">Forgot your password?</span></div>
+        <div style="text-align:center;font-size:13px;color:var(--accent);background:var(--accent-light);padding:12px 16px;border-radius:var(--radius);line-height:1.5"><span class="ko">계정은 프로그램 신청 승인 후 이메일로 발급됩니다.<br>아직 계정이 없으시면 먼저 <span style="font-weight:600;cursor:pointer;text-decoration:underline" onclick="switchTab('apply')">프로그램 신청</span>을 진행해주세요.</span><span class="en">Accounts are issued via email after application approval.<br>If you don't have an account, please <span style="font-weight:600;cursor:pointer;text-decoration:underline" onclick="switchTab('apply')">apply for the program</span> first.</span></div>
         <div style="margin-top:32px;padding:20px;background:var(--bg-alt);border-radius:var(--radius);border:1px solid var(--border)">
-          <div style="font-family:var(--mono);font-size:11px;color:var(--text-muted);margin-bottom:12px;text-transform:uppercase;letter-spacing:1px">접속 안내</div>
+          <div style="font-family:var(--mono);font-size:11px;color:var(--text-muted);margin-bottom:12px;text-transform:uppercase;letter-spacing:1px"><span class="ko">접속 안내</span><span class="en">Access Guide</span></div>
           <div style="font-size:13px;color:var(--text-muted);line-height:1.8">
-            <strong style="color:var(--text)">브랜드 기업</strong> — 승인 완료 후 안내받은 이메일/비밀번호로 로그인<br>
+            <span class="ko"><strong style="color:var(--text)">브랜드 기업</strong> — 승인 완료 후 안내받은 이메일/비밀번호로 로그인<br>
             <strong style="color:var(--text)">3SVS 관리자</strong> — 관리자 탭 선택 후 비밀번호 입력<br>
-            <strong style="color:var(--text)">Walmart</strong> — Buyer 전용 파이프라인 뷰 접속
+            <strong style="color:var(--text)">Walmart</strong> — Buyer 전용 파이프라인 뷰 접속</span><span class="en"><strong style="color:var(--text)">Brand</strong> — Log in with the email/password provided after approval<br>
+            <strong style="color:var(--text)">3SVS Admin</strong> — Select the Admin tab and enter password<br>
+            <strong style="color:var(--text)">Walmart</strong> — Access the Buyer-exclusive pipeline view</span>
+          </div>
+        </div>
+        <div style="margin-top:12px;padding:16px 20px;background:rgba(0,113,220,0.04);border-radius:var(--radius);border:1px dashed rgba(0,113,220,0.15)">
+          <div style="font-family:var(--mono);font-size:10px;color:var(--accent);margin-bottom:8px;text-transform:uppercase;letter-spacing:1px">Demo</div>
+          <div style="font-size:12px;color:var(--text-muted);line-height:1.7">
+            <span class="ko"><strong style="color:var(--text)">A Type 포탈</strong> — 아무 이메일로 로그인 (예: test@test.com)<br>
+            <strong style="color:var(--text)">B Type 포탈</strong> — 이메일에 "voucher" 포함 (예: voucher@test.com)<br>
+            <strong style="color:var(--text)">미승인 포탈</strong> — 이메일에 "locked" 포함 (예: locked@test.com)</span><span class="en"><strong style="color:var(--text)">A Type portal</strong> — Login with any email (e.g., test@test.com)<br>
+            <strong style="color:var(--text)">B Type portal</strong> — Include "voucher" in email (e.g., voucher@test.com)<br>
+            <strong style="color:var(--text)">Pending portal</strong> — Include "locked" in email (e.g., locked@test.com)</span>
           </div>
         </div>
       </div>
@@ -1218,9 +1331,9 @@ button{cursor:pointer;font-family:var(--font)}
       <div style="max-width:360px">
         <h3 style="font-size:32px;font-weight:900;letter-spacing:-1.5px;line-height:1.0;margin-bottom:24px;color:#fff">3-Phase<br>Walmart <span style="color:var(--accent)">Entry</span><br>Program</h3>
         <div style="display:flex;flex-direction:column;gap:12px">
-          <div style="padding:16px;border:1px solid var(--border-dark);border-radius:8px"><div style="font-size:14px;font-weight:600;color:rgba(255,255,255,0.6)">Phase 1 — Online Launch</div><div style="font-size:13px;color:rgba(255,255,255,0.25);margin-top:4px">Walmart.com 등록 및 판매 개시</div></div>
-          <div style="padding:16px;border:1px solid var(--border-dark);border-radius:8px"><div style="font-size:14px;font-weight:600;color:rgba(255,255,255,0.6)">Phase 2 — Performance</div><div style="font-size:13px;color:rgba(255,255,255,0.25);margin-top:4px">판매 데이터 분석 및 Buyer 리뷰</div></div>
-          <div style="padding:16px;border:1px solid var(--border-dark);border-radius:8px"><div style="font-size:14px;font-weight:600;color:rgba(255,255,255,0.6)">Phase 3 — Store Entry</div><div style="font-size:13px;color:rgba(255,255,255,0.25);margin-top:4px">오프라인 매장 입점 및 대량 발주</div></div>
+          <div style="padding:16px;border:1px solid var(--border-dark);border-radius:8px"><div style="font-size:14px;font-weight:600;color:rgba(255,255,255,0.6)">Phase 1 — Online Launch</div><div style="font-size:13px;color:rgba(255,255,255,0.25);margin-top:4px"><span class="ko">Walmart.com 등록 및 판매 개시</span><span class="en">Walmart.com registration and sales launch</span></div></div>
+          <div style="padding:16px;border:1px solid var(--border-dark);border-radius:8px"><div style="font-size:14px;font-weight:600;color:rgba(255,255,255,0.6)">Phase 2 — Performance</div><div style="font-size:13px;color:rgba(255,255,255,0.25);margin-top:4px"><span class="ko">판매 데이터 분석 및 Buyer 리뷰</span><span class="en">Sales data analysis and Buyer review</span></div></div>
+          <div style="padding:16px;border:1px solid var(--border-dark);border-radius:8px"><div style="font-size:14px;font-weight:600;color:rgba(255,255,255,0.6)">Phase 3 — Store Entry</div><div style="font-size:13px;color:rgba(255,255,255,0.25);margin-top:4px"><span class="ko">오프라인 매장 입점 및 대량 발주</span><span class="en">Offline store entry and bulk orders</span></div></div>
         </div>
       </div>
     </div>
@@ -1736,12 +1849,12 @@ button{cursor:pointer;font-family:var(--font)}
 </div>
 
 <!-- ═══════════════════════════════════════ -->
-<!-- PORTAL (승인된 기업 — 울타리코리아, A Type) -->
+<!-- PORTAL (승인된 기업) -->
 <!-- ═══════════════════════════════════════ -->
-<div id="view-portal" class="view">
+<div id="view-portal" class="view" data-brand-type="direct">
   <div class="dash-layout">
     <div class="sidebar">
-      <div class="sidebar-logo"><div class="sidebar-logo-icon">W</div><div class="sidebar-logo-text">울타리코리아 <span>Brand Portal</span></div></div>
+      <div class="sidebar-logo"><div class="sidebar-logo-icon" id="portal-brand-icon">W</div><div class="sidebar-logo-text"><span id="portal-brand-name">울타리코리아</span> <span>Brand Portal</span></div></div>
       <div class="sidebar-nav">
         <div class="sidebar-item active"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>대시보드</div>
         <div class="sidebar-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>Phase 현황</div>
@@ -1752,13 +1865,13 @@ button{cursor:pointer;font-family:var(--font)}
       <div class="sidebar-bottom"><div style="cursor:pointer;color:rgba(255,255,255,0.3);margin-bottom:8px" onclick="switchTab('landing')">← 로그아웃</div>Walmart Entry Program<br>by 3Stripe Venture Studio</div>
     </div>
     <div class="dash-main">
-      <div class="dash-topbar"><div class="dash-title"><h2>울타리코리아 대시보드</h2><p>A Type (직접 참여) · Walmart 입점 프로그램 진행 현황</p></div><div class="dash-actions"><div class="noti-dot"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.4)" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg></div><div class="dash-avatar">PJ</div></div></div>
+      <div class="dash-topbar"><div class="dash-title"><h2 id="portal-topbar-title">울타리코리아 대시보드</h2><p id="portal-topbar-sub">A Type (직접 참여) · Walmart 입점 프로그램 진행 현황</p></div><div class="dash-actions"><div class="noti-dot"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.4)" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg></div><div class="dash-avatar" id="portal-avatar">PJ</div></div></div>
       <div class="dash-content">
         <!-- Phase Progress -->
         <div class="portal-phase"><div class="portal-phase-title">진행 현황 <span class="portal-phase-badge">Phase 2 진행중</span></div><div class="timeline" style="padding:12px 0"><div class="tl-node"><div class="tl-dot done"></div><div class="tl-label done">Phase 1 ✓</div></div><div class="tl-line done" style="min-width:80px"></div><div class="tl-node"><div class="tl-dot active"></div><div class="tl-label active">Phase 2 진행중</div></div><div class="tl-line" style="min-width:80px"></div><div class="tl-node"><div class="tl-dot"></div><div class="tl-label">Phase 3</div></div></div></div>
 
         <!-- Cost Structure (A Type — 승인 후에만 보이는 정보) -->
-        <div class="portal-info-section">
+        <div class="portal-info-section" id="portal-cost-a">
           <div class="portal-info-title">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
             비용 구조 <span style="font-family:var(--mono);font-size:10px;padding:3px 8px;border-radius:999px;background:rgba(0,113,220,0.15);color:var(--accent);font-weight:400;margin-left:4px">A Type</span>
@@ -1782,6 +1895,32 @@ button{cursor:pointer;font-family:var(--font)}
           </div>
         </div>
 
+        <!-- Cost Structure (B Type — 바우처 기업용, 기본 숨김) -->
+        <div class="portal-info-section" id="portal-cost-b" style="display:none">
+          <div class="portal-info-title">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
+            비용 구조 <span style="font-family:var(--mono);font-size:10px;padding:3px 8px;border-radius:999px;background:rgba(0,135,90,0.15);color:var(--lime);font-weight:400;margin-left:4px">B Type · 수출바우처</span>
+          </div>
+          <div class="portal-cost-grid">
+            <div class="portal-cost-card">
+              <div class="pc-label">착수금</div>
+              <div class="pc-value" style="text-decoration:line-through;opacity:0.3">₩10,000,000</div>
+              <div class="pc-value" style="color:var(--lime);margin-top:4px"><em>면제</em></div>
+              <div class="pc-desc">수출바우처 연계 기업 착수금 면제</div>
+            </div>
+            <div class="portal-cost-card">
+              <div class="pc-label">Phase별 운영비</div>
+              <div class="pc-value"><em>₩10,000,000</em> / Phase</div>
+              <div class="pc-desc">각 Phase 시작 시 선불 납부<br>Phase 1·2·3 동일 금액<br>수출바우처 예산으로 집행 가능</div>
+            </div>
+            <div class="portal-cost-card">
+              <div class="pc-label">커미션 (성과 연동)</div>
+              <div class="pc-value"><em>10%</em> → <em>8%</em></div>
+              <div class="pc-desc">첫 P.O. 10%, 이후 발주 8%<br>Vendor of Record 기준</div>
+            </div>
+          </div>
+        </div>
+
         <!-- Phase Detail (승인 후에만 보이는 상세 정보) -->
         <div class="portal-info-section">
           <div class="portal-info-title">
@@ -1792,6 +1931,118 @@ button{cursor:pointer;font-family:var(--font)}
             <div class="portal-phase-item"><div class="portal-phase-num">01</div><div class="portal-phase-body"><h4>Phase 1 — Online Launch</h4><p>Walmart.com 마켓플레이스에 제품을 등록하고 온라인 판매를 시작합니다. 30일간 실제 판매 데이터를 수집하여 시장 반응을 검증합니다.</p><div class="phase-tags"><span>Marketplace Application</span><span>Item 360</span><span>Listings & SEO</span><span>Sponsored Products</span><span>OTIF & SQEP</span><span>Product Compliance</span></div></div></div>
             <div class="portal-phase-item"><div class="portal-phase-num">02</div><div class="portal-phase-body"><h4>Phase 2 — Performance Review</h4><p>판매 데이터를 분석하고 브랜드 포지셔닝 자료를 작성합니다. Walmart Buyer에게 리뷰 자료를 제출하고 미팅을 주선합니다.</p><div class="phase-tags"><span>Consumer Insights</span><span>Advanced Ads</span><span>Dynamic Pricing</span><span>Demand Forecast</span><span>Buyer Portal</span></div></div></div>
             <div class="portal-phase-item"><div class="portal-phase-num">03</div><div class="portal-phase-body"><h4>Phase 3 — Store Entry</h4><p>Walmart 오프라인 매장 입점 여부가 최종 결정됩니다. 500~1,000개 테스트 매장에서 시작하여 전국 배치를 목표로 합니다.</p><div class="phase-tags"><span>Line Review</span><span>Ship-Point Stress Test</span><span>PO Forecast</span><span>Store Allocation</span><span>Post-Launch Review</span></div></div></div>
+          </div>
+        </div>
+
+        <!-- SKU Management -->
+        <div class="portal-info-section">
+          <div class="portal-info-title">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>
+            등록 SKU 관리
+            <span style="font-family:var(--mono);font-size:10px;padding:3px 8px;border-radius:999px;background:rgba(0,135,90,0.15);color:var(--lime);font-weight:400;margin-left:4px">3 / 4 SKU</span>
+          </div>
+          <div class="sku-grid">
+            <div class="sku-card">
+              <div class="sku-status live">LIVE</div>
+              <div class="sku-img" style="background:linear-gradient(135deg,rgba(0,113,220,0.1),rgba(0,113,220,0.05))">
+                <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.15)" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
+              </div>
+              <div class="sku-name">Korean Seaweed Snack — Original</div>
+              <div class="sku-meta">
+                <span>UPC 8801234567890</span><span>$4.99</span><br>
+                Crispy roasted seaweed, 6-pack · Net Wt. 0.35oz × 6
+              </div>
+            </div>
+            <div class="sku-card">
+              <div class="sku-status live">LIVE</div>
+              <div class="sku-img" style="background:linear-gradient(135deg,rgba(0,135,90,0.1),rgba(0,135,90,0.05))">
+                <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.15)" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
+              </div>
+              <div class="sku-name">Korean Seaweed Snack — Wasabi</div>
+              <div class="sku-meta">
+                <span>UPC 8801234567891</span><span>$4.99</span><br>
+                Wasabi flavored roasted seaweed, 6-pack · Net Wt. 0.35oz × 6
+              </div>
+            </div>
+            <div class="sku-card">
+              <div class="sku-status pending">REVIEW</div>
+              <div class="sku-img" style="background:linear-gradient(135deg,rgba(255,149,0,0.1),rgba(255,149,0,0.05))">
+                <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.15)" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
+              </div>
+              <div class="sku-name">Korean Seaweed Snack — BBQ</div>
+              <div class="sku-meta">
+                <span>UPC 8801234567892</span><span>$5.49</span><br>
+                BBQ flavored roasted seaweed, 6-pack · Net Wt. 0.35oz × 6
+              </div>
+            </div>
+            <div class="sku-add">
+              <div class="sku-add-icon">+</div>
+              <div class="sku-add-text">Add SKU (1 remaining)</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Phase Checklist (진행상황 트래커) -->
+        <div class="portal-info-section">
+          <div class="portal-info-title">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+            진행상황 체크리스트
+          </div>
+          <div class="phase-checklist">
+            <!-- Phase 1 — 완료 -->
+            <div class="phase-cl-group">
+              <div class="phase-cl-group-title">Phase 1 — Online Launch <span class="cl-phase-badge done">완료</span></div>
+              <div class="cl-item done"><div class="cl-check">✓</div><div class="cl-body"><div class="cl-title">Walmart Marketplace 계정 신청</div><div class="cl-desc">Marketplace Application 제출 완료</div></div><div class="cl-status done">Apr 2</div></div>
+              <div class="cl-item done"><div class="cl-check">✓</div><div class="cl-body"><div class="cl-title">Item 360 제품 등록</div><div class="cl-desc">3~4개 핵심 SKU 등록, 이미지 & 스펙 업로드</div></div><div class="cl-status done">Apr 5</div></div>
+              <div class="cl-item done"><div class="cl-check">✓</div><div class="cl-body"><div class="cl-title">리스팅 최적화 & SEO</div><div class="cl-desc">타이틀, 키워드, 카테고리 최적화</div></div><div class="cl-status done">Apr 7</div></div>
+              <div class="cl-item done"><div class="cl-check">✓</div><div class="cl-body"><div class="cl-title">Sponsored Products 광고 세팅</div><div class="cl-desc">초기 광고 캠페인 3개 런칭</div></div><div class="cl-status done">Apr 8</div></div>
+              <div class="cl-item done"><div class="cl-check">✓</div><div class="cl-body"><div class="cl-title">OTIF & SQEP 컴플라이언스</div><div class="cl-desc">배송/품질 기준 충족 확인</div></div><div class="cl-status done">Apr 10</div></div>
+              <div class="cl-item done"><div class="cl-check">✓</div><div class="cl-body"><div class="cl-title">Phase 1 리뷰 & Phase 2 전환</div><div class="cl-desc">30일 판매 데이터 분석 완료</div></div><div class="cl-status done">Apr 12</div></div>
+            </div>
+            <!-- Phase 2 — 진행중 -->
+            <div class="phase-cl-group">
+              <div class="phase-cl-group-title">Phase 2 — Performance Review <span class="cl-phase-badge active">진행중</span></div>
+              <div class="cl-item done"><div class="cl-check">✓</div><div class="cl-body"><div class="cl-title">Consumer Insights 분석</div><div class="cl-desc">리뷰, 검색 트렌드, 경쟁사 비교</div></div><div class="cl-status done">Apr 15</div></div>
+              <div class="cl-item active"><div class="cl-check">●</div><div class="cl-body"><div class="cl-title">Buyer 리뷰 자료 작성</div><div class="cl-desc">브랜드 포지셔닝, 판매 실적 보고서</div></div><div class="cl-status active">진행중</div></div>
+              <div class="cl-item pending"><div class="cl-check"></div><div class="cl-body"><div class="cl-title">Advanced Ads 캠페인 확장</div><div class="cl-desc">Sponsored Brands, Display Ads 추가</div></div><div class="cl-status pending">대기</div></div>
+              <div class="cl-item pending"><div class="cl-check"></div><div class="cl-body"><div class="cl-title">Dynamic Pricing 전략 수립</div><div class="cl-desc">가격 최적화 및 프로모션 계획</div></div><div class="cl-status pending">대기</div></div>
+              <div class="cl-item pending"><div class="cl-check"></div><div class="cl-body"><div class="cl-title">Walmart Buyer 미팅</div><div class="cl-desc">리뷰 자료 제출 및 미팅 진행</div></div><div class="cl-status pending">대기</div></div>
+            </div>
+            <!-- Phase 3 — 대기 -->
+            <div class="phase-cl-group">
+              <div class="phase-cl-group-title">Phase 3 — Store Entry <span class="cl-phase-badge pending">대기</span></div>
+              <div class="cl-item pending"><div class="cl-check"></div><div class="cl-body"><div class="cl-title">Line Review 제출</div></div><div class="cl-status pending">대기</div></div>
+              <div class="cl-item pending"><div class="cl-check"></div><div class="cl-body"><div class="cl-title">Ship-Point Stress Test</div></div><div class="cl-status pending">대기</div></div>
+              <div class="cl-item pending"><div class="cl-check"></div><div class="cl-body"><div class="cl-title">PO Forecast & Store Allocation</div></div><div class="cl-status pending">대기</div></div>
+              <div class="cl-item pending"><div class="cl-check"></div><div class="cl-body"><div class="cl-title">오프라인 매장 배치 확정</div></div><div class="cl-status pending">대기</div></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 메시지 / 문의 -->
+        <div class="portal-info-section">
+          <div class="portal-info-title">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+            메시지 / 문의
+            <span style="font-family:var(--mono);font-size:10px;padding:3px 8px;border-radius:999px;background:rgba(0,113,220,0.15);color:var(--accent);font-weight:400;margin-left:4px">3 messages</span>
+          </div>
+          <div class="msg-thread" id="msg-thread">
+            <div class="msg-bubble admin">
+              <div>안녕하세요, 울타리코리아 담당자님! Phase 1이 성공적으로 완료되어 Phase 2로 전환되었습니다. Buyer 리뷰 자료 준비를 시작해주세요.</div>
+              <div class="msg-meta">3SVS 팀 · Apr 13, 10:30 AM</div>
+            </div>
+            <div class="msg-bubble brand">
+              <div>감사합니다. Buyer 리뷰 자료는 어떤 포맷으로 준비하면 되나요? 기존에 사용하던 브랜드 소개서를 활용해도 될까요?</div>
+              <div class="msg-meta">울타리코리아 · Apr 13, 2:15 PM</div>
+            </div>
+            <div class="msg-bubble admin">
+              <div>네, 기존 브랜드 소개서 + 30일 판매 데이터 요약을 포함해주시면 됩니다. 별도 템플릿을 서류 관리 탭에 업로드해드렸으니 참고해주세요. 마감은 4월 25일입니다.</div>
+              <div class="msg-meta">3SVS 팀 · Apr 13, 3:00 PM</div>
+            </div>
+          </div>
+          <div class="msg-input-row">
+            <textarea class="msg-input" id="msg-input" placeholder="메시지를 입력하세요..." rows="1"></textarea>
+            <button class="msg-send-btn" onclick="sendPortalMessage()">전송</button>
           </div>
         </div>
 
@@ -1949,7 +2200,7 @@ function checkAdminPw() {
 // ─── LOGIN SYSTEM ───
 function handleLogin() {
   const activeTab = document.querySelector('.login-tab.active');
-  const role = activeTab ? activeTab.textContent.trim() : '';
+  const role = activeTab ? activeTab.getAttribute('data-role') : 'brand';
   const email = document.querySelector('#view-login .form-input[placeholder="이메일"]').value.trim();
   const pw = document.querySelector('#view-login input[type="password"]').value.trim();
 
@@ -1958,21 +2209,51 @@ function handleLogin() {
     return;
   }
 
-  if (role === '3SVS 관리자') {
+  if (role === 'admin') {
     if (pw === ADMIN_PW) {
       switchTab('admin');
     } else {
       alert('관리자 비밀번호가 올바르지 않습니다.');
     }
-  } else if (role === 'Walmart') {
+  } else if (role === 'walmart') {
     switchTab('walmart');
   } else {
     // 브랜드 기업 — demo: route based on email
-    if (email.includes('금광') || email.includes('geumgwang') || email.includes('locked')) {
+    if (email.includes('locked') || email.includes('pending')) {
       switchTab('portal-locked');
+    } else if (email.includes('바우처') || email.includes('voucher') || email.includes('btype') || email.includes('금광')) {
+      setPortalType('voucher', '금광메주', 'G', '박병관');
+      switchTab('portal');
     } else {
+      setPortalType('direct', '울타리코리아', 'W', 'Paul Jang');
       switchTab('portal');
     }
+  }
+}
+
+// ─── PORTAL TYPE SWITCHING ───
+function setPortalType(type, brandName, iconLetter, ceoName) {
+  const portal = document.getElementById('view-portal');
+  portal.setAttribute('data-brand-type', type);
+
+  // Update brand info
+  document.getElementById('portal-brand-icon').textContent = iconLetter || brandName.charAt(0);
+  document.getElementById('portal-brand-name').textContent = brandName;
+  document.getElementById('portal-avatar').textContent = (ceoName || brandName).substring(0, 2).toUpperCase();
+
+  // Update topbar
+  const topTitle = document.getElementById('portal-topbar-title');
+  const topSub = document.getElementById('portal-topbar-sub');
+  topTitle.textContent = brandName + ' 대시보드';
+
+  if (type === 'voucher') {
+    topSub.textContent = 'B Type (수출바우처) · Walmart 입점 프로그램 진행 현황';
+    document.getElementById('portal-cost-a').style.display = 'none';
+    document.getElementById('portal-cost-b').style.display = '';
+  } else {
+    topSub.textContent = 'A Type (직접 참여) · Walmart 입점 프로그램 진행 현황';
+    document.getElementById('portal-cost-a').style.display = '';
+    document.getElementById('portal-cost-b').style.display = 'none';
   }
 }
 
@@ -1984,14 +2265,201 @@ document.querySelectorAll('.login-tab').forEach(tab => {
   });
 });
 
+// ─── FORM VALIDATION ───
+function validateStep(stepNum) {
+  const panel = document.getElementById('step-' + stepNum);
+  let valid = true;
+  // Clear previous errors
+  panel.querySelectorAll('.error').forEach(el => el.classList.remove('error'));
+
+  // Validate text/select inputs with data-req matching this step
+  const reqInputs = panel.querySelectorAll('[data-req="' + stepNum + '"]');
+  reqInputs.forEach(input => {
+    const val = input.value.trim();
+    if (!val || (input.tagName === 'SELECT' && input.selectedIndex === 0)) {
+      input.classList.add('error');
+      valid = false;
+    }
+  });
+
+  // Validate radio groups with data-radio-req matching this step
+  const radioGroups = panel.querySelectorAll('[data-radio-req="' + stepNum + '"]');
+  radioGroups.forEach(group => {
+    const name = group.getAttribute('data-radio-name');
+    const checked = panel.querySelector('input[name="' + name + '"]:checked');
+    if (!checked) {
+      group.classList.add('error');
+      valid = false;
+    }
+  });
+
+  // Special: voucher fields when voucher is selected (step 0)
+  if (stepNum === 0) {
+    const isVoucher = document.querySelector('input[name="apply-type"][value="voucher"]').checked;
+    if (isVoucher) {
+      panel.querySelectorAll('[data-req="voucher"]').forEach(input => {
+        if (!input.value.trim()) { input.classList.add('error'); valid = false; }
+      });
+    }
+  }
+
+  if (!valid) {
+    const firstError = panel.querySelector('.error');
+    if (firstError) firstError.scrollIntoView({behavior:'smooth', block:'center'});
+  }
+  return valid;
+}
+
+function validateAndGo(currentStep, nextStep) {
+  if (validateStep(currentStep)) {
+    goFormStep(nextStep);
+  }
+}
+
+// ─── FILE UPLOAD ───
+const uploadedFiles = {deck: [], extra: []};
+
+function handleFileSelect(input, type) {
+  const files = Array.from(input.files);
+  files.forEach(f => { if (f.size <= 20*1024*1024) uploadedFiles[type].push(f); });
+  renderFilePreview(type);
+  input.value = '';
+}
+function handleFileDrop(event, type) {
+  const files = Array.from(event.dataTransfer.files);
+  files.forEach(f => { if (f.size <= 20*1024*1024) uploadedFiles[type].push(f); });
+  renderFilePreview(type);
+}
+function renderFilePreview(type) {
+  const preview = document.getElementById('file-preview-' + type);
+  if (uploadedFiles[type].length === 0) { preview.style.display = 'none'; return; }
+  preview.style.display = 'flex';
+  preview.innerHTML = uploadedFiles[type].map((f, i) =>
+    '<div class="file-item"><span>📄 ' + f.name + ' (' + (f.size/1024/1024).toFixed(1) + 'MB)</span><span class="file-remove" onclick="removeFile(\'' + type + '\',' + i + ')">×</span></div>'
+  ).join('');
+  // Update upload zone text
+  const zone = document.getElementById('file-zone-' + type);
+  zone.querySelector('.fuz-text').innerHTML = uploadedFiles[type].length + ' file(s) selected. <span style="color:var(--accent)">Click to add more</span>';
+}
+function removeFile(type, index) {
+  uploadedFiles[type].splice(index, 1);
+  renderFilePreview(type);
+  if (uploadedFiles[type].length === 0) {
+    const zone = document.getElementById('file-zone-' + type);
+    zone.querySelector('.fuz-text').innerHTML = type === 'deck' ? 'Drag & drop your file here, or <span style="color:var(--accent);font-weight:600">click to browse</span>' : 'Certifications, product catalogs, etc.';
+  }
+}
+
+// ─── PORTAL MESSAGE ───
+function sendPortalMessage() {
+  const input = document.getElementById('msg-input');
+  const text = input.value.trim();
+  if (!text) return;
+  const thread = document.getElementById('msg-thread');
+  const now = new Date();
+  const timeStr = now.toLocaleDateString('en-US', {month:'short',day:'numeric'}) + ', ' + now.toLocaleTimeString('en-US', {hour:'numeric',minute:'2-digit'});
+  const bubble = document.createElement('div');
+  bubble.className = 'msg-bubble brand';
+  bubble.innerHTML = '<div>' + text.replace(/</g,'&lt;').replace(/>/g,'&gt;') + '</div><div class="msg-meta">울타리코리아 · ' + timeStr + '</div>';
+  thread.appendChild(bubble);
+  input.value = '';
+  thread.scrollTop = thread.scrollHeight;
+  // Update message count
+  const countEl = thread.closest('.portal-info-section').querySelector('.portal-info-title span');
+  if (countEl) {
+    const count = thread.querySelectorAll('.msg-bubble').length;
+    countEl.textContent = count + ' messages';
+  }
+}
+
 // ─── APPLY FORM SUBMIT ───
 function submitApply() {
-  const checkbox = document.querySelector('#step-5 input[type="checkbox"]');
+  if (!validateStep(5)) return;
+  const checkbox = document.getElementById('agree-check');
   if (!checkbox.checked) {
-    alert('프로그램 참여 약관에 동의해주세요.');
+    alert('Please agree to the program terms and conditions.');
     return;
   }
-  document.getElementById('apply-success-modal').classList.add('show');
+  if (uploadedFiles.deck.length === 0) {
+    alert('Please upload your brand deck (PPT or PDF).');
+    return;
+  }
+
+  // Collect all form data
+  const fd = new FormData();
+
+  // Step 0: Participation type
+  const applyType = document.querySelector('input[name="apply-type"]:checked');
+  fd.append('Participation Type', applyType ? applyType.value : '');
+  if (applyType && applyType.value === 'voucher') {
+    document.querySelectorAll('#voucher-fields .form-input').forEach((inp, i) => {
+      const labels = ['Voucher Program', 'Voucher Balance', 'Service Provider Designation'];
+      fd.append(labels[i] || 'Voucher Field ' + i, inp.value);
+    });
+  }
+
+  // All named inputs/textareas/selects
+  document.querySelectorAll('#view-apply .form-input[name]').forEach(inp => {
+    if (inp.name === 'Phone Country Code') return; // handled separately
+    if (inp.name === 'Phone') {
+      // Combine country code + phone number
+      const cc = document.getElementById('phone-country');
+      const fullPhone = (cc ? cc.value : '+82') + ' ' + inp.value.trim();
+      fd.append('Phone', fullPhone);
+      return;
+    }
+    // For number-format fields, strip commas
+    if (inp.classList.contains('number-format') && inp.value) {
+      fd.append(inp.name, inp.value.replace(/,/g, ''));
+      return;
+    }
+    if (inp.value && inp.value.trim()) fd.append(inp.name, inp.value.trim());
+  });
+
+  // Radio buttons
+  ['export-exp','us-warehouse','packaging','mfg-type','eng-team','mkt-budget'].forEach(name => {
+    const checked = document.querySelector('input[name="' + name + '"]:checked');
+    fd.append(name, checked ? checked.value : 'N/A');
+  });
+
+  // Files
+  uploadedFiles.deck.forEach(f => fd.append('Brand Deck', f));
+  uploadedFiles.extra.forEach(f => fd.append('Additional Docs', f));
+
+  // Disable submit button
+  const submitBtn = document.querySelector('#step-5 .btn-primary[onclick]');
+  const origText = submitBtn.textContent;
+  submitBtn.textContent = 'Submitting...';
+  submitBtn.disabled = true;
+  submitBtn.style.opacity = '0.6';
+
+  // Send to Formspree
+  fetch('https://formspree.io/f/xqewlbry', {
+    method: 'POST',
+    body: fd,
+    headers: { 'Accept': 'application/json' }
+  }).then(res => {
+    if (res.ok) {
+      document.getElementById('apply-success-modal').classList.add('show');
+    } else {
+      alert('Submission failed. Please try again.');
+    }
+  }).catch(() => {
+    alert('Network error. Please check your connection and try again.');
+  }).finally(() => {
+    submitBtn.textContent = origText;
+    submitBtn.disabled = false;
+    submitBtn.style.opacity = '1';
+  });
+}
+
+// ─── LANGUAGE TOGGLE ───
+function setLang(lang) {
+  document.documentElement.lang = lang;
+  document.querySelectorAll('.lang-toggle button').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.lang-toggle button').forEach(b => {
+    if ((lang === 'ko' && b.textContent === 'KR') || (lang === 'en' && b.textContent === 'EN')) b.classList.add('active');
+  });
 }
 
 function switchTab(id) {
@@ -2198,6 +2666,57 @@ function goFormStep(step) {
   });
   // Scroll to form top
   document.querySelector('#view-apply .sec').scrollIntoView({behavior:'smooth', block:'start'});
+}
+
+// Clear error on input
+document.querySelectorAll('.form-input').forEach(input => {
+  input.addEventListener('input', function() { this.classList.remove('error'); });
+});
+document.querySelectorAll('.form-radio-pill input').forEach(radio => {
+  radio.addEventListener('change', function() {
+    const group = this.closest('.form-radio-inline');
+    if (group) group.classList.remove('error');
+  });
+});
+
+/* ── Number auto-comma formatting ── */
+document.querySelectorAll('.number-format').forEach(input => {
+  input.addEventListener('input', function() {
+    let v = this.value.replace(/[^0-9]/g, '');
+    if (v === '') { this.value = ''; return; }
+    this.value = Number(v).toLocaleString('en-US');
+  });
+});
+
+/* ── Phone number formatting ── */
+const phoneInput = document.getElementById('phone-input');
+const phoneCountry = document.getElementById('phone-country');
+if (phoneInput) {
+  phoneInput.addEventListener('input', function() {
+    let v = this.value.replace(/[^0-9]/g, '');
+    const code = phoneCountry ? phoneCountry.value : '+82';
+    if (code === '+82') {
+      // Korean phone: 10-1234-5678 or 2-1234-5678
+      if (v.startsWith('0')) v = v.substring(1); // remove leading 0
+      if (v.length <= 2) { this.value = v; }
+      else if (v.length <= 6) { this.value = v.slice(0, 2) + '-' + v.slice(2); }
+      else { this.value = v.slice(0, 2) + '-' + v.slice(2, 6) + '-' + v.slice(6, 10); }
+    } else if (code === '+1') {
+      // US phone: 123-456-7890
+      if (v.length <= 3) { this.value = v; }
+      else if (v.length <= 6) { this.value = v.slice(0, 3) + '-' + v.slice(3); }
+      else { this.value = v.slice(0, 3) + '-' + v.slice(3, 6) + '-' + v.slice(6, 10); }
+    } else {
+      // Generic: just group digits
+      this.value = v.replace(/(\d{4})(?=\d)/g, '$1-');
+    }
+  });
+  if (phoneCountry) {
+    phoneCountry.addEventListener('change', function() {
+      phoneInput.value = '';
+      phoneInput.placeholder = this.value === '+82' ? '10-1234-5678' : this.value === '+1' ? '123-456-7890' : 'Phone Number';
+    });
+  }
 }
 
 // Apply form: show/hide voucher fields
