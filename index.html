@@ -484,6 +484,70 @@ button{cursor:pointer;font-family:var(--font)}
 .wm-brand-card-clickable{cursor:pointer;transition:all .2s}
 .wm-brand-card-clickable:hover{border-color:rgba(255,255,255,0.2);transform:translateY(-2px);box-shadow:0 4px 16px rgba(0,0,0,0.3)}
 
+/* ─── E-SIGNATURE / CONTRACT ─── */
+.sig-overlay{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.7);z-index:9999;display:flex;align-items:center;justify-content:center}
+.sig-modal{background:#1a1a1a;border:1px solid rgba(255,255,255,.12);border-radius:16px;padding:32px;max-width:600px;width:90%;max-height:90vh;overflow-y:auto}
+.sig-modal h3{margin:0 0 8px;font-size:20px}
+.sig-modal p{margin:0 0 20px;opacity:.6;font-size:14px}
+.sig-pad-wrap{background:#fff;border-radius:8px;margin-bottom:16px;position:relative}
+.sig-pad-wrap canvas{display:block;border-radius:8px;cursor:crosshair;width:100%;height:180px}
+.sig-pad-clear{position:absolute;top:8px;right:8px;background:rgba(0,0,0,.5);color:#fff;border:none;border-radius:6px;padding:4px 12px;font-size:12px;cursor:pointer}
+.sig-upload-zone{border:2px dashed rgba(255,255,255,.15);border-radius:12px;padding:24px;text-align:center;cursor:pointer;transition:all .2s;position:relative;overflow:hidden}
+.sig-upload-zone:hover{border-color:rgba(152,254,0,.4);background:rgba(152,254,0,.03)}
+.sig-upload-zone.has-file{border-color:rgba(152,254,0,.3);border-style:solid;background:rgba(152,254,0,.04)}
+.sig-upload-zone img{max-width:200px;max-height:100px;object-fit:contain;margin-top:8px}
+.sig-upload-zone input[type=file]{position:absolute;top:0;left:0;width:100%;height:100%;opacity:0;cursor:pointer}
+.sig-upload-icon{font-size:28px;margin-bottom:6px}
+.sig-upload-label{font-size:13px;opacity:.6}
+.contract-page{max-width:900px;margin:0 auto;padding:40px 20px;min-height:100vh}
+.contract-page-header{text-align:center;margin-bottom:32px}
+.contract-page-header h1{font-size:24px;margin:0 0 8px}
+.contract-page-header .contract-page-sub{font-size:14px;opacity:.5}
+.contract-page-header .contract-page-id{font-family:var(--mono);font-size:12px;opacity:.3;margin-top:4px}
+.contract-page-doc{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.08);border-radius:16px;padding:32px;margin-bottom:32px;line-height:1.9;font-size:14px}
+.contract-page-doc h3{text-align:center;font-size:20px;margin:0 0 8px;letter-spacing:2px}
+.contract-page-doc .contract-page-doc-sub{text-align:center;font-size:14px;opacity:.5;margin-bottom:24px}
+.contract-page-doc .clause{margin-bottom:16px}
+.contract-page-doc .clause-title{font-weight:600;margin-bottom:4px;color:#98fe00}
+.sig-section{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.08);border-radius:16px;padding:24px;margin-bottom:16px}
+.sig-section-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px}
+.sig-section-header h4{margin:0;font-size:16px}
+.sig-row{display:flex;gap:16px;flex-wrap:wrap}
+.sig-slot{flex:1;min-width:200px}
+.sig-slot-label{font-size:12px;font-weight:600;margin-bottom:8px;opacity:.7}
+.sig-complete-banner{background:rgba(152,254,0,.1);border:1px solid rgba(152,254,0,.3);border-radius:12px;padding:20px;text-align:center;margin-top:24px}
+.sig-complete-banner h3{color:#98fe00;margin:0 0 8px}
+.sig-complete-banner p{margin:0;opacity:.6;font-size:14px}
+.sig-actions{display:flex;gap:12px;justify-content:flex-end}
+.sig-actions button{padding:10px 24px;border-radius:8px;font-weight:600;cursor:pointer;border:none;font-size:14px}
+.sig-btn-cancel{background:rgba(255,255,255,.1);color:#fff}
+.sig-btn-sign{background:#98fe00;color:#000}
+.sig-btn-sign:disabled{opacity:.4;cursor:not-allowed}
+.contract-card{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);border-radius:12px;padding:20px;margin-bottom:12px;transition:all .2s}
+.contract-card:hover{border-color:rgba(255,255,255,.2)}
+.contract-card h4{margin:0 0 4px;font-size:16px}
+.contract-card .contract-sub{font-size:13px;opacity:.5;margin-bottom:12px}
+.contract-signers{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:12px}
+.contract-signer{display:flex;align-items:center;gap:8px;padding:6px 14px;border-radius:8px;font-size:13px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08)}
+.contract-signer.signed{border-color:rgba(152,254,0,.3);background:rgba(152,254,0,.06)}
+.contract-signer .sig-check{width:18px;height:18px;border-radius:50%;border:2px solid rgba(255,255,255,.2);display:flex;align-items:center;justify-content:center;font-size:10px}
+.contract-signer.signed .sig-check{border-color:#98fe00;background:#98fe00;color:#000}
+.contract-badge{display:inline-block;padding:2px 10px;border-radius:20px;font-size:11px;font-weight:600}
+.contract-badge.draft{background:rgba(255,255,255,.1);color:rgba(255,255,255,.5)}
+.contract-badge.pending{background:rgba(143,197,242,.15);color:#8fc5f2}
+.contract-badge.partial{background:rgba(240,173,78,.15);color:#f0ad4e}
+.contract-badge.completed{background:rgba(152,254,0,.15);color:#98fe00}
+.contract-doc{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.08);border-radius:10px;padding:24px;margin:16px 0;font-size:13px;line-height:1.8}
+.contract-doc h4{text-align:center;font-size:18px;margin:0 0 20px;letter-spacing:2px}
+.contract-doc .clause{margin-bottom:12px}
+.contract-doc .clause-title{font-weight:600;margin-bottom:4px}
+.sig-thumb{width:120px;height:60px;border:1px dashed rgba(255,255,255,.2);border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:11px;opacity:.5;overflow:hidden}
+.sig-thumb img{width:100%;height:100%;object-fit:contain}
+.sig-thumb.signed{border-color:rgba(152,254,0,.3);opacity:1}
+.admin-contract-create{background:rgba(152,254,0,.08);border:1px dashed rgba(152,254,0,.3);border-radius:12px;padding:20px;margin-bottom:20px}
+.admin-contract-create select,.admin-contract-create input{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);border-radius:8px;padding:8px 12px;color:#fff;font-size:14px;width:100%;margin-bottom:10px}
+
+
 /* ─── LOCKED STATE ─── */
 .locked-overlay{padding:80px 40px;text-align:center;border:1px dashed rgba(255,255,255,0.1);border-radius:8px;margin-bottom:12px}
 .locked-icon{font-size:48px;margin-bottom:16px;opacity:0.15}
@@ -1410,10 +1474,11 @@ button{cursor:pointer;font-family:var(--font)}
         <div class="sidebar-item" onclick="showAdminView('dashboard')" id="admin-nav-dashboard"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>대시보드</div>
         <div class="sidebar-item" onclick="showAdminView('brands')" id="admin-nav-brands"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 22V4a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v18Z"/><path d="M6 12H4a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h2"/><path d="M18 9h2a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2h-2"/></svg>브랜드 관리<span class="sidebar-badge">3</span></div>
         <div class="sidebar-item" onclick="showAdminView('review')" id="admin-nav-review"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><rect x="8" y="2" width="8" height="4" rx="1"/></svg>접수 심사<span class="sidebar-badge">2</span></div>
-        <div class="sidebar-item" onclick="showAdminView('dashboard')" id="admin-nav-cost"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>비용 정산</div>
+        <div class="sidebar-item" onclick="showAdminView('cost')" id="admin-nav-cost"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>비용 정산</div>
         <div class="sidebar-item" onclick="showAdminView('cms')" id="admin-nav-cms"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>콘텐츠 관리</div>
-        <div class="sidebar-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>수출바우처</div>
-        <div class="sidebar-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>설정</div>
+        <div class="sidebar-item" onclick="showAdminView('voucher')" id="admin-nav-voucher"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>수출바우처</div>
+        <div class="sidebar-item" onclick="showAdminView('contracts')" id="admin-nav-contracts"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>계약 관리</div>
+        <div class="sidebar-item" onclick="showAdminView('settings')" id="admin-nav-settings"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>설정</div>
       </div>
       <div class="sidebar-bottom"><div style="cursor:pointer;color:rgba(255,255,255,0.3);margin-bottom:8px" onclick="switchTab('landing')">← 로그아웃</div>Walmart Entry Program<br>by 3Stripe Venture Studio</div>
     </div>
@@ -1903,6 +1968,152 @@ button{cursor:pointer;font-family:var(--font)}
 
       </div>
 
+      <!-- ADMIN: Cost View (비용 정산) -->
+      <div class="dash-content" id="admin-cost" style="display:none">
+        <div style="margin-bottom:24px">
+          <h3 style="font-size:18px;font-weight:700;color:#fff;letter-spacing:-0.5px;margin-bottom:4px">비용 정산</h3>
+          <p style="font-size:13px;color:rgba(255,255,255,0.3)">브랜드별 결제 내역과 정산 현황을 관리합니다.</p>
+        </div>
+        <div class="stat-grid">
+          <div class="stat-card"><div class="val">₩42<em>M</em></div><div class="lbl">총 청구 금액</div></div>
+          <div class="stat-card"><div class="val">₩32<em>M</em></div><div class="lbl">수금 완료</div><div class="change">76%</div></div>
+          <div class="stat-card"><div class="val">₩10<em>M</em></div><div class="lbl">미수금</div><div class="change warn">1건 대기</div></div>
+        </div>
+
+        <!-- 울타리코리아 -->
+        <div class="portal-info-section" style="margin-top:20px">
+          <div class="portal-info-title">울타리코리아 <span style="font-family:var(--mono);font-size:10px;padding:3px 8px;border-radius:999px;background:rgba(0,135,90,0.15);color:var(--lime);font-weight:400;margin-left:4px">All Paid</span></div>
+          <div class="pay-item"><div><div class="pay-label">행정비용 (1회)</div><div class="pay-sub">KRW 10,000,000 · 2026.03.15</div></div><div class="pay-status paid">✓ Paid</div></div>
+          <div class="pay-item"><div><div class="pay-label">Phase 1 운영비</div><div class="pay-sub">USD 8,000 · 2026.03.20</div></div><div class="pay-status paid">✓ Paid</div></div>
+          <div class="pay-item"><div><div class="pay-label">Phase 2 운영비</div><div class="pay-sub">USD 8,000 · 2026.04.12</div></div><div class="pay-status paid">✓ Paid</div></div>
+        </div>
+
+        <!-- 셀트리온 -->
+        <div class="portal-info-section">
+          <div class="portal-info-title">셀트리온스킨큐어 <span style="font-family:var(--mono);font-size:10px;padding:3px 8px;border-radius:999px;background:rgba(255,149,0,0.15);color:var(--accent-orange);font-weight:400;margin-left:4px">Pending</span></div>
+          <div class="pay-item"><div><div class="pay-label">행정비용 (1회)</div><div class="pay-sub">KRW 10,000,000 · 청구일: 2026.04.11</div></div><div class="pay-status pending">Pending</div></div>
+        </div>
+
+        <!-- 금광메주 -->
+        <div class="portal-info-section">
+          <div class="portal-info-title">금광메주 <span class="badge-voucher" style="font-size:10px;margin-left:4px">voucher</span> <span style="font-family:var(--mono);font-size:10px;padding:3px 8px;border-radius:999px;background:rgba(0,135,90,0.15);color:var(--lime);font-weight:400;margin-left:4px">All Paid</span></div>
+          <div class="pay-item"><div><div class="pay-label">Phase 1 운영비 (바우처 집행)</div><div class="pay-sub">KRW 10,000,000 · 2026.04.16</div></div><div class="pay-status paid">✓ Paid</div></div>
+        </div>
+      </div>
+
+      <!-- ADMIN: Voucher View (수출바우처) -->
+      <div class="dash-content" id="admin-voucher" style="display:none">
+        <div style="margin-bottom:24px">
+          <h3 style="font-size:18px;font-weight:700;color:#fff;letter-spacing:-0.5px;margin-bottom:4px">수출바우처 관리</h3>
+          <p style="font-size:13px;color:rgba(255,255,255,0.3)">수출바우처 연계 기업(B Type)의 바우처 현황을 관리합니다.</p>
+        </div>
+        <div class="stat-grid">
+          <div class="stat-card"><div class="val">2</div><div class="lbl">바우처 연계 기업</div></div>
+          <div class="stat-card"><div class="val">₩52<em>M</em></div><div class="lbl">총 바우처 잔액</div></div>
+          <div class="stat-card"><div class="val">₩10<em>M</em></div><div class="lbl">집행 완료</div></div>
+        </div>
+
+        <!-- 금광메주 -->
+        <div class="portal-info-section" style="margin-top:20px">
+          <div class="portal-info-title">
+            <div class="brand-icon" style="width:32px;height:32px;font-size:14px;margin-right:4px">G</div>
+            금광메주
+            <span class="brand-badge badge-active" style="margin-left:8px">Active</span>
+          </div>
+          <div class="wm-info-grid" style="margin-bottom:16px">
+            <div class="wm-info-item"><div class="wm-info-label">바우처 프로그램</div><div class="wm-info-value">2026 수출바우처</div></div>
+            <div class="wm-info-item"><div class="wm-info-label">총 바우처 금액</div><div class="wm-info-value">₩42,000,000</div></div>
+            <div class="wm-info-item"><div class="wm-info-label">집행 완료</div><div class="wm-info-value">₩10,000,000</div></div>
+            <div class="wm-info-item"><div class="wm-info-label">잔여 금액</div><div class="wm-info-value" style="color:var(--lime)">₩32,000,000</div></div>
+          </div>
+          <div style="height:6px;border-radius:3px;background:rgba(255,255,255,0.06);overflow:hidden"><div style="height:100%;width:24%;background:var(--lime);border-radius:3px"></div></div>
+          <div style="font-size:11px;color:rgba(255,255,255,0.2);margin-top:6px;font-family:var(--mono)">24% 집행 · Phase 1 운영비 ₩10M 완료</div>
+        </div>
+
+        <!-- 해피코코넛 (심사 대기) -->
+        <div class="portal-info-section">
+          <div class="portal-info-title">
+            <div class="brand-icon" style="width:32px;height:32px;font-size:14px;margin-right:4px;background:rgba(255,255,255,0.1)">H</div>
+            해피코코넛
+            <span class="brand-badge badge-pending" style="margin-left:8px">심사 대기</span>
+          </div>
+          <div class="wm-info-grid">
+            <div class="wm-info-item"><div class="wm-info-label">바우처 프로그램</div><div class="wm-info-value">2026 수출바우처</div></div>
+            <div class="wm-info-item"><div class="wm-info-label">바우처 잔액</div><div class="wm-info-value">₩42,000,000</div></div>
+            <div class="wm-info-item"><div class="wm-info-label">집행 완료</div><div class="wm-info-value">-</div></div>
+            <div class="wm-info-item"><div class="wm-info-label">상태</div><div class="wm-info-value" style="color:var(--accent-orange)">승인 후 집행 가능</div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ADMIN: Settings View (설정) -->
+      <div class="dash-content" id="admin-settings" style="display:none">
+        <div style="margin-bottom:24px">
+          <h3 style="font-size:18px;font-weight:700;color:#fff;letter-spacing:-0.5px;margin-bottom:4px">설정</h3>
+          <p style="font-size:13px;color:rgba(255,255,255,0.3)">프로그램 관리 설정</p>
+        </div>
+
+        <!-- 관리자 계정 -->
+        <div class="portal-info-section">
+          <div class="portal-info-title">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+            관리자 계정
+          </div>
+          <div class="wm-info-grid">
+            <div class="wm-info-item"><div class="wm-info-label">이름</div><div class="wm-info-value">배종원</div></div>
+            <div class="wm-info-item"><div class="wm-info-label">이메일</div><div class="wm-info-value">jw@3svs.com</div></div>
+            <div class="wm-info-item"><div class="wm-info-label">역할</div><div class="wm-info-value">Super Admin</div></div>
+            <div class="wm-info-item"><div class="wm-info-label">마지막 로그인</div><div class="wm-info-value">2026.04.23</div></div>
+          </div>
+        </div>
+
+        <!-- 비밀번호 변경 -->
+        <div class="portal-info-section">
+          <div class="portal-info-title">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+            비밀번호 변경
+          </div>
+          <div style="max-width:400px">
+            <div class="cms-field"><label class="cms-label">현재 비밀번호</label><input class="cms-input" type="password" id="settings-pw-current" placeholder="현재 비밀번호 입력"></div>
+            <div class="cms-field"><label class="cms-label">새 비밀번호</label><input class="cms-input" type="password" id="settings-pw-new" placeholder="새 비밀번호 입력"></div>
+            <div class="cms-field"><label class="cms-label">새 비밀번호 확인</label><input class="cms-input" type="password" id="settings-pw-confirm" placeholder="새 비밀번호 다시 입력"></div>
+            <button class="cms-apply" onclick="changeAdminPw()">비밀번호 변경</button>
+          </div>
+        </div>
+
+        <!-- Walmart 담당자 관리 -->
+        <div class="portal-info-section">
+          <div class="portal-info-title">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+            Walmart 담당자 관리
+          </div>
+          <div class="brand-card" style="margin-bottom:8px">
+            <div class="brand-header" style="margin-bottom:0"><div class="brand-info"><div class="brand-icon" style="background:#0071dc;width:36px;height:36px;font-size:14px">LD</div><div><div class="brand-name" style="font-size:15px">Louis Diesel</div><div class="brand-sub">louis@startupjunkieconsulting.com · Director-Asia</div></div></div><div style="font-size:12px;color:var(--lime);font-family:var(--mono)">Active</div></div>
+          </div>
+          <div style="display:flex;gap:8px;margin-top:12px;font-size:13px;color:rgba(255,255,255,0.2);align-items:center;padding:16px;border:1px dashed rgba(255,255,255,0.08);border-radius:8px;justify-content:center;cursor:pointer" onclick="alert('Walmart 담당자 초대 기능은 Firebase 인증 연동 후 활성화됩니다.')">+ Walmart 담당자 초대</div>
+        </div>
+      </div>
+
+      <!-- ── 계약 관리 ── -->
+      <div class="dash-content" id="admin-contracts" style="display:none">
+        <div class="admin-contract-create">
+          <div style="font-weight:600;margin-bottom:12px">새 계약 생성</div>
+          <select id="contract-brand-select">
+            <option value="">브랜드 선택...</option>
+            <option value="wooltari">WooltariKorea</option>
+            <option value="celltrion">Celltrion Skincure</option>
+            <option value="geumgwang">Geumgwang Meju</option>
+          </select>
+          <select id="contract-type-select">
+            <option value="service">Service Agreement (서비스 계약)</option>
+            <option value="nda">NDA (비밀유지계약)</option>
+            <option value="distribution">Distribution Agreement (유통 계약)</option>
+          </select>
+          <button onclick="createContract()" style="background:#98fe00;color:#000;border:none;padding:10px 24px;border-radius:8px;font-weight:600;cursor:pointer;width:100%">계약서 생성 및 발송</button>
+        </div>
+        <div id="admin-contracts-list"></div>
+      </div>
+
     </div>
   </div>
 </div>
@@ -2183,7 +2394,7 @@ button{cursor:pointer;font-family:var(--font)}
       <div class="sidebar-logo"><div class="sidebar-logo-icon" style="background:#0071dc">W</div><div class="sidebar-logo-text">Walmart <span>Buyer Portal</span></div></div>
       <div class="sidebar-nav">
         <div class="sidebar-item active" onclick="showWmView('pipeline')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>Pipeline</div>
-        <div class="sidebar-item" onclick="showWmView('pipeline')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>Meetings</div>
+        <div class="sidebar-item" onclick="showWmView('meetings')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>Meetings</div>
       </div>
       <div class="sidebar-bottom"><div style="cursor:pointer;color:rgba(255,255,255,0.3);margin-bottom:8px" onclick="switchTab('landing')">← Log out</div>Walmart Marketplace<br>Entry Program</div>
     </div>
@@ -2199,6 +2410,45 @@ button{cursor:pointer;font-family:var(--font)}
         <div class="brand-card wm-brand-card-clickable" onclick="showWmBrandDetail('celltrion')"><div class="brand-header"><div class="brand-info"><div class="brand-icon">C</div><div><div class="brand-name">Celltrion Skincure <span class="brand-badge badge-contracted">Contracted</span></div><div class="brand-sub">Skincare & Cosmetics | CEO: 김대표</div></div></div><div class="brand-link">View Details →</div></div><div class="timeline"><div class="tl-node"><div class="tl-dot payment"></div><div class="tl-label payment">Payment Pending</div></div><div class="tl-line"></div><div class="tl-node"><div class="tl-dot"></div><div class="tl-label">Phase 2</div></div><div class="tl-line"></div><div class="tl-node"><div class="tl-dot"></div><div class="tl-label">Phase 3</div></div></div></div>
 
         <div class="brand-card wm-brand-card-clickable" onclick="showWmBrandDetail('geumgwang')"><div class="brand-header"><div class="brand-info"><div class="brand-icon">G</div><div><div class="brand-name">Geumgwang Meju <span class="brand-badge badge-active">Active</span> <span class="badge-voucher">voucher</span></div><div class="brand-sub">Traditional Korean Food | CEO: 박병관</div></div></div><div class="brand-link">View Details →</div></div><div class="timeline"><div class="tl-node"><div class="tl-dot active"></div><div class="tl-label active">Phase 1</div></div><div class="tl-line"></div><div class="tl-node"><div class="tl-dot"></div><div class="tl-label">Phase 2</div></div><div class="tl-line"></div><div class="tl-node"><div class="tl-dot"></div><div class="tl-label">Phase 3</div></div></div></div>
+      </div>
+
+      <!-- MEETINGS VIEW -->
+      <div class="dash-content" id="wm-meetings" style="display:none">
+        <div style="margin-bottom:24px">
+          <h3 style="font-size:18px;font-weight:700;color:#fff;letter-spacing:-0.5px;margin-bottom:4px">Upcoming Meetings</h3>
+          <p style="font-size:13px;color:rgba(255,255,255,0.3)">Scheduled meetings with assigned brands</p>
+        </div>
+        <div class="meeting-item" style="border:1px solid var(--border-dark);border-radius:8px;padding:20px;margin-bottom:8px">
+          <div style="display:flex;justify-content:space-between;align-items:start">
+            <div>
+              <div class="meeting-title" style="font-size:15px;font-weight:700;color:#fff;margin-bottom:4px">WooltariKorea — Buyer Review Meeting</div>
+              <div class="meeting-meta" style="font-size:13px;color:rgba(255,255,255,0.3)">Zoom · 60min · Phase 2 Performance Review</div>
+              <div style="margin-top:8px;display:flex;gap:6px"><span class="brand-badge badge-active" style="font-size:11px">WooltariKorea</span><span style="font-size:11px;padding:3px 10px;border-radius:999px;border:1px solid var(--border-dark);color:rgba(255,255,255,0.3)">Phase 2</span></div>
+            </div>
+            <div style="text-align:right;min-width:80px"><div style="font-size:20px;font-weight:900;color:#fff;letter-spacing:-1px">Apr 28</div><div style="font-size:13px;color:rgba(255,255,255,0.3)">10:00 AM</div></div>
+          </div>
+        </div>
+        <div class="meeting-item" style="border:1px solid var(--border-dark);border-radius:8px;padding:20px;margin-bottom:8px">
+          <div style="display:flex;justify-content:space-between;align-items:start">
+            <div>
+              <div class="meeting-title" style="font-size:15px;font-weight:700;color:#fff;margin-bottom:4px">Celltrion Skincure — Kickoff Meeting</div>
+              <div class="meeting-meta" style="font-size:13px;color:rgba(255,255,255,0.3)">3SVS Office · 90min · Program Onboarding</div>
+              <div style="margin-top:8px;display:flex;gap:6px"><span class="brand-badge badge-contracted" style="font-size:11px">Celltrion Skincure</span><span style="font-size:11px;padding:3px 10px;border-radius:999px;border:1px solid var(--border-dark);color:rgba(255,255,255,0.3)">Onboarding</span></div>
+            </div>
+            <div style="text-align:right;min-width:80px"><div style="font-size:20px;font-weight:900;color:#fff;letter-spacing:-1px">May 2</div><div style="font-size:13px;color:rgba(255,255,255,0.3)">2:00 PM</div></div>
+          </div>
+        </div>
+        <div class="meeting-item" style="border:1px solid var(--border-dark);border-radius:8px;padding:20px;margin-bottom:8px">
+          <div style="display:flex;justify-content:space-between;align-items:start">
+            <div>
+              <div class="meeting-title" style="font-size:15px;font-weight:700;color:#fff;margin-bottom:4px">Geumgwang Meju — Phase 1 Check-in</div>
+              <div class="meeting-meta" style="font-size:13px;color:rgba(255,255,255,0.3)">Zoom · 60min · Phase 1 Progress Review</div>
+              <div style="margin-top:8px;display:flex;gap:6px"><span class="brand-badge badge-active" style="font-size:11px">Geumgwang Meju</span><span style="font-size:11px;padding:3px 10px;border-radius:999px;border:1px solid var(--border-dark);color:rgba(255,255,255,0.3)">Phase 1</span></div>
+            </div>
+            <div style="text-align:right;min-width:80px"><div style="font-size:20px;font-weight:900;color:#fff;letter-spacing:-1px">May 5</div><div style="font-size:13px;color:rgba(255,255,255,0.3)">11:00 AM</div></div>
+          </div>
+        </div>
+        <div style="margin-top:24px;padding:16px;border:1px dashed rgba(255,255,255,0.08);border-radius:8px;text-align:center;color:rgba(255,255,255,0.15);font-size:13px">Past meetings and meeting notes will appear here</div>
       </div>
 
       <!-- BRAND DETAIL VIEW -->
@@ -2295,7 +2545,7 @@ button{cursor:pointer;font-family:var(--font)}
 
 <script>
 // ─── ADMIN PASSWORD ───
-const ADMIN_PW = '3svs2026';
+let ADMIN_PW = '3svs2026';
 
 function showAdminModal() {
   document.getElementById('admin-pw-input').value = '';
@@ -2595,7 +2845,7 @@ function switchTab(id) {
   });
   // Hide tab-nav for internal views (admin/portal have their own sidebar)
   const tabNav = document.querySelector('.tab-nav');
-  const internalViews = ['admin', 'portal', 'portal-locked', 'walmart'];
+  const internalViews = ['admin', 'portal', 'portal-locked', 'walmart', 'contract'];
   tabNav.style.display = internalViews.includes(id) ? 'none' : '';
   window.scrollTo(0, 0);
   if (id === 'admin') showAdminView('dashboard');
@@ -2603,30 +2853,38 @@ function switchTab(id) {
 
 // Admin sub-views
 function showAdminView(view) {
-  document.getElementById('admin-dashboard').style.display = (view === 'dashboard' || view === 'brands') ? '' : 'none';
-  document.getElementById('admin-review').style.display = (view === 'review') ? '' : 'none';
-  document.getElementById('admin-cms').style.display = (view === 'cms') ? '' : 'none';
-  // Update sidebar
-  document.querySelectorAll('#view-admin .sidebar-item').forEach(item => item.classList.remove('active'));
-  const navEl = document.getElementById('admin-nav-' + view);
+  var views = ['dashboard','review','cms','cost','voucher','settings','contracts'];
+  views.forEach(function(v) {
+    var el = document.getElementById('admin-' + v);
+    if (el) el.style.display = 'none';
+  });
+  if (view === 'brands') view = 'dashboard';
+  var target = document.getElementById('admin-' + view);
+  if (target) target.style.display = '';
+  document.querySelectorAll('#view-admin .sidebar-item').forEach(function(item) { item.classList.remove('active'); });
+  var navEl = document.getElementById('admin-nav-' + view);
   if (navEl) navEl.classList.add('active');
-  // Update topbar
-  const topTitle = document.querySelector('#view-admin .dash-title h2');
-  const topSub = document.querySelector('#view-admin .dash-title p');
-  if (view === 'review') {
-    topTitle.textContent = '접수 심사';
-    topSub.textContent = '신청 기업 검토 및 유형 확정 · 승인';
-  } else if (view === 'cms') {
-    topTitle.textContent = '콘텐츠 관리';
-    topSub.textContent = '랜딩 페이지 문구 수정 · 실시간 반영';
-  } else {
-    topTitle.textContent = '대시보드';
-    topSub.textContent = 'Walmart 입점 프로그램 운영 현황';
-  }
+  var topTitle = document.querySelector('#view-admin .dash-title h2');
+  var topSub = document.querySelector('#view-admin .dash-title p');
+  var titles = {
+    dashboard: ['대시보드', 'Walmart 입점 프로그램 운영 현황'],
+    review: ['접수 심사', '신청 기업 검토 및 유형 확정 · 승인'],
+    cms: ['콘텐츠 관리', '랜딩 페이지 문구 수정 · 실시간 반영'],
+    cost: ['비용 정산', '브랜드별 결제 내역 · 정산 현황'],
+    voucher: ['수출바우처', '수출바우처 연계 기업 관리'],
+    settings: ['설정', '프로그램 관리 설정'],
+    contracts: ['계약 관리', '전자서명 계약 생성 · 서명 현황 관리']
+  };
+  var t = titles[view] || titles.dashboard;
+  topTitle.textContent = t[0];
+  topSub.textContent = t[1];
+  if (view === 'contracts') renderAdminContracts();
 }
 // Init admin nav
 document.addEventListener('DOMContentLoaded', () => {
   document.getElementById('admin-nav-dashboard').classList.add('active');
+  // Check if URL has contract parameter
+  checkContractUrl();
 });
 
 // Review type selection
@@ -2658,9 +2916,9 @@ function showCmsToast(msg) {
 }
 
 function applyCms(section) {
-  const landing = document.getElementById('view-landing');
+  var landing = document.getElementById('view-landing');
   if (section === 'hero') {
-    const el = (id) => document.getElementById('cms-' + id);
+    var el = function(id) { return document.getElementById('cms-' + id); };
     el('hero-badge').textContent = document.querySelector('[data-target="hero-badge-text"]').value;
     el('hero-title').innerHTML = document.querySelector('[data-target="hero-title"]').value;
     el('hero-desc').textContent = document.querySelector('[data-target="hero-desc"]').value;
@@ -2668,7 +2926,7 @@ function applyCms(section) {
   }
   if (section === 'stats') {
     document.getElementById('cms-stats-cap').textContent = document.querySelector('[data-target="stats-cap"]').value;
-    for (let i = 1; i <= 4; i++) {
+    for (var i = 1; i <= 4; i++) {
       document.getElementById('cms-stat-' + i + '-num').innerHTML = document.querySelector('[data-target="stat-' + i + '-num"]').value;
       document.getElementById('cms-stat-' + i + '-lbl').textContent = document.querySelector('[data-target="stat-' + i + '-lbl"]').value;
     }
@@ -2687,7 +2945,7 @@ function applyCms(section) {
   if (section === '3svs') {
     document.getElementById('cms-3svs-title').textContent = document.querySelector('[data-target="3svs-title"]').value;
     document.getElementById('cms-3svs-desc').textContent = document.querySelector('[data-target="3svs-desc"]').value;
-    for (let i = 1; i <= 3; i++) {
+    for (var i = 1; i <= 3; i++) {
       document.getElementById('cms-svc' + i + '-title').textContent = document.querySelector('[data-target="svc' + i + '-title"]').value;
       document.getElementById('cms-svc' + i + '-desc').textContent = document.querySelector('[data-target="svc' + i + '-desc"]').value;
     }
@@ -2698,18 +2956,18 @@ function applyCms(section) {
     document.getElementById('cms-cta-btn').textContent = document.querySelector('[data-target="cta-btn"]').value;
   }
   if (section === 'hero-image') {
-    const url = document.querySelector('[data-target="hero-bg-url"]').value;
+    var url = document.querySelector('[data-target="hero-bg-url"]').value;
     document.getElementById('cms-hero-bg').style.backgroundImage = 'url(' + url + ')';
   }
   if (section === 'compare') {
-    const wmVal = document.querySelector('[data-target="wm-num"]').value;
-    const cpVal = document.querySelector('[data-target="cp-num"]').value;
+    var wmVal = document.querySelector('[data-target="wm-num"]').value;
+    var cpVal = document.querySelector('[data-target="cp-num"]').value;
     document.getElementById('cms-wm-num').innerHTML = wmVal.replace(/M/g, '<em style="color:var(--accent)">M</em>');
     document.getElementById('cms-cp-num').innerHTML = cpVal.replace(/M/g, '<em style="color:rgba(255,255,255,0.2)">M</em>');
     document.getElementById('cms-compare-insight').innerHTML = document.querySelector('[data-target="compare-insight"]').value;
   }
   if (section === 'success') {
-    for (let i = 1; i <= 3; i++) {
+    for (var i = 1; i <= 3; i++) {
       document.getElementById('cms-sc' + i + '-flag').textContent = document.querySelector('[data-target="sc' + i + '-flag"]').value;
       document.getElementById('cms-sc' + i + '-brand').textContent = document.querySelector('[data-target="sc' + i + '-brand"]').value;
       document.getElementById('cms-sc' + i + '-origin').textContent = document.querySelector('[data-target="sc' + i + '-origin"]').value;
@@ -2719,50 +2977,50 @@ function applyCms(section) {
     }
   }
   if (section === 'roles') {
-    const phases = ['p1', 'p2', 'p3'];
-    const actors = ['3svs', 'buyer'];
-    phases.forEach(p => {
-      actors.forEach(a => {
+    var phases = ['p1', 'p2', 'p3'];
+    var actors = ['3svs', 'buyer'];
+    phases.forEach(function(p) {
+      actors.forEach(function(a) {
         document.getElementById('cms-rm-' + p + '-' + a).textContent = document.querySelector('[data-target="rm-' + p + '-' + a + '"]').value;
       });
     });
   }
-  const btn = event.target;
-  const origText = btn.textContent;
+  var btn = event.target;
+  var origText = btn.textContent;
   btn.classList.add('saved');
   btn.textContent = '✓ 적용 완료';
-  setTimeout(() => { btn.classList.remove('saved'); btn.textContent = origText; }, 1500);
+  setTimeout(function() { btn.classList.remove('saved'); btn.textContent = origText; }, 1500);
   showCmsToast('랜딩 페이지에 반영되었습니다');
 }
 
 function addSuccessCard() {
-  const flag = document.getElementById('new-sc-flag').value.trim();
-  const brand = document.getElementById('new-sc-brand').value.trim();
-  const origin = document.getElementById('new-sc-origin').value.trim();
-  const result = document.getElementById('new-sc-result').value.trim();
-  const resultLabel = document.getElementById('new-sc-result-label').value.trim();
-  const detail = document.getElementById('new-sc-detail').value.trim();
+  var flag = document.getElementById('new-sc-flag').value.trim();
+  var brand = document.getElementById('new-sc-brand').value.trim();
+  var origin = document.getElementById('new-sc-origin').value.trim();
+  var result = document.getElementById('new-sc-result').value.trim();
+  var resultLabel = document.getElementById('new-sc-result-label').value.trim();
+  var detail = document.getElementById('new-sc-detail').value.trim();
   if (!brand || !result) { alert('브랜드명과 핵심 수치는 필수입니다.'); return; }
-  const container = document.getElementById('cms-success-cards');
-  const card = document.createElement('div');
+  var container = document.getElementById('cms-success-cards');
+  var card = document.createElement('div');
   card.className = 'success-card';
   card.innerHTML = '<div class="sc-flag">' + (flag || '🏷️') + '</div><div class="sc-brand">' + brand + '</div><div class="sc-origin">' + (origin||'') + '</div><div class="sc-result">' + result + '</div><div class="sc-result-label">' + (resultLabel||'') + '</div><div class="sc-detail">' + (detail||'') + '</div>';
   container.appendChild(card);
-  ['new-sc-flag','new-sc-brand','new-sc-origin','new-sc-result','new-sc-result-label','new-sc-detail'].forEach(id => { document.getElementById(id).value = ''; });
+  ['new-sc-flag','new-sc-brand','new-sc-origin','new-sc-result','new-sc-result-label','new-sc-detail'].forEach(function(id) { document.getElementById(id).value = ''; });
   showCmsToast('성공사례 카드가 추가되었습니다');
 }
 
 function showPhase(idx) {
-  document.querySelectorAll('.phase-deep').forEach(p => p.style.display = 'none');
+  document.querySelectorAll('.phase-deep').forEach(function(p) { p.style.display = 'none'; });
   document.getElementById('phase-deep-' + idx).style.display = '';
-  document.querySelectorAll('.phase-tab').forEach((t, i) => { t.classList.toggle('active', i === idx); });
+  document.querySelectorAll('.phase-tab').forEach(function(t, i) { t.classList.toggle('active', i === idx); });
 }
 
 function goFormStep(step) {
-  document.querySelectorAll('.form-panel').forEach(p => p.style.display = 'none');
+  document.querySelectorAll('.form-panel').forEach(function(p) { p.style.display = 'none'; });
   document.getElementById('step-' + step).style.display = '';
-  const steps = document.querySelectorAll('.form-step');
-  steps.forEach((s, i) => {
+  var steps = document.querySelectorAll('.form-step');
+  steps.forEach(function(s, i) {
     s.classList.remove('active', 'completed');
     if (i < step) s.classList.add('completed');
     if (i === step) s.classList.add('active');
@@ -2770,30 +3028,30 @@ function goFormStep(step) {
   document.querySelector('#view-apply .sec').scrollIntoView({behavior:'smooth', block:'start'});
 }
 
-document.querySelectorAll('.form-input').forEach(input => {
+document.querySelectorAll('.form-input').forEach(function(input) {
   input.addEventListener('input', function() { this.classList.remove('error'); });
 });
-document.querySelectorAll('.form-radio-pill input').forEach(radio => {
+document.querySelectorAll('.form-radio-pill input').forEach(function(radio) {
   radio.addEventListener('change', function() {
-    const group = this.closest('.form-radio-inline');
+    var group = this.closest('.form-radio-inline');
     if (group) group.classList.remove('error');
   });
 });
 
-document.querySelectorAll('.number-format').forEach(input => {
+document.querySelectorAll('.number-format').forEach(function(input) {
   input.addEventListener('input', function() {
-    let v = this.value.replace(/[^0-9]/g, '');
+    var v = this.value.replace(/[^0-9]/g, '');
     if (v === '') { this.value = ''; return; }
     this.value = Number(v).toLocaleString('en-US');
   });
 });
 
-const phoneInput = document.getElementById('phone-input');
-const phoneCountry = document.getElementById('phone-country');
+var phoneInput = document.getElementById('phone-input');
+var phoneCountry = document.getElementById('phone-country');
 if (phoneInput) {
   phoneInput.addEventListener('input', function() {
-    let v = this.value.replace(/[^0-9]/g, '');
-    const code = phoneCountry ? phoneCountry.value : '+82';
+    var v = this.value.replace(/[^0-9]/g, '');
+    var code = phoneCountry ? phoneCountry.value : '+82';
     if (code === '+82') {
       if (v.startsWith('0')) v = v.substring(1);
       if (v.length <= 2) { this.value = v; }
@@ -2815,166 +3073,616 @@ if (phoneInput) {
   }
 }
 
-document.querySelectorAll('input[name="apply-type"]').forEach(radio => {
+document.querySelectorAll('input[name="apply-type"]').forEach(function(radio) {
   radio.addEventListener('change', function() {
-    const voucherFields = document.getElementById('voucher-fields');
+    var voucherFields = document.getElementById('voucher-fields');
     voucherFields.style.display = this.value === 'voucher' ? '' : 'none';
   });
 });
 
 
-// ─── WALMART BUYER PORTAL ───
-const wmBrandData = {
+// ══════════════════════════════════════════
+// Walmart Buyer Portal — Brand Data & Logic
+// ══════════════════════════════════════════
+
+var wmBrandData = {
   wooltari: {
-    name: 'WooltariKorea', icon: 'W', badge: 'Active', badgeClass: 'badge-active',
-    phase: 'Phase 2', type: 'direct',
-    info: {
-      'Company (EN)': 'WooltariKorea Inc.', 'CEO': 'Paul Jang',
-      'Industry': 'Korean Food & Snacks', 'Category': 'Snacks / Seaweed / Noodles',
-      'Export Experience': 'USA, Japan, Canada (5+ years)', 'Participation Type': 'A Type — Direct',
-      'Annual Revenue': '₩12,500,000,000', 'US Warehouse': 'Yes — LA, CA'
-    },
+    name: 'WooltariKorea', status: 'Active', phase: 'Phase 2',
+    info: { ceo: 'Paul Jang', category: 'Korean Food & Snacks', founded: '2015', hq: 'Seoul, South Korea', website: 'wooltariusa.com', employees: '45', revenue: '$8.2M (2025)' },
     skus: [
-      {name:'Korean Seaweed Snack — Original', upc:'8801234567890', price:'$4.99', desc:'Crispy roasted seaweed, 6-pack · Net Wt. 0.35oz × 6', status:'live', comments:[]},
-      {name:'Korean Seaweed Snack — Wasabi', upc:'8801234567891', price:'$4.99', desc:'Wasabi flavored roasted seaweed, 6-pack · Net Wt. 0.35oz × 6', status:'live', comments:[]},
-      {name:'Korean Seaweed Snack — BBQ', upc:'8801234567892', price:'$5.49', desc:'BBQ flavored roasted seaweed, 6-pack · Net Wt. 0.35oz × 6', status:'pending', comments:[]}
+      { name: 'Tteokbokki Rice Cake (Original)', upc: '8801234567890', price: '$5.99', status: 'Listed', img: '', comments: [{author:'Louis D.', text:'Great velocity in test stores.', time:'2026-03-15'}] },
+      { name: 'Korean Seaweed Snack (Wasabi)', upc: '8801234567891', price: '$3.49', status: 'Listed', img: '', comments: [] },
+      { name: 'Kimchi Fried Rice Kit', upc: '8801234567892', price: '$7.99', status: 'Under Review', img: '', comments: [{author:'Sarah M.', text:'Need updated nutrition label.', time:'2026-04-01'}] }
     ],
     docs: [
-      {name:'Brand Deck — WooltariKorea 2026.pdf', size:'4.2 MB', type:'pdf'},
-      {name:'Product Catalog Q2 2026.pdf', size:'8.7 MB', type:'pdf'},
-      {name:'FDA Registration Certificate.pdf', size:'1.1 MB', type:'pdf'},
-      {name:'Packaging Design — Seaweed Line.pptx', size:'12.3 MB', type:'ppt'}
+      { name: 'FDA Registration Certificate', type: 'pdf', date: '2026-01-15' },
+      { name: 'Product Liability Insurance', type: 'pdf', date: '2026-02-01' },
+      { name: 'Packaging Spec Sheet', type: 'pdf', date: '2026-03-10' },
+      { name: 'Brand Logo Kit', type: 'zip', date: '2026-01-05' }
     ],
-    memo: '', memoTime: ''
+    memo: ''
   },
   celltrion: {
-    name: 'Celltrion Skincure', icon: 'C', badge: 'Contracted', badgeClass: 'badge-contracted',
-    phase: 'Payment Pending', type: 'direct',
-    info: {
-      'Company (EN)': 'Celltrion Skincure Co., Ltd.', 'CEO': '김대표',
-      'Industry': 'Skincare & Cosmetics', 'Category': 'Beauty / Skincare',
-      'Export Experience': 'Japan, China, SEA (3 years)', 'Participation Type': 'A Type — Direct',
-      'Annual Revenue': '₩45,000,000,000', 'US Warehouse': 'In progress (3PL setup)'
-    },
+    name: 'Celltrion Skincure', status: 'Contracted', phase: 'Payment Pending',
+    info: { ceo: '김대표', category: 'Skincare & Cosmetics', founded: '2020', hq: 'Incheon, South Korea', website: 'celltrionskincure.com', employees: '120', revenue: '$15M (2025)' },
     skus: [
-      {name:'Hyaluronic Acid Serum 30ml', upc:'8802345678901', price:'$24.99', desc:'Intensive hydration serum, dermatologist tested', status:'pending', comments:[]},
-      {name:'Centella Recovery Cream 50ml', upc:'8802345678902', price:'$19.99', desc:'Soothing cream with Centella Asiatica extract', status:'pending', comments:[]}
+      { name: 'Hyaluronic Acid Serum 30ml', upc: '8809876543210', price: '$24.99', status: 'Pending', img: '', comments: [] },
+      { name: 'Centella Recovery Cream 50ml', upc: '8809876543211', price: '$19.99', status: 'Pending', img: '', comments: [] }
     ],
     docs: [
-      {name:'Brand Deck — Celltrion Skincure.pdf', size:'6.1 MB', type:'pdf'},
-      {name:'GMP Certificate.pdf', size:'0.8 MB', type:'pdf'},
-      {name:'Product Safety Data Sheets.pdf', size:'3.4 MB', type:'pdf'}
+      { name: 'FDA Cosmetic Registration', type: 'pdf', date: '2026-03-20' },
+      { name: 'Ingredient Safety Report', type: 'pdf', date: '2026-03-25' }
     ],
-    memo: '', memoTime: ''
+    memo: ''
   },
   geumgwang: {
-    name: 'Geumgwang Meju', icon: 'G', badge: 'Active', badgeClass: 'badge-active',
-    phase: 'Phase 1', type: 'voucher',
-    info: {
-      'Company (EN)': 'Geumgwang Meju Co., Ltd.', 'CEO': '박병관',
-      'Industry': 'Traditional Korean Food', 'Category': 'Sauces / Fermented Foods',
-      'Export Experience': 'Japan, Taiwan (2 years)', 'Participation Type': 'B Type — Export Voucher',
-      'Voucher Balance': '₩42,000,000', 'Annual Revenue': '₩3,200,000,000'
-    },
+    name: 'Geumgwang Meju', status: 'Active', phase: 'Phase 1',
+    info: { ceo: '박병관', category: 'Traditional Korean Food', founded: '1998', hq: 'Sunchang, South Korea', website: 'geumgwangmeju.kr', employees: '30', revenue: '$4.5M (2025)' },
     skus: [
-      {name:'Premium Doenjang (Soybean Paste) 500g', upc:'8803456789012', price:'$8.99', desc:'Traditional fermented soybean paste, no additives', status:'live', comments:[]},
-      {name:'Artisan Gochujang 300g', upc:'8803456789013', price:'$7.49', desc:'Naturally fermented red pepper paste', status:'pending', comments:[]}
+      { name: 'Traditional Doenjang (Soybean Paste) 500g', upc: '8802345678901', price: '$8.99', status: 'Under Review', img: '', comments: [{author:'Louis D.', text:'Packaging needs English-only label for US market.', time:'2026-04-10'}] },
+      { name: 'Premium Gochujang 300g', upc: '8802345678902', price: '$6.99', status: 'Under Review', img: '', comments: [] },
+      { name: 'Organic Soy Sauce 500ml', upc: '8802345678903', price: '$7.49', status: 'Under Review', img: '', comments: [] }
     ],
     docs: [
-      {name:'Brand Deck — Geumgwang Meju.pptx', size:'5.5 MB', type:'ppt'},
-      {name:'HACCP Certificate.pdf', size:'0.6 MB', type:'pdf'},
-      {name:'Product Photos — Full Line.zip', size:'28.4 MB', type:'img'}
+      { name: 'Export Voucher Certificate', type: 'pdf', date: '2026-04-01' },
+      { name: 'Organic Certification (USDA)', type: 'pdf', date: '2026-02-15' },
+      { name: 'Factory Audit Report', type: 'pdf', date: '2026-03-05' }
     ],
-    memo: '', memoTime: ''
+    memo: ''
   }
 };
 
-let currentWmBrand = null;
-
 function showWmView(view) {
-  document.getElementById('wm-pipeline').style.display = (view === 'pipeline') ? '' : 'none';
-  document.getElementById('wm-brand-detail').style.display = (view === 'detail') ? '' : 'none';
+  var views = ['pipeline','meetings','brand-detail'];
+  views.forEach(function(v) {
+    var el = document.getElementById('wm-' + v);
+    if (el) el.style.display = 'none';
+  });
+  var target = document.getElementById('wm-' + view);
+  if (target) target.style.display = '';
+  document.querySelectorAll('#view-walmart .sidebar-item').forEach(function(item) { item.classList.remove('active'); });
   if (view === 'pipeline') {
-    currentWmBrand = null;
-    document.getElementById('wm-topbar-title').textContent = 'Brand Pipeline';
-    document.getElementById('wm-topbar-sub').textContent = 'Walmart Marketplace Entry Program — Active Brands';
+    document.querySelectorAll('#view-walmart .sidebar-item')[0].classList.add('active');
+  } else if (view === 'meetings') {
+    document.querySelectorAll('#view-walmart .sidebar-item')[1].classList.add('active');
   }
-  const sidebarItems = document.querySelectorAll('#view-walmart .sidebar-item');
-  sidebarItems.forEach(s => s.classList.remove('active'));
-  if (sidebarItems[0]) sidebarItems[0].classList.add('active');
 }
 
 function showWmBrandDetail(brandId) {
-  const brand = wmBrandData[brandId];
+  var brand = wmBrandData[brandId];
   if (!brand) return;
-  currentWmBrand = brandId;
-  document.getElementById('wm-topbar-title').textContent = brand.name;
-  document.getElementById('wm-topbar-sub').textContent = brand.phase + ' · ' + brand.info['Category'];
-  document.getElementById('wm-detail-header').innerHTML =
-    '<div class="brand-icon">' + brand.icon + '</div>' +
-    '<div class="wm-brand-header-info"><h3>' + brand.name + ' <span class="brand-badge ' + brand.badgeClass + '">' + brand.badge + '</span>' +
-    (brand.type === 'voucher' ? ' <span class="badge-voucher">voucher</span>' : '') +
-    '</h3><p>' + brand.info['Industry'] + ' · CEO: ' + brand.info['CEO'] + ' · ' + brand.phase + '</p></div>';
-  const infoHtml = Object.entries(brand.info).map(function(entry) {
-    return '<div class="wm-info-item"><div class="wm-info-label">' + entry[0] + '</div><div class="wm-info-value">' + entry[1] + '</div></div>';
-  }).join('');
-  document.getElementById('wm-detail-info').innerHTML = infoHtml;
-  const liveCount = brand.skus.filter(function(s){ return s.status === 'live'; }).length;
-  document.getElementById('wm-sku-count').textContent = liveCount + ' live / ' + brand.skus.length + ' total';
-  renderWmSkus(brandId);
-  document.getElementById('wm-doc-count').textContent = brand.docs.length + ' files';
-  var docsHtml = brand.docs.map(function(d, i) {
-    var icon = d.type === 'pdf' ? '📄' : d.type === 'ppt' ? '📊' : '🖼️';
-    return '<div class="wm-doc-item"><div class="wm-doc-info"><div class="wm-doc-icon ' + d.type + '">' + icon + '</div><div><div class="wm-doc-name">' + d.name + '</div><div class="wm-doc-size">' + d.size + '</div></div></div><button class="wm-doc-dl" onclick="alert(\'Download: ' + d.name.replace(/'/g, '') + ' (Demo)\')">Download</button></div>';
-  }).join('');
-  document.getElementById('wm-detail-docs').innerHTML = docsHtml;
-  document.getElementById('wm-memo-text').value = brand.memo || '';
-  document.getElementById('wm-memo-time').textContent = brand.memoTime || '';
-  showWmView('detail');
+  showWmView('brand-detail');
+  var container = document.getElementById('wm-brand-detail');
+  var statusClass = brand.status === 'Active' ? 'badge-active' : brand.status === 'Contracted' ? 'badge-contracted' : '';
+  var infoHtml = '';
+  var infoLabels = { ceo:'CEO', category:'Category', founded:'Founded', hq:'Headquarters', website:'Website', employees:'Employees', revenue:'Revenue' };
+  for (var key in brand.info) {
+    infoHtml += '<div class="wm-info-item"><span class="wm-info-label">' + infoLabels[key] + '</span><span class="wm-info-value">' + brand.info[key] + '</span></div>';
+  }
+  var skuHtml = '';
+  brand.skus.forEach(function(sku, idx) {
+    var statusColor = sku.status === 'Listed' ? '#98fe00' : sku.status === 'Under Review' ? '#f0ad4e' : '#8fc5f2';
+    var commentsHtml = '';
+    sku.comments.forEach(function(c) {
+      commentsHtml += '<div class="wm-comment"><strong>' + c.author + '</strong> <span style="opacity:.5;font-size:12px">' + c.time + '</span><p style="margin:4px 0 0">' + c.text + '</p></div>';
+    });
+    skuHtml += '<div class="wm-sku-card"><div style="display:flex;justify-content:space-between;align-items:center"><div><div style="font-weight:600">' + sku.name + '</div><div style="font-size:13px;opacity:.6;margin-top:2px">UPC: ' + sku.upc + ' · SRP: ' + sku.price + '</div></div><span style="background:' + statusColor + ';color:#000;padding:2px 10px;border-radius:20px;font-size:12px;font-weight:600">' + sku.status + '</span></div><div class="wm-sku-comments" id="wm-sku-comments-' + brandId + '-' + idx + '">' + commentsHtml + '</div><div class="wm-comment-input-row"><input type="text" placeholder="Add a comment..." id="wm-comment-input-' + brandId + '-' + idx + '" style="flex:1;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);border-radius:8px;padding:8px 12px;color:#fff;font-size:13px"><button onclick="addWmSkuComment(\'' + brandId + '\',' + idx + ')" style="background:#8fc5f2;color:#000;border:none;border-radius:8px;padding:8px 16px;font-weight:600;cursor:pointer;margin-left:8px">Post</button></div></div>';
+  });
+  var docsHtml = '';
+  brand.docs.forEach(function(doc) {
+    var icon = doc.type === 'pdf' ? '📄' : '📦';
+    docsHtml += '<div class="wm-doc-item"><span>' + icon + ' ' + doc.name + '</span><div style="display:flex;align-items:center;gap:12px"><span style="font-size:12px;opacity:.5">' + doc.date + '</span><a href="#" onclick="return false" style="color:#8fc5f2;font-size:13px;text-decoration:none">Download</a></div></div>';
+  });
+  container.innerHTML = '<button class="wm-detail-back" onclick="showWmView(\'pipeline\')">← Back to Pipeline</button>' +
+    '<div class="wm-brand-header"><div class="brand-icon" style="width:48px;height:48px;font-size:20px;border-radius:12px">' + brand.name[0] + '</div><div><h2 style="margin:0;font-size:22px">' + brand.name + ' <span class="brand-badge ' + statusClass + '">' + brand.status + '</span></h2><p style="margin:4px 0 0;opacity:.6">' + brand.phase + ' · ' + brand.info.category + '</p></div></div>' +
+    '<div class="wm-section"><div class="wm-section-title">Company Information</div><div class="wm-info-grid">' + infoHtml + '</div></div>' +
+    '<div class="wm-section"><div class="wm-section-title">SKU / Product Information (' + brand.skus.length + ')</div><div class="wm-sku-grid">' + skuHtml + '</div></div>' +
+    '<div class="wm-section"><div class="wm-section-title">Documents & Files (' + brand.docs.length + ')</div><div class="wm-doc-list">' + docsHtml + '</div></div>' +
+    '<div class="wm-section"><div class="wm-section-title">Contracts & Signatures</div>' + getWmContractsHtml(brandId) + '</div>' +
+    '<div class="wm-section"><div class="wm-section-title">Buyer Notes</div><div class="wm-memo-area"><textarea id="wm-memo-text" placeholder="Write internal notes about this brand..." style="width:100%;min-height:80px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);border-radius:8px;padding:12px;color:#fff;font-size:14px;resize:vertical">' + (brand.memo || '') + '</textarea><button class="wm-memo-save" onclick="saveWmMemo(\'' + brandId + '\')" style="margin-top:8px;background:#98fe00;color:#000;border:none;padding:8px 20px;border-radius:8px;font-weight:600;cursor:pointer">Save Note</button></div></div>';
+  window._currentWmBrand = brandId;
 }
 
 function renderWmSkus(brandId) {
   var brand = wmBrandData[brandId];
-  var html = brand.skus.map(function(s, i) {
-    var commentsHtml = s.comments.map(function(c) {
-      return '<div class="wm-comment"><div>' + c.text.replace(/</g,'&lt;') + '</div><div class="wm-comment-meta">' + c.author + ' · ' + c.time + '</div></div>';
-    }).join('');
-    return '<div class="wm-sku-card">' +
-      '<div class="wm-sku-top"><div><div class="wm-sku-name">' + s.name + '</div></div><div class="wm-sku-status ' + s.status + '">' + (s.status==='live'?'LIVE':'REVIEW') + '</div></div>' +
-      '<div class="wm-sku-meta"><span>UPC ' + s.upc + '</span><span>' + s.price + '</span><br>' + s.desc + '</div>' +
-      '<div class="wm-sku-comments"><div class="wm-sku-comments-title">Comments' + (s.comments.length ? ' (' + s.comments.length + ')' : '') + '</div>' +
-      commentsHtml +
-      '<div class="wm-comment-input-row"><input class="wm-comment-input" id="wm-sku-comment-' + i + '" placeholder="Add comment..." onkeydown="if(event.key===\'Enter\')addWmSkuComment(' + i + ')"><button class="wm-comment-btn" onclick="addWmSkuComment(' + i + ')">Post</button></div></div></div>';
-  }).join('');
-  document.getElementById('wm-detail-skus').innerHTML = html;
+  if (!brand) return;
+  showWmBrandDetail(brandId);
 }
 
-function addWmSkuComment(skuIdx) {
-  if (!currentWmBrand) return;
-  var input = document.getElementById('wm-sku-comment-' + skuIdx);
-  var text = input.value.trim();
-  if (!text) return;
+function addWmSkuComment(brandId, skuIdx) {
+  var input = document.getElementById('wm-comment-input-' + brandId + '-' + skuIdx);
+  if (!input || !input.value.trim()) return;
+  var brand = wmBrandData[brandId];
+  if (!brand || !brand.skus[skuIdx]) return;
   var now = new Date();
-  var timeStr = now.toLocaleDateString('en-US', {month:'short', day:'numeric'}) + ', ' + now.toLocaleTimeString('en-US', {hour:'numeric', minute:'2-digit'});
-  wmBrandData[currentWmBrand].skus[skuIdx].comments.push({text: text, author: 'Walmart Buyer', time: timeStr});
-  input.value = '';
-  renderWmSkus(currentWmBrand);
+  var dateStr = now.getFullYear() + '-' + String(now.getMonth()+1).padStart(2,'0') + '-' + String(now.getDate()).padStart(2,'0');
+  brand.skus[skuIdx].comments.push({ author: 'Walmart Buyer', text: input.value.trim(), time: dateStr });
+  showWmBrandDetail(brandId);
 }
 
-function saveWmMemo() {
-  if (!currentWmBrand) return;
-  var text = document.getElementById('wm-memo-text').value;
-  var now = new Date();
-  var timeStr = 'Last saved: ' + now.toLocaleDateString('en-US', {month:'short', day:'numeric'}) + ', ' + now.toLocaleTimeString('en-US', {hour:'numeric', minute:'2-digit'});
-  wmBrandData[currentWmBrand].memo = text;
-  wmBrandData[currentWmBrand].memoTime = timeStr;
-  document.getElementById('wm-memo-time').textContent = timeStr;
-  var btn = document.querySelector('.wm-memo-save');
-  btn.classList.add('saved');
-  btn.textContent = '✓ Saved';
-  setTimeout(function() { btn.classList.remove('saved'); btn.textContent = 'Save Note'; }, 1500);
+function saveWmMemo(brandId) {
+  var textarea = document.getElementById('wm-memo-text');
+  if (!textarea) return;
+  var brand = wmBrandData[brandId || window._currentWmBrand];
+  if (!brand) return;
+  brand.memo = textarea.value;
+  var btn = textarea.nextElementSibling;
+  if (btn) { btn.textContent = 'Saved ✓'; setTimeout(function(){ btn.textContent = 'Save Note'; }, 1500); }
 }
+
+function changeAdminPw() {
+  var cur = document.getElementById('settings-cur-pw');
+  var nw = document.getElementById('settings-new-pw');
+  var cf = document.getElementById('settings-cf-pw');
+  if (!cur || !nw || !cf) return;
+  if (cur.value !== ADMIN_PW) { alert('현재 비밀번호가 일치하지 않습니다.'); return; }
+  if (nw.value.length < 4) { alert('새 비밀번호는 4자 이상이어야 합니다.'); return; }
+  if (nw.value !== cf.value) { alert('새 비밀번호가 일치하지 않습니다.'); return; }
+  ADMIN_PW = nw.value;
+  alert('비밀번호가 변경되었습니다.');
+  cur.value = ''; nw.value = ''; cf.value = '';
+}
+
+
+
+// ══════════════════════════════════════════
+// E-SIGNATURE & CONTRACT SYSTEM (Upload-based)
+// ══════════════════════════════════════════
+
+var contractTemplates = {
+  service: {
+    title: 'Walmart Entry Program Service Agreement',
+    titleKo: '월마트 입점 프로그램 서비스 계약서',
+    clauses: [
+      { title: 'Article 1. Purpose (목적)', text: 'This Agreement sets forth the terms under which 3Stripe Venture Studio ("3SVS") shall provide Walmart marketplace entry consulting services to the Brand, including but not limited to: product listing setup, compliance review, buyer coordination, and ongoing account management support.' },
+      { title: 'Article 2. Scope of Services (서비스 범위)', text: 'Services include: (a) Walmart Marketplace Application & Setup, (b) Product Listing Optimization & SEO, (c) Packaging & SRP Design Guidance, (d) Buyer Engagement & Line Review Coordination, (e) Compliance & Quality Assurance (FDA/FSMA/ESG), (f) Post-Launch Performance Monitoring.' },
+      { title: 'Article 3. Term (계약 기간)', text: 'This Agreement shall commence on the Effective Date and continue for a period of twelve (12) months, unless terminated earlier in accordance with Article 7.' },
+      { title: 'Article 4. Fees & Payment (비용 및 결제)', text: 'The Brand shall pay 3SVS the agreed service fees as outlined in Schedule A. Payments are due within 30 days of invoice date. Late payments shall incur a 1.5% monthly interest charge.' },
+      { title: 'Article 5. Confidentiality (비밀유지)', text: 'Both parties agree to maintain the confidentiality of all proprietary information shared during the course of this engagement. This obligation survives termination of this Agreement for a period of two (2) years.' },
+      { title: 'Article 6. Walmart Coordination (월마트 협업)', text: 'The designated Walmart Buyer shall participate in product review and store allocation decisions. All parties acknowledge that final listing approval is subject to Walmart internal review processes.' },
+      { title: 'Article 7. Termination (해지)', text: 'Either party may terminate this Agreement with 30 days written notice. In case of material breach, the non-breaching party may terminate immediately upon written notice.' }
+    ]
+  },
+  nda: {
+    title: 'Non-Disclosure Agreement',
+    titleKo: '비밀유지계약서 (NDA)',
+    clauses: [
+      { title: 'Article 1. Definition of Confidential Information', text: 'Confidential Information includes all business, technical, and financial information disclosed by any party, including product formulations, pricing strategies, sales data, and Walmart buyer contacts.' },
+      { title: 'Article 2. Obligations', text: 'Each party agrees to hold Confidential Information in strict confidence and not disclose it to any third party without prior written consent.' },
+      { title: 'Article 3. Term', text: 'This NDA shall remain in effect for three (3) years from the date of execution.' }
+    ]
+  },
+  distribution: {
+    title: 'Distribution Partnership Agreement',
+    titleKo: '유통 파트너십 계약서',
+    clauses: [
+      { title: 'Article 1. Appointment', text: 'The Brand appoints the U.S. Launch Vendor Partner as its exclusive distribution partner for Walmart retail channels in the United States.' },
+      { title: 'Article 2. Territory & Channel', text: 'Distribution shall cover all Walmart Supercenter locations and Walmart.com within the United States.' },
+      { title: 'Article 3. Pricing & Margins', text: 'Wholesale pricing, retail SRP, and margin structures shall be agreed upon in Schedule B, subject to Walmart buyer approval.' },
+      { title: 'Article 4. Logistics', text: 'The Vendor Partner shall manage all logistics including warehousing, EDI/AS2 integration, OTIF compliance, and ship-point distribution to Walmart DCs.' }
+    ]
+  }
+};
+
+var contracts = [
+  {
+    id: 'CTR-2026-001',
+    brandId: 'wooltari',
+    type: 'service',
+    status: 'partial',
+    createdAt: '2026-04-10',
+    signatures: {
+      brand: { signed: true, name: 'Paul Jang', date: '2026-04-12', sig: null, seal: null },
+      admin: { signed: true, name: '배종원 (3SVS)', date: '2026-04-11', sig: null, seal: null },
+      walmart: { signed: false, name: '', date: '', sig: null, seal: null }
+    }
+  },
+  {
+    id: 'CTR-2026-002',
+    brandId: 'geumgwang',
+    type: 'nda',
+    status: 'completed',
+    createdAt: '2026-03-20',
+    signatures: {
+      brand: { signed: true, name: '박병관', date: '2026-03-22', sig: null, seal: null },
+      admin: { signed: true, name: '배종원 (3SVS)', date: '2026-03-21', sig: null, seal: null },
+      walmart: { signed: true, name: 'Louis Diesel', date: '2026-03-25', sig: null, seal: null }
+    }
+  }
+];
+
+// Temp storage for pending uploads
+var _pendingSigs = { brand: { sig: null, seal: null }, admin: { sig: null, seal: null }, walmart: { sig: null, seal: null } };
+
+function getContractStatus(c) {
+  var count = 0;
+  if (c.signatures.brand.signed) count++;
+  if (c.signatures.admin.signed) count++;
+  if (c.signatures.walmart.signed) count++;
+  if (count === 3) return 'completed';
+  if (count > 0) return 'partial';
+  return 'pending';
+}
+
+function getContractStatusLabel(s) {
+  return { draft:'Draft', pending:'Awaiting Signatures', partial:'Partially Signed', completed:'Fully Executed' }[s] || s;
+}
+
+// ── Image Upload Handler ──
+function handleSigUpload(input, role, type) {
+  var file = input.files[0];
+  if (!file) return;
+  var reader = new FileReader();
+  reader.onload = function(e) {
+    _pendingSigs[role][type] = e.target.result;
+    var zone = document.getElementById('sig-zone-' + role + '-' + type);
+    if (zone) {
+      zone.classList.add('has-file');
+      var icon = type === 'sig' ? '✍️' : '🔴';
+      zone.innerHTML = '<div style="font-size:12px;font-weight:600;color:#98fe00;margin-bottom:4px">Uploaded ✓</div><img src="' + e.target.result + '"><input type="file" accept="image/*" onchange="handleSigUpload(this,\'' + role + '\',\'' + type + '\')">';
+    }
+  };
+  reader.readAsDataURL(file);
+}
+
+function confirmSign(role) {
+  if (!_pendingSigs[role].sig && !_pendingSigs[role].seal) {
+    alert('Please upload at least a signature or seal image before signing.');
+    return;
+  }
+  var contractId = _currentContractPageId;
+  var c = contracts.find(function(x){ return x.id === contractId; });
+  if (!c) { alert('Contract not found.'); return; }
+  if (c.signatures[role].signed) { alert('Already signed.'); return; }
+  var now = new Date().toISOString().slice(0, 10);
+  var nameMap = { brand: (wmBrandData[c.brandId] ? wmBrandData[c.brandId].info.ceo : 'Brand'), admin: '배종원 (3SVS)', walmart: 'Walmart Buyer' };
+  c.signatures[role] = {
+    signed: true,
+    name: nameMap[role],
+    date: now,
+    sig: _pendingSigs[role].sig,
+    seal: _pendingSigs[role].seal
+  };
+  c.status = getContractStatus(c);
+  _pendingSigs[role] = { sig: null, seal: null };
+  renderContractPage(contractId);
+  var msg = 'Signature submitted successfully!';
+  if (c.status === 'completed') msg += '\n\n✅ All 3 parties have signed. Contract is fully executed!';
+  alert(msg);
+}
+
+// ── Contract Page Rendering ──
+var _currentContractPageId = null;
+
+function renderContractPage(contractId) {
+  var c = contracts.find(function(x){ return x.id === contractId; });
+  if (!c) return;
+  _currentContractPageId = contractId;
+  var tpl = contractTemplates[c.type];
+  var brandName = wmBrandData[c.brandId] ? wmBrandData[c.brandId].name : c.brandId;
+
+  document.getElementById('contract-page-title').textContent = tpl.titleKo;
+  document.getElementById('contract-page-parties').textContent = brandName + ' × 3Stripe Venture Studio × Walmart';
+  document.getElementById('contract-page-id').textContent = contractId + ' | ' + c.createdAt;
+
+  var bodyHtml = '<h3>' + tpl.title + '</h3><div class="contract-page-doc-sub">' + tpl.titleKo + '</div>';
+  tpl.clauses.forEach(function(cl) {
+    bodyHtml += '<div class="clause"><div class="clause-title">' + cl.title + '</div><div>' + cl.text + '</div></div>';
+  });
+  document.getElementById('contract-page-body').innerHTML = bodyHtml;
+
+  // Update each signer section
+  var roles = ['brand', 'admin', 'walmart'];
+  roles.forEach(function(role) {
+    var sig = c.signatures[role];
+    var badge = document.getElementById('sig-status-' + role);
+    var btn = document.getElementById('sig-confirm-' + role);
+    var sigZone = document.getElementById('sig-zone-' + role + '-sig');
+    var sealZone = document.getElementById('sig-zone-' + role + '-seal');
+
+    if (sig.signed) {
+      badge.className = 'contract-badge completed';
+      badge.textContent = 'Signed · ' + sig.date;
+      if (btn) btn.style.display = 'none';
+      // Show uploaded images or "Signed" indicator
+      if (sigZone) {
+        sigZone.classList.add('has-file');
+        sigZone.innerHTML = sig.sig ? '<img src="' + sig.sig + '">' : '<div style="font-style:italic;color:#98fe00;padding:20px">✓ ' + sig.name + '</div>';
+      }
+      if (sealZone) {
+        sealZone.classList.add('has-file');
+        sealZone.innerHTML = sig.seal ? '<img src="' + sig.seal + '">' : '<div style="font-style:italic;opacity:.4;padding:20px">No seal uploaded</div>';
+      }
+    } else {
+      badge.className = 'contract-badge pending';
+      badge.textContent = 'Pending';
+      if (btn) btn.style.display = '';
+      // Reset upload zones
+      if (sigZone && !sigZone.classList.contains('has-file')) {
+        sigZone.innerHTML = '<div class="sig-upload-icon">✍️</div><div class="sig-upload-label">Click or drag to upload signature image</div><input type="file" accept="image/*" onchange="handleSigUpload(this,\'' + role + '\',\'sig\')">';
+      }
+      if (sealZone && !sealZone.classList.contains('has-file')) {
+        sealZone.innerHTML = '<div class="sig-upload-icon">🔴</div><div class="sig-upload-label">Click or drag to upload seal image</div><input type="file" accept="image/*" onchange="handleSigUpload(this,\'' + role + '\',\'seal\')">';
+      }
+    }
+  });
+
+  // Brand name display
+  var brandNameEl = document.getElementById('sig-brand-name-display');
+  if (brandNameEl) brandNameEl.textContent = brandName + (wmBrandData[c.brandId] ? ' | CEO: ' + wmBrandData[c.brandId].info.ceo : '');
+
+  // Completion banner
+  var banner = document.getElementById('contract-complete-banner');
+  if (c.status === 'completed') {
+    banner.style.display = '';
+    document.getElementById('contract-complete-timestamp').textContent = 'Executed: ' + c.signatures.walmart.date;
+  } else {
+    banner.style.display = 'none';
+  }
+}
+
+// ── URL Routing for Contract Page ──
+function checkContractUrl() {
+  var params = new URLSearchParams(window.location.search);
+  var cid = params.get('c');
+  if (cid) {
+    var c = contracts.find(function(x){ return x.id === cid; });
+    if (c) {
+      switchTab('contract');
+      renderContractPage(cid);
+      return true;
+    }
+  }
+  return false;
+}
+
+// ── Admin: Create Contract & Generate Link ──
+function createContract() {
+  var brandSel = document.getElementById('contract-brand-select');
+  var typeSel = document.getElementById('contract-type-select');
+  if (!brandSel.value) { alert('브랜드를 선택해주세요.'); return; }
+  var brandName = brandSel.options[brandSel.selectedIndex].text;
+  var newId = 'CTR-2026-' + String(contracts.length + 1).padStart(3, '0');
+  contracts.push({
+    id: newId,
+    brandId: brandSel.value,
+    type: typeSel.value,
+    status: 'pending',
+    createdAt: new Date().toISOString().slice(0, 10),
+    signatures: {
+      brand: { signed: false, name: '', date: '', sig: null, seal: null },
+      admin: { signed: false, name: '', date: '', sig: null, seal: null },
+      walmart: { signed: false, name: '', date: '', sig: null, seal: null }
+    }
+  });
+  brandSel.value = '';
+  renderAdminContracts();
+  var link = window.location.origin + window.location.pathname + '?c=' + newId;
+  prompt('계약서가 생성되었습니다. 아래 링크를 복사하여 관계자에게 전달하세요:', link);
+}
+
+function copyContractLink(contractId) {
+  var link = window.location.origin + window.location.pathname + '?c=' + contractId;
+  if (navigator.clipboard) {
+    navigator.clipboard.writeText(link).then(function() { alert('링크가 클립보드에 복사되었습니다!\n' + link); });
+  } else {
+    prompt('아래 링크를 복사하세요:', link);
+  }
+}
+
+function renderAdminContracts() {
+  var el = document.getElementById('admin-contracts-list');
+  if (!el) return;
+  var html = '';
+  contracts.forEach(function(c) {
+    var tpl = contractTemplates[c.type];
+    var brandName = wmBrandData[c.brandId] ? wmBrandData[c.brandId].name : c.brandId;
+    var status = getContractStatus(c);
+    c.status = status;
+    var link = window.location.origin + window.location.pathname + '?c=' + c.id;
+    html += '<div class="contract-card">' +
+      '<div style="display:flex;justify-content:space-between;align-items:start;margin-bottom:8px">' +
+      '<div><h4>' + tpl.title + '</h4><div class="contract-sub">' + c.id + ' · ' + brandName + ' · ' + c.createdAt + '</div></div>' +
+      '<span class="contract-badge ' + status + '">' + getContractStatusLabel(status) + '</span></div>' +
+      '<div class="contract-signers">' +
+      renderSignerPill(c, 'brand', 'Brand') +
+      renderSignerPill(c, 'admin', '3SVS') +
+      renderSignerPill(c, 'walmart', 'Walmart') +
+      '</div>' +
+      '<div style="background:rgba(255,255,255,.04);border-radius:8px;padding:8px 12px;margin:8px 0;display:flex;align-items:center;gap:8px">' +
+      '<span style="font-family:var(--mono);font-size:11px;opacity:.4;flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">' + link + '</span>' +
+      '<button onclick="copyContractLink(\'' + c.id + '\')" style="background:rgba(255,255,255,.1);color:#fff;border:none;padding:4px 12px;border-radius:6px;font-size:12px;cursor:pointer;white-space:nowrap">Copy Link</button>' +
+      '</div>' +
+      '<div style="display:flex;gap:8px">';
+    if (!c.signatures.admin.signed) {
+      html += '<button onclick="openContractPageAsAdmin(\'' + c.id + '\')" style="background:#98fe00;color:#000;border:none;padding:6px 16px;border-radius:6px;font-size:13px;font-weight:600;cursor:pointer">3SVS 서명하기</button>';
+    }
+    if (status === 'completed') {
+      html += '<button onclick="approvePortalAccess(\'' + c.brandId + '\')" style="background:rgba(152,254,0,.15);color:#98fe00;border:1px solid rgba(152,254,0,.3);padding:6px 16px;border-radius:6px;font-size:13px;font-weight:600;cursor:pointer">포탈 권한 승인</button>';
+    }
+    html += '<button onclick="previewContract(\'' + c.id + '\')" style="background:rgba(255,255,255,.08);color:#fff;border:none;padding:6px 16px;border-radius:6px;font-size:13px;cursor:pointer">계약서 보기</button></div></div>';
+  });
+  if (contracts.length === 0) html = '<div style="text-align:center;padding:40px;opacity:.4">생성된 계약이 없습니다.</div>';
+  el.innerHTML = html;
+}
+
+function renderSignerPill(contract, role, label) {
+  var sig = contract.signatures[role];
+  var cls = sig.signed ? 'signed' : '';
+  var check = sig.signed ? '✓' : '';
+  var name = sig.signed ? sig.name + ' · ' + sig.date : 'Pending';
+  return '<div class="contract-signer ' + cls + '"><div class="sig-check">' + check + '</div><div><div style="font-weight:600;font-size:12px">' + label + '</div><div style="font-size:11px;opacity:.6">' + name + '</div></div></div>';
+}
+
+function openContractPageAsAdmin(contractId) {
+  switchTab('contract');
+  renderContractPage(contractId);
+}
+
+function previewContract(contractId) {
+  switchTab('contract');
+  renderContractPage(contractId);
+}
+
+function approvePortalAccess(brandId) {
+  var brandName = wmBrandData[brandId] ? wmBrandData[brandId].name : brandId;
+  if (confirm(brandName + '의 포탈 접근 권한을 승인하시겠습니까?\n\n승인 후 해당 기업은 포탈에 로그인하여 프로그램을 시작할 수 있습니다.')) {
+    alert('✅ ' + brandName + ' 포탈 접근이 승인되었습니다.\n프로그램이 시작됩니다.');
+  }
+}
+
+// Walmart brand detail: contracts section
+function getWmContractsHtml(brandId) {
+  var brandContracts = contracts.filter(function(c){ return c.brandId === brandId; });
+  if (brandContracts.length === 0) return '<div style="text-align:center;padding:20px;opacity:.4">No contracts yet</div>';
+  var html = '';
+  brandContracts.forEach(function(c) {
+    var tpl = contractTemplates[c.type];
+    var status = getContractStatus(c);
+    html += '<div class="contract-card">' +
+      '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">' +
+      '<div><h4 style="margin:0;font-size:15px">' + tpl.title + '</h4><div style="font-size:12px;opacity:.5;margin-top:2px">' + c.id + ' · ' + c.createdAt + '</div></div>' +
+      '<span class="contract-badge ' + status + '">' + getContractStatusLabel(status) + '</span></div>' +
+      '<div class="contract-signers">' + renderSignerPill(c,'brand','Brand') + renderSignerPill(c,'admin','3SVS') + renderSignerPill(c,'walmart','Walmart') + '</div>' +
+      '<div style="display:flex;gap:8px">';
+    if (!c.signatures.walmart.signed) {
+      html += '<button onclick="openContractPageAsAdmin(\'' + c.id + '\')" style="background:#8fc5f2;color:#000;border:none;padding:6px 16px;border-radius:6px;font-size:13px;font-weight:600;cursor:pointer">Sign as Walmart</button>';
+    }
+    html += '<button onclick="previewContract(\'' + c.id + '\')" style="background:rgba(255,255,255,.08);color:#fff;border:none;padding:6px 16px;border-radius:6px;font-size:13px;cursor:pointer">View Contract</button></div></div>';
+  });
+  return html;
+}
+
+// Contract page modal (reuse overlay for in-portal viewing)
+function viewContract(contractId) { previewContract(contractId); }
+function closeSigModal() { document.getElementById('sig-overlay').style.display = 'none'; }
+
 
 </script>
+
+
+<!-- ═══════════════════════════════════════ -->
+<!-- CONTRACT SIGNING PAGE (외부 링크 접근) -->
+<!-- ═══════════════════════════════════════ -->
+<div id="view-contract" class="view">
+  <div class="contract-page">
+    <div class="contract-page-header">
+      <div style="margin-bottom:16px"><img src="" alt="" style="display:none" id="contract-logo"><span style="font-size:14px;opacity:.5;font-family:var(--mono)">3SVS × Walmart Entry Program</span></div>
+      <h1 id="contract-page-title">Service Agreement</h1>
+      <div class="contract-page-sub" id="contract-page-parties"></div>
+      <div class="contract-page-id" id="contract-page-id"></div>
+    </div>
+
+    <div class="contract-page-doc" id="contract-page-body"></div>
+
+    <!-- Signer: Brand -->
+    <div class="sig-section" id="sig-section-brand">
+      <div class="sig-section-header">
+        <h4>Brand Representative (브랜드 대표)</h4>
+        <span class="contract-badge pending" id="sig-status-brand">Pending</span>
+      </div>
+      <div id="sig-brand-name-display" style="font-size:14px;margin-bottom:12px"></div>
+      <div class="sig-row">
+        <div class="sig-slot">
+          <div class="sig-slot-label">Signature (서명)</div>
+          <div class="sig-upload-zone" id="sig-zone-brand-sig">
+            <div class="sig-upload-icon">✍️</div>
+            <div class="sig-upload-label">Click or drag to upload signature image</div>
+            <input type="file" accept="image/*" onchange="handleSigUpload(this,'brand','sig')">
+          </div>
+        </div>
+        <div class="sig-slot">
+          <div class="sig-slot-label">Company Seal (법인 도장)</div>
+          <div class="sig-upload-zone" id="sig-zone-brand-seal">
+            <div class="sig-upload-icon">🔴</div>
+            <div class="sig-upload-label">Click or drag to upload seal image</div>
+            <input type="file" accept="image/*" onchange="handleSigUpload(this,'brand','seal')">
+          </div>
+        </div>
+      </div>
+      <button onclick="confirmSign('brand')" id="sig-confirm-brand" style="margin-top:16px;width:100%;background:#98fe00;color:#000;border:none;padding:12px;border-radius:8px;font-weight:600;font-size:15px;cursor:pointer">Sign as Brand Representative</button>
+    </div>
+
+    <!-- Signer: 3SVS -->
+    <div class="sig-section" id="sig-section-3svs">
+      <div class="sig-section-header">
+        <h4>3SVS Representative (3SVS 대표)</h4>
+        <span class="contract-badge pending" id="sig-status-admin">Pending</span>
+      </div>
+      <div class="sig-row">
+        <div class="sig-slot">
+          <div class="sig-slot-label">Signature (서명)</div>
+          <div class="sig-upload-zone" id="sig-zone-admin-sig">
+            <div class="sig-upload-icon">✍️</div>
+            <div class="sig-upload-label">Click or drag to upload signature image</div>
+            <input type="file" accept="image/*" onchange="handleSigUpload(this,'admin','sig')">
+          </div>
+        </div>
+        <div class="sig-slot">
+          <div class="sig-slot-label">Company Seal (법인 도장)</div>
+          <div class="sig-upload-zone" id="sig-zone-admin-seal">
+            <div class="sig-upload-icon">🔴</div>
+            <div class="sig-upload-label">Click or drag to upload seal image</div>
+            <input type="file" accept="image/*" onchange="handleSigUpload(this,'admin','seal')">
+          </div>
+        </div>
+      </div>
+      <button onclick="confirmSign('admin')" id="sig-confirm-admin" style="margin-top:16px;width:100%;background:#98fe00;color:#000;border:none;padding:12px;border-radius:8px;font-weight:600;font-size:15px;cursor:pointer">Sign as 3SVS Representative</button>
+    </div>
+
+    <!-- Signer: Walmart -->
+    <div class="sig-section" id="sig-section-walmart">
+      <div class="sig-section-header">
+        <h4>Walmart Buyer (월마트 바이어)</h4>
+        <span class="contract-badge pending" id="sig-status-walmart">Pending</span>
+      </div>
+      <div class="sig-row">
+        <div class="sig-slot">
+          <div class="sig-slot-label">Signature (서명)</div>
+          <div class="sig-upload-zone" id="sig-zone-walmart-sig">
+            <div class="sig-upload-icon">✍️</div>
+            <div class="sig-upload-label">Click or drag to upload signature image</div>
+            <input type="file" accept="image/*" onchange="handleSigUpload(this,'walmart','sig')">
+          </div>
+        </div>
+        <div class="sig-slot">
+          <div class="sig-slot-label">Company Seal / Title</div>
+          <div class="sig-upload-zone" id="sig-zone-walmart-seal">
+            <div class="sig-upload-icon">🔴</div>
+            <div class="sig-upload-label">Click or drag to upload seal image</div>
+            <input type="file" accept="image/*" onchange="handleSigUpload(this,'walmart','seal')">
+          </div>
+        </div>
+      </div>
+      <button onclick="confirmSign('walmart')" id="sig-confirm-walmart" style="margin-top:16px;width:100%;background:#8fc5f2;color:#000;border:none;padding:12px;border-radius:8px;font-weight:600;font-size:15px;cursor:pointer">Sign as Walmart Buyer</button>
+    </div>
+
+    <!-- Completion Banner -->
+    <div id="contract-complete-banner" class="sig-complete-banner" style="display:none">
+      <h3>All Parties Have Signed</h3>
+      <p>This contract is fully executed. All parties will receive a confirmation.</p>
+      <div style="margin-top:12px;font-family:var(--mono);font-size:12px;opacity:.4" id="contract-complete-timestamp"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ SIGNATURE PAD MODAL ═══ -->
+<div id="sig-overlay" class="sig-overlay" style="display:none">
+  <div class="sig-modal">
+    <h3 id="sig-modal-title">Electronic Signature</h3>
+    <p id="sig-modal-desc">Please sign below to confirm your agreement.</p>
+    <div class="contract-doc" id="sig-contract-preview" style="max-height:200px;overflow-y:auto;margin-bottom:16px"></div>
+    <div style="margin-bottom:8px;font-size:13px;font-weight:600">Sign here:</div>
+    <div class="sig-pad-wrap">
+      <canvas id="sig-canvas" width="540" height="180"></canvas>
+      <button class="sig-pad-clear" onclick="clearSigPad()">Clear</button>
+    </div>
+    <div class="sig-actions">
+      <button class="sig-btn-cancel" onclick="closeSigModal()">Cancel</button>
+      <button class="sig-btn-sign" id="sig-submit-btn" onclick="submitSignature()">Sign & Confirm</button>
+    </div>
+  </div>
+</div>
+
 </body>
 </html>
