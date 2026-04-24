@@ -1,0 +1,6 @@
+[api]
+enabled = true
+port = 54321
+
+[functions.send-notification]
+verify_jwt = false

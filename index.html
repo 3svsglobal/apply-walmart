@@ -644,6 +644,41 @@ button{cursor:pointer;font-family:var(--font)}
 /* ─── RESPONSIVE ─── */
 @media(max-width:1200px){.dash-grid{grid-template-columns:1fr}.stat-grid{grid-template-columns:repeat(2,1fr)}.pipeline-summary{grid-template-columns:repeat(3,1fr)}.portal-cost-grid{grid-template-columns:1fr}.review-body{grid-template-columns:1fr}.wm-sku-grid{grid-template-columns:1fr}.wm-info-grid{grid-template-columns:1fr}}
 @media(max-width:768px){:root{--sec-px:20px;--sec-py:80px}.tab-nav{height:56px;padding:0 16px}.hero{padding:0 20px}.hero h1{font-size:40px;letter-spacing:-2px}.hero-desc{font-size:16px}.st{font-size:28px;letter-spacing:-1px}.sd{font-size:16px;margin-bottom:36px}.login-section{grid-template-columns:1fr}.login-right{display:none}.login-left{padding:48px 20px}.dash-layout{grid-template-columns:1fr}.sidebar{display:none}.dash-content{padding:20px}.cta-apply-cards{grid-template-columns:1fr}.type-radio-group{grid-template-columns:1fr}.form-row{grid-template-columns:1fr}.proc-cards{grid-template-columns:1fr}.stats-bar-row{gap:36px}.stat-num{font-size:36px}.cta-sec h2{font-size:32px;letter-spacing:-1.2px}.cta-sec{padding:80px 20px 60px}.why-walmart-stats{grid-template-columns:1fr}.ww-stat .ww-num{font-size:36px}.compare-grid{grid-template-columns:1fr;gap:24px}.compare-vs{display:none}.compare-brand .cb-num{font-size:40px}.compare-section{padding:32px 20px}.success-cards{grid-template-columns:1fr}.hero-partners{display:none}.phase-deep{padding:24px}.phase-deep-header{flex-direction:column;gap:20px}.phase-deep-meta{justify-content:flex-start}.phase-steps-grid{grid-template-columns:1fr}.role-matrix{padding:24px}.role-matrix-header,.role-matrix-row{grid-template-columns:60px 1fr 1fr;gap:8px}.rmr-cell{font-size:13px}.review-type-select{grid-template-columns:1fr}.review-actions{flex-direction:column}.form-radio-inline{flex-direction:column}.form-nav{flex-direction:column;gap:12px}.form-nav .btn-outline,.form-nav .btn-primary{width:100%;justify-content:center}#form-steps{gap:0;overflow-x:auto;-webkit-overflow-scrolling:touch}.form-step{font-size:12px;padding:12px 12px}}
+
+/* ─── PRINT CSS (계약서 PDF 인쇄) ─── */
+@media print {
+  body { background: #fff !important; color: #000 !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  .tab-nav, .sidebar, .dash-topbar, .dash-actions, .sig-upload-zone input[type="file"],
+  #sig-confirm-brand, #sig-confirm-admin, #sig-confirm-walmart,
+  .contract-page-header > div:first-child, #contract-print-btn-wrap,
+  #sig-overlay, #brand-pw-modal, #admin-modal, .noti-dot { display: none !important; }
+  .view { display: none !important; }
+  #view-contract { display: block !important; }
+  .contract-page { max-width: 100% !important; padding: 20px !important; background: #fff !important; color: #000 !important; }
+  .contract-page-header { background: none !important; border: none !important; color: #000 !important; padding: 20px 0 !important; border-bottom: 2px solid #000 !important; }
+  .contract-page-header h1 { color: #000 !important; font-size: 22px !important; }
+  .contract-page-sub, .contract-page-id { color: #333 !important; }
+  .contract-page-doc { background: none !important; border: none !important; color: #000 !important; padding: 0 !important; }
+  .contract-page-doc h3 { color: #000 !important; font-size: 16px !important; }
+  .contract-page-doc .clause { border-color: #ccc !important; padding: 12px 0 !important; }
+  .contract-page-doc .clause-title { color: #000 !important; font-size: 14px !important; }
+  .contract-page-doc .clause div { color: #333 !important; font-size: 12px !important; line-height: 1.6 !important; }
+  .sig-section { background: none !important; border: 1px solid #ccc !important; color: #000 !important; padding: 16px !important; page-break-inside: avoid; }
+  .sig-section h4 { color: #000 !important; }
+  .sig-section-header { border: none !important; }
+  .contract-badge { border: 1px solid #000 !important; color: #000 !important; background: none !important; }
+  .contract-badge.completed { background: #e6f4ee !important; color: #00875a !important; }
+  .sig-upload-zone { background: none !important; border: 1px solid #ccc !important; min-height: 60px !important; }
+  .sig-upload-zone img { max-height: 60px !important; }
+  .sig-upload-zone .sig-upload-icon, .sig-upload-zone .sig-upload-label { display: none !important; }
+  .sig-row { gap: 12px !important; }
+  .sig-slot-label { color: #333 !important; }
+  .sig-complete-banner { background: #e6f4ee !important; color: #000 !important; border: 2px solid #00875a !important; }
+  .sig-complete-banner h3 { color: #00875a !important; }
+  #contract-execution-info { display: block !important; color: #000 !important; border: 2px solid #000 !important; background: #f9f9f9 !important; padding: 16px !important; margin-top: 20px !important; text-align: center !important; font-size: 13px !important; page-break-inside: avoid; }
+  #contract-execution-info .exec-title { font-size: 15px !important; font-weight: 700 !important; margin-bottom: 8px !important; }
+}
+
 </style>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 </head>
@@ -1481,7 +1516,7 @@ button{cursor:pointer;font-family:var(--font)}
         <div class="sidebar-item" onclick="showAdminView('contracts')" id="admin-nav-contracts"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>계약 관리</div>
         <div class="sidebar-item" onclick="showAdminView('settings')" id="admin-nav-settings"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>설정</div>
       </div>
-      <div class="sidebar-bottom"><div style="cursor:pointer;color:rgba(255,255,255,0.3);margin-bottom:8px" onclick="switchTab('landing')">← 로그아웃</div>Walmart Entry Program<br>by 3Stripe Venture Studio</div>
+      <div class="sidebar-bottom"><div style="cursor:pointer;color:rgba(255,255,255,0.3);margin-bottom:8px" onclick="showBrandPwChange()">비밀번호 변경</div><div style="cursor:pointer;color:rgba(255,255,255,0.3);margin-bottom:8px" onclick="switchTab('landing')">← 로그아웃</div>Walmart Entry Program<br>by 3Stripe Venture Studio</div>
     </div>
     <div class="dash-main">
       <div class="dash-topbar"><div class="dash-title"><h2>대시보드</h2><p>Walmart 입점 프로그램 운영 현황</p></div><div class="dash-actions"><input class="dash-search" placeholder="검색..."><div class="noti-dot"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.4)" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg></div><div class="dash-avatar">JB</div></div></div>
@@ -1489,21 +1524,21 @@ button{cursor:pointer;font-family:var(--font)}
       <!-- ADMIN: Dashboard View -->
       <div class="dash-content" id="admin-dashboard">
         <div class="stat-grid">
-          <div class="stat-card"><div class="val">3</div><div class="lbl">참여 브랜드</div><div class="change">+1 this month</div></div>
-          <div class="stat-card"><div class="val">2</div><div class="lbl">접수 심사 대기</div><div class="change warn">requires review</div></div>
-          <div class="stat-card"><div class="val">3</div><div class="lbl">예정 미팅</div><div class="change">next: Apr 22</div></div>
-          <div class="stat-card"><div class="val">₩32<em>M</em></div><div class="lbl">총 수익</div><div class="change">+₩11M this month</div></div>
+          <div class="stat-card"><div class="val" id="dash-stat-brands">-</div><div class="lbl">참여 브랜드</div><div class="change" id="dash-stat-brands-sub">loading...</div></div>
+          <div class="stat-card"><div class="val" id="dash-stat-pending">-</div><div class="lbl">접수 심사 대기</div><div class="change warn" id="dash-stat-pending-sub">loading...</div></div>
+          <div class="stat-card"><div class="val" id="dash-stat-contracts">-</div><div class="lbl">계약 현황</div><div class="change" id="dash-stat-contracts-sub">loading...</div></div>
+          <div class="stat-card"><div class="val" id="dash-stat-completed">-</div><div class="lbl">서명 완료</div><div class="change" id="dash-stat-completed-sub">loading...</div></div>
         </div>
         <div class="dash-grid">
           <div><div class="panel"><div class="panel-title">브랜드 파이프라인 <span class="count" id="admin-brand-count">0 brands</span></div>
-            <div id="admin-brand-pipeline" style="text-align:center;padding:40px 0;color:rgba(255,255,255,0.2);font-size:14px">등록된 브랜드가 없습니다.<br><span style="font-size:12px">접수 심사에서 신청을 승인하면 여기에 표시됩니다.</span></div>
+            <div id="admin-brand-pipeline" style="text-align:center;padding:40px 0;color:rgba(255,255,255,0.2);font-size:14px">로딩 중...</div>
           </div></div>
           <div style="display:flex;flex-direction:column;gap:8px">
-            <div class="panel"><div class="panel-title">알림 <span class="count" id="admin-noti-count">0</span></div>
-              <div id="admin-noti-list" style="text-align:center;padding:24px 0;color:rgba(255,255,255,0.2);font-size:13px">새로운 알림이 없습니다.</div>
+            <div class="panel"><div class="panel-title">최근 활동 <span class="count" id="admin-noti-count">0</span></div>
+              <div id="admin-noti-list" style="text-align:center;padding:24px 0;color:rgba(255,255,255,0.2);font-size:13px">로딩 중...</div>
             </div>
-            <div class="panel"><div class="panel-title">예정 미팅 <span class="count">0</span></div><div style="text-align:center;padding:24px 0;color:rgba(255,255,255,0.2);font-size:13px">예정된 미팅이 없습니다.</div></div>
-            <div class="panel"><div class="panel-title">결제 현황</div><div style="text-align:center;padding:24px 0;color:rgba(255,255,255,0.2);font-size:13px">결제 내역이 없습니다.</div></div>
+            <div class="panel"><div class="panel-title">계약 요약</div><div id="admin-contract-summary" style="text-align:center;padding:24px 0;color:rgba(255,255,255,0.2);font-size:13px">로딩 중...</div></div>
+            <div class="panel"><div class="panel-title">Phase 분포</div><div id="admin-phase-dist" style="text-align:center;padding:24px 0;color:rgba(255,255,255,0.2);font-size:13px">로딩 중...</div></div>
           </div>
         </div>
       </div>
@@ -1961,7 +1996,17 @@ button{cursor:pointer;font-family:var(--font)}
             <option value="service">A Type — 직접참여 컨설팅 계약</option>
             <option value="service_voucher">B Type — 수출바우처 연계 계약</option>
           </select>
-          <button onclick="createContract()" style="background:#98fe00;color:#000;border:none;padding:10px 24px;border-radius:8px;font-weight:600;cursor:pointer;width:100%">계약서 생성 및 발송</button>
+          <div style="margin-bottom:16px">
+          <label style="display:block;font-size:12px;color:rgba(255,255,255,0.3);margin-bottom:6px;font-family:var(--mono)">계약서 커스터마이징 (선택)</label>
+          <div style="display:flex;gap:8px;margin-bottom:8px">
+            <button onclick="toggleTemplateEditor()" id="template-edit-toggle" style="background:rgba(255,255,255,0.06);color:rgba(255,255,255,0.5);border:1px solid rgba(255,255,255,0.1);padding:6px 14px;border-radius:6px;font-size:12px;cursor:pointer">조항 편집 ▼</button>
+            <button onclick="resetTemplateEdits()" style="background:rgba(255,255,255,0.06);color:rgba(255,255,255,0.3);border:1px solid rgba(255,255,255,0.06);padding:6px 14px;border-radius:6px;font-size:12px;cursor:pointer">기본값 복원</button>
+          </div>
+          <div id="template-editor" style="display:none;max-height:400px;overflow-y:auto;border:1px solid rgba(255,255,255,0.08);border-radius:8px;padding:12px;background:rgba(0,0,0,0.2)">
+            <div id="template-editor-content" style="font-size:13px;color:rgba(255,255,255,0.5)">계약 유형을 선택하면 조항이 표시됩니다.</div>
+          </div>
+        </div>
+        <button onclick="createContract()" style="background:#98fe00;color:#000;border:none;padding:10px 24px;border-radius:8px;font-weight:600;cursor:pointer;width:100%">계약서 생성 및 발송</button>
         </div>
         <div id="admin-contracts-list"></div>
       </div>
@@ -1984,7 +2029,7 @@ button{cursor:pointer;font-family:var(--font)}
         <div class="sidebar-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>미팅 일정</div>
         <div class="sidebar-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>비용 현황</div>
       </div>
-      <div class="sidebar-bottom"><div style="cursor:pointer;color:rgba(255,255,255,0.3);margin-bottom:8px" onclick="switchTab('landing')">← 로그아웃</div>Walmart Entry Program<br>by 3Stripe Venture Studio</div>
+      <div class="sidebar-bottom"><div style="cursor:pointer;color:rgba(255,255,255,0.3);margin-bottom:8px" onclick="showBrandPwChange()">비밀번호 변경</div><div style="cursor:pointer;color:rgba(255,255,255,0.3);margin-bottom:8px" onclick="switchTab('landing')">← 로그아웃</div>Walmart Entry Program<br>by 3Stripe Venture Studio</div>
     </div>
     <div class="dash-main">
       <div class="dash-topbar"><div class="dash-title"><h2 id="portal-topbar-title">브랜드 대시보드</h2><p id="portal-topbar-sub">Walmart 입점 프로그램 진행 현황</p></div><div class="dash-actions"><div class="noti-dot"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.4)" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg></div><div class="dash-avatar" id="portal-avatar">--</div></div></div>
@@ -2181,7 +2226,7 @@ button{cursor:pointer;font-family:var(--font)}
         <div class="sidebar-item" style="opacity:0.25;pointer-events:none"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>미팅 일정</div>
         <div class="sidebar-item" style="opacity:0.25;pointer-events:none"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>비용 현황</div>
       </div>
-      <div class="sidebar-bottom"><div style="cursor:pointer;color:rgba(255,255,255,0.3);margin-bottom:8px" onclick="switchTab('landing')">← 로그아웃</div>Walmart Entry Program<br>by 3Stripe Venture Studio</div>
+      <div class="sidebar-bottom"><div style="cursor:pointer;color:rgba(255,255,255,0.3);margin-bottom:8px" onclick="showBrandPwChange()">비밀번호 변경</div><div style="cursor:pointer;color:rgba(255,255,255,0.3);margin-bottom:8px" onclick="switchTab('landing')">← 로그아웃</div>Walmart Entry Program<br>by 3Stripe Venture Studio</div>
     </div>
     <div class="dash-main">
       <div class="dash-topbar"><div class="dash-title"><h2 id="locked-topbar-name">-</h2><p>신청서 접수 완료 · 심사 진행 중</p></div><div class="dash-actions"><div class="dash-avatar" id="locked-avatar">--</div></div></div>
@@ -2503,8 +2548,22 @@ function showAdminModal() {
 function hideAdminModal() {
   document.getElementById('admin-modal').classList.remove('show');
 }
-function checkAdminPw() {
+async function checkAdminPw() {
   const pw = document.getElementById('admin-pw-input').value;
+  // Try Supabase Auth first (if email is provided)
+  var emailInput = document.getElementById('admin-pw-email');
+  if (emailInput && emailInput.value && supabase) {
+    try {
+      var authRes = await supabase.auth.signInWithPassword({ email: emailInput.value.trim(), password: pw });
+      if (authRes.data && authRes.data.user) {
+        _currentAdminUser = authRes.data.user;
+        hideAdminModal();
+        switchTab('admin');
+        return;
+      }
+    } catch(e) {}
+  }
+  // Fallback: simple password
   if (pw === ADMIN_PW) {
     hideAdminModal();
     switchTab('admin');
@@ -2527,19 +2586,34 @@ function handleLogin() {
     return;
   }
 
-  if (role === 'admin') {
-    if (pw === ADMIN_PW) {
-      switchTab('admin');
-    } else {
-      alert('관리자 비밀번호가 올바르지 않습니다.');
-    }
-  } else if (role === 'walmart') {
-    switchTab('walmart');
+  if (role === 'admin' || role === 'walmart') {
+    loginAdmin(email, pw, role);
   } else {
-    // 브랜드 기업 — DB 인증
     loginBrand(email, pw);
   }
 }
+
+async function loginAdmin(email, pw, role) {
+  // Try Supabase Auth first
+  if (supabase) {
+    try {
+      var authRes = await supabase.auth.signInWithPassword({ email: email, password: pw });
+      if (authRes.data && authRes.data.user) {
+        _currentAdminUser = authRes.data.user;
+        switchTab(role === 'walmart' ? 'walmart' : 'admin');
+        return;
+      }
+    } catch(e) { console.log('Supabase Auth not configured, falling back to password check'); }
+  }
+  // Fallback to simple password check (for backward compatibility)
+  if (pw === ADMIN_PW) {
+    switchTab(role === 'walmart' ? 'walmart' : 'admin');
+  } else {
+    alert('이메일 또는 비밀번호가 올바르지 않습니다.');
+  }
+}
+
+var _currentAdminUser = null;
 
 async function loginBrand(email, pw) {
   if (!supabase) { alert('시스템 오류. 잠시 후 다시 시도해주세요.'); return; }
@@ -2557,6 +2631,7 @@ async function loginBrand(email, pw) {
     var name = brand.name_ko || brand.name_en;
     var icon = (brand.name_en || brand.name_ko || '?')[0].toUpperCase();
     var ceo = brand.ceo_name || '';
+    _currentBrandEmail = email;
     setPortalType(type, name, icon, ceo);
     switchTab('portal');
   } else {
@@ -2781,6 +2856,7 @@ function submitApply() {
     if (saved) {
       console.log('Saved to DB, id:', saved.id);
       document.getElementById('apply-success-modal').classList.add('show');
+      sendNotification('application_submitted', { message: (saved.brand_name_ko || saved.brand_name_en || '새 기업') + '이(가) 신청서를 제출했습니다.', appId: saved.id });
     } else {
       // DB failed, try Formspree as fallback
       return fetch('https://formspree.io/f/xqewlbry', {
@@ -2863,6 +2939,7 @@ function showAdminView(view) {
   var t = titles[view] || titles.dashboard;
   topTitle.textContent = t[0];
   topSub.textContent = t[1];
+  if (view === 'dashboard') renderAdminDashboard();
   if (view === 'contracts') { renderAdminContracts(); loadApprovedBrandsForContract(); }
   if (view === 'review') renderAdminReview();
 }
@@ -3333,6 +3410,11 @@ function confirmSign(role) {
 
   _pendingSigs[role] = { sig: null, seal: null };
   renderContractPage(contractId);
+  var roleName = { brand: 'Brand', admin: '3SVS', walmart: 'Startup Junkie' }[role] || role;
+  sendNotification('contract_signed', { message: roleName + '이(가) ' + contractId + ' 계약서에 서명했습니다.', contractId: contractId, role: role });
+  if (c.status === 'completed') {
+    sendNotification('contract_completed', { message: contractId + ' 계약이 3자 서명 완료되었습니다!', contractId: contractId });
+  }
   var msg = 'Signature submitted successfully!';
   if (c.status === 'completed') msg += '\n\n✅ All 3 parties have signed. Contract is fully executed!';
   alert(msg);
@@ -3412,9 +3494,16 @@ function renderContractPage(contractId) {
   var banner = document.getElementById('contract-complete-banner');
   if (c.status === 'completed') {
     banner.style.display = '';
-    document.getElementById('contract-complete-timestamp').textContent = 'Executed: ' + c.signatures.walmart.date;
+    // Find the latest signature date as execution date
+    var allDates = [c.signatures.brand.date, c.signatures.admin.date, c.signatures.walmart.date].filter(Boolean).sort();
+    var executionDate = allDates[allDates.length - 1] || '';
+    document.getElementById('contract-complete-timestamp').textContent = 'Executed: ' + executionDate;
+    var printWrap = document.getElementById('contract-print-btn-wrap');
+    if (printWrap) printWrap.style.display = '';
   } else {
     banner.style.display = 'none';
+    var printWrap = document.getElementById('contract-print-btn-wrap');
+    if (printWrap) printWrap.style.display = 'none';
   }
 }
 
@@ -3547,6 +3636,10 @@ function createContract() {
       walmart: { signed: false, name: '', date: '', sig: null, seal: null }
     }
   };
+  // Apply any template edits
+  if (Object.keys(_templateEdits).length > 0) {
+    localContract.templateEdits = JSON.parse(JSON.stringify(_templateEdits));
+  }
   contracts.push(localContract);
 
   // Save to DB
@@ -3564,6 +3657,7 @@ function createContract() {
   brandSel.value = '';
   renderAdminContracts();
   var link = window.location.origin + window.location.pathname + '?c=' + newId + '&brand=' + encodeURIComponent(brandValue);
+  sendNotification('contract_created', { message: brandNameKo + ' 계약서(' + newId + ')가 생성되었습니다.', contractId: newId, brandName: brandNameKo });
   prompt('계약서가 생성되었습니다. 아래 링크를 복사하여 관계자에게 전달하세요:', link);
 }
 
@@ -3625,7 +3719,7 @@ function _renderAdminContractsList() {
       '<div class="contract-signers">' +
       renderSignerPill(c, 'brand', 'Brand') +
       renderSignerPill(c, 'admin', '3SVS') +
-      renderSignerPill(c, 'walmart', 'Walmart') +
+      renderSignerPill(c, 'walmart', 'Startup Junkie') +
       '</div>' +
       '<div style="background:rgba(255,255,255,.04);border-radius:8px;padding:8px 12px;margin:8px 0;display:flex;align-items:center;gap:8px">' +
       '<span style="font-family:var(--mono);font-size:11px;opacity:.4;flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">' + link + '</span>' +
@@ -3681,10 +3775,10 @@ function getWmContractsHtml(brandId) {
       '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">' +
       '<div><h4 style="margin:0;font-size:15px">' + tpl.title + '</h4><div style="font-size:12px;opacity:.5;margin-top:2px">' + c.id + ' · ' + c.createdAt + '</div></div>' +
       '<span class="contract-badge ' + status + '">' + getContractStatusLabel(status) + '</span></div>' +
-      '<div class="contract-signers">' + renderSignerPill(c,'brand','Brand') + renderSignerPill(c,'admin','3SVS') + renderSignerPill(c,'walmart','Walmart') + '</div>' +
+      '<div class="contract-signers">' + renderSignerPill(c,'brand','Brand') + renderSignerPill(c,'admin','3SVS') + renderSignerPill(c,'walmart','Startup Junkie') + '</div>' +
       '<div style="display:flex;gap:8px">';
     if (!c.signatures.walmart.signed) {
-      html += '<button onclick="openContractPageAsAdmin(\'' + c.id + '\')" style="background:#8fc5f2;color:#000;border:none;padding:6px 16px;border-radius:6px;font-size:13px;font-weight:600;cursor:pointer">Sign as Walmart</button>';
+      html += '<button onclick="openContractPageAsAdmin(\'' + c.id + '\')" style="background:#8fc5f2;color:#000;border:none;padding:6px 16px;border-radius:6px;font-size:13px;font-weight:600;cursor:pointer">Sign as Startup Junkie</button>';
     }
     html += '<button onclick="previewContract(\'' + c.id + '\')" style="background:rgba(255,255,255,.08);color:#fff;border:none;padding:6px 16px;border-radius:6px;font-size:13px;cursor:pointer">View Contract</button></div></div>';
   });
@@ -3836,6 +3930,12 @@ async function approveApplication(appId) {
   renderAdminReview();
 
   // Show credentials to admin
+  sendNotification('application_approved', {
+    message: (app.brand_name_ko || app.brand_name_en) + ' 승인 완료. 로그인 이메일: ' + loginEmail,
+    brandName: app.brand_name_ko || app.brand_name_en,
+    email: loginEmail,
+    tempPassword: tempPw
+  });
   alert('✅ 승인 완료!\n\n' +
     '기업: ' + (app.brand_name_ko || app.brand_name_en) + '\n' +
     '로그인 이메일: ' + loginEmail + '\n' +
@@ -3852,10 +3952,418 @@ async function rejectApplication(appId) {
       admin_notes: reason,
       reviewed_at: new Date().toISOString()
     }).eq('id', appId);
+    sendNotification('application_rejected', { message: '신청이 반려되었습니다. 사유: ' + (reason || '미지정'), appId: appId });
   }
   renderAdminReview();
 }
 
+
+
+// ─── BRAND PASSWORD CHANGE ───
+var _currentBrandEmail = null;
+
+function showBrandPwChange() {
+  document.getElementById('brand-pw-modal').style.display = 'flex';
+  document.getElementById('brand-cur-pw').value = '';
+  document.getElementById('brand-new-pw').value = '';
+  document.getElementById('brand-cf-pw').value = '';
+  document.getElementById('brand-pw-error').style.display = 'none';
+}
+
+function hideBrandPwModal() {
+  document.getElementById('brand-pw-modal').style.display = 'none';
+}
+
+async function submitBrandPwChange() {
+  var curPw = document.getElementById('brand-cur-pw').value;
+  var newPw = document.getElementById('brand-new-pw').value;
+  var cfPw = document.getElementById('brand-cf-pw').value;
+  var errEl = document.getElementById('brand-pw-error');
+
+  if (!curPw || !newPw || !cfPw) {
+    errEl.textContent = '모든 필드를 입력해주세요.';
+    errEl.style.display = 'block';
+    return;
+  }
+  if (newPw.length < 4) {
+    errEl.textContent = '새 비밀번호는 4자 이상이어야 합니다.';
+    errEl.style.display = 'block';
+    return;
+  }
+  if (newPw !== cfPw) {
+    errEl.textContent = '새 비밀번호가 일치하지 않습니다.';
+    errEl.style.display = 'block';
+    return;
+  }
+  if (!_currentBrandEmail || !supabase) {
+    errEl.textContent = '시스템 오류. 다시 로그인해주세요.';
+    errEl.style.display = 'block';
+    return;
+  }
+
+  // Verify current password
+  var check = await supabase.from('wm_brands')
+    .select('id')
+    .eq('portal_email', _currentBrandEmail)
+    .eq('portal_password', curPw)
+    .single();
+
+  if (!check.data) {
+    errEl.textContent = '현재 비밀번호가 올바르지 않습니다.';
+    errEl.style.display = 'block';
+    return;
+  }
+
+  // Update password
+  var res = await supabase.from('wm_brands')
+    .update({ portal_password: newPw })
+    .eq('portal_email', _currentBrandEmail);
+
+  if (res.error) {
+    errEl.textContent = '변경 실패: ' + res.error.message;
+    errEl.style.display = 'block';
+    return;
+  }
+
+  hideBrandPwModal();
+  alert('비밀번호가 변경되었습니다. 다음 로그인부터 새 비밀번호를 사용하세요.');
+}
+
+
+// ─── CONTRACT PDF PRINT ───
+function printContract() {
+  // Show execution info for printing
+  var execInfo = document.getElementById('contract-execution-info');
+  var execText = document.getElementById('exec-info-text');
+  var c = contracts.find(function(x){ return x.id === _currentContractPageId; });
+  if (c && c.status === 'completed') {
+    var sigDates = [c.signatures.brand.date, c.signatures.admin.date, c.signatures.walmart.date].filter(Boolean);
+    var lastDate = sigDates.sort().pop() || '';
+    var brandName = wmBrandData[c.brandId] ? wmBrandData[c.brandId].name : c.brandId;
+    execText.innerHTML = '<div style="margin-bottom:8px">본 계약서는 아래 3자의 전자서명이 모두 완료되어 법적 효력을 가집니다.</div>' +
+      '<div style="margin-bottom:4px">This Agreement has been duly executed by all three parties via electronic signature.</div>' +
+      '<div style="margin-top:12px;font-weight:600">서명 완료일 / Date of Full Execution: ' + lastDate + '</div>' +
+      '<div style="margin-top:8px;font-size:12px;opacity:.6">계약서 ID: ' + c.id + ' | 브랜드: ' + brandName + '</div>' +
+      '<div style="margin-top:4px;font-size:12px;opacity:.6">Brand: ' + c.signatures.brand.name + ' (' + c.signatures.brand.date + ')</div>' +
+      '<div style="font-size:12px;opacity:.6">3SVS: ' + c.signatures.admin.name + ' (' + c.signatures.admin.date + ')</div>' +
+      '<div style="font-size:12px;opacity:.6">Startup Junkie: ' + c.signatures.walmart.name + ' (' + c.signatures.walmart.date + ')</div>';
+    execInfo.style.display = 'block';
+  }
+  window.print();
+  // After print dialog closes
+  setTimeout(function() {
+    if (execInfo) execInfo.style.display = 'none';
+  }, 1000);
+}
+
+
+// ─── ADMIN DASHBOARD REAL-TIME STATS ───
+async function renderAdminDashboard() {
+  if (!supabase) return;
+
+  // Load brands
+  var brandsRes = await supabase.from('wm_brands').select('*').order('created_at', { ascending: false });
+  var brands = brandsRes.data || [];
+
+  // Load applications
+  var appsRes = await supabase.from('wm_applications').select('*').order('created_at', { ascending: false });
+  var apps = appsRes.data || [];
+
+  // Load contracts
+  var contractsRes = await supabase.from('wm_contracts').select('*').order('created_at', { ascending: false });
+  var ctrs = contractsRes.data || [];
+
+  var pendingApps = apps.filter(function(a) { return a.status === 'submitted' || a.status === 'reviewing'; });
+  var completedContracts = ctrs.filter(function(c) { return c.sig_brand_signed && c.sig_admin_signed && c.sig_walmart_signed; });
+  var partialContracts = ctrs.filter(function(c) { return (c.sig_brand_signed || c.sig_admin_signed || c.sig_walmart_signed) && !(c.sig_brand_signed && c.sig_admin_signed && c.sig_walmart_signed); });
+
+  // Update stat cards
+  document.getElementById('dash-stat-brands').textContent = brands.length;
+  document.getElementById('dash-stat-brands-sub').textContent = brands.filter(function(b) { return b.portal_active; }).length + ' active';
+
+  document.getElementById('dash-stat-pending').textContent = pendingApps.length;
+  document.getElementById('dash-stat-pending-sub').textContent = pendingApps.length > 0 ? 'requires review' : 'all clear';
+  document.getElementById('dash-stat-pending-sub').className = pendingApps.length > 0 ? 'change warn' : 'change';
+
+  document.getElementById('dash-stat-contracts').textContent = ctrs.length;
+  document.getElementById('dash-stat-contracts-sub').textContent = partialContracts.length + ' in progress';
+
+  document.getElementById('dash-stat-completed').textContent = completedContracts.length;
+  document.getElementById('dash-stat-completed-sub').textContent = completedContracts.length > 0 ? completedContracts.length + ' fully executed' : 'none yet';
+
+  // Update sidebar badges
+  var reviewBadge = document.querySelector('#admin-nav-review .sidebar-badge');
+  if (reviewBadge) reviewBadge.textContent = pendingApps.length;
+  var brandBadge = document.querySelector('#admin-nav-brands .sidebar-badge');
+  if (brandBadge) brandBadge.textContent = brands.length;
+
+  // Brand pipeline
+  var pipelineEl = document.getElementById('admin-brand-pipeline');
+  var brandCountEl = document.getElementById('admin-brand-count');
+  brandCountEl.textContent = brands.length + ' brands';
+
+  if (brands.length === 0) {
+    pipelineEl.innerHTML = '<div style="text-align:center;padding:40px 0;color:rgba(255,255,255,0.2);font-size:14px">등록된 브랜드가 없습니다.<br><span style="font-size:12px">접수 심사에서 신청을 승인하면 여기에 표시됩니다.</span></div>';
+  } else {
+    var pHtml = '';
+    brands.forEach(function(b) {
+      var initial = (b.name_ko || b.name_en || '?')[0];
+      var phaseLbl = (b.current_phase || 'contract').replace('phase', 'Phase ');
+      var typeBadge = b.apply_type === 'voucher' ? '<span style="font-size:10px;padding:2px 8px;border-radius:999px;background:rgba(0,135,90,0.15);color:var(--lime);margin-left:6px">바우처</span>' : '<span style="font-size:10px;padding:2px 8px;border-radius:999px;background:rgba(0,113,220,0.15);color:var(--accent);margin-left:6px">직접참여</span>';
+      var statusDot = b.portal_active ? '<div style="width:6px;height:6px;border-radius:50%;background:#00d68f"></div>' : '<div style="width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,0.15)"></div>';
+      pHtml += '<div class="brand-card" style="margin-bottom:8px"><div class="brand-header" style="margin-bottom:0"><div class="brand-info"><div class="brand-icon">' + initial + '</div><div><div class="brand-name">' + (b.name_ko || b.name_en) + typeBadge + '</div><div class="brand-sub">' + phaseLbl + ' · ' + (b.portal_email || '') + '</div></div></div>' + statusDot + '</div></div>';
+    });
+    pipelineEl.innerHTML = pHtml;
+  }
+
+  // Recent activity (from applications and contracts)
+  var notiEl = document.getElementById('admin-noti-list');
+  var notiCountEl = document.getElementById('admin-noti-count');
+  var activities = [];
+
+  apps.slice(0, 5).forEach(function(a) {
+    var date = a.created_at ? a.created_at.slice(0, 10) : '';
+    var icon = a.status === 'approved' ? '✅' : a.status === 'rejected' ? '❌' : '📋';
+    var label = a.status === 'approved' ? '승인됨' : a.status === 'rejected' ? '반려' : '신규 접수';
+    activities.push({ date: a.created_at || '', html: '<div style="padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.04);font-size:13px"><span style="margin-right:8px">' + icon + '</span>' + (a.brand_name_ko || a.brand_name_en) + ' — ' + label + '<div style="font-size:11px;opacity:.3;margin-top:2px">' + date + '</div></div>' });
+  });
+
+  ctrs.slice(0, 3).forEach(function(c) {
+    var date = c.created_at ? c.created_at.slice(0, 10) : '';
+    var signCount = [c.sig_brand_signed, c.sig_admin_signed, c.sig_walmart_signed].filter(Boolean).length;
+    var icon = signCount === 3 ? '📝' : '✍️';
+    var label = signCount === 3 ? '서명 완료' : signCount + '/3 서명';
+    activities.push({ date: c.created_at || '', html: '<div style="padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.04);font-size:13px"><span style="margin-right:8px">' + icon + '</span>' + (c.brand_name_ko || c.id) + ' — ' + label + '<div style="font-size:11px;opacity:.3;margin-top:2px">' + date + '</div></div>' });
+  });
+
+  activities.sort(function(a, b) { return b.date.localeCompare(a.date); });
+  notiCountEl.textContent = activities.length;
+
+  if (activities.length === 0) {
+    notiEl.innerHTML = '<div style="text-align:center;padding:24px 0;color:rgba(255,255,255,0.2);font-size:13px">최근 활동이 없습니다.</div>';
+  } else {
+    notiEl.innerHTML = activities.slice(0, 5).map(function(a) { return a.html; }).join('');
+  }
+
+  // Contract summary
+  var summaryEl = document.getElementById('admin-contract-summary');
+  if (ctrs.length === 0) {
+    summaryEl.innerHTML = '<div style="text-align:center;padding:24px 0;color:rgba(255,255,255,0.2);font-size:13px">계약이 없습니다.</div>';
+  } else {
+    summaryEl.innerHTML = '<div style="padding:4px 0">' +
+      '<div style="display:flex;justify-content:space-between;padding:6px 0;font-size:13px;border-bottom:1px solid rgba(255,255,255,0.04)"><span style="opacity:.5">전체 계약</span><span style="font-weight:600">' + ctrs.length + '</span></div>' +
+      '<div style="display:flex;justify-content:space-between;padding:6px 0;font-size:13px;border-bottom:1px solid rgba(255,255,255,0.04)"><span style="opacity:.5">서명 대기</span><span style="color:#f0ad4e;font-weight:600">' + (ctrs.length - completedContracts.length) + '</span></div>' +
+      '<div style="display:flex;justify-content:space-between;padding:6px 0;font-size:13px"><span style="opacity:.5">완료</span><span style="color:#00d68f;font-weight:600">' + completedContracts.length + '</span></div></div>';
+  }
+
+  // Phase distribution
+  var phaseEl = document.getElementById('admin-phase-dist');
+  if (brands.length === 0) {
+    phaseEl.innerHTML = '<div style="text-align:center;padding:24px 0;color:rgba(255,255,255,0.2);font-size:13px">브랜드가 없습니다.</div>';
+  } else {
+    var phases = { contract: 0, phase1: 0, phase2: 0, phase3: 0, completed: 0 };
+    brands.forEach(function(b) { var p = b.current_phase || 'contract'; if (phases[p] !== undefined) phases[p]++; else phases.contract++; });
+    var phaseLabels = { contract: '계약', phase1: 'Phase 1', phase2: 'Phase 2', phase3: 'Phase 3', completed: '완료' };
+    var phaseColors = { contract: 'rgba(255,255,255,0.15)', phase1: 'var(--accent)', phase2: '#f0ad4e', phase3: '#00d68f', completed: '#98fe00' };
+    var phHtml = '<div style="padding:4px 0">';
+    for (var key in phases) {
+      var pct = brands.length > 0 ? Math.round(phases[key] / brands.length * 100) : 0;
+      phHtml += '<div style="display:flex;align-items:center;gap:8px;padding:4px 0;font-size:13px"><span style="width:60px;opacity:.5">' + phaseLabels[key] + '</span><div style="flex:1;height:6px;background:rgba(255,255,255,0.06);border-radius:3px;overflow:hidden"><div style="width:' + pct + '%;height:100%;background:' + phaseColors[key] + ';border-radius:3px"></div></div><span style="width:24px;text-align:right;font-weight:600;font-size:12px">' + phases[key] + '</span></div>';
+    }
+    phHtml += '</div>';
+    phaseEl.innerHTML = phHtml;
+  }
+}
+
+
+// ─── CONTRACT TEMPLATE CUSTOMIZATION ───
+var _templateEdits = {};
+
+function toggleTemplateEditor() {
+  var editor = document.getElementById('template-editor');
+  var btn = document.getElementById('template-edit-toggle');
+  if (editor.style.display === 'none') {
+    editor.style.display = '';
+    btn.textContent = '조항 편집 ▲';
+    renderTemplateEditor();
+  } else {
+    editor.style.display = 'none';
+    btn.textContent = '조항 편집 ▼';
+  }
+}
+
+function renderTemplateEditor() {
+  var typeSel = document.getElementById('contract-type-select');
+  var type = typeSel ? typeSel.value : 'service';
+  var tpl = contractTemplates[type];
+  if (!tpl) return;
+
+  var html = '<div style="margin-bottom:12px;font-size:14px;font-weight:600;color:#fff">' + tpl.titleKo + '</div>';
+  tpl.clauses.forEach(function(cl, idx) {
+    var editKey = type + '_clause_' + idx;
+    var editedText = _templateEdits[editKey] || '';
+    var isEdited = !!editedText;
+    html += '<div style="margin-bottom:12px;border-bottom:1px solid rgba(255,255,255,0.04);padding-bottom:12px">' +
+      '<div style="font-size:12px;font-weight:600;color:' + (isEdited ? '#98fe00' : 'rgba(255,255,255,0.5)') + ';margin-bottom:6px;display:flex;justify-content:space-between;align-items:center">' +
+      '<span>' + cl.title.split('/')[0].trim() + (isEdited ? ' ✎' : '') + '</span>' +
+      '<button onclick="editTemplateClause('' + type + '',' + idx + ')" style="background:rgba(255,255,255,0.06);color:rgba(255,255,255,0.4);border:none;padding:3px 10px;border-radius:4px;font-size:11px;cursor:pointer">' + (isEdited ? '수정됨' : '편집') + '</button>' +
+      '</div>' +
+      '<div style="font-size:11px;color:rgba(255,255,255,0.2);line-height:1.5;max-height:60px;overflow:hidden">' + (editedText || cl.text).slice(0, 200) + '...</div></div>';
+  });
+  document.getElementById('template-editor-content').innerHTML = html;
+}
+
+function editTemplateClause(type, idx) {
+  var tpl = contractTemplates[type];
+  var cl = tpl.clauses[idx];
+  var editKey = type + '_clause_' + idx;
+  var currentText = _templateEdits[editKey] || cl.text;
+
+  var newText = prompt('조항 내용을 수정하세요:\n\n' + cl.title, currentText);
+  if (newText !== null && newText !== cl.text) {
+    _templateEdits[editKey] = newText;
+  } else if (newText === cl.text) {
+    delete _templateEdits[editKey];
+  }
+  renderTemplateEditor();
+}
+
+function resetTemplateEdits() {
+  _templateEdits = {};
+  renderTemplateEditor();
+  alert('모든 조항이 기본값으로 복원되었습니다.');
+}
+
+// Update contract type select to refresh editor
+document.addEventListener('DOMContentLoaded', function() {
+  var typeSel = document.getElementById('contract-type-select');
+  if (typeSel) {
+    typeSel.addEventListener('change', function() {
+      if (document.getElementById('template-editor').style.display !== 'none') {
+        renderTemplateEditor();
+      }
+    });
+  }
+});
+
+
+// ─── ADMIN LOGOUT ───
+async function logoutAdmin() {
+  if (supabase && _currentAdminUser) {
+    await supabase.auth.signOut();
+    _currentAdminUser = null;
+  }
+  switchTab('landing');
+}
+
+
+// ─── NOTIFICATION SYSTEM ───
+var EDGE_FUNCTION_URL = SUPABASE_URL + '/functions/v1/send-notification';
+
+async function sendNotification(type, data) {
+  // In-app notification
+  addAdminNotification(type, data);
+
+  // Email notification via Edge Function (if configured)
+  try {
+    var payload = {
+      type: type,
+      data: data,
+      timestamp: new Date().toISOString()
+    };
+
+    var response = await fetch(EDGE_FUNCTION_URL, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + SUPABASE_ANON_KEY
+      },
+      body: JSON.stringify(payload)
+    });
+
+    if (response.ok) {
+      console.log('Notification sent:', type);
+    } else {
+      console.log('Edge Function not configured yet - notification saved locally only');
+    }
+  } catch(e) {
+    console.log('Notification edge function unavailable:', e.message);
+  }
+}
+
+// In-app notification storage (localStorage fallback)
+var _notifications = [];
+
+function addAdminNotification(type, data) {
+  var now = new Date();
+  var noti = {
+    id: 'n-' + Date.now(),
+    type: type,
+    data: data,
+    timestamp: now.toISOString(),
+    read: false
+  };
+
+  var typeConfig = {
+    'application_submitted': { icon: '📋', title: '새 신청 접수', color: 'var(--accent)' },
+    'application_approved': { icon: '✅', title: '신청 승인 완료', color: '#00d68f' },
+    'application_rejected': { icon: '❌', title: '신청 반려', color: '#ff3b30' },
+    'contract_created': { icon: '📝', title: '계약서 생성', color: 'var(--accent)' },
+    'contract_signed': { icon: '✍️', title: '계약서 서명', color: '#f0ad4e' },
+    'contract_completed': { icon: '🎉', title: '계약 체결 완료', color: '#98fe00' },
+    'brand_login': { icon: '🔑', title: '브랜드 로그인', color: 'rgba(255,255,255,0.3)' }
+  };
+
+  noti.config = typeConfig[type] || { icon: '🔔', title: type, color: 'rgba(255,255,255,0.3)' };
+  _notifications.unshift(noti);
+
+  // Keep max 50
+  if (_notifications.length > 50) _notifications = _notifications.slice(0, 50);
+
+  updateNotiDot();
+  showNotiToast(noti);
+}
+
+function updateNotiDot() {
+  var unread = _notifications.filter(function(n) { return !n.read; }).length;
+  var dots = document.querySelectorAll('.noti-dot');
+  dots.forEach(function(dot) {
+    if (unread > 0) {
+      dot.style.position = 'relative';
+      var badge = dot.querySelector('.noti-badge');
+      if (!badge) {
+        badge = document.createElement('span');
+        badge.className = 'noti-badge';
+        badge.style.cssText = 'position:absolute;top:-4px;right:-4px;width:16px;height:16px;border-radius:50%;background:#ff3b30;color:#fff;font-size:10px;display:flex;align-items:center;justify-content:center;font-weight:600';
+        dot.appendChild(badge);
+      }
+      badge.textContent = unread > 9 ? '9+' : unread;
+    } else {
+      var badge = dot.querySelector('.noti-badge');
+      if (badge) badge.remove();
+    }
+  });
+}
+
+function showNotiToast(noti) {
+  var toast = document.createElement('div');
+  toast.style.cssText = 'position:fixed;top:20px;right:20px;z-index:99999;background:#1a1a2e;border:1px solid rgba(255,255,255,0.1);border-left:3px solid ' + noti.config.color + ';border-radius:8px;padding:14px 20px;min-width:280px;max-width:400px;box-shadow:0 8px 32px rgba(0,0,0,0.3);animation:slideInRight .3s ease;font-family:var(--font)';
+  toast.innerHTML = '<div style="display:flex;align-items:start;gap:10px"><span style="font-size:18px">' + noti.config.icon + '</span><div><div style="font-size:13px;font-weight:600;color:#fff;margin-bottom:2px">' + noti.config.title + '</div><div style="font-size:12px;color:rgba(255,255,255,0.4)">' + (noti.data.message || '') + '</div></div></div>';
+  document.body.appendChild(toast);
+  setTimeout(function() {
+    toast.style.opacity = '0';
+    toast.style.transform = 'translateX(20px)';
+    toast.style.transition = 'all .3s ease';
+    setTimeout(function() { toast.remove(); }, 300);
+  }, 4000);
+}
+
+// Add notification animation CSS
+(function() {
+  var style = document.createElement('style');
+  style.textContent = '@keyframes slideInRight{from{opacity:0;transform:translateX(40px)}to{opacity:1;transform:translateX(0)}}';
+  document.head.appendChild(style);
+})();
 
 </script>
 
@@ -3932,7 +4440,7 @@ async function rejectApplication(appId) {
     <!-- Signer: Walmart -->
     <div class="sig-section" id="sig-section-walmart">
       <div class="sig-section-header">
-        <h4>Walmart Buyer (월마트 바이어)</h4>
+        <h4>Startup Junkie Consulting, LLC</h4>
         <span class="contract-badge pending" id="sig-status-walmart">Pending</span>
       </div>
       <div class="sig-row">
@@ -3945,7 +4453,7 @@ async function rejectApplication(appId) {
           </div>
         </div>
         <div class="sig-slot">
-          <div class="sig-slot-label">Company Seal / Title</div>
+          <div class="sig-slot-label">Company Seal (법인 도장)</div>
           <div class="sig-upload-zone" id="sig-zone-walmart-seal">
             <div class="sig-upload-icon">🔴</div>
             <div class="sig-upload-label">Click or drag to upload seal image</div>
@@ -3953,7 +4461,7 @@ async function rejectApplication(appId) {
           </div>
         </div>
       </div>
-      <button onclick="confirmSign('walmart')" id="sig-confirm-walmart" style="margin-top:16px;width:100%;background:#8fc5f2;color:#000;border:none;padding:12px;border-radius:8px;font-weight:600;font-size:15px;cursor:pointer">Sign as Walmart Buyer</button>
+      <button onclick="confirmSign('walmart')" id="sig-confirm-walmart" style="margin-top:16px;width:100%;background:#8fc5f2;color:#000;border:none;padding:12px;border-radius:8px;font-weight:600;font-size:15px;cursor:pointer">Sign as Startup Junkie</button>
     </div>
 
     <!-- Completion Banner -->
@@ -3961,6 +4469,20 @@ async function rejectApplication(appId) {
       <h3>All Parties Have Signed</h3>
       <p>This contract is fully executed. All parties will receive a confirmation.</p>
       <div style="margin-top:12px;font-family:var(--mono);font-size:12px;opacity:.4" id="contract-complete-timestamp"></div>
+    </div>
+
+    <!-- Contract Execution Info (print only) -->
+    <div id="contract-execution-info" style="display:none">
+      <div class="exec-title">계약 체결 증명 / Certificate of Execution</div>
+      <div id="exec-info-text"></div>
+    </div>
+
+    <!-- Print/Download Button -->
+    <div id="contract-print-btn-wrap" style="margin-top:24px;text-align:center;display:none">
+      <button onclick="printContract()" style="background:#98fe00;color:#000;border:none;padding:14px 40px;border-radius:8px;font-weight:600;font-size:15px;cursor:pointer;display:inline-flex;align-items:center;gap:8px">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9V2h12v7"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+        계약서 PDF 다운로드 / 인쇄
+      </button>
     </div>
   </div>
 </div>
@@ -3980,6 +4502,30 @@ async function rejectApplication(appId) {
       <button class="sig-btn-cancel" onclick="closeSigModal()">Cancel</button>
       <button class="sig-btn-sign" id="sig-submit-btn" onclick="submitSignature()">Sign & Confirm</button>
     </div>
+  </div>
+</div>
+
+
+<!-- Brand Password Change Modal -->
+<div id="brand-pw-modal" style="display:none;position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,0.7);backdrop-filter:blur(8px);display:none;align-items:center;justify-content:center">
+  <div style="background:#1a1a2e;border:1px solid rgba(255,255,255,0.1);border-radius:16px;padding:32px;max-width:420px;width:90%;position:relative">
+    <button onclick="hideBrandPwModal()" style="position:absolute;top:12px;right:12px;background:none;border:none;color:rgba(255,255,255,0.3);font-size:20px;cursor:pointer">&times;</button>
+    <h3 style="color:#fff;font-size:18px;margin-bottom:4px;letter-spacing:-0.5px">비밀번호 변경</h3>
+    <p style="color:rgba(255,255,255,0.3);font-size:13px;margin-bottom:24px">포탈 로그인 비밀번호를 변경합니다.</p>
+    <div style="margin-bottom:16px">
+      <label style="display:block;font-size:12px;color:rgba(255,255,255,0.4);margin-bottom:6px;font-family:var(--mono)">현재 비밀번호</label>
+      <input type="password" id="brand-cur-pw" style="width:100%;padding:10px 14px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.12);border-radius:8px;color:#fff;font-size:14px;box-sizing:border-box" placeholder="현재 비밀번호 입력">
+    </div>
+    <div style="margin-bottom:16px">
+      <label style="display:block;font-size:12px;color:rgba(255,255,255,0.4);margin-bottom:6px;font-family:var(--mono)">새 비밀번호</label>
+      <input type="password" id="brand-new-pw" style="width:100%;padding:10px 14px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.12);border-radius:8px;color:#fff;font-size:14px;box-sizing:border-box" placeholder="4자 이상">
+    </div>
+    <div style="margin-bottom:24px">
+      <label style="display:block;font-size:12px;color:rgba(255,255,255,0.4);margin-bottom:6px;font-family:var(--mono)">새 비밀번호 확인</label>
+      <input type="password" id="brand-cf-pw" style="width:100%;padding:10px 14px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.12);border-radius:8px;color:#fff;font-size:14px;box-sizing:border-box" placeholder="비밀번호 재입력">
+    </div>
+    <div id="brand-pw-error" style="display:none;color:#ff3b30;font-size:13px;margin-bottom:12px"></div>
+    <button onclick="submitBrandPwChange()" style="width:100%;background:#98fe00;color:#000;border:none;padding:12px;border-radius:8px;font-weight:600;font-size:15px;cursor:pointer">변경하기</button>
   </div>
 </div>
 
