@@ -1520,104 +1520,7 @@ button{cursor:pointer;font-family:var(--font)}
           <p style="font-size:13px;color:rgba(255,255,255,0.3)">신청 기업을 검토하고 참여 유형을 확정한 뒤 승인하세요. 승인된 기업만 전용 포털에 접근할 수 있습니다.</p>
         </div>
 
-        <!-- Review Card 1 -->
-        <div class="review-card">
-          <div class="review-header">
-            <div class="review-info">
-              <div class="brand-icon">H</div>
-              <div>
-                <div class="brand-name">해피코코넛 <span class="brand-badge badge-pending">심사 대기</span></div>
-                <div class="brand-sub">접수일: 2026.04.19 · 신청 유형: 수출바우처</div>
-              </div>
-            </div>
-          </div>
-          <div class="review-body">
-            <div class="review-field"><div class="rf-label">회사명 (영문)</div><div class="rf-value">Happy Coconut Co.</div></div>
-            <div class="review-field"><div class="rf-label">대표자</div><div class="rf-value">이수진</div></div>
-            <div class="review-field"><div class="rf-label">업종</div><div class="rf-value">식품 (코코넛 스낵/음료)</div></div>
-            <div class="review-field"><div class="rf-label">해외 수출 경험</div><div class="rf-value">일본, 대만 (3년)</div></div>
-            <div class="review-field"><div class="rf-label">제품 카테고리</div><div class="rf-value">Snacks & Beverages</div></div>
-            <div class="review-field"><div class="rf-label">바우처 현황</div><div class="rf-value">2026 수출바우처 선정, 잔액 ₩42,000,000</div></div>
-          </div>
-          <div style="font-size:13px;color:rgba(255,255,255,0.25);margin-bottom:12px;font-family:var(--mono);letter-spacing:0.5px">기업 유형 확정</div>
-          <div class="review-type-select">
-            <button class="review-type-btn" onclick="selectReviewType(this,'direct')">
-              <span class="rtb-label">A Type</span>
-              직접 참여 기업
-            </button>
-            <button class="review-type-btn selected" onclick="selectReviewType(this,'voucher')">
-              <span class="rtb-label">B Type</span>
-              수출바우처 연계 기업
-            </button>
-          </div>
-          <div class="review-actions">
-            <button class="btn-approve">승인 — 포털 권한 부여</button>
-            <button class="btn-reject">반려</button>
-          </div>
-        </div>
-
-        <!-- Review Card 2 -->
-        <div class="review-card">
-          <div class="review-header">
-            <div class="review-info">
-              <div class="brand-icon">K</div>
-              <div>
-                <div class="brand-name">K-비건푸드 <span class="brand-badge badge-pending">심사 대기</span></div>
-                <div class="brand-sub">접수일: 2026.04.18 · 신청 유형: 직접참여</div>
-              </div>
-            </div>
-          </div>
-          <div class="review-body">
-            <div class="review-field"><div class="rf-label">회사명 (영문)</div><div class="rf-value">K-Vegan Foods Inc.</div></div>
-            <div class="review-field"><div class="rf-label">대표자</div><div class="rf-value">김민수</div></div>
-            <div class="review-field"><div class="rf-label">업종</div><div class="rf-value">식품 (비건 간편식)</div></div>
-            <div class="review-field"><div class="rf-label">해외 수출 경험</div><div class="rf-value">미국 Amazon FBA (1년)</div></div>
-            <div class="review-field"><div class="rf-label">제품 카테고리</div><div class="rf-value">Frozen / Ready Meals</div></div>
-            <div class="review-field"><div class="rf-label">연 매출 규모</div><div class="rf-value">₩8,500,000,000</div></div>
-          </div>
-          <div style="font-size:13px;color:rgba(255,255,255,0.25);margin-bottom:12px;font-family:var(--mono);letter-spacing:0.5px">기업 유형 확정</div>
-          <div class="review-type-select">
-            <button class="review-type-btn selected" onclick="selectReviewType(this,'direct')">
-              <span class="rtb-label">A Type</span>
-              직접 참여 기업
-            </button>
-            <button class="review-type-btn" onclick="selectReviewType(this,'voucher')">
-              <span class="rtb-label">B Type</span>
-              수출바우처 연계 기업
-            </button>
-          </div>
-          <div class="review-actions">
-            <button class="btn-approve">승인 — 포털 권한 부여</button>
-            <button class="btn-reject">반려</button>
-          </div>
-        </div>
-
-        <!-- Already reviewed -->
-        <div style="margin-top:32px;margin-bottom:12px;font-size:13px;color:rgba(255,255,255,0.2);font-family:var(--mono);letter-spacing:0.5px">최근 처리 완료</div>
-        <div class="brand-card" style="opacity:0.6">
-          <div class="brand-header" style="margin-bottom:0">
-            <div class="brand-info">
-              <div class="brand-icon">G</div>
-              <div>
-                <div class="brand-name">금광메주 <span class="brand-badge badge-active">승인됨</span> <span class="badge-voucher">voucher</span></div>
-                <div class="brand-sub">2026.04.15 접수 → 2026.04.16 승인 · B Type 확정</div>
-              </div>
-            </div>
-            <div style="font-size:12px;color:#00d68f;font-family:var(--mono)">✓ Approved</div>
-          </div>
-        </div>
-        <div class="brand-card" style="opacity:0.6">
-          <div class="brand-header" style="margin-bottom:0">
-            <div class="brand-info">
-              <div class="brand-icon">C</div>
-              <div>
-                <div class="brand-name">셀트리온스킨큐어 <span class="brand-badge badge-active">승인됨</span> <span class="badge-direct">direct</span></div>
-                <div class="brand-sub">2026.04.10 접수 → 2026.04.11 승인 · A Type 확정</div>
-              </div>
-            </div>
-            <div style="font-size:12px;color:#00d68f;font-family:var(--mono)">✓ Approved</div>
-          </div>
-        </div>
+        <div id="admin-review-list"><div style="text-align:center;padding:40px;opacity:.4">Loading applications...</div></div>
       </div>
 
       <!-- ADMIN: CMS View (콘텐츠 관리) -->
@@ -3032,6 +2935,7 @@ function showAdminView(view) {
   topTitle.textContent = t[0];
   topSub.textContent = t[1];
   if (view === 'contracts') renderAdminContracts();
+  if (view === 'review') renderAdminReview();
 }
 // Init admin nav
 document.addEventListener('DOMContentLoaded', () => {
@@ -3840,6 +3744,127 @@ function closeSigModal() { document.getElementById('sig-overlay').style.display 
 
 // Fallback: re-check contract URL after full page load
 window.addEventListener('load', function() { checkContractUrl(); });
+
+
+async function renderAdminReview() {
+  var el = document.getElementById('admin-review-list');
+  if (!el) return;
+  el.innerHTML = '<div style="text-align:center;padding:40px;opacity:.4">Loading...</div>';
+  
+  var apps = await dbLoadApplications();
+  if (!apps || apps.length === 0) {
+    el.innerHTML = '<div style="text-align:center;padding:40px;opacity:.4">접수된 신청이 없습니다.</div>';
+    return;
+  }
+  
+  var pending = apps.filter(function(a){ return a.status === 'submitted' || a.status === 'reviewing'; });
+  var processed = apps.filter(function(a){ return a.status === 'approved' || a.status === 'rejected'; });
+  
+  var html = '';
+  
+  // Pending applications
+  pending.forEach(function(app) {
+    var initial = (app.brand_name_ko || app.brand_name_en || '?')[0];
+    var typeLabel = app.apply_type === 'voucher' ? '수출바우처' : '직접참여';
+    var date = app.created_at ? app.created_at.slice(0,10) : '';
+    
+    html += '<div class="review-card" data-app-id="' + app.id + '">' +
+      '<div class="review-header"><div class="review-info"><div class="brand-icon">' + initial + '</div><div>' +
+      '<div class="brand-name">' + (app.brand_name_ko || app.brand_name_en) + ' <span class="brand-badge badge-pending">심사 대기</span></div>' +
+      '<div class="brand-sub">접수일: ' + date + ' · 신청 유형: ' + typeLabel + '</div>' +
+      '</div></div></div>' +
+      '<div class="review-body">';
+    
+    var fields = [
+      ['회사명 (영문)', app.brand_name_en],
+      ['대표자', app.ceo_name],
+      ['담당자', app.contact_name],
+      ['이메일', app.contact_email],
+      ['전화', app.contact_phone],
+      ['업종', app.industry],
+      ['제품 카테고리', app.product_category],
+      ['제품 설명', app.product_description],
+      ['연 매출', app.annual_revenue],
+      ['수출 경험', app.export_experience],
+      ['홈페이지', app.homepage]
+    ];
+    fields.forEach(function(f) {
+      if (f[1] && f[1].trim()) {
+        html += '<div class="review-field"><div class="rf-label">' + f[0] + '</div><div class="rf-value">' + f[1] + '</div></div>';
+      }
+    });
+    
+    if (app.apply_type === 'voucher' && app.voucher_amount) {
+      html += '<div class="review-field"><div class="rf-label">바우처 잔액</div><div class="rf-value">' + app.voucher_amount + '</div></div>';
+    }
+    
+    html += '</div>' +
+      '<div style="font-size:13px;color:rgba(255,255,255,0.25);margin-bottom:12px;font-family:var(--mono)">기업 유형 확정</div>' +
+      '<div class="review-type-select">' +
+      '<button class="review-type-btn' + (app.apply_type !== 'voucher' ? ' selected' : '') + '" onclick="selectReviewType(this,\'direct\')">' +
+      '<span class="rtb-label">A Type</span>직접 참여 기업</button>' +
+      '<button class="review-type-btn' + (app.apply_type === 'voucher' ? ' selected' : '') + '" onclick="selectReviewType(this,\'voucher\')">' +
+      '<span class="rtb-label">B Type</span>수출바우처 연계 기업</button></div>' +
+      '<div class="review-actions">' +
+      '<button class="btn-approve" onclick="approveApplication(\'' + app.id + '\')">승인 — 포털 권한 부여</button>' +
+      '<button class="btn-reject" onclick="rejectApplication(\'' + app.id + '\')">반려</button></div></div>';
+  });
+  
+  // Processed applications
+  if (processed.length > 0) {
+    html += '<div style="margin-top:32px;margin-bottom:12px;font-size:13px;color:rgba(255,255,255,0.2);font-family:var(--mono)">최근 처리 완료</div>';
+    processed.forEach(function(app) {
+      var initial = (app.brand_name_ko || app.brand_name_en || '?')[0];
+      var statusBadge = app.status === 'approved' ? '<span class="brand-badge badge-active">승인됨</span>' : '<span class="brand-badge badge-rejected" style="background:rgba(255,59,48,.15);color:#ff3b30">반려</span>';
+      var statusIcon = app.status === 'approved' ? '<div style="font-size:12px;color:#00d68f;font-family:var(--mono)">✓ Approved</div>' : '<div style="font-size:12px;color:#ff3b30;font-family:var(--mono)">✗ Rejected</div>';
+      var typeBadge = app.apply_type === 'voucher' ? '<span class="badge-voucher">voucher</span>' : '<span class="badge-direct">direct</span>';
+      var dates = (app.created_at ? app.created_at.slice(0,10) : '') + (app.approved_at ? ' → ' + app.approved_at.slice(0,10) + ' 승인' : '');
+      
+      html += '<div class="brand-card" style="opacity:0.6"><div class="brand-header" style="margin-bottom:0"><div class="brand-info"><div class="brand-icon">' + initial + '</div><div>' +
+        '<div class="brand-name">' + (app.brand_name_ko || app.brand_name_en) + ' ' + statusBadge + ' ' + typeBadge + '</div>' +
+        '<div class="brand-sub">' + dates + '</div></div></div>' + statusIcon + '</div></div>';
+    });
+  }
+  
+  // Update sidebar badge count
+  var badge = document.querySelector('#admin-nav-review .sidebar-badge');
+  if (badge) badge.textContent = pending.length;
+  
+  // Update dashboard stat
+  var statEl = document.querySelector('.stat-card .lbl');
+  document.querySelectorAll('.stat-card').forEach(function(card) {
+    if (card.querySelector('.lbl') && card.querySelector('.lbl').textContent.includes('접수')) {
+      card.querySelector('.val').textContent = pending.length;
+    }
+  });
+  
+  el.innerHTML = html || '<div style="text-align:center;padding:40px;opacity:.4">접수된 신청이 없습니다.</div>';
+}
+
+async function approveApplication(appId) {
+  if (!confirm('이 기업을 승인하시겠습니까?')) return;
+  if (supabase) {
+    await supabase.from('wm_applications').update({
+      status: 'approved',
+      approved_at: new Date().toISOString()
+    }).eq('id', appId);
+  }
+  renderAdminReview();
+}
+
+async function rejectApplication(appId) {
+  var reason = prompt('반려 사유를 입력하세요:');
+  if (reason === null) return;
+  if (supabase) {
+    await supabase.from('wm_applications').update({
+      status: 'rejected',
+      admin_notes: reason,
+      reviewed_at: new Date().toISOString()
+    }).eq('id', appId);
+  }
+  renderAdminReview();
+}
+
 
 </script>
 
