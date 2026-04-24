@@ -2632,15 +2632,40 @@ function handleLogin() {
   } else if (role === 'walmart') {
     switchTab('walmart');
   } else {
-    // 브랜드 기업 — demo: route based on email
-    if (email.includes('locked') || email.includes('pending')) {
+    // 브랜드 기업 — DB 인증
+    loginBrand(email, pw);
+  }
+}
+
+async function loginBrand(email, pw) {
+  if (!supabase) { alert('시스템 오류. 잠시 후 다시 시도해주세요.'); return; }
+
+  var res = await supabase.from('wm_brands')
+    .select('*')
+    .eq('portal_email', email)
+    .eq('portal_password', pw)
+    .eq('portal_active', true)
+    .single();
+
+  if (res.data) {
+    var brand = res.data;
+    var type = brand.apply_type || 'direct';
+    var name = brand.name_ko || brand.name_en;
+    var icon = (brand.name_en || brand.name_ko || '?')[0].toUpperCase();
+    var ceo = brand.ceo_name || '';
+    setPortalType(type, name, icon, ceo);
+    switchTab('portal');
+  } else {
+    // Check if email exists but wrong password or not yet approved
+    var emailCheck = await supabase.from('wm_brands')
+      .select('portal_active')
+      .eq('portal_email', email)
+      .single();
+
+    if (emailCheck.data && !emailCheck.data.portal_active) {
       switchTab('portal-locked');
-    } else if (email.includes('바우처') || email.includes('voucher') || email.includes('btype') || email.includes('금광')) {
-      setPortalType('voucher', '금광메주', 'G', '박병관');
-      switchTab('portal');
     } else {
-      setPortalType('direct', '울타리코리아', 'W', 'Paul Jang');
-      switchTab('portal');
+      alert('이메일 또는 비밀번호가 올바르지 않습니다.');
     }
   }
 }
@@ -3843,13 +3868,51 @@ async function renderAdminReview() {
 
 async function approveApplication(appId) {
   if (!confirm('이 기업을 승인하시겠습니까?')) return;
-  if (supabase) {
-    await supabase.from('wm_applications').update({
-      status: 'approved',
-      approved_at: new Date().toISOString()
-    }).eq('id', appId);
-  }
+  if (!supabase) return;
+
+  // Get application data
+  var appRes = await supabase.from('wm_applications').select('*').eq('id', appId).single();
+  var app = appRes.data;
+  if (!app) { alert('신청 데이터를 찾을 수 없습니다.'); return; }
+
+  // Generate temp password
+  var tempPw = 'wm' + Math.random().toString(36).slice(2, 8);
+  var brandSlug = (app.brand_name_en || app.brand_name_ko || 'brand').toLowerCase().replace(/[^a-z0-9]/g, '').slice(0, 20);
+  var loginEmail = app.contact_email;
+
+  // Create brand record in wm_brands
+  await supabase.from('wm_brands').upsert([{
+    id: brandSlug,
+    application_id: appId,
+    name_ko: app.brand_name_ko || '',
+    name_en: app.brand_name_en || '',
+    ceo_name: app.ceo_name || '',
+    category: app.product_category || '',
+    headquarters: app.address || '',
+    website: app.homepage || '',
+    annual_revenue: app.annual_revenue || '',
+    apply_type: app.apply_type || 'direct',
+    status: 'active',
+    portal_active: true,
+    portal_email: loginEmail,
+    portal_password: tempPw,
+    current_phase: 'phase1'
+  }]);
+
+  // Update application status
+  await supabase.from('wm_applications').update({
+    status: 'approved',
+    approved_at: new Date().toISOString()
+  }).eq('id', appId);
+
   renderAdminReview();
+
+  // Show credentials to admin
+  alert('✅ 승인 완료!\n\n' +
+    '기업: ' + (app.brand_name_ko || app.brand_name_en) + '\n' +
+    '로그인 이메일: ' + loginEmail + '\n' +
+    '임시 비밀번호: ' + tempPw + '\n\n' +
+    '이 정보를 기업 담당자에게 전달해주세요.');
 }
 
 async function rejectApplication(appId) {
