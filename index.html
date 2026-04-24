@@ -1958,7 +1958,8 @@ button{cursor:pointer;font-family:var(--font)}
             <!-- 브랜드 목록은 DB에서 동적 로딩 -->
           </select>
           <select id="contract-type-select">
-            <option value="service">Walmart Entry Consulting Agreement (월마트 입점 컨설팅 계약)</option>
+            <option value="service">A Type — 직접참여 컨설팅 계약</option>
+            <option value="service_voucher">B Type — 수출바우처 연계 계약</option>
           </select>
           <button onclick="createContract()" style="background:#98fe00;color:#000;border:none;padding:10px 24px;border-radius:8px;font-weight:600;cursor:pointer;width:100%">계약서 생성 및 발송</button>
         </div>
@@ -2862,7 +2863,7 @@ function showAdminView(view) {
   var t = titles[view] || titles.dashboard;
   topTitle.textContent = t[0];
   topSub.textContent = t[1];
-  if (view === 'contracts') renderAdminContracts();
+  if (view === 'contracts') { renderAdminContracts(); loadApprovedBrandsForContract(); }
   if (view === 'review') renderAdminReview();
 }
 // Init admin nav
@@ -3476,22 +3477,70 @@ function checkContractUrl() {
 }
 
 // ── Admin: Create Contract & Generate Link ──
+
+// DB에서 승인된 브랜드 목록 로딩 → 계약 생성 드롭다운
+async function loadApprovedBrandsForContract() {
+  var sel = document.getElementById('contract-brand-select');
+  if (!sel || !supabase) return;
+  // 기존 옵션 제거 (첫번째 placeholder 제외)
+  while (sel.options.length > 1) sel.remove(1);
+  try {
+    var { data, error } = await supabase.from('wm_brands').select('id, name_ko, name_en, apply_type').order('created_at', { ascending: false });
+    if (error) { console.error('Load brands error:', error); return; }
+    if (data && data.length > 0) {
+      data.forEach(function(b) {
+        var opt = document.createElement('option');
+        opt.value = b.id;
+        opt.textContent = b.name_ko + ' (' + b.name_en + ')' + (b.apply_type === 'voucher' ? ' [바우처]' : '');
+        opt.dataset.nameKo = b.name_ko;
+        opt.dataset.nameEn = b.name_en;
+        opt.dataset.applyType = b.apply_type || 'direct';
+        sel.appendChild(opt);
+      });
+    }
+  } catch(e) { console.error('loadApprovedBrandsForContract error:', e); }
+}
+
+// 브랜드 선택 시 바우처 기업이면 자동으로 B Type 선택
+document.addEventListener('DOMContentLoaded', function() {
+  var brandSel = document.getElementById('contract-brand-select');
+  var typeSel = document.getElementById('contract-type-select');
+  if (brandSel && typeSel) {
+    brandSel.addEventListener('change', function() {
+      var opt = brandSel.options[brandSel.selectedIndex];
+      if (opt && opt.dataset.applyType === 'voucher') {
+        typeSel.value = 'service_voucher';
+      } else if (opt && opt.dataset.applyType) {
+        typeSel.value = 'service';
+      }
+    });
+  }
+});
+
+
+
 function createContract() {
   var brandSel = document.getElementById('contract-brand-select');
   var typeSel = document.getElementById('contract-type-select');
   if (!brandSel.value) { alert('브랜드를 선택해주세요.'); return; }
-  var brandName = brandSel.options[brandSel.selectedIndex].text;
-  var newId = 'CTR-2026-' + String(contracts.length + 1).padStart(3, '0');
+  var selectedOpt = brandSel.options[brandSel.selectedIndex];
   var brandValue = brandSel.value;
-  var brandDisplayName = brandSel.options[brandSel.selectedIndex].text;
+  var brandNameKo = selectedOpt.dataset.nameKo || selectedOpt.text;
+  var brandNameEn = selectedOpt.dataset.nameEn || selectedOpt.text;
+  var applyType = selectedOpt.dataset.applyType || 'direct';
+  // 계약 유형: 바우처 기업이면 자동으로 service_voucher
+  var contractType = applyType === 'voucher' ? 'service_voucher' : typeSel.value;
+  typeSel.value = contractType;
+
+  var newId = 'CTR-2026-' + String(contracts.length + 1).padStart(3, '0');
   var localContract = {
     id: newId,
     brandId: brandValue,
-    type: typeSel.value,
+    type: contractType,
     status: 'pending',
     createdAt: new Date().toISOString().slice(0, 10),
-    brandNameKo: brandDisplayName,
-    brandNameEn: brandDisplayName,
+    brandNameKo: brandNameKo,
+    brandNameEn: brandNameEn,
     signatures: {
       brand: { signed: false, name: '', date: '', sig: null, seal: null },
       admin: { signed: false, name: '', date: '', sig: null, seal: null },
@@ -3504,10 +3553,10 @@ function createContract() {
   dbCreateContract({
     id: newId,
     brand_id: brandValue,
-    contract_type: typeSel.value,
-    brand_name_ko: brandDisplayName,
-    brand_name_en: brandDisplayName,
-    ceo_name: wmBrandData[brandValue] ? wmBrandData[brandValue].info.ceo : '',
+    contract_type: contractType,
+    brand_name_ko: brandNameKo,
+    brand_name_en: brandNameEn,
+    ceo_name: '',
     status: 'pending',
     effective_date: new Date().toISOString().slice(0,10)
   });
