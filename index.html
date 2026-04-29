@@ -4195,7 +4195,7 @@ function renderTemplateEditor() {
     html += '<div style="margin-bottom:12px;border-bottom:1px solid rgba(255,255,255,0.04);padding-bottom:12px">' +
       '<div style="font-size:12px;font-weight:600;color:' + (isEdited ? '#98fe00' : 'rgba(255,255,255,0.5)') + ';margin-bottom:6px;display:flex;justify-content:space-between;align-items:center">' +
       '<span>' + cl.title.split('/')[0].trim() + (isEdited ? ' ✎' : '') + '</span>' +
-      '<button onclick="editTemplateClause('' + type + '',' + idx + ')" style="background:rgba(255,255,255,0.06);color:rgba(255,255,255,0.4);border:none;padding:3px 10px;border-radius:4px;font-size:11px;cursor:pointer">' + (isEdited ? '수정됨' : '편집') + '</button>' +
+      '<button onclick="editTemplateClause(\'' + type + '\',' + idx + ')" style="background:rgba(255,255,255,0.06);color:rgba(255,255,255,0.4);border:none;padding:3px 10px;border-radius:4px;font-size:11px;cursor:pointer">' + (isEdited ? '수정됨' : '편집') + '</button>' +
       '</div>' +
       '<div style="font-size:11px;color:rgba(255,255,255,0.2);line-height:1.5;max-height:60px;overflow:hidden">' + (editedText || cl.text).slice(0, 200) + '...</div></div>';
   });
