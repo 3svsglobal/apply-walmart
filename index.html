@@ -266,6 +266,10 @@ button{cursor:pointer;font-family:var(--font)}
 .login-tab:hover{color:var(--text)}
 .login-tab.active{color:var(--accent);border-bottom-color:var(--accent)}
 /* demo CSS removed */
+.eng-only-warn{font-size:11px;color:#e05d44;margin-top:4px;display:none}
+.eng-only-warn.show{display:block}
+.form-input.has-korean{border-color:#e05d44!important;background:rgba(224,93,68,0.04)!important}
+
 
 /* ─── DASHBOARD (dark theme remains for admin views) ─── */
 .dash-layout{display:grid;grid-template-columns:240px 1fr;min-height:100vh;background:var(--bg-dark);color:#fff}
@@ -677,6 +681,8 @@ button{cursor:pointer;font-family:var(--font)}
   #contract-execution-info .exec-title { font-size: 15px !important; font-weight: 700 !important; margin-bottom: 8px !important; }
 }
 
+
+@keyframes toastIn { from { opacity:0; transform:translateY(20px); } to { opacity:1; transform:translateY(0); } }
 </style>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 </head>
@@ -862,7 +868,10 @@ button{cursor:pointer;font-family:var(--font)}
           
         </div>
       </div>
-      <div class="phase-steps-grid">
+            <div style="padding:14px 20px;border:1px solid rgba(255,255,255,0.08);border-radius:8px;margin-bottom:16px;background:rgba(255,255,255,0.02)">
+        <p style="font-size:13px;color:rgba(255,255,255,0.35);line-height:1.6;margin:0"><span class="ko">※ 본 Phase에서는 다음과 같은 프로세스가 진행될 수 있으며, 세부 프로세스는 브랜드별·상품별로 상이할 수 있습니다.</span><span class="en">※ The following processes may be conducted during this Phase. Specific steps may vary by brand and product.</span></p>
+      </div>
+<div class="phase-steps-grid">
         <div class="phase-step-card">
           <div class="psc-num">01</div>
           <h4>Marketplace Application</h4>
@@ -971,7 +980,10 @@ button{cursor:pointer;font-family:var(--font)}
           
         </div>
       </div>
-      <div class="phase-steps-grid">
+            <div style="padding:14px 20px;border:1px solid rgba(255,255,255,0.08);border-radius:8px;margin-bottom:16px;background:rgba(255,255,255,0.02)">
+        <p style="font-size:13px;color:rgba(255,255,255,0.35);line-height:1.6;margin:0"><span class="ko">※ 본 Phase에서는 다음과 같은 프로세스가 진행될 수 있으며, 세부 프로세스는 브랜드별·상품별로 상이할 수 있습니다.</span><span class="en">※ The following processes may be conducted during this Phase. Specific steps may vary by brand and product.</span></p>
+      </div>
+<div class="phase-steps-grid">
         <div class="phase-step-card">
           <div class="psc-num">01</div>
           <h4><span class="ko">Listing Health 최적화</span><span class="en">Listing Health Optimization</span></h4>
@@ -1051,7 +1063,10 @@ button{cursor:pointer;font-family:var(--font)}
           
         </div>
       </div>
-      <div class="phase-steps-grid">
+            <div style="padding:14px 20px;border:1px solid rgba(255,255,255,0.08);border-radius:8px;margin-bottom:16px;background:rgba(255,255,255,0.02)">
+        <p style="font-size:13px;color:rgba(255,255,255,0.35);line-height:1.6;margin:0"><span class="ko">※ 본 Phase에서는 다음과 같은 프로세스가 진행될 수 있으며, 세부 프로세스는 브랜드별·상품별로 상이할 수 있습니다.</span><span class="en">※ The following processes may be conducted during this Phase. Specific steps may vary by brand and product.</span></p>
+      </div>
+<div class="phase-steps-grid">
         <div class="phase-step-card">
           <div class="psc-num">01</div>
           <h4>Final Line Review</h4>
@@ -1211,6 +1226,11 @@ button{cursor:pointer;font-family:var(--font)}
 
   <section class="sec" style="padding-top:56px;padding-bottom:80px"><div class="si" style="max-width:720px">
 
+    <!-- English-only notice banner -->
+    <div style="padding:14px 20px;border-radius:var(--radius);background:rgba(0,113,220,0.06);border:1px solid rgba(0,113,220,0.15);margin-bottom:32px">
+      <p style="font-size:13px;color:var(--accent);line-height:1.5;font-weight:500;margin:0"><span class="ko">⚠️ 모든 항목은 <strong>영어(English)</strong>로 입력해주세요. Walmart 심사에 영문 정보가 필요합니다.</span><span class="en">⚠️ Please fill out all fields in <strong>English</strong>. English information is required for Walmart review.</span></p>
+    </div>
+
     <!-- ── STEP 0: 참여 유형 ── -->
     <div class="form-panel" id="step-0">
       <h3 class="form-sec-title"><span class="ko">참여 유형 선택</span><span class="en">Select Participation Type</span></h3>
@@ -1234,31 +1254,31 @@ button{cursor:pointer;font-family:var(--font)}
         </label>
       </div>
       <div id="voucher-fields" style="display:none;margin-top:24px">
-        <div class="form-field-label">Export Voucher Details</div>
+        <div class="form-field-label"><span class="ko">수출바우처 상세</span><span class="en">Export Voucher Details</span></div>
         <div class="form-row"><input class="form-input" placeholder="Voucher Program Name (e.g., 2026 Export Voucher)" data-req="voucher"><input class="form-input number-format" placeholder="Remaining Voucher Balance (KRW)" data-req="voucher"></div>
         <div style="margin-bottom:12px"><input class="form-input" placeholder="Can you designate a service provider? (Yes/No)" data-req="voucher"></div>
       </div>
       <div style="padding:16px 20px;border:1px solid rgba(0,113,220,0.15);border-radius:var(--radius);margin-top:24px;background:var(--accent-light)">
         <p style="font-size:14px;color:var(--accent);line-height:1.6;font-weight:500"><span class="ko">프로그램 비용은 Phase별 후불 구조이며, Test P.O. 이후 수수료(커미션) 기반으로 전환됩니다. 수출바우처 활용도 가능합니다. 상세 금액은 승인 후 전용 포털에서 안내드립니다.</span><span class="en">Program costs follow a pay-per-Phase structure, transitioning to a commission-based model after Test P.O. Export voucher utilization is also available. Detailed pricing will be shared via your dedicated portal after approval.</span></p>
       </div>
-      <div class="form-nav"><div></div><button class="btn-primary" onclick="validateAndGo(0, 1)">Next: Brand Info →</button></div>
+      <div class="form-nav"><div></div><button class="btn-primary" onclick="validateAndGo(0, 1)"><span class="ko">다음: 브랜드 정보 →</span><span class="en">Next: Brand Info →</span></button></div>
     </div>
 
     <!-- ── STEP 1: 브랜드 기본 정보 ── -->
     <div class="form-panel" id="step-1" style="display:none">
-      <h3 class="form-sec-title">Brand Information</h3>
-      <p class="form-sec-desc">Please provide basic information about your brand and products.</p>
+      <h3 class="form-sec-title"><span class="ko">브랜드 정보</span><span class="en">Brand Information</span></h3>
+      <p class="form-sec-desc"><span class="ko">브랜드와 제품에 대한 기본 정보를 입력해주세요.</span><span class="en">Please provide basic information about your brand and products.</span></p>
 
-      <div class="form-field-label">브랜드명 / Brand Name *</div>
+      <div class="form-field-label"><span class="ko">브랜드명 *</span><span class="en">Brand Name *</span></div>
       <div style="margin-bottom:12px"><input class="form-input" name="Brand Name" placeholder="Please enter in English (e.g., Bibigo, Sulwhasoo)" data-req="1"></div>
 
-      <div class="form-field-label">브랜드 소개 / Brand Description (1-2 sentences) *</div>
+      <div class="form-field-label"><span class="ko">브랜드 소개 (1-2문장) *</span><span class="en">Brand Description (1-2 sentences) *</span></div>
       <div style="margin-bottom:12px"><textarea class="form-input" name="Brand Description" placeholder="Please enter in English — Brief description of your brand and key products" rows="2" style="resize:vertical" data-req="1"></textarea></div>
 
-      <div class="form-field-label">브랜드 스토리 / Brand Story & Vision</div>
+      <div class="form-field-label"><span class="ko">브랜드 스토리 & 비전</span><span class="en">Brand Story & Vision</span></div>
       <div style="margin-bottom:12px"><textarea class="form-input" name="Brand Story" placeholder="Please enter in English — Share your brand's story, values, and vision" rows="3" style="resize:vertical"></textarea></div>
 
-      <div class="form-field-label">카테고리 / Category *</div>
+      <div class="form-field-label"><span class="ko">카테고리 *</span><span class="en">Category *</span></div>
       <div style="margin-bottom:12px">
         <select class="form-input" name="Category" style="appearance:auto" data-req="1">
           <option value="" disabled selected>Select a category</option>
@@ -1272,11 +1292,11 @@ button{cursor:pointer;font-family:var(--font)}
         </select>
       </div>
 
-      <div class="form-field-label">온라인 채널 / Online Presence</div>
+      <div class="form-field-label"><span class="ko">온라인 채널</span><span class="en">Online Presence</span></div>
       <div style="margin-bottom:12px"><input class="form-input" name="Website" placeholder="Website URL"></div>
       <div class="form-row"><input class="form-input" name="Amazon URL" placeholder="Amazon Page URL (if applicable)"><input class="form-input" name="Instagram URL" placeholder="Instagram URL (if applicable)"></div>
 
-      <div class="form-field-label">인스타그램 팔로워 / Instagram Followers</div>
+      <div class="form-field-label"><span class="ko">인스타그램 팔로워</span><span class="en">Instagram Followers</span></div>
       <div style="margin-bottom:12px">
         <select class="form-input" name="Instagram Followers" style="appearance:auto">
           <option value="" disabled selected>Select a range</option>
@@ -1290,95 +1310,95 @@ button{cursor:pointer;font-family:var(--font)}
         </select>
       </div>
 
-      <div class="form-nav"><button class="btn-outline" onclick="goFormStep(0)">← Previous</button><button class="btn-primary" onclick="validateAndGo(1, 2)">Next: Export & Logistics →</button></div>
+      <div class="form-nav"><button class="btn-outline" onclick="goFormStep(0)"><span class="ko">← 이전</span><span class="en">← Previous</span></button><button class="btn-primary" onclick="validateAndGo(1, 2)"><span class="ko">다음: 수출 & 물류 →</span><span class="en">Next: Export & Logistics →</span></button></div>
     </div>
 
     <!-- ── STEP 2: 수출 & 물류 ── -->
     <div class="form-panel" id="step-2" style="display:none">
-      <h3 class="form-sec-title">Export Experience & Logistics</h3>
-      <p class="form-sec-desc">Tell us about your export experience and US logistics infrastructure.</p>
+      <h3 class="form-sec-title"><span class="ko">수출 경험 & 물류</span><span class="en">Export Experience & Logistics</span></h3>
+      <p class="form-sec-desc"><span class="ko">해외 수출 경험과 미국 물류 인프라에 대해 알려주세요.</span><span class="en">Tell us about your export experience and US logistics infrastructure.</span></p>
 
-      <div class="form-field-label">해외 수출/판매 경험이 있으신가요? / Export experience outside Korea? *</div>
+      <div class="form-field-label"><span class="ko">해외 수출/판매 경험이 있으신가요? *</span><span class="en">Export experience outside Korea? *</span></div>
       <div class="form-radio-inline" data-radio-req="2" data-radio-name="export-exp">
         <label class="form-radio-pill"><input type="radio" name="export-exp" value="yes"><span>Yes</span></label>
         <label class="form-radio-pill"><input type="radio" name="export-exp" value="no"><span>No</span></label>
       </div>
 
-      <div class="form-field-label">현재 판매 중인 국가 / Countries currently selling in</div>
+      <div class="form-field-label"><span class="ko">현재 판매 중인 국가</span><span class="en">Countries currently selling in</span></div>
       <div style="margin-bottom:12px"><input class="form-input" name="Export Countries" placeholder="Please enter in English (e.g., Japan, Taiwan, USA)"></div>
 
-      <div class="form-field-label">미국 내 창고/물류 보유 여부 / US warehouse or logistics? *</div>
+      <div class="form-field-label"><span class="ko">미국 내 창고/물류 보유 여부 *</span><span class="en">US warehouse or logistics? *</span></div>
       <div class="form-radio-inline" data-radio-req="2" data-radio-name="us-warehouse">
         <label class="form-radio-pill"><input type="radio" name="us-warehouse" value="yes"><span>Yes</span></label>
         <label class="form-radio-pill"><input type="radio" name="us-warehouse" value="no"><span>No</span></label>
         <label class="form-radio-pill"><input type="radio" name="us-warehouse" value="planned"><span>In Progress</span></label>
       </div>
 
-      <div class="form-field-label">패키징 변경 가능 여부 / Can you modify packaging? * <span style="font-weight:400;color:var(--text-muted)">(디자인, 사이즈, 언어 등)</span></div>
+      <div class="form-field-label"><span class="ko">패키징 변경 가능 여부 *</span><span class="en">Can you modify packaging? *</span> <span style="font-weight:400;color:var(--text-muted)"><span class="ko">(디자인, 사이즈, 언어 등)</span><span class="en">(design, size, language, etc.)</span></span></div>
       <div class="form-radio-inline" data-radio-req="2" data-radio-name="packaging">
         <label class="form-radio-pill"><input type="radio" name="packaging" value="yes"><span>Yes</span></label>
         <label class="form-radio-pill"><input type="radio" name="packaging" value="no"><span>No</span></label>
         <label class="form-radio-pill"><input type="radio" name="packaging" value="partial"><span>Partially</span></label>
       </div>
 
-      <div class="form-nav"><button class="btn-outline" onclick="goFormStep(1)">← Previous</button><button class="btn-primary" onclick="validateAndGo(2, 3)">Next: Manufacturing →</button></div>
+      <div class="form-nav"><button class="btn-outline" onclick="goFormStep(1)"><span class="ko">← 이전</span><span class="en">← Previous</span></button><button class="btn-primary" onclick="validateAndGo(2, 3)"><span class="ko">다음: 제조 & 생산 →</span><span class="en">Next: Manufacturing →</span></button></div>
     </div>
 
     <!-- ── STEP 3: 제조 & 생산 ── -->
     <div class="form-panel" id="step-3" style="display:none">
-      <h3 class="form-sec-title">Manufacturing & Production</h3>
-      <p class="form-sec-desc">Tell us about your manufacturing capabilities.</p>
+      <h3 class="form-sec-title"><span class="ko">제조 & 생산</span><span class="en">Manufacturing & Production</span></h3>
+      <p class="form-sec-desc"><span class="ko">제조 역량에 대해 알려주세요.</span><span class="en">Tell us about your manufacturing capabilities.</span></p>
 
-      <div class="form-field-label">제조 유형 / Manufacturing Type *</div>
+      <div class="form-field-label"><span class="ko">제조 유형 *</span><span class="en">Manufacturing Type *</span></div>
       <div class="form-radio-inline" data-radio-req="3" data-radio-name="mfg-type">
         <label class="form-radio-pill"><input type="radio" name="mfg-type" value="own"><span>Own Factory</span></label>
         <label class="form-radio-pill"><input type="radio" name="mfg-type" value="outsource"><span>Outsourced (OEM)</span></label>
         <label class="form-radio-pill"><input type="radio" name="mfg-type" value="both"><span>Both</span></label>
       </div>
 
-      <div class="form-field-label">생산 능력 / Production Capacity *</div>
+      <div class="form-field-label"><span class="ko">생산 능력 *</span><span class="en">Production Capacity *</span></div>
       <div style="margin-bottom:12px"><input class="form-input" name="Production Capacity" placeholder="Please enter in English (e.g., 10,000 packs per day)" data-req="3"></div>
 
-      <div class="form-field-label">제조 리드타임 / Lead Time (주문~출하 준비) *</div>
+      <div class="form-field-label"><span class="ko">제조 리드타임 (주문~출하 준비) *</span><span class="en">Lead Time (order to shipment-ready) *</span></div>
       <div style="margin-bottom:12px"><input class="form-input" name="Lead Time" placeholder="Please enter in English (e.g., 2 months, 6 weeks)" data-req="3"></div>
 
-      <div class="form-nav"><button class="btn-outline" onclick="goFormStep(2)">← Previous</button><button class="btn-primary" onclick="validateAndGo(3, 4)">Next: Revenue & Marketing →</button></div>
+      <div class="form-nav"><button class="btn-outline" onclick="goFormStep(2)"><span class="ko">← 이전</span><span class="en">← Previous</span></button><button class="btn-primary" onclick="validateAndGo(3, 4)"><span class="ko">다음: 매출 & 마케팅 →</span><span class="en">Next: Revenue & Marketing →</span></button></div>
     </div>
 
     <!-- ── STEP 4: 매출 & 마케팅 ── -->
     <div class="form-panel" id="step-4" style="display:none">
-      <h3 class="form-sec-title">Revenue & Marketing</h3>
-      <p class="form-sec-desc">Share your recent revenue performance and marketing readiness.</p>
+      <h3 class="form-sec-title"><span class="ko">매출 & 마케팅</span><span class="en">Revenue & Marketing</span></h3>
+      <p class="form-sec-desc"><span class="ko">최근 매출 실적과 마케팅 준비 상황을 공유해주세요.</span><span class="en">Share your recent revenue performance and marketing readiness.</span></p>
 
-      <div class="form-field-label">최근 12개월 총 매출 / Total Revenue in Last 12 Months (USD) *</div>
+      <div class="form-field-label"><span class="ko">최근 12개월 총 매출 (USD) *</span><span class="en">Total Revenue in Last 12 Months (USD) *</span></div>
       <div style="margin-bottom:4px"><input class="form-input number-format" name="Annual Revenue USD" placeholder="e.g., 6,200,000" data-req="4"></div>
-      <div style="font-size:12px;color:var(--text-muted);margin-bottom:12px">환율 기준: 1,300 KRW = 1 USD / Enter "N/A" if not applicable.</div>
+      <div style="font-size:12px;color:var(--text-muted);margin-bottom:12px"><span class="ko">환율 기준: 1,300 KRW = 1 USD / 해당 없으면 "N/A" 입력</span><span class="en">Exchange rate: 1,300 KRW = 1 USD / Enter "N/A" if not applicable.</span></div>
 
-      <div class="form-field-label">최근 12개월 총 판매 수량 / Total Units Sold in Last 12 Months</div>
+      <div class="form-field-label"><span class="ko">최근 12개월 총 판매 수량</span><span class="en">Total Units Sold in Last 12 Months</span></div>
       <div style="margin-bottom:12px"><input class="form-input number-format" name="Annual Units Sold" placeholder="e.g., 500,000"></div>
 
-      <div class="form-field-label">영어 가능한 팀원 보유 여부 / English-speaking team members? *</div>
+      <div class="form-field-label"><span class="ko">영어 가능한 팀원 보유 여부 *</span><span class="en">English-speaking team members? *</span></div>
       <div class="form-radio-inline" data-radio-req="4" data-radio-name="eng-team">
         <label class="form-radio-pill"><input type="radio" name="eng-team" value="yes"><span>Yes</span></label>
         <label class="form-radio-pill"><input type="radio" name="eng-team" value="no"><span>No</span></label>
       </div>
 
-      <div class="form-field-label">미국 마케팅 예산 보유 여부 / US marketing budget? *</div>
+      <div class="form-field-label"><span class="ko">미국 마케팅 예산 보유 여부 *</span><span class="en">US marketing budget? *</span></div>
       <div class="form-radio-inline" data-radio-req="4" data-radio-name="mkt-budget">
         <label class="form-radio-pill"><input type="radio" name="mkt-budget" value="yes"><span>Yes</span></label>
         <label class="form-radio-pill"><input type="radio" name="mkt-budget" value="no"><span>No</span></label>
         <label class="form-radio-pill"><input type="radio" name="mkt-budget" value="considering"><span>Considering</span></label>
       </div>
 
-      <div class="form-nav"><button class="btn-outline" onclick="goFormStep(3)">← Previous</button><button class="btn-primary" onclick="validateAndGo(4, 5)">Next: Documents & Contact →</button></div>
+      <div class="form-nav"><button class="btn-outline" onclick="goFormStep(3)"><span class="ko">← 이전</span><span class="en">← Previous</span></button><button class="btn-primary" onclick="validateAndGo(4, 5)"><span class="ko">다음: 자료 & 담당자 →</span><span class="en">Next: Documents & Contact →</span></button></div>
     </div>
 
     <!-- ── STEP 5: 자료 제출 & 담당자 ── -->
     <div class="form-panel" id="step-5" style="display:none">
-      <h3 class="form-sec-title">Documents & Contact Information</h3>
-      <p class="form-sec-desc">Upload your brand materials and provide key contact details (English-speaking decision maker).</p>
+      <h3 class="form-sec-title"><span class="ko">자료 제출 & 담당자 정보</span><span class="en">Documents & Contact Information</span></h3>
+      <p class="form-sec-desc"><span class="ko">브랜드 자료를 업로드하고 주요 담당자 정보를 입력해주세요.</span><span class="en">Upload your brand materials and provide key contact details (English-speaking decision maker).</span></p>
 
-      <div class="form-field-label">브랜드 소개서 / Brand Deck (PPT or PDF) *</div>
+      <div class="form-field-label"><span class="ko">브랜드 소개서 (PPT or PDF) *</span><span class="en">Brand Deck (PPT or PDF) *</span></div>
       <div class="file-upload-zone" id="file-zone-deck" onclick="document.getElementById('file-deck').click()" ondragover="event.preventDefault();this.classList.add('dragover')" ondragleave="this.classList.remove('dragover')" ondrop="event.preventDefault();this.classList.remove('dragover');handleFileDrop(event,'deck')">
         <input type="file" id="file-deck" accept=".pdf,.ppt,.pptx" style="display:none" onchange="handleFileSelect(this,'deck')">
         <div class="fuz-icon">📎</div>
@@ -1387,7 +1407,7 @@ button{cursor:pointer;font-family:var(--font)}
       </div>
       <div class="file-preview" id="file-preview-deck" style="display:none"></div>
 
-      <div class="form-field-label" style="margin-top:20px">추가 서류 / Additional Documents (optional)</div>
+      <div class="form-field-label" style="margin-top:20px"><span class="ko">추가 서류 (선택)</span><span class="en">Additional Documents (optional)</span></div>
       <div class="file-upload-zone" id="file-zone-extra" onclick="document.getElementById('file-extra').click()" ondragover="event.preventDefault();this.classList.add('dragover')" ondragleave="this.classList.remove('dragover')" ondrop="event.preventDefault();this.classList.remove('dragover');handleFileDrop(event,'extra')">
         <input type="file" id="file-extra" accept=".pdf,.ppt,.pptx,.jpg,.png,.xlsx" multiple style="display:none" onchange="handleFileSelect(this,'extra')">
         <div class="fuz-icon">📂</div>
@@ -1398,13 +1418,13 @@ button{cursor:pointer;font-family:var(--font)}
 
       <div style="height:1px;background:var(--border);margin:32px 0"></div>
 
-      <div class="form-field-label" style="margin-top:0">주요 담당자 / Key Contact (의사결정권자, 영어 가능) *</div>
+      <div class="form-field-label" style="margin-top:0"><span class="ko">주요 담당자 (의사결정권자, 영어 가능) *</span><span class="en">Key Contact (decision maker, English-speaking) *</span></div>
       <div class="form-row"><input class="form-input" name="First Name" placeholder="First Name *" data-req="5"><input class="form-input" name="Last Name" placeholder="Last Name *" data-req="5"></div>
       <div style="margin-bottom:12px"><input class="form-input" name="Title" placeholder="Title / Role *" data-req="5"></div>
       <div class="form-row" style="gap:8px">
         <input class="form-input" name="Email" placeholder="Email Address *" data-req="5" type="email" style="flex:1">
       </div>
-      <div class="form-field-label">전화번호 / Phone Number *</div>
+      <div class="form-field-label"><span class="ko">전화번호 *</span><span class="en">Phone Number *</span></div>
       <div class="form-row" style="gap:8px">
         <select class="form-input" name="Phone Country Code" id="phone-country" style="appearance:auto;flex:0 0 160px;font-size:14px">
           <option value="+82">🇰🇷 +82</option>
@@ -1433,10 +1453,10 @@ button{cursor:pointer;font-family:var(--font)}
         </label>
       </div>
 
-      <button class="btn-primary" style="width:100%;justify-content:center;font-size:16px;padding:18px 32px" onclick="submitApply()">Submit Application →</button>
+      <button class="btn-primary" style="width:100%;justify-content:center;font-size:16px;padding:18px 32px" onclick="submitApply()"><span class="ko">신청서 제출 →</span><span class="en">Submit Application →</span></button>
       <p style="font-size:13px;color:var(--text-muted);text-align:center;margin-top:16px">Our team will contact you within 2 business days.</p>
 
-      <div class="form-nav" style="border-top:none;padding-top:0;margin-top:24px"><button class="btn-outline" onclick="goFormStep(4)">← Previous</button><div></div></div>
+      <div class="form-nav" style="border-top:none;padding-top:0;margin-top:24px"><button class="btn-outline" onclick="goFormStep(4)"><span class="ko">← 이전</span><span class="en">← Previous</span></button><div></div></div>
     </div>
 
   </div></section>
@@ -1505,7 +1525,7 @@ button{cursor:pointer;font-family:var(--font)}
         <div class="sidebar-item" onclick="showAdminView('contracts')" id="admin-nav-contracts"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>계약 관리</div>
         <div class="sidebar-item" onclick="showAdminView('settings')" id="admin-nav-settings"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>설정</div>
       </div>
-      <div class="sidebar-bottom"><div style="cursor:pointer;color:rgba(255,255,255,0.3);margin-bottom:8px" onclick="showBrandPwChange()">비밀번호 변경</div><div style="cursor:pointer;color:rgba(255,255,255,0.3);margin-bottom:8px" onclick="switchTab('landing')">← 로그아웃</div>Walmart Entry Program<br>by 3Stripe Venture Studio</div>
+      <div class="sidebar-bottom"><div style="cursor:pointer;color:rgba(255,255,255,0.3);margin-bottom:8px" onclick="showBrandPwChange()">비밀번호 변경</div><div style="cursor:pointer;color:rgba(255,255,255,0.3);margin-bottom:8px" onclick="sessionStorage.removeItem('wm_session');switchTab('landing')">← 로그아웃</div>Walmart Entry Program<br>by 3Stripe Venture Studio</div>
     </div>
     <div class="dash-main">
       <div class="dash-topbar"><div class="dash-title"><h2>대시보드</h2><p>Walmart 입점 프로그램 운영 현황</p></div><div class="dash-actions"><input class="dash-search" placeholder="검색..."><div class="noti-dot"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.4)" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg></div><div class="dash-avatar">JB</div></div></div>
@@ -2011,23 +2031,23 @@ button{cursor:pointer;font-family:var(--font)}
   <div class="dash-layout">
     <div class="sidebar">
       <div class="sidebar-logo"><div class="sidebar-logo-icon" id="portal-brand-icon">-</div><div class="sidebar-logo-text"><span id="portal-brand-name">-</span> <span>Brand Portal</span></div></div>
-      <div class="sidebar-nav">
-        <div class="sidebar-item active"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>대시보드</div>
-        <div class="sidebar-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>Phase 현황</div>
-        <div class="sidebar-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>서류 관리</div>
-        <div class="sidebar-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>미팅 일정</div>
-        <div class="sidebar-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>비용 현황</div>
+      <div class="sidebar-nav" id="brand-sidebar-nav">
+        <div class="sidebar-item active" onclick="showBrandView('dashboard')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>대시보드</div>
+        <div class="sidebar-item" onclick="showBrandView('phase')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>Phase 현황</div>
+        <div class="sidebar-item" onclick="showBrandView('docs')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>서류 관리</div>
+        <div class="sidebar-item" onclick="showBrandView('messages')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>문의 / 메시지 <span class="sidebar-badge" id="brand-msg-badge" style="display:none">0</span></div>
+        <div class="sidebar-item" onclick="showBrandView('cost')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>비용 현황</div>
       </div>
-      <div class="sidebar-bottom"><div style="cursor:pointer;color:rgba(255,255,255,0.3);margin-bottom:8px" onclick="showBrandPwChange()">비밀번호 변경</div><div style="cursor:pointer;color:rgba(255,255,255,0.3);margin-bottom:8px" onclick="switchTab('landing')">← 로그아웃</div>Walmart Entry Program<br>by 3Stripe Venture Studio</div>
+      <div class="sidebar-bottom"><div style="cursor:pointer;color:rgba(255,255,255,0.3);margin-bottom:8px" onclick="showBrandPwChange()">비밀번호 변경</div><div style="cursor:pointer;color:rgba(255,255,255,0.3);margin-bottom:8px" onclick="sessionStorage.removeItem('wm_session');switchTab('landing')">← 로그아웃</div>Walmart Entry Program<br>by 3Stripe Venture Studio</div>
     </div>
     <div class="dash-main">
       <div class="dash-topbar"><div class="dash-title"><h2 id="portal-topbar-title">브랜드 대시보드</h2><p id="portal-topbar-sub">Walmart 입점 프로그램 진행 현황</p></div><div class="dash-actions"><div class="noti-dot"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.4)" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg></div><div class="dash-avatar" id="portal-avatar">--</div></div></div>
       <div class="dash-content">
         <!-- Phase Progress -->
-        <div class="portal-phase"><div class="portal-phase-title">진행 현황 <span class="portal-phase-badge">Phase 2 진행중</span></div><div class="timeline" style="padding:12px 0"><div class="tl-node"><div class="tl-dot done"></div><div class="tl-label done">Phase 1 ✓</div></div><div class="tl-line done" style="min-width:80px"></div><div class="tl-node"><div class="tl-dot active"></div><div class="tl-label active">Phase 2 진행중</div></div><div class="tl-line" style="min-width:80px"></div><div class="tl-node"><div class="tl-dot"></div><div class="tl-label">Phase 3</div></div></div></div>
+        <div class="portal-phase" id="portal-phase-bar" data-brand-view="dashboard phase"><div class="portal-phase-title">진행 현황 <span class="portal-phase-badge" id="portal-phase-badge">대기</span></div><div class="timeline" style="padding:12px 0" id="portal-phase-timeline"></div></div>
 
         <!-- Cost Structure (A Type — 승인 후에만 보이는 정보) -->
-        <div class="portal-info-section" id="portal-cost-a">
+        <div class="portal-info-section" id="portal-cost-a" data-brand-view="dashboard cost">
           <div class="portal-info-title">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
             비용 구조 <span style="font-family:var(--mono);font-size:10px;padding:3px 8px;border-radius:999px;background:rgba(0,113,220,0.15);color:var(--accent);font-weight:400;margin-left:4px">A Type</span>
@@ -2052,7 +2072,7 @@ button{cursor:pointer;font-family:var(--font)}
         </div>
 
         <!-- Cost Structure (B Type — 바우처 기업용, 기본 숨김) -->
-        <div class="portal-info-section" id="portal-cost-b" style="display:none">
+        <div class="portal-info-section" id="portal-cost-b" data-brand-view="dashboard cost" style="display:none">
           <div class="portal-info-title">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
             비용 구조 <span style="font-family:var(--mono);font-size:10px;padding:3px 8px;border-radius:999px;background:rgba(0,135,90,0.15);color:var(--lime);font-weight:400;margin-left:4px">B Type · 수출바우처</span>
@@ -2089,51 +2109,23 @@ button{cursor:pointer;font-family:var(--font)}
           </div>
         </div>
 
-        <!-- SKU Management -->
-        <div class="portal-info-section">
+        <!-- SKU Document Upload -->
+        <div class="portal-info-section" id="portal-sku-section" data-brand-view="dashboard phase docs">
           <div class="portal-info-title">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>
-            등록 SKU 관리
-            <span style="font-family:var(--mono);font-size:10px;padding:3px 8px;border-radius:999px;background:rgba(0,135,90,0.15);color:var(--lime);font-weight:400;margin-left:4px">3 / 4 SKU</span>
+            SKU / 제품 자료
+            <span style="font-family:var(--mono);font-size:10px;padding:3px 8px;border-radius:999px;background:rgba(0,135,90,0.15);color:var(--lime);font-weight:400;margin-left:4px" id="portal-sku-count">0 files</span>
           </div>
-          <div class="sku-grid">
-            <div class="sku-card">
-              <div class="sku-status live">LIVE</div>
-              <div class="sku-img" style="background:linear-gradient(135deg,rgba(0,113,220,0.1),rgba(0,113,220,0.05))">
-                <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.15)" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
-              </div>
-              <div class="sku-name">Korean Seaweed Snack — Original</div>
-              <div class="sku-meta">
-                <span>UPC 8801234567890</span><span>$4.99</span><br>
-                Crispy roasted seaweed, 6-pack · Net Wt. 0.35oz × 6
-              </div>
-            </div>
-            <div class="sku-card">
-              <div class="sku-status live">LIVE</div>
-              <div class="sku-img" style="background:linear-gradient(135deg,rgba(0,135,90,0.1),rgba(0,135,90,0.05))">
-                <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.15)" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
-              </div>
-              <div class="sku-name">Korean Seaweed Snack — Wasabi</div>
-              <div class="sku-meta">
-                <span>UPC 8801234567891</span><span>$4.99</span><br>
-                Wasabi flavored roasted seaweed, 6-pack · Net Wt. 0.35oz × 6
-              </div>
-            </div>
-            <div class="sku-card">
-              <div class="sku-status pending">REVIEW</div>
-              <div class="sku-img" style="background:linear-gradient(135deg,rgba(255,149,0,0.1),rgba(255,149,0,0.05))">
-                <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.15)" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
-              </div>
-              <div class="sku-name">Korean Seaweed Snack — BBQ</div>
-              <div class="sku-meta">
-                <span>UPC 8801234567892</span><span>$5.49</span><br>
-                BBQ flavored roasted seaweed, 6-pack · Net Wt. 0.35oz × 6
-              </div>
-            </div>
-            <div class="sku-add">
-              <div class="sku-add-icon">+</div>
-              <div class="sku-add-text">Add SKU (1 remaining)</div>
-            </div>
+          <!-- Upload area -->
+          <div id="sku-upload-area" style="border:2px dashed rgba(255,255,255,0.1);border-radius:12px;padding:32px;text-align:center;cursor:pointer;transition:all .2s;margin-bottom:16px" onclick="document.getElementById('sku-file-input').click()" ondragover="event.preventDefault();this.style.borderColor='var(--accent)';this.style.background='rgba(0,113,220,0.05)'" ondragleave="this.style.borderColor='rgba(255,255,255,0.1)';this.style.background=''" ondrop="event.preventDefault();this.style.borderColor='rgba(255,255,255,0.1)';this.style.background='';handleSkuFileDrop(event)">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.2)" stroke-width="1.5" style="margin-bottom:8px"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+            <div style="font-size:14px;color:rgba(255,255,255,0.4);margin-bottom:4px">SKU 리스트 또는 제품 자료를 업로드하세요</div>
+            <div style="font-size:12px;color:rgba(255,255,255,0.2)">PDF, Excel, 이미지 파일 지원 (최대 10MB)</div>
+            <input type="file" id="sku-file-input" accept=".pdf,.xlsx,.xls,.csv,.png,.jpg,.jpeg" style="display:none" onchange="uploadSkuFile(this.files[0])" multiple>
+          </div>
+          <!-- File list -->
+          <div id="sku-file-list">
+            <div style="text-align:center;padding:20px 0;color:rgba(255,255,255,0.12);font-size:13px">업로드된 파일이 없습니다.</div>
           </div>
         </div>
 
@@ -2143,39 +2135,13 @@ button{cursor:pointer;font-family:var(--font)}
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
             진행상황 체크리스트
           </div>
-          <div class="phase-checklist">
-            <!-- Phase 1 — 완료 -->
-            <div class="phase-cl-group">
-              <div class="phase-cl-group-title">Phase 1 — Online Launch <span class="cl-phase-badge done">완료</span></div>
-              <div class="cl-item done"><div class="cl-check">✓</div><div class="cl-body"><div class="cl-title">Walmart Marketplace 계정 신청</div><div class="cl-desc">Marketplace Application 제출 완료</div></div><div class="cl-status done">Apr 2</div></div>
-              <div class="cl-item done"><div class="cl-check">✓</div><div class="cl-body"><div class="cl-title">Item 360 제품 등록</div><div class="cl-desc">3~4개 핵심 SKU 등록, 이미지 & 스펙 업로드</div></div><div class="cl-status done">Apr 5</div></div>
-              <div class="cl-item done"><div class="cl-check">✓</div><div class="cl-body"><div class="cl-title">리스팅 최적화 & SEO</div><div class="cl-desc">타이틀, 키워드, 카테고리 최적화</div></div><div class="cl-status done">Apr 7</div></div>
-              <div class="cl-item done"><div class="cl-check">✓</div><div class="cl-body"><div class="cl-title">Sponsored Products 광고 세팅</div><div class="cl-desc">초기 광고 캠페인 3개 런칭</div></div><div class="cl-status done">Apr 8</div></div>
-              <div class="cl-item done"><div class="cl-check">✓</div><div class="cl-body"><div class="cl-title">OTIF & SQEP 컴플라이언스</div><div class="cl-desc">배송/품질 기준 충족 확인</div></div><div class="cl-status done">Apr 10</div></div>
-              <div class="cl-item done"><div class="cl-check">✓</div><div class="cl-body"><div class="cl-title">Phase 1 리뷰 & Phase 2 전환</div><div class="cl-desc">30일 판매 데이터 분석 완료</div></div><div class="cl-status done">Apr 12</div></div>
-            </div>
-            <!-- Phase 2 — 진행중 -->
-            <div class="phase-cl-group">
-              <div class="phase-cl-group-title">Phase 2 — Performance Review <span class="cl-phase-badge active">진행중</span></div>
-              <div class="cl-item done"><div class="cl-check">✓</div><div class="cl-body"><div class="cl-title">Consumer Insights 분석</div><div class="cl-desc">리뷰, 검색 트렌드, 경쟁사 비교</div></div><div class="cl-status done">Apr 15</div></div>
-              <div class="cl-item active"><div class="cl-check">●</div><div class="cl-body"><div class="cl-title">Buyer 리뷰 자료 작성</div><div class="cl-desc">브랜드 포지셔닝, 판매 실적 보고서</div></div><div class="cl-status active">진행중</div></div>
-              <div class="cl-item pending"><div class="cl-check"></div><div class="cl-body"><div class="cl-title">Advanced Ads 캠페인 확장</div><div class="cl-desc">Sponsored Brands, Display Ads 추가</div></div><div class="cl-status pending">대기</div></div>
-              <div class="cl-item pending"><div class="cl-check"></div><div class="cl-body"><div class="cl-title">Dynamic Pricing 전략 수립</div><div class="cl-desc">가격 최적화 및 프로모션 계획</div></div><div class="cl-status pending">대기</div></div>
-              <div class="cl-item pending"><div class="cl-check"></div><div class="cl-body"><div class="cl-title">Walmart Buyer 미팅</div><div class="cl-desc">리뷰 자료 제출 및 미팅 진행</div></div><div class="cl-status pending">대기</div></div>
-            </div>
-            <!-- Phase 3 — 대기 -->
-            <div class="phase-cl-group">
-              <div class="phase-cl-group-title">Phase 3 — Store Entry <span class="cl-phase-badge pending">대기</span></div>
-              <div class="cl-item pending"><div class="cl-check"></div><div class="cl-body"><div class="cl-title">Line Review 제출</div></div><div class="cl-status pending">대기</div></div>
-              <div class="cl-item pending"><div class="cl-check"></div><div class="cl-body"><div class="cl-title">Ship-Point Stress Test</div></div><div class="cl-status pending">대기</div></div>
-              <div class="cl-item pending"><div class="cl-check"></div><div class="cl-body"><div class="cl-title">PO Forecast & Store Allocation</div></div><div class="cl-status pending">대기</div></div>
-              <div class="cl-item pending"><div class="cl-check"></div><div class="cl-body"><div class="cl-title">오프라인 매장 배치 확정</div></div><div class="cl-status pending">대기</div></div>
-            </div>
+          <div class="phase-checklist" id="portal-checklist" data-brand-view="dashboard phase">
+            <div style="text-align:center;padding:32px 0;color:rgba(255,255,255,0.15);font-size:13px">프로그램이 시작되면 Phase별 진행 상황이 여기에 표시됩니다.</div>
           </div>
         </div>
 
         <!-- 메시지 / 문의 -->
-        <div class="portal-info-section">
+        <div class="portal-info-section" id="portal-messages-section" data-brand-view="dashboard messages">
           <div class="portal-info-title">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
             메시지 / 문의
@@ -2215,7 +2181,7 @@ button{cursor:pointer;font-family:var(--font)}
         <div class="sidebar-item" style="opacity:0.25;pointer-events:none"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>미팅 일정</div>
         <div class="sidebar-item" style="opacity:0.25;pointer-events:none"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>비용 현황</div>
       </div>
-      <div class="sidebar-bottom"><div style="cursor:pointer;color:rgba(255,255,255,0.3);margin-bottom:8px" onclick="showBrandPwChange()">비밀번호 변경</div><div style="cursor:pointer;color:rgba(255,255,255,0.3);margin-bottom:8px" onclick="switchTab('landing')">← 로그아웃</div>Walmart Entry Program<br>by 3Stripe Venture Studio</div>
+      <div class="sidebar-bottom"><div style="cursor:pointer;color:rgba(255,255,255,0.3);margin-bottom:8px" onclick="showBrandPwChange()">비밀번호 변경</div><div style="cursor:pointer;color:rgba(255,255,255,0.3);margin-bottom:8px" onclick="sessionStorage.removeItem('wm_session');switchTab('landing')">← 로그아웃</div>Walmart Entry Program<br>by 3Stripe Venture Studio</div>
     </div>
     <div class="dash-main">
       <div class="dash-topbar"><div class="dash-title"><h2 id="locked-topbar-name">-</h2><p>신청서 접수 완료 · 심사 진행 중</p></div><div class="dash-actions"><div class="dash-avatar" id="locked-avatar">--</div></div></div>
@@ -2267,7 +2233,7 @@ button{cursor:pointer;font-family:var(--font)}
     <div class="sidebar">
       <div class="sidebar-logo"><div class="sidebar-logo-icon" style="background:#0071dc">W</div><div class="sidebar-logo-text">Walmart <span>Buyer Portal</span></div></div>
       <div class="sidebar-nav">
-        <div class="sidebar-item active" onclick="showWmView('pipeline')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>Pipeline</div>
+        <div class="sidebar-item active" onclick="showWmView(\x27pipeline\x27)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>Pipeline</div>
         <div class="sidebar-item" onclick="showWmView('meetings')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>Meetings</div>
       </div>
       <div class="sidebar-bottom"><div style="cursor:pointer;color:rgba(255,255,255,0.3);margin-bottom:8px" onclick="switchTab('landing')">← Log out</div>Walmart Marketplace<br>Entry Program</div>
@@ -2293,7 +2259,7 @@ button{cursor:pointer;font-family:var(--font)}
 
       <!-- BRAND DETAIL VIEW -->
       <div class="dash-content" id="wm-brand-detail" style="display:none">
-        <button class="wm-detail-back" onclick="showWmView('pipeline')">← Back to Pipeline</button>
+        <button class="wm-detail-back" onclick="showWmView(\x27pipeline\x27)">← Back to Pipeline</button>
 
         <div class="wm-brand-header" id="wm-detail-header">
           <!-- dynamically filled -->
@@ -2376,8 +2342,8 @@ button{cursor:pointer;font-family:var(--font)}
     <button class="modal-close" onclick="document.getElementById('apply-success-modal').classList.remove('show')">&times;</button>
     <div class="login-success">
       <div class="login-success-icon">✓</div>
-      <h3>신청이 완료되었습니다</h3>
-      <p>접수 내용을 확인 중입니다.<br>2영업일 이내 담당자가 연락드리겠습니다.</p>
+      <h3><span class="ko">신청이 완료되었습니다</span><span class="en">Application Submitted</span></h3>
+      <p><span class="ko">접수 내용을 확인 중입니다.<br>2영업일 이내 담당자가 연락드리겠습니다.</span><span class="en">We are reviewing your application.<br>Our team will contact you within 2 business days.</span></p>
       <button class="btn-primary" style="margin-top:24px;width:100%;justify-content:center" onclick="document.getElementById('apply-success-modal').classList.remove('show');switchTab('landing')">홈으로 돌아가기</button>
     </div>
   </div>
@@ -2393,32 +2359,55 @@ async function dbSaveApplication(formData) {
   if (!supabase) return null;
   var obj = {};
   // Map form fields to DB columns
+  // Fields that map directly to DB columns
   var fieldMap = {
-    'Brand Name (Korean)': 'brand_name_ko',
-    'Brand Name (English)': 'brand_name_en',
-    'CEO / Representative': 'ceo_name',
-    'Business Registration Number': 'business_number',
-    'Industry': 'industry',
-    'Homepage': 'homepage',
-    'Company Address': 'address',
-    'Contact Name': 'contact_name',
+    'Brand Name': 'brand_name_en',
+    'Brand Description': 'product_description',
+    'Category': 'product_category',
+    'Website': 'homepage',
+    'Annual Revenue USD': 'annual_revenue',
+    'Title': 'contact_position',
     'Email': 'contact_email',
-    'Phone': 'contact_phone',
-    'Position': 'contact_position',
-    'Product Category': 'product_category',
-    'Product Description': 'product_description',
-    'Annual Revenue (KRW)': 'annual_revenue',
     'export-exp': 'export_experience',
     'Participation Type': 'apply_type'
   };
+  // Extra fields → stored as JSON in walmart_interest
+  var extraFieldMap = {
+    'Brand Story': 'brand_story',
+    'Amazon URL': 'amazon_url',
+    'Instagram URL': 'instagram_url',
+    'Instagram Followers': 'instagram_followers',
+    'Export Countries': 'export_countries',
+    'Production Capacity': 'production_capacity',
+    'Lead Time': 'lead_time',
+    'Annual Units Sold': 'annual_units_sold',
+    'us-warehouse': 'us_warehouse',
+    'packaging': 'packaging_modify',
+    'mfg-type': 'mfg_type',
+    'eng-team': 'english_team',
+    'mkt-budget': 'marketing_budget'
+  };
+  var extraData = {};
+  var _firstName = '', _lastName = '', _phoneCode = '', _phone = '';
   for (var pair of formData.entries()) {
     var dbCol = fieldMap[pair[0]];
-    if (dbCol) obj[dbCol] = pair[1];
+    if (dbCol) { obj[dbCol] = pair[1]; continue; }
+    var extraKey = extraFieldMap[pair[0]];
+    if (extraKey) { extraData[extraKey] = pair[1]; continue; }
+    if (pair[0] === 'First Name') { _firstName = pair[1]; continue; }
+    if (pair[0] === 'Last Name') { _lastName = pair[1]; continue; }
+    if (pair[0] === 'Phone Country Code') { _phoneCode = pair[1]; continue; }
+    if (pair[0] === 'Phone') { _phone = pair[1]; continue; }
   }
+  // Combine first + last → contact_name
+  obj.contact_name = [_firstName, _lastName].filter(Boolean).join(' ') || 'N/A';
+  // Combine phone code + phone → contact_phone
+  obj.contact_phone = (_phoneCode && _phone) ? (_phoneCode + ' ' + _phone) : (_phone || '');
+  // Store extra data as JSON
+  if (Object.keys(extraData).length > 0) obj.walmart_interest = JSON.stringify(extraData);
   // Ensure required fields
-  if (!obj.brand_name_ko) obj.brand_name_ko = obj.brand_name_en || 'Unknown';
-  if (!obj.brand_name_en) obj.brand_name_en = obj.brand_name_ko || 'Unknown';
-  if (!obj.contact_name) obj.contact_name = 'N/A';
+  if (!obj.brand_name_en) obj.brand_name_en = 'Unknown';
+  if (!obj.brand_name_ko) obj.brand_name_ko = obj.brand_name_en;
   if (!obj.contact_email) obj.contact_email = 'N/A';
   if (obj.apply_type === 'voucher') obj.apply_type = 'voucher';
   else obj.apply_type = 'direct';
@@ -2589,14 +2578,14 @@ async function loginAdmin(email, pw, role) {
       var authRes = await supabase.auth.signInWithPassword({ email: email, password: pw });
       if (authRes.data && authRes.data.user) {
         _currentAdminUser = authRes.data.user;
-        switchTab(role === 'walmart' ? 'walmart' : 'admin');
+        sessionStorage.setItem('wm_session', JSON.stringify({type: role === 'walmart' ? 'walmart' : 'admin'})); switchTab(role === 'walmart' ? 'walmart' : 'admin');
         return;
       }
     } catch(e) { console.log('Supabase Auth not configured, falling back to password check'); }
   }
   // Fallback to simple password check (for backward compatibility)
   if (pw === ADMIN_PW) {
-    switchTab(role === 'walmart' ? 'walmart' : 'admin');
+    sessionStorage.setItem('wm_session', JSON.stringify({type: role === 'walmart' ? 'walmart' : 'admin'})); switchTab(role === 'walmart' ? 'walmart' : 'admin');
   } else {
     alert('이메일 또는 비밀번호가 올바르지 않습니다.');
   }
@@ -2621,8 +2610,12 @@ async function loginBrand(email, pw) {
     var icon = (brand.name_en || brand.name_ko || '?')[0].toUpperCase();
     var ceo = brand.ceo_name || '';
     _currentBrandEmail = email;
+    _currentBrandId = brand.id;
+    _currentBrandData = brand;
+    sessionStorage.setItem('wm_session', JSON.stringify({type:'brand', email:email, pw:pw}));
     setPortalType(type, name, icon, ceo);
     switchTab('portal');
+    loadBrandPortalData(brand);
   } else {
     // Check if email exists but wrong password or not yet approved
     var emailCheck = await supabase.from('wm_brands')
@@ -2758,24 +2751,31 @@ function removeFile(type, index) {
 }
 
 // ─── PORTAL MESSAGE ───
-function sendPortalMessage() {
-  const input = document.getElementById('msg-input');
-  const text = input.value.trim();
+async function sendPortalMessage() {
+  var input = document.getElementById('msg-input');
+  var text = input.value.trim();
   if (!text) return;
-  const thread = document.getElementById('msg-thread');
-  const now = new Date();
-  const timeStr = now.toLocaleDateString('en-US', {month:'short',day:'numeric'}) + ', ' + now.toLocaleTimeString('en-US', {hour:'numeric',minute:'2-digit'});
-  const bubble = document.createElement('div');
-  bubble.className = 'msg-bubble brand';
-  bubble.innerHTML = '<div>' + text.replace(/</g,'&lt;').replace(/>/g,'&gt;') + '</div><div class="msg-meta">' + (document.getElementById('portal-brand-name')?.textContent || 'Brand') + ' · ' + timeStr + '</div>';
-  thread.appendChild(bubble);
-  input.value = '';
-  thread.scrollTop = thread.scrollHeight;
-  // Update message count
-  const countEl = thread.closest('.portal-info-section').querySelector('.portal-info-title span');
-  if (countEl) {
-    const count = thread.querySelectorAll('.msg-bubble').length;
-    countEl.textContent = count + ' messages';
+  
+  if (supabase && _currentBrandId) {
+    await supabase.from('wm_messages').insert([{
+      brand_id: _currentBrandId,
+      sender_role: 'brand',
+      sender_name: document.getElementById('portal-brand-name')?.textContent || 'Brand',
+      content: text
+    }]);
+    input.value = '';
+    loadBrandMessages(_currentBrandId);
+  } else {
+    // Fallback: local only
+    var thread = document.getElementById('msg-thread');
+    var now = new Date();
+    var timeStr = now.toLocaleDateString('en-US', {month:'short',day:'numeric'}) + ', ' + now.toLocaleTimeString('en-US', {hour:'numeric',minute:'2-digit'});
+    var bubble = document.createElement('div');
+    bubble.className = 'msg-bubble brand';
+    bubble.innerHTML = '<div>' + text.replace(/</g,'&lt;').replace(/>/g,'&gt;') + '</div><div class="msg-meta">' + (document.getElementById('portal-brand-name')?.textContent || 'Brand') + ' · ' + timeStr + '</div>';
+    thread.appendChild(bubble);
+    input.value = '';
+    thread.scrollTop = thread.scrollHeight;
   }
 }
 
@@ -2899,6 +2899,7 @@ function switchTab(id) {
   tabNav.style.display = internalViews.includes(id) ? 'none' : '';
   window.scrollTo(0, 0);
   if (id === 'admin') showAdminView('dashboard');
+  if (id === 'walmart') loadWmBrands();
 }
 
 // Admin sub-views
@@ -3440,6 +3441,26 @@ function renderContractPage(contractId) {
   document.getElementById('contract-page-body').innerHTML = bodyHtml;
 
   // Update each signer section
+  // Add role selector to contract page
+  var rolePicker = document.getElementById('contract-role-picker');
+  if (!rolePicker) {
+    rolePicker = document.createElement('div');
+    rolePicker.id = 'contract-role-picker';
+    rolePicker.style.cssText = 'text-align:center;padding:20px;margin-bottom:20px;background:rgba(255,255,255,0.03);border:1px solid var(--border);border-radius:12px';
+    rolePicker.innerHTML = '<div style="font-size:13px;color:rgba(255,255,255,0.4);margin-bottom:12px;font-family:var(--mono)">서명하려면 역할을 선택하세요 / Select your role to sign:</div>' +
+      '<div style="display:flex;gap:8px;justify-content:center;flex-wrap:wrap">' +
+      '<button class="contract-role-btn" data-role="brand" onclick="selectContractRole(\x27brand\x27)" style="padding:10px 20px;border-radius:8px;border:1px solid var(--border);background:rgba(255,255,255,0.05);color:#fff;cursor:pointer;font-weight:600;transition:all .2s">Brand (브랜드사)</button>' +
+      '<button class="contract-role-btn" data-role="admin" onclick="selectContractRole(\x27admin\x27)" style="padding:10px 20px;border-radius:8px;border:1px solid var(--border);background:rgba(255,255,255,0.05);color:#fff;cursor:pointer;font-weight:600;transition:all .2s">3SVS (관리자)</button>' +
+      '<button class="contract-role-btn" data-role="walmart" onclick="selectContractRole(\x27walmart\x27)" style="padding:10px 20px;border-radius:8px;border:1px solid var(--border);background:rgba(255,255,255,0.05);color:#fff;cursor:pointer;font-weight:600;transition:all .2s">Startup Junkie</button></div>';
+    var sigContainer = document.querySelector('.contract-page .sig-section, .contract-page');
+    if (!sigContainer) sigContainer = document.getElementById('contract-content');
+    if (sigContainer) {
+      var sigPanels = sigContainer.querySelector('[id^="sig-gate-brand"]');
+      if (sigPanels && sigPanels.parentElement) sigPanels.parentElement.parentElement.insertBefore(rolePicker, sigPanels.parentElement);
+      else sigContainer.appendChild(rolePicker);
+    }
+  }
+  
   var roles = ['brand', 'admin', 'walmart'];
   roles.forEach(function(role) {
     var sig = c.signatures[role];
@@ -3779,7 +3800,9 @@ function viewContract(contractId) { previewContract(contractId); }
 function closeSigModal() { document.getElementById('sig-overlay').style.display = 'none'; }
 
 // Fallback: re-check contract URL after full page load
-window.addEventListener('load', function() { checkContractUrl(); });
+window.addEventListener('load', function() { checkContractUrl();
+  // Restore session on page load
+  if (!window.location.search.includes('contract=')) restoreSession(); });
 
 
 async function renderAdminReview() {
@@ -3811,27 +3834,85 @@ async function renderAdminReview() {
       '</div></div></div>' +
       '<div class="review-body">';
     
-    var fields = [
+    // === Basic Info Section ===
+    html += '<div style="font-size:11px;color:rgba(255,255,255,0.3);margin-bottom:8px;font-family:var(--mono);text-transform:uppercase;letter-spacing:1px">기업 기본 정보</div>';
+    var basicFields = [
       ['회사명 (영문)', app.brand_name_en],
       ['대표자', app.ceo_name],
-      ['담당자', app.contact_name],
-      ['이메일', app.contact_email],
-      ['전화', app.contact_phone],
       ['업종', app.industry],
-      ['제품 카테고리', app.product_category],
-      ['제품 설명', app.product_description],
-      ['연 매출', app.annual_revenue],
-      ['수출 경험', app.export_experience],
-      ['홈페이지', app.homepage]
+      ['홈페이지', app.homepage],
+      ['주소', app.address]
     ];
-    fields.forEach(function(f) {
-      if (f[1] && f[1].trim()) {
+    basicFields.forEach(function(f) {
+      if (f[1] && f[1].toString().trim()) {
+        var val = f[1];
+        if (f[0] === '홈페이지' && val.startsWith('http')) val = '<a href="' + val + '" target="_blank" style="color:var(--accent)">' + val + '</a>';
+        html += '<div class="review-field"><div class="rf-label">' + f[0] + '</div><div class="rf-value">' + val + '</div></div>';
+      }
+    });
+
+    // === Contact Section ===
+    html += '<div style="font-size:11px;color:rgba(255,255,255,0.3);margin:16px 0 8px;font-family:var(--mono);text-transform:uppercase;letter-spacing:1px">담당자 정보</div>';
+    var contactFields = [
+      ['담당자', app.contact_name],
+      ['직함', app.contact_position],
+      ['이메일', app.contact_email],
+      ['전화', app.contact_phone]
+    ];
+    contactFields.forEach(function(f) {
+      if (f[1] && f[1].toString().trim() && f[1] !== 'N/A') {
         html += '<div class="review-field"><div class="rf-label">' + f[0] + '</div><div class="rf-value">' + f[1] + '</div></div>';
       }
     });
-    
+
+    // === Product & Business Section ===
+    html += '<div style="font-size:11px;color:rgba(255,255,255,0.3);margin:16px 0 8px;font-family:var(--mono);text-transform:uppercase;letter-spacing:1px">제품 / 비즈니스 정보</div>';
+    var bizFields = [
+      ['제품 카테고리', app.product_category],
+      ['제품 설명', app.product_description],
+      ['연 매출 (USD)', app.annual_revenue],
+      ['수출 경험', app.export_experience]
+    ];
+    bizFields.forEach(function(f) {
+      if (f[1] && f[1].toString().trim()) {
+        html += '<div class="review-field"><div class="rf-label">' + f[0] + '</div><div class="rf-value" style="' + (f[1].length > 80 ? 'white-space:pre-wrap' : '') + '">' + f[1] + '</div></div>';
+      }
+    });
+
+    // === Extra Data (from walmart_interest JSON) ===
+    var extra = null;
+    try { if (app.walmart_interest) extra = JSON.parse(app.walmart_interest); } catch(e) {}
+    if (extra && typeof extra === 'object') {
+      var extraLabels = {
+        'brand_story': '브랜드 스토리',
+        'amazon_url': 'Amazon URL',
+        'instagram_url': 'Instagram URL',
+        'instagram_followers': 'Instagram 팔로워',
+        'export_countries': '수출 국가',
+        'production_capacity': '생산 역량',
+        'lead_time': '리드 타임',
+        'annual_units_sold': '연간 판매량',
+        'us_warehouse': '미국 내 창고',
+        'packaging_modify': '패키징 변경 가능',
+        'mfg_type': '제조 유형',
+        'english_team': '영어 가능 인력',
+        'marketing_budget': '마케팅 예산'
+      };
+      html += '<div style="font-size:11px;color:rgba(255,255,255,0.3);margin:16px 0 8px;font-family:var(--mono);text-transform:uppercase;letter-spacing:1px">추가 정보</div>';
+      Object.keys(extra).forEach(function(key) {
+        var val = extra[key];
+        if (val && val.toString().trim()) {
+          var label = extraLabels[key] || key;
+          if ((key === 'amazon_url' || key === 'instagram_url') && val.startsWith('http')) val = '<a href="' + val + '" target="_blank" style="color:var(--accent)">' + val + '</a>';
+          html += '<div class="review-field"><div class="rf-label">' + label + '</div><div class="rf-value" style="' + (val.length > 80 ? 'white-space:pre-wrap' : '') + '">' + val + '</div></div>';
+        }
+      });
+    }
+
     if (app.apply_type === 'voucher' && app.voucher_amount) {
+      html += '<div style="font-size:11px;color:rgba(255,255,255,0.3);margin:16px 0 8px;font-family:var(--mono);text-transform:uppercase;letter-spacing:1px">수출바우처</div>';
       html += '<div class="review-field"><div class="rf-label">바우처 잔액</div><div class="rf-value">' + app.voucher_amount + '</div></div>';
+      if (app.voucher_number) html += '<div class="review-field"><div class="rf-label">바우처 번호</div><div class="rf-value">' + app.voucher_number + '</div></div>';
     }
     
     html += '</div>' +
@@ -3918,18 +3999,35 @@ async function approveApplication(appId) {
 
   renderAdminReview();
 
-  // Show credentials to admin
+  // Auto-send email with temp password via Edge Function
   sendNotification('application_approved', {
-    message: (app.brand_name_ko || app.brand_name_en) + ' 승인 완료. 로그인 이메일: ' + loginEmail,
+    message: (app.brand_name_ko || app.brand_name_en) + ' 승인 완료. 임시 비밀번호가 ' + loginEmail + '로 발송되었습니다.',
     brandName: app.brand_name_ko || app.brand_name_en,
     email: loginEmail,
     tempPassword: tempPw
   });
-  alert('✅ 승인 완료!\n\n' +
-    '기업: ' + (app.brand_name_ko || app.brand_name_en) + '\n' +
-    '로그인 이메일: ' + loginEmail + '\n' +
-    '임시 비밀번호: ' + tempPw + '\n\n' +
-    '이 정보를 기업 담당자에게 전달해주세요.');
+
+  // Show inline toast instead of blocking alert
+  showApprovalToast(app.brand_name_ko || app.brand_name_en, loginEmail);
+}
+
+function showApprovalToast(brandName, email) {
+  var existing = document.querySelector('.approval-toast');
+  if (existing) existing.remove();
+  var toast = document.createElement('div');
+  toast.className = 'approval-toast';
+  toast.innerHTML = '<div style="display:flex;align-items:center;gap:10px"><div style="font-size:24px">✅</div><div>' +
+    '<div style="font-weight:600;margin-bottom:2px">' + brandName + ' 승인 완료</div>' +
+    '<div style="font-size:13px;opacity:0.7">임시 비밀번호가 <strong>' + email + '</strong>으로 자동 발송되었습니다.</div>' +
+    '</div></div>';
+  toast.style.cssText = 'position:fixed;bottom:32px;right:32px;background:rgba(0,214,143,0.15);border:1px solid rgba(0,214,143,0.3);color:#fff;padding:16px 24px;border-radius:12px;z-index:9999;backdrop-filter:blur(20px);animation:toastIn 0.3s ease;max-width:420px;box-shadow:0 8px 32px rgba(0,0,0,0.3)';
+  document.body.appendChild(toast);
+  setTimeout(function() {
+    toast.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+    toast.style.opacity = '0';
+    toast.style.transform = 'translateY(20px)';
+    setTimeout(function() { toast.remove(); }, 500);
+  }, 6000);
 }
 
 async function rejectApplication(appId) {
@@ -4366,6 +4464,489 @@ window.addEventListener('beforeunload', function(e) {
     e.returnValue = '';
   }
 });
+
+// ─── ENGLISH-ONLY INPUT VALIDATION ───
+(function() {
+  var koreanRegex = /[가-힣ㄱ-ㅎㅏ-ㅣ]/;
+  var formInputs = document.querySelectorAll('#view-apply input.form-input:not([type="file"]):not([type="email"]), #view-apply textarea.form-input');
+  
+  formInputs.forEach(function(input) {
+    // Add warning element after each input
+    var warn = document.createElement('div');
+    warn.className = 'eng-only-warn';
+    warn.innerHTML = '<span class="ko">⚠ 영어로 입력해주세요</span><span class="en">⚠ Please enter in English</span>';
+    // Apply current language visibility
+    var lang = document.documentElement.getAttribute('lang') || 'en';
+    warn.querySelectorAll('.ko').forEach(function(el) { el.style.display = lang === 'ko' ? '' : 'none'; });
+    warn.querySelectorAll('.en').forEach(function(el) { el.style.display = lang === 'en' ? '' : 'none'; });
+    input.parentNode.insertBefore(warn, input.nextSibling);
+    
+    input.addEventListener('input', function() {
+      if (koreanRegex.test(this.value)) {
+        // Strip Korean characters immediately
+        this.value = this.value.replace(/[가-힣ㄱ-ㅎㅏ-ㅣ]/g, '');
+        this.classList.add('has-korean');
+        warn.classList.add('show');
+        // Auto-hide warning after 3 seconds
+        clearTimeout(this._korWarnTimer);
+        this._korWarnTimer = setTimeout(function() {
+          input.classList.remove('has-korean');
+          warn.classList.remove('show');
+        }, 3000);
+      } else {
+        this.classList.remove('has-korean');
+        warn.classList.remove('show');
+      }
+    });
+    // Also block on compositionend (IME Korean input)
+    input.addEventListener('compositionend', function() {
+      if (koreanRegex.test(this.value)) {
+        this.value = this.value.replace(/[가-힣ㄱ-ㅎㅏ-ㅣ]/g, '');
+        this.classList.add('has-korean');
+        warn.classList.add('show');
+        clearTimeout(this._korWarnTimer);
+        this._korWarnTimer = setTimeout(function() {
+          input.classList.remove('has-korean');
+          warn.classList.remove('show');
+        }, 3000);
+      }
+    });
+  });
+})();
+
+
+// ─── BRAND PORTAL VIEW SWITCHING ───
+var _currentBrandId = null;
+var _currentBrandData = null;
+
+function showBrandView(view) {
+  // Toggle view sections
+  var sections = {
+    'dashboard': ['portal-phase-bar','portal-cost-a','portal-cost-b','portal-sku-section','portal-checklist-section','portal-stats-section'],
+    'phase': ['portal-phase-bar','portal-checklist-section'],
+    'docs': ['portal-docs-section'],
+    'messages': ['portal-messages-section'],
+    'cost': ['portal-cost-a','portal-cost-b']
+  };
+  // Hide all brand-view sections
+  document.querySelectorAll('[data-brand-view]').forEach(function(el) { el.style.display = 'none'; });
+  // Show selected
+  var targets = sections[view] || sections['dashboard'];
+  // For dashboard, show everything
+  if (view === 'dashboard') {
+    document.querySelectorAll('[data-brand-view]').forEach(function(el) { el.style.display = ''; });
+  } else {
+    document.querySelectorAll('[data-brand-view]').forEach(function(el) {
+      if (el.getAttribute('data-brand-view') === view || el.getAttribute('data-brand-view') === 'always') el.style.display = '';
+    });
+  }
+  // Update sidebar active state
+  var navItems = document.querySelectorAll('#brand-sidebar-nav .sidebar-item');
+  navItems.forEach(function(item, idx) { item.classList.remove('active'); });
+  var viewIdx = {'dashboard':0,'phase':1,'docs':2,'messages':3,'cost':4}[view] || 0;
+  if (navItems[viewIdx]) navItems[viewIdx].classList.add('active');
+}
+
+// ─── BRAND PORTAL DATA LOADING ───
+async function loadBrandPortalData(brand) {
+  if (!brand || !supabase) return;
+  
+  // Update phase bar
+  var phase = brand.current_phase || 'phase1';
+  var phaseMap = {'contract':'계약 진행','phase1':'Phase 1','phase2':'Phase 2','phase3':'Phase 3','completed':'완료'};
+  var badge = document.getElementById('portal-phase-badge');
+  if (badge) badge.textContent = phaseMap[phase] || phase;
+  
+  var timeline = document.getElementById('portal-phase-timeline');
+  if (timeline) {
+    var phases = ['phase1','phase2','phase3'];
+    var phaseLabels = ['Phase 1','Phase 2','Phase 3'];
+    var currentIdx = phases.indexOf(phase);
+    if (phase === 'completed') currentIdx = 3;
+    var html = '';
+    phases.forEach(function(p, idx) {
+      var dotClass = idx < currentIdx ? 'done' : (idx === currentIdx ? 'active' : '');
+      var labelClass = idx < currentIdx ? 'done' : (idx === currentIdx ? 'active' : '');
+      var labelText = phaseLabels[idx] + (idx < currentIdx ? ' ✓' : (idx === currentIdx ? ' 진행중' : ''));
+      html += '<div class="tl-node"><div class="tl-dot ' + dotClass + '"></div><div class="tl-label ' + labelClass + '">' + labelText + '</div></div>';
+      if (idx < phases.length - 1) html += '<div class="tl-line ' + (idx < currentIdx ? 'done' : '') + '" style="min-width:80px"></div>';
+    });
+    timeline.innerHTML = html;
+  }
+  
+  // Load messages for this brand
+  loadBrandMessages(brand.id);
+  loadSkuFiles(brand.id);
+}
+
+// ─── MESSAGE SYSTEM (DB-backed) ───
+async function loadBrandMessages(brandId) {
+  if (!supabase || !brandId) return;
+  var res = await supabase.from('wm_messages').select('*').eq('brand_id', brandId).order('created_at', {ascending: true});
+  var messages = (res && res.data) || [];
+  renderMessages(messages, 'brand');
+}
+
+async function loadAdminMessages(brandId) {
+  if (!supabase || !brandId) return;
+  var res = await supabase.from('wm_messages').select('*').eq('brand_id', brandId).order('created_at', {ascending: true});
+  return (res && res.data) || [];
+}
+
+function renderMessages(messages, viewerRole) {
+  var thread = document.getElementById('msg-thread');
+  if (!thread) return;
+  if (messages.length === 0) {
+    thread.innerHTML = '<div style="text-align:center;padding:32px 0;color:rgba(255,255,255,0.15);font-size:13px">아직 메시지가 없습니다.</div>';
+  } else {
+    var html = '';
+    messages.forEach(function(m) {
+      var isMine = m.sender_role === viewerRole;
+      var senderLabel = m.sender_role === 'brand' ? (m.sender_name || 'Brand') : (m.sender_role === 'admin' ? '3SVS 관리자' : m.sender_name || 'Unknown');
+      var time = m.created_at ? new Date(m.created_at).toLocaleString('ko-KR', {month:'short',day:'numeric',hour:'numeric',minute:'2-digit'}) : '';
+      html += '<div class="msg-bubble ' + (isMine ? 'brand' : 'admin') + '">' +
+        '<div>' + m.content.replace(/</g,'&lt;').replace(/>/g,'&gt;') + '</div>' +
+        '<div class="msg-meta">' + senderLabel + ' · ' + time + '</div></div>';
+    });
+    thread.innerHTML = html;
+  }
+  thread.scrollTop = thread.scrollHeight;
+  var countEl = document.getElementById('portal-msg-count');
+  if (countEl) countEl.textContent = messages.length + ' messages';
+}
+
+// Override sendPortalMessage to use DB
+var _origSendPortalMessage = typeof sendPortalMessage === 'function' ? sendPortalMessage : null;
+
+// ─── SESSION RESTORE ───
+async function restoreSession() {
+  var saved = sessionStorage.getItem('wm_session');
+  if (!saved) return;
+  try {
+    var sess = JSON.parse(saved);
+    if (sess.type === 'brand' && sess.email && sess.pw) {
+      await loginBrand(sess.email, sess.pw);
+    } else if (sess.type === 'admin') {
+      switchTab('admin');
+    } else if (sess.type === 'walmart') {
+      switchTab('walmart');
+    }
+  } catch(e) { console.log('Session restore failed:', e); }
+}
+
+// ─── CONTRACT ROLE SELECTOR ───
+var _contractSignerRole = null;
+
+function selectContractRole(role) {
+  _contractSignerRole = role;
+  // Show only the selected role's sign button
+  ['brand','admin','walmart'].forEach(function(r) {
+    var gate = document.getElementById('sig-gate-' + r);
+    if (gate) gate.style.display = (r === role) ? '' : 'none';
+  });
+  // Update role selector buttons
+  document.querySelectorAll('.contract-role-btn').forEach(function(btn) {
+    btn.classList.toggle('selected', btn.getAttribute('data-role') === role);
+  });
+}
+
+// ─── ADMIN: BRAND MESSAGES VIEW ───
+async function showAdminBrandMessages(brandId, brandName) {
+  var messages = await loadAdminMessages(brandId);
+  var existing = document.getElementById('admin-msg-modal');
+  if (existing) existing.remove();
+  
+  var modal = document.createElement('div');
+  modal.id = 'admin-msg-modal';
+  modal.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,0.7);z-index:9999;display:flex;align-items:center;justify-content:center;backdrop-filter:blur(8px)';
+  
+  // Store brand info for reply handler
+  window._adminMsgBrandId = brandId;
+  window._adminMsgBrandName = brandName;
+  
+  var msgsHtml = '';
+  if (messages.length === 0) {
+    msgsHtml = '<div style="text-align:center;padding:40px;color:rgba(255,255,255,0.2)">메시지 없음</div>';
+  } else {
+    messages.forEach(function(m) {
+      var isAdmin = m.sender_role === 'admin';
+      var senderLabel = isAdmin ? '3SVS 관리자' : (m.sender_name || 'Brand');
+      var time = m.created_at ? new Date(m.created_at).toLocaleString('ko-KR') : '';
+      msgsHtml += '<div class="msg-bubble ' + (isAdmin ? 'brand' : 'admin') + '" style="margin-bottom:8px"><div>' + m.content.replace(/</g,'&lt;').replace(/>/g,'&gt;') + '</div><div class="msg-meta">' + senderLabel + ' \u00b7 ' + time + '</div></div>';
+    });
+  }
+  
+  var box = document.createElement('div');
+  box.style.cssText = 'background:var(--surface);border:1px solid var(--border);border-radius:16px;width:90%;max-width:600px;max-height:80vh;display:flex;flex-direction:column';
+  
+  var header = document.createElement('div');
+  header.style.cssText = 'padding:20px 24px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center';
+  header.innerHTML = '<div style="font-weight:700;font-size:16px">' + (brandName || 'Brand') + ' — 메시지</div>';
+  var closeBtn = document.createElement('button');
+  closeBtn.textContent = '✕';
+  closeBtn.style.cssText = 'background:none;border:none;color:rgba(255,255,255,0.4);font-size:20px;cursor:pointer';
+  closeBtn.onclick = function() { modal.remove(); };
+  header.appendChild(closeBtn);
+  
+  var thread = document.createElement('div');
+  thread.id = 'admin-msg-thread';
+  thread.style.cssText = 'flex:1;overflow-y:auto;padding:20px 24px';
+  thread.innerHTML = msgsHtml;
+  
+  var inputRow = document.createElement('div');
+  inputRow.style.cssText = 'padding:16px 24px;border-top:1px solid var(--border);display:flex;gap:8px';
+  var input = document.createElement('input');
+  input.type = 'text';
+  input.id = 'admin-msg-input';
+  input.placeholder = '답변을 입력하세요...';
+  input.style.cssText = 'flex:1;background:rgba(255,255,255,0.06);border:1px solid var(--border);border-radius:8px;padding:10px 14px;color:#fff;font-size:14px';
+  input.addEventListener('keydown', function(e) { if (e.key === 'Enter') sendAdminReplyFromModal(); });
+  var sendBtn = document.createElement('button');
+  sendBtn.textContent = '전송';
+  sendBtn.style.cssText = 'background:var(--accent);color:#fff;border:none;border-radius:8px;padding:10px 20px;font-weight:600;cursor:pointer';
+  sendBtn.onclick = function() { sendAdminReplyFromModal(); };
+  inputRow.appendChild(input);
+  inputRow.appendChild(sendBtn);
+  
+  box.appendChild(header);
+  box.appendChild(thread);
+  box.appendChild(inputRow);
+  modal.appendChild(box);
+  
+  document.body.appendChild(modal);
+  modal.addEventListener('click', function(e) { if (e.target === modal) modal.remove(); });
+  thread.scrollTop = thread.scrollHeight;
+}
+
+async function sendAdminReplyFromModal() {
+  var input = document.getElementById('admin-msg-input');
+  if (!input || !input.value.trim()) return;
+  var text = input.value.trim();
+  var brandId = window._adminMsgBrandId;
+  var brandName = window._adminMsgBrandName;
+  
+  if (supabase && brandId) {
+    await supabase.from('wm_messages').insert([{
+      brand_id: brandId,
+      sender_role: 'admin',
+      sender_name: '3SVS 관리자',
+      content: text
+    }]);
+  }
+  input.value = '';
+  showAdminBrandMessages(brandId, brandName);
+}
+
+async function sendAdminReply(brandId, brandName) {
+  sendAdminReplyFromModal();
+}
+
+
+// ─── WALMART/SJ PORTAL: Load brands from DB ───
+async function loadWmBrands() {
+  if (!supabase) return;
+  var res = await supabase.from('wm_brands').select('*').eq('portal_active', true);
+  var brands = (res && res.data) || [];
+  wmBrandData = {};
+  brands.forEach(function(b) {
+    wmBrandData[b.id] = {
+      name: b.name_ko || b.name_en || b.id,
+      nameEn: b.name_en || '',
+      status: b.status || 'Active',
+      phase: b.current_phase || 'phase1',
+      type: b.apply_type || 'direct',
+      info: {
+        ceo: b.ceo_name || '-',
+        category: b.category || '-',
+        website: b.website || '-',
+        revenue: b.annual_revenue || '-'
+      },
+      skus: [],
+      docs: [],
+      memo: ''
+    };
+  });
+  renderWmPipeline();
+}
+
+function renderWmPipeline() {
+  var el = document.getElementById('wm-pipeline');
+  if (!el) return;
+  var keys = Object.keys(wmBrandData);
+  if (keys.length === 0) {
+    el.innerHTML = '<div style="text-align:center;padding:60px 0;color:rgba(255,255,255,0.15);font-size:14px">등록된 브랜드가 없습니다.</div>';
+    return;
+  }
+  var html = '<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:16px">';
+  keys.forEach(function(id) {
+    var b = wmBrandData[id];
+    var phaseLabel = {'contract':'Contract','phase1':'Phase 1','phase2':'Phase 2','phase3':'Phase 3','completed':'Completed'}[b.phase] || b.phase;
+    var initial = (b.nameEn || b.name || '?')[0].toUpperCase();
+    var typeBadge = b.type === 'voucher' ? '<span style="font-size:10px;padding:2px 8px;border-radius:999px;background:rgba(0,135,90,0.15);color:var(--lime);margin-left:6px">voucher</span>' : '';
+    html += '<div class="brand-card" style="cursor:pointer" onclick="showWmBrandDetailDB(\x27' + id + '\x27)">' +
+      '<div class="brand-header"><div class="brand-info"><div class="brand-icon">' + initial + '</div><div>' +
+      '<div class="brand-name">' + b.name + typeBadge + '</div>' +
+      '<div class="brand-sub">' + phaseLabel + ' · ' + (b.info.category || '-') + '</div>' +
+      '</div></div><div style="font-size:12px;color:var(--accent);font-family:var(--mono)">' + phaseLabel + '</div></div></div>';
+  });
+  html += '</div>';
+  el.innerHTML = html;
+  
+  // Update pipeline count
+  var badge = document.querySelector('#view-walmart .sidebar-badge');
+  if (badge) badge.textContent = keys.length;
+}
+
+function showWmBrandDetailDB(brandId) {
+  var brand = wmBrandData[brandId];
+  if (!brand) return;
+  showWmView('brand-detail');
+  var container = document.getElementById('wm-brand-detail');
+  if (!container) return;
+  
+  var phaseLabel = {'contract':'Contract','phase1':'Phase 1','phase2':'Phase 2','phase3':'Phase 3','completed':'Completed'}[brand.phase] || brand.phase;
+  
+  // Phase selector
+  var phaseOptions = ['contract','phase1','phase2','phase3','completed'];
+  var phaseLabels = {'contract':'Contract','phase1':'Phase 1','phase2':'Phase 2','phase3':'Phase 3','completed':'Completed'};
+  var phaseBtns = '';
+  phaseOptions.forEach(function(p) {
+    var sel = p === brand.phase ? 'background:var(--accent);color:#fff' : 'background:rgba(255,255,255,0.06);color:rgba(255,255,255,0.4)';
+    phaseBtns += '<button onclick="updateBrandPhase(\x27' + brandId + '\x27,\x27' + p + '\x27)" style="border:none;padding:6px 14px;border-radius:6px;font-size:12px;font-weight:600;cursor:pointer;' + sel + '">' + phaseLabels[p] + '</button>';
+  });
+  
+  var infoHtml = '';
+  var infoFields = [['CEO', brand.info.ceo], ['Category', brand.info.category], ['Website', brand.info.website], ['Revenue', brand.info.revenue]];
+  infoFields.forEach(function(f) {
+    if (f[1] && f[1] !== '-') infoHtml += '<div class="wm-info-item"><span class="wm-info-label">' + f[0] + '</span><span class="wm-info-value">' + f[1] + '</span></div>';
+  });
+  
+  container.innerHTML = '<button class="wm-detail-back" onclick="showWmView(\x27pipeline\x27);loadWmBrands()">← Back to Pipeline</button>' +
+    '<div class="wm-brand-header"><div class="brand-icon" style="width:48px;height:48px;font-size:20px;border-radius:12px">' + (brand.nameEn || brand.name || '?')[0].toUpperCase() + '</div><div><h2 style="margin:0;font-size:22px">' + brand.name + '</h2><p style="margin:4px 0 0;opacity:.6">' + phaseLabel + ' · ' + (brand.info.category || '-') + '</p></div></div>' +
+    '<div class="wm-section"><div class="wm-section-title">Phase 관리</div><div style="display:flex;gap:8px;flex-wrap:wrap">' + phaseBtns + '</div></div>' +
+    '<div class="wm-section"><div class="wm-section-title">Company Information</div><div class="wm-info-grid">' + (infoHtml || '<div style="opacity:.3">정보 없음</div>') + '</div></div>' +
+    '<div class="wm-section"><div class="wm-section-title">Messages</div><button id="wm-msg-btn" style="background:rgba(0,113,220,0.1);color:var(--accent);border:1px solid rgba(0,113,220,0.2);padding:8px 16px;border-radius:8px;cursor:pointer;font-size:13px">메시지 확인 / 답변</button></div>' +
+    '<div class="wm-section"><div class="wm-section-title">Contracts</div>' + getWmContractsHtml(brandId) + '</div>';
+}
+
+async function updateBrandPhase(brandId, newPhase) {
+  if (!supabase) return;
+  await supabase.from('wm_brands').update({ current_phase: newPhase, updated_at: new Date().toISOString() }).eq('id', brandId);
+  if (wmBrandData[brandId]) wmBrandData[brandId].phase = newPhase;
+  showWmBrandDetailDB(brandId);
+}
+
+// ─── ADMIN: BRAND DETAIL (from admin dashboard) ───
+async function showAdminBrandDetail(brandId) {
+  // Reuse the walmart brand detail approach
+  if (!wmBrandData[brandId]) await loadWmBrands();
+  showWmBrandDetailDB(brandId);
+}
+
+
+
+// ─── SKU FILE UPLOAD ───
+async function uploadSkuFile(file) {
+  if (!file || !supabase || !_currentBrandId) return;
+  if (file.size > 10 * 1024 * 1024) {
+    alert('파일 크기가 10MB를 초과합니다.');
+    return;
+  }
+  
+  var ext = file.name.split('.').pop().toLowerCase();
+  var allowed = ['pdf','xlsx','xls','csv','png','jpg','jpeg'];
+  if (!allowed.includes(ext)) {
+    alert('지원하지 않는 파일 형식입니다. (PDF, Excel, CSV, 이미지)');
+    return;
+  }
+  
+  var timestamp = Date.now();
+  var path = 'sku/' + _currentBrandId + '/' + timestamp + '_' + file.name;
+  
+  // Upload to Supabase Storage
+  var uploadArea = document.getElementById('sku-upload-area');
+  uploadArea.style.opacity = '0.5';
+  uploadArea.style.pointerEvents = 'none';
+  
+  var res = await supabase.storage.from('wm-signatures').upload(path, file);
+  
+  uploadArea.style.opacity = '';
+  uploadArea.style.pointerEvents = '';
+  
+  if (res.error) {
+    alert('업로드 실패: ' + res.error.message);
+    return;
+  }
+  
+  // Save file record to wm_messages as a file-type message
+  var publicUrl = SUPABASE_URL + '/storage/v1/object/public/wm-signatures/' + path;
+  await supabase.from('wm_messages').insert([{
+    brand_id: _currentBrandId,
+    sender_role: 'brand',
+    sender_name: document.getElementById('portal-brand-name')?.textContent || 'Brand',
+    content: '[FILE] ' + file.name + ' ||| ' + publicUrl + ' ||| ' + formatFileSize(file.size)
+  }]);
+  
+  loadSkuFiles(_currentBrandId);
+  document.getElementById('sku-file-input').value = '';
+}
+
+function handleSkuFileDrop(e) {
+  var files = e.dataTransfer.files;
+  if (files.length > 0) uploadSkuFile(files[0]);
+}
+
+async function loadSkuFiles(brandId) {
+  if (!supabase || !brandId) return;
+  
+  // Get file messages for this brand
+  var res = await supabase.from('wm_messages')
+    .select('*')
+    .eq('brand_id', brandId)
+    .like('content', '[FILE]%')
+    .order('created_at', {ascending: false});
+  
+  var files = (res && res.data) || [];
+  var listEl = document.getElementById('sku-file-list');
+  var countEl = document.getElementById('portal-sku-count');
+  
+  if (!listEl) return;
+  
+  if (files.length === 0) {
+    listEl.innerHTML = '<div style="text-align:center;padding:20px 0;color:rgba(255,255,255,0.12);font-size:13px">업로드된 파일이 없습니다.</div>';
+    if (countEl) countEl.textContent = '0 files';
+    return;
+  }
+  
+  if (countEl) countEl.textContent = files.length + ' file' + (files.length > 1 ? 's' : '');
+  
+  var html = '';
+  files.forEach(function(f) {
+    var parts = f.content.replace('[FILE] ', '').split(' ||| ');
+    var fileName = parts[0] || 'file';
+    var fileUrl = parts[1] || '#';
+    var fileSize = parts[2] || '';
+    var date = f.created_at ? new Date(f.created_at).toLocaleDateString('ko-KR') : '';
+    var ext = fileName.split('.').pop().toLowerCase();
+    var icon = ext === 'pdf' ? '📄' : (ext === 'xlsx' || ext === 'xls' || ext === 'csv') ? '📊' : '🖼️';
+    
+    html += '<div style="display:flex;align-items:center;justify-content:space-between;padding:12px 16px;border:1px solid rgba(255,255,255,0.06);border-radius:8px;margin-bottom:6px;background:rgba(255,255,255,0.02)">' +
+      '<div style="display:flex;align-items:center;gap:12px"><span style="font-size:20px">' + icon + '</span><div>' +
+      '<div style="font-size:14px;color:#fff;font-weight:500">' + fileName + '</div>' +
+      '<div style="font-size:11px;color:rgba(255,255,255,0.25);font-family:var(--mono)">' + date + (fileSize ? ' · ' + fileSize : '') + '</div>' +
+      '</div></div>' +
+      '<a href="' + fileUrl + '" target="_blank" style="color:var(--accent);font-size:13px;text-decoration:none;font-weight:500">열기</a></div>';
+  });
+  
+  listEl.innerHTML = html;
+}
+
+function formatFileSize(bytes) {
+  if (bytes < 1024) return bytes + ' B';
+  if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(1) + ' KB';
+  return (bytes / (1024 * 1024)).toFixed(1) + ' MB';
+}
+
 </script>
 
 
@@ -4408,7 +4989,7 @@ window.addEventListener('beforeunload', function(e) {
           </div>
         </div>
       </div>
-      <button onclick="confirmSign('brand')" id="sig-confirm-brand" style="margin-top:16px;width:100%;background:#98fe00;color:#000;border:none;padding:12px;border-radius:8px;font-weight:600;font-size:15px;cursor:pointer">Sign as Brand Representative</button>
+      <div class="sig-role-gate" id="sig-gate-brand" style="display:none"><button onclick="confirmSign('brand')" id="sig-confirm-brand" style="margin-top:16px;width:100%;background:#98fe00;color:#000;border:none;padding:12px;border-radius:8px;font-weight:600;font-size:15px;cursor:pointer">Sign as Brand Representative</button></div>
     </div>
 
     <!-- Signer: 3SVS -->
@@ -4435,7 +5016,7 @@ window.addEventListener('beforeunload', function(e) {
           </div>
         </div>
       </div>
-      <button onclick="confirmSign('admin')" id="sig-confirm-admin" style="margin-top:16px;width:100%;background:#98fe00;color:#000;border:none;padding:12px;border-radius:8px;font-weight:600;font-size:15px;cursor:pointer">Sign as 3SVS Representative</button>
+      <div class="sig-role-gate" id="sig-gate-admin" style="display:none"><button onclick="confirmSign('admin')" id="sig-confirm-admin" style="margin-top:16px;width:100%;background:#98fe00;color:#000;border:none;padding:12px;border-radius:8px;font-weight:600;font-size:15px;cursor:pointer">Sign as 3SVS Representative</button></div>
     </div>
 
     <!-- Signer: Walmart -->
@@ -4462,7 +5043,7 @@ window.addEventListener('beforeunload', function(e) {
           </div>
         </div>
       </div>
-      <button onclick="confirmSign('walmart')" id="sig-confirm-walmart" style="margin-top:16px;width:100%;background:#8fc5f2;color:#000;border:none;padding:12px;border-radius:8px;font-weight:600;font-size:15px;cursor:pointer">Sign as Startup Junkie</button>
+      <div class="sig-role-gate" id="sig-gate-walmart" style="display:none"><button onclick="confirmSign('walmart')" id="sig-confirm-walmart" style="margin-top:16px;width:100%;background:#8fc5f2;color:#000;border:none;padding:12px;border-radius:8px;font-weight:600;font-size:15px;cursor:pointer">Sign as Startup Junkie</button></div>
     </div>
 
     <!-- Completion Banner -->

@@ -269,3 +269,22 @@ CREATE POLICY "Authenticated can update brands" ON wm_brands
 -- 2. Email: jw@3svs.com, Password: 원하는 비밀번호
 -- 3. Auto Confirm: ON
 -- 이후 관리자 로그인에서 이 계정으로 로그인 가능
+
+
+-- 4. 메시지 (브랜드 ↔ 관리자)
+CREATE TABLE IF NOT EXISTS wm_messages (
+  id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+  created_at TIMESTAMPTZ DEFAULT now(),
+  brand_id TEXT REFERENCES wm_brands(id),
+  sender_role TEXT CHECK (sender_role IN ('brand', 'admin', 'walmart')),
+  sender_name TEXT,
+  content TEXT NOT NULL,
+  read_by_admin BOOLEAN DEFAULT false,
+  read_by_brand BOOLEAN DEFAULT false
+);
+
+-- RLS for messages
+ALTER TABLE wm_messages ENABLE ROW LEVEL SECURITY;
+CREATE POLICY "Anyone can read messages" ON wm_messages FOR SELECT USING (true);
+CREATE POLICY "Anyone can insert messages" ON wm_messages FOR INSERT WITH CHECK (true);
+CREATE POLICY "Anyone can update messages" ON wm_messages FOR UPDATE USING (true);
