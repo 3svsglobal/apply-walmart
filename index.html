@@ -1308,12 +1308,13 @@ button{cursor:pointer;font-family:var(--font)}
   <!-- Progress Indicator -->
   <div style="padding:0 var(--sec-px);background:var(--bg);border-bottom:1px solid var(--border)">
     <div style="max-width:720px;margin:0 auto;display:flex;gap:0;overflow-x:auto" id="form-steps">
-      <button class="form-step active" onclick="goFormStep(0)"><span class="fs-num">1</span> <span class="ko">참여 유형</span><span class="en">Type</span></button>
-      <button class="form-step" onclick="goFormStep(1)"><span class="fs-num">2</span> <span class="ko">브랜드 정보</span><span class="en">Brand</span></button>
-      <button class="form-step" onclick="goFormStep(2)"><span class="fs-num">3</span> <span class="ko">수출 & 물류</span><span class="en">Export</span></button>
-      <button class="form-step" onclick="goFormStep(3)"><span class="fs-num">4</span> <span class="ko">제조 & 생산</span><span class="en">Mfg</span></button>
-      <button class="form-step" onclick="goFormStep(4)"><span class="fs-num">5</span> <span class="ko">매출 & 마케팅</span><span class="en">Revenue</span></button>
-      <button class="form-step" onclick="goFormStep(5)"><span class="fs-num">6</span> <span class="ko">자료 & 담당자</span><span class="en">Docs</span></button>
+      <!-- VOUCHER_HIDDEN: 첫 단계 숨김. 재활성화 시 style 제거 + 번호 복원 -->
+      <button class="form-step" onclick="goFormStep(0)" style="display:none"><span class="fs-num">0</span> <span class="ko">참여 유형</span><span class="en">Type</span></button>
+      <button class="form-step active" onclick="goFormStep(1)"><span class="fs-num">1</span> <span class="ko">브랜드 정보</span><span class="en">Brand</span></button>
+      <button class="form-step" onclick="goFormStep(2)"><span class="fs-num">2</span> <span class="ko">수출 & 물류</span><span class="en">Export</span></button>
+      <button class="form-step" onclick="goFormStep(3)"><span class="fs-num">3</span> <span class="ko">제조 & 생산</span><span class="en">Mfg</span></button>
+      <button class="form-step" onclick="goFormStep(4)"><span class="fs-num">4</span> <span class="ko">매출 & 마케팅</span><span class="en">Revenue</span></button>
+      <button class="form-step" onclick="goFormStep(5)"><span class="fs-num">5</span> <span class="ko">자료 & 담당자</span><span class="en">Docs</span></button>
     </div>
   </div>
 
@@ -1324,8 +1325,8 @@ button{cursor:pointer;font-family:var(--font)}
       <p style="font-size:13px;color:var(--accent);line-height:1.5;font-weight:500;margin:0"><span class="ko">⚠️ 모든 항목은 <strong>영어(English)</strong>로 입력해주세요. Walmart 심사에 영문 정보가 필요합니다.</span><span class="en">⚠️ Please fill out all fields in <strong>English</strong>. English information is required for Walmart review.</span></p>
     </div>
 
-    <!-- ── STEP 0: 참여 유형 ── -->
-    <div class="form-panel" id="step-0">
+    <!-- ── STEP 0: 참여 유형 (VOUCHER_HIDDEN: 2026-04-30 단계 숨김 — 바우처 재활성화 시 style 제거) ── -->
+    <div class="form-panel" id="step-0" style="display:none">
       <h3 class="form-sec-title"><span class="ko">참여 유형 선택</span><span class="en">Select Participation Type</span></h3>
       <p class="form-sec-desc"><span class="ko">참여 유형을 선택해주세요. 최종 유형은 검토 후 확정됩니다.</span><span class="en">Please select your participation type. The final type will be confirmed by our team after review.</span></p>
       <div class="type-radio-group">
@@ -1359,7 +1360,7 @@ button{cursor:pointer;font-family:var(--font)}
     </div>
 
     <!-- ── STEP 1: 브랜드 기본 정보 ── -->
-    <div class="form-panel" id="step-1" style="display:none">
+    <div class="form-panel" id="step-1">
       <h3 class="form-sec-title"><span class="ko">브랜드 정보</span><span class="en">Brand Information</span></h3>
       <p class="form-sec-desc"><span class="ko">브랜드와 제품에 대한 기본 정보를 입력해주세요.</span><span class="en">Please provide basic information about your brand and products.</span></p>
 
