@@ -1284,7 +1284,7 @@ button{cursor:pointer;font-family:var(--font)}
     <div class="cta-apply-inner">
       <div class="lb" style="color:rgba(255,255,255,0.4)">/Get Started</div>
       <h2 class="st" style="font-size:44px;letter-spacing:-2.5px;color:#fff" id="cms-cta-title"><span class="ko">지금 신청하세요</span><span class="en">Apply Now</span></h2>
-      <p style="font-size:17px;color:rgba(255,255,255,0.4);max-width:520px;margin:0 auto 40px;line-height:1.6" id="cms-cta-desc"><span class="ko">Phase별 후불 비용 구조 · 수수료 기반 전환 모델 · 수출바우처 활용 가능<br>상세 조건은 신청 후 담당자 검토를 거쳐 안내드립니다.</span><span class="en">Pay-per-Phase cost structure · Commission-based transition model · Export voucher eligible<br>Detailed terms will be provided after review by our team.</span></p>
+      <p style="font-size:17px;color:rgba(255,255,255,0.4);max-width:520px;margin:0 auto 40px;line-height:1.6" id="cms-cta-desc"><span class="ko">Phase별 후불 비용 구조 · 수수료 기반 전환 모델<br>상세 조건은 신청 후 담당자 검토를 거쳐 안내드립니다.</span><span class="en">Pay-per-Phase cost structure · Commission-based transition model<br>Detailed terms will be provided after review by our team.</span></p>
       <button class="btn-primary" onclick="switchTab('apply')" style="font-size:17px;padding:18px 48px" id="cms-cta-btn"><span class="ko">프로그램 신청하기 →</span><span class="en">Apply for the Program →</span></button>
       <p style="font-size:13px;color:rgba(255,255,255,0.2);margin-top:16px"><span class="ko">접수 후 2영업일 이내 담당자가 연락드립니다.</span><span class="en">Our team will contact you within 2 business days.</span></p>
     </div>
@@ -1337,7 +1337,8 @@ button{cursor:pointer;font-family:var(--font)}
             <p><span class="ko">자체 예산과 수출 경험을 보유한 중견·대기업</span><span class="en">Mid-to-large enterprises participating with own budget and prior export experience</span></p>
           </div>
         </label>
-        <label class="type-radio">
+        <!-- VOUCHER_HIDDEN: 바우처 사업 일시 중단 (2026-04-30). 재활성화 시 style="display:none" 제거 -->
+        <label class="type-radio" style="display:none">
           <input type="radio" name="apply-type" value="voucher">
           <div class="type-radio-card">
             <div class="type-radio-dot"></div>
@@ -1352,7 +1353,7 @@ button{cursor:pointer;font-family:var(--font)}
         <div style="margin-bottom:12px"><input class="form-input" placeholder="Can you designate a service provider? (Yes/No)" data-req="voucher"></div>
       </div>
       <div style="padding:16px 20px;border:1px solid rgba(0,113,220,0.15);border-radius:var(--radius);margin-top:24px;background:var(--accent-light)">
-        <p style="font-size:14px;color:var(--accent);line-height:1.6;font-weight:500"><span class="ko">프로그램 비용은 Phase별 후불 구조이며, Test P.O. 이후 수수료(커미션) 기반으로 전환됩니다. 수출바우처 활용도 가능합니다. 상세 금액은 승인 후 전용 포털에서 안내드립니다.</span><span class="en">Program costs follow a pay-per-Phase structure, transitioning to a commission-based model after Test P.O. Export voucher utilization is also available. Detailed pricing will be shared via your dedicated portal after approval.</span></p>
+        <p style="font-size:14px;color:var(--accent);line-height:1.6;font-weight:500"><span class="ko">프로그램 비용은 Phase별 후불 구조이며, Test P.O. 이후 수수료(커미션) 기반으로 전환됩니다. 상세 금액은 승인 후 전용 포털에서 안내드립니다.</span><span class="en">Program costs follow a pay-per-Phase structure, transitioning to a commission-based model after Test P.O. Detailed pricing will be shared via your dedicated portal after approval.</span></p>
       </div>
       <div class="form-nav"><div></div><button class="btn-primary" onclick="validateAndGo(0, 1)"><span class="ko">다음: 브랜드 정보 →</span><span class="en">Next: Brand Info →</span></button></div>
     </div>
@@ -1628,7 +1629,8 @@ button{cursor:pointer;font-family:var(--font)}
         <div class="sidebar-item" onclick="showAdminView('review')" id="admin-nav-review"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><rect x="8" y="2" width="8" height="4" rx="1"/></svg>접수 심사<span class="sidebar-badge">2</span></div>
         <div class="sidebar-item" onclick="showAdminView('cost')" id="admin-nav-cost"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>비용 정산</div>
         <div class="sidebar-item" onclick="showAdminView('cms')" id="admin-nav-cms"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>콘텐츠 관리</div>
-        <div class="sidebar-item" onclick="showAdminView('voucher')" id="admin-nav-voucher"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>수출바우처</div>
+        <!-- VOUCHER_HIDDEN: 바우처 사업 일시 중단 (2026-04-30). 재활성화 시 style="display:none" 제거 -->
+        <div class="sidebar-item" onclick="showAdminView('voucher')" id="admin-nav-voucher" style="display:none"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>수출바우처</div>
         <div class="sidebar-item" onclick="showAdminView('contracts')" id="admin-nav-contracts"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>계약 관리</div>
         <div class="sidebar-item" onclick="showAdminView('settings')" id="admin-nav-settings"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>설정</div>
       </div>
@@ -2110,7 +2112,8 @@ button{cursor:pointer;font-family:var(--font)}
           </select>
           <select id="contract-type-select">
             <option value="service">A Type — 직접참여 컨설팅 계약</option>
-            <option value="service_voucher">B Type — 수출바우처 연계 계약</option>
+            <!-- VOUCHER_HIDDEN: 바우처 사업 일시 중단 (2026-04-30). 재활성화 시 style 제거 -->
+            <option value="service_voucher" style="display:none">B Type — 수출바우처 연계 계약</option>
           </select>
           <div style="margin-bottom:16px">
           <label style="display:block;font-size:12px;color:rgba(255,255,255,0.3);margin-bottom:6px;font-family:var(--mono)">계약서 커스터마이징 (선택)</label>
@@ -4143,7 +4146,7 @@ async function renderAdminReview() {
       '<div class="review-type-select">' +
       '<button class="review-type-btn' + (app.apply_type !== 'voucher' ? ' selected' : '') + '" onclick="selectReviewType(this,\'direct\')">' +
       '<span class="rtb-label">A Type</span>직접 참여 기업</button>' +
-      '<button class="review-type-btn' + (app.apply_type === 'voucher' ? ' selected' : '') + '" onclick="selectReviewType(this,\'voucher\')">' +
+      '<button class="review-type-btn' + (app.apply_type === 'voucher' ? ' selected' : '') + '" onclick="selectReviewType(this,\'voucher\')" style="display:none">' +
       '<span class="rtb-label">B Type</span>수출바우처 연계 기업</button></div>' +
       '<div class="review-actions">' +
       '<button class="btn-approve" onclick="approveApplication(\'' + app.id + '\')">승인 — 포털 권한 부여</button>' +
