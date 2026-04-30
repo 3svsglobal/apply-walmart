@@ -226,6 +226,10 @@ button{cursor:pointer;font-family:var(--font)}
 .form-radio-inline{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
 .form-radio-pill{display:block;cursor:pointer}
 .form-radio-pill input{position:absolute;opacity:0;pointer-events:none}
+.country-pill{display:flex;align-items:center;gap:6px;padding:8px 12px;border:1px solid var(--border);border-radius:6px;cursor:pointer;font-size:13px;background:var(--bg);transition:all .15s;user-select:none}
+.country-pill:hover{border-color:rgba(0,113,220,0.4);background:rgba(0,113,220,0.03)}
+.country-pill input[type=checkbox]{margin:0;cursor:pointer;accent-color:var(--accent)}
+.country-pill:has(input:checked){border-color:var(--accent);background:rgba(0,113,220,0.08);color:var(--accent);font-weight:600}
 .form-radio-pill span{display:block;padding:10px 20px;border:1px solid var(--border);border-radius:999px;font-size:14px;color:var(--text-muted);transition:all .2s;font-weight:500}
 .form-radio-pill:hover span{border-color:rgba(0,0,0,0.15);color:var(--text)}
 .form-radio-pill input:checked ~ span{background:var(--accent);border-color:var(--accent);color:#fff}
@@ -1325,7 +1329,9 @@ button{cursor:pointer;font-family:var(--font)}
       </div>
 
       <div class="form-field-label"><span class="ko">현재 판매 중인 국가</span><span class="en">Countries currently selling in</span></div>
-      <div style="margin-bottom:12px"><input class="form-input" name="Export Countries" placeholder="Please enter in English (e.g., Japan, Taiwan, USA)"></div>
+      <div id="export-countries-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(135px,1fr));gap:8px;margin-bottom:10px"><label class="country-pill"><input type="checkbox" data-country="USA" onchange="updateExportCountries()"><span>🇺🇸 USA</span></label><label class="country-pill"><input type="checkbox" data-country="Japan" onchange="updateExportCountries()"><span>🇯🇵 Japan</span></label><label class="country-pill"><input type="checkbox" data-country="China" onchange="updateExportCountries()"><span>🇨🇳 China</span></label><label class="country-pill"><input type="checkbox" data-country="Taiwan" onchange="updateExportCountries()"><span>🇹🇼 Taiwan</span></label><label class="country-pill"><input type="checkbox" data-country="Korea" onchange="updateExportCountries()"><span>🇰🇷 Korea</span></label><label class="country-pill"><input type="checkbox" data-country="Singapore" onchange="updateExportCountries()"><span>🇸🇬 Singapore</span></label><label class="country-pill"><input type="checkbox" data-country="Hong Kong" onchange="updateExportCountries()"><span>🇭🇰 Hong Kong</span></label><label class="country-pill"><input type="checkbox" data-country="Thailand" onchange="updateExportCountries()"><span>🇹🇭 Thailand</span></label><label class="country-pill"><input type="checkbox" data-country="Vietnam" onchange="updateExportCountries()"><span>🇻🇳 Vietnam</span></label><label class="country-pill"><input type="checkbox" data-country="Malaysia" onchange="updateExportCountries()"><span>🇲🇾 Malaysia</span></label><label class="country-pill"><input type="checkbox" data-country="Indonesia" onchange="updateExportCountries()"><span>🇮🇩 Indonesia</span></label><label class="country-pill"><input type="checkbox" data-country="Philippines" onchange="updateExportCountries()"><span>🇵🇭 Philippines</span></label><label class="country-pill"><input type="checkbox" data-country="India" onchange="updateExportCountries()"><span>🇮🇳 India</span></label><label class="country-pill"><input type="checkbox" data-country="Australia" onchange="updateExportCountries()"><span>🇦🇺 Australia</span></label><label class="country-pill"><input type="checkbox" data-country="Germany" onchange="updateExportCountries()"><span>🇩🇪 Germany</span></label><label class="country-pill"><input type="checkbox" data-country="France" onchange="updateExportCountries()"><span>🇫🇷 France</span></label><label class="country-pill"><input type="checkbox" data-country="UK" onchange="updateExportCountries()"><span>🇬🇧 UK</span></label><label class="country-pill"><input type="checkbox" data-country="Canada" onchange="updateExportCountries()"><span>🇨🇦 Canada</span></label><label class="country-pill"><input type="checkbox" data-country="Mexico" onchange="updateExportCountries()"><span>🇲🇽 Mexico</span></label><label class="country-pill"><input type="checkbox" data-country="Brazil" onchange="updateExportCountries()"><span>🇧🇷 Brazil</span></label><label class="country-pill"><input type="checkbox" data-country="UAE" onchange="updateExportCountries()"><span>🇦🇪 UAE</span></label><label class="country-pill"><input type="checkbox" data-country="Saudi Arabia" onchange="updateExportCountries()"><span>🇸🇦 Saudi Arabia</span></label></div>
+      <input type="text" class="form-input" id="export-countries-other" placeholder="기타 국가 / Other countries (콤마로 구분, 선택)" oninput="updateExportCountries()" style="margin-bottom:12px">
+      <input type="hidden" class="form-input" name="Export Countries" id="export-countries-value">
 
       <div class="form-field-label"><span class="ko">미국 내 창고/물류 보유 여부 *</span><span class="en">US warehouse or logistics? *</span></div>
       <div class="form-radio-inline" data-radio-req="2" data-radio-name="us-warehouse">
@@ -1406,6 +1412,18 @@ button{cursor:pointer;font-family:var(--font)}
         <div class="fuz-hint">PDF, PPT, PPTX — Max 20MB</div>
       </div>
       <div class="file-preview" id="file-preview-deck" style="display:none"></div>
+
+      <div class="form-field-label" style="margin-top:20px"><span class="ko">주요 SKU / 제품 정보 *</span><span class="en">Key Products / SKU Information *</span></div>
+      <textarea class="form-input" name="SKU Description" data-req="5" placeholder="Enter key SKU info: product names, categories, retail prices (USD), pack sizes, key selling points, etc." style="min-height:100px;resize:vertical;font-family:var(--font);line-height:1.6"></textarea>
+
+      <div class="form-field-label" style="margin-top:20px"><span class="ko">SKU 리스트 파일 (선택)</span><span class="en">SKU List File (optional)</span></div>
+      <div class="file-upload-zone" id="file-zone-sku" onclick="document.getElementById('file-sku').click()" ondragover="event.preventDefault();this.classList.add('dragover')" ondragleave="this.classList.remove('dragover')" ondrop="event.preventDefault();this.classList.remove('dragover');handleFileDrop(event,'sku')">
+        <input type="file" id="file-sku" accept=".pdf,.xlsx,.xls,.csv" multiple style="display:none" onchange="handleFileSelect(this,'sku')">
+        <div class="fuz-icon">📦</div>
+        <div class="fuz-text">SKU \uc2dc\ud2b8 (Excel, CSV, PDF) — <span style="color:var(--accent);font-weight:600">click to browse</span></div>
+        <div class="fuz-hint">Excel, CSV, PDF — Max 20MB each</div>
+      </div>
+      <div class="file-preview" id="file-preview-sku" style="display:none"></div>
 
       <div class="form-field-label" style="margin-top:20px"><span class="ko">추가 서류 (선택)</span><span class="en">Additional Documents (optional)</span></div>
       <div class="file-upload-zone" id="file-zone-extra" onclick="document.getElementById('file-extra').click()" ondragover="event.preventDefault();this.classList.add('dragover')" ondragleave="this.classList.remove('dragover')" ondrop="event.preventDefault();this.classList.remove('dragover');handleFileDrop(event,'extra')">
@@ -2397,7 +2415,8 @@ async function dbSaveApplication(formData) {
     'packaging': 'packaging_modify',
     'mfg-type': 'mfg_type',
     'eng-team': 'english_team',
-    'mkt-budget': 'marketing_budget'
+    'mkt-budget': 'marketing_budget',
+    'SKU Description': 'sku_description'
   };
   var extraData = {};
   var _firstName = '', _lastName = '', _phoneCode = '', _phone = '';
@@ -2427,7 +2446,31 @@ async function dbSaveApplication(formData) {
   try {
     var res = await supabase.from('wm_applications').insert([obj]).select();
     console.log('Application saved to DB:', res);
-    return res.data ? res.data[0] : null;
+    var saved = res.data ? res.data[0] : null;
+    if (!saved) return null;
+    // 첨부파일 업로드 (Brand Deck + Additional Docs + SKU List)
+    var attachedFiles = [];
+    for (var entry of formData.entries()) {
+      var fkey = entry[0];
+      var fval = entry[1];
+      if (fval instanceof File && (fkey === 'Brand Deck' || fkey === 'Additional Docs' || fkey === 'SKU List')) {
+        var safeName = fval.name.replace(/[^a-zA-Z0-9\uAC00-\uD7AF._-]/g, '_');
+        var path = 'applications/' + saved.id + '/' + Date.now() + '_' + safeName;
+        try {
+          var up = await supabase.storage.from('wm-signatures').upload(path, fval);
+          if (up.error) { console.warn('Upload failed:', fval.name, up.error); continue; }
+          var url = SUPABASE_URL + '/storage/v1/object/public/wm-signatures/' + path;
+          attachedFiles.push({ field: fkey, name: fval.name, url: url, size: fval.size, type: fval.type });
+        } catch(upErr) { console.warn('Upload exception:', fval.name, upErr); }
+      }
+    }
+    if (attachedFiles.length > 0) {
+      try {
+        await supabase.from('wm_applications').update({ attached_files: JSON.stringify(attachedFiles) }).eq('id', saved.id);
+        saved.attached_files = JSON.stringify(attachedFiles);
+      } catch(updErr) { console.warn('attached_files update failed:', updErr); }
+    }
+    return saved;
   } catch(e) {
     console.error('DB save failed:', e);
     return null;
@@ -2729,7 +2772,7 @@ function validateAndGo(currentStep, nextStep) {
 }
 
 // ─── FILE UPLOAD ───
-const uploadedFiles = {deck: [], extra: []};
+const uploadedFiles = {deck: [], extra: [], sku: []};
 
 function handleFileSelect(input, type) {
   const files = Array.from(input.files);
@@ -2758,8 +2801,30 @@ function removeFile(type, index) {
   renderFilePreview(type);
   if (uploadedFiles[type].length === 0) {
     const zone = document.getElementById('file-zone-' + type);
-    zone.querySelector('.fuz-text').innerHTML = type === 'deck' ? 'Drag & drop your file here, or <span style="color:var(--accent);font-weight:600">click to browse</span>' : 'Certifications, product catalogs, etc.';
+    var defaultText;
+    if (type === 'deck') defaultText = 'Drag & drop your file here, or <span style="color:var(--accent);font-weight:600">click to browse</span>';
+    else if (type === 'sku') defaultText = 'SKU \uc2dc\ud2b8 (Excel, CSV, PDF) — <span style="color:var(--accent);font-weight:600">click to browse</span>';
+    else defaultText = 'Certifications, product catalogs, etc.';
+    zone.querySelector('.fuz-text').innerHTML = defaultText;
   }
+}
+
+// 국가 멀티셀렉트 → hidden input value 동기화
+function updateExportCountries() {
+  var checked = [];
+  document.querySelectorAll('#export-countries-grid input[type=checkbox]:checked').forEach(function(cb) {
+    var name = cb.getAttribute('data-country');
+    if (name) checked.push(name);
+  });
+  var otherEl = document.getElementById('export-countries-other');
+  var other = otherEl ? (otherEl.value || '').trim() : '';
+  if (other) {
+    other.split(',').map(function(s) { return s.trim(); }).filter(Boolean).forEach(function(c) {
+      if (checked.indexOf(c) < 0) checked.push(c);
+    });
+  }
+  var hidden = document.getElementById('export-countries-value');
+  if (hidden) hidden.value = checked.join(', ');
 }
 
 // ─── PORTAL MESSAGE ───
@@ -2844,6 +2909,7 @@ function submitApply() {
   // Files
   uploadedFiles.deck.forEach(f => fd.append('Brand Deck', f));
   uploadedFiles.extra.forEach(f => fd.append('Additional Docs', f));
+  uploadedFiles.sku.forEach(f => fd.append('SKU List', f));
 
   // Disable submit button
   const submitBtn = document.querySelector('#step-5 .btn-primary[onclick]');
@@ -3923,7 +3989,8 @@ async function renderAdminReview() {
         'packaging_modify': '패키징 변경 가능',
         'mfg_type': '제조 유형',
         'english_team': '영어 가능 인력',
-        'marketing_budget': '마케팅 예산'
+        'marketing_budget': '마케팅 예산',
+        'sku_description': '주요 SKU / 제품 정보'
       };
       html += '<div style="font-size:11px;color:rgba(255,255,255,0.65);margin:16px 0 8px;font-family:var(--mono);text-transform:uppercase;letter-spacing:1px;font-weight:600">추가 정보</div>';
       Object.keys(extra).forEach(function(key) {
@@ -3942,8 +4009,34 @@ async function renderAdminReview() {
       if (app.voucher_number) html += '<div class="review-field"><div class="rf-label">바우처 번호</div><div class="rf-value">' + app.voucher_number + '</div></div>';
     }
     
-    html += '</div>' +
-      '<div style="font-size:13px;color:rgba(255,255,255,0.25);margin-bottom:12px;font-family:var(--mono)">기업 유형 확정</div>' +
+    html += '</div>';
+
+    // === 첨부파일 ===
+    if (app.attached_files) {
+      try {
+        var attachedList = JSON.parse(app.attached_files);
+        if (Array.isArray(attachedList) && attachedList.length > 0) {
+          html += '<div style="font-size:11px;color:rgba(255,255,255,0.65);margin:16px 0 8px;font-family:var(--mono);text-transform:uppercase;letter-spacing:1px;font-weight:600">첨부파일 (' + attachedList.length + ')</div>';
+          attachedList.forEach(function(f) {
+            var fname = f.name || 'file';
+            var fext = fname.split('.').pop().toLowerCase();
+            var icon = fext === 'pdf' ? '📄' : (fext === 'pptx' || fext === 'ppt') ? '📊' : (fext === 'xlsx' || fext === 'xls' || fext === 'csv') ? '📈' : (['png','jpg','jpeg','gif'].indexOf(fext) >= 0) ? '🖼️' : '📎';
+            var sizeStr = f.size ? (f.size < 1048576 ? (f.size/1024).toFixed(1) + ' KB' : (f.size/1048576).toFixed(1) + ' MB') : '';
+            var fieldLabel = f.field === 'Brand Deck' ? '브랜드 소개서' : (f.field === 'Additional Docs' ? '추가 서류' : (f.field === 'SKU List' ? 'SKU 리스트' : (f.field || '')));
+            html += '<div style="display:flex;align-items:center;gap:12px;padding:10px 14px;border:1px solid rgba(255,255,255,0.06);border-radius:6px;margin-bottom:6px;background:rgba(255,255,255,0.02)">' +
+              '<span style="font-size:18px">' + icon + '</span>' +
+              '<div style="flex:1;min-width:0">' +
+                '<div style="font-size:13px;color:#fff;font-weight:500;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">' + fname + '</div>' +
+                '<div style="font-size:11px;color:rgba(255,255,255,0.45);font-family:var(--mono);margin-top:2px">' + fieldLabel + (sizeStr ? ' \u00b7 ' + sizeStr : '') + '</div>' +
+              '</div>' +
+              '<a href="' + (f.url || '#') + '" target="_blank" rel="noopener" style="color:var(--accent);font-size:13px;font-weight:500;text-decoration:none;white-space:nowrap;padding:6px 12px;border:1px solid rgba(0,113,220,0.3);border-radius:6px">열기 \u2192</a>' +
+            '</div>';
+          });
+        }
+      } catch(e) { console.warn('attached_files parse failed', e); }
+    }
+
+    html += '<div style="font-size:13px;color:rgba(255,255,255,0.25);margin-bottom:12px;font-family:var(--mono)">기업 유형 확정</div>' +
       '<div class="review-type-select">' +
       '<button class="review-type-btn' + (app.apply_type !== 'voucher' ? ' selected' : '') + '" onclick="selectReviewType(this,\'direct\')">' +
       '<span class="rtb-label">A Type</span>직접 참여 기업</button>' +
