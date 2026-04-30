@@ -375,8 +375,8 @@ button{cursor:pointer;font-family:var(--font)}
 .review-info{display:flex;gap:14px;align-items:start}
 .review-body{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:24px}
 .review-field{font-size:13px}
-.review-field .rf-label{color:rgba(255,255,255,0.25);font-family:var(--mono);font-size:11px;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:4px}
-.review-field .rf-value{color:rgba(255,255,255,0.7);font-weight:500}
+.review-field .rf-label{color:rgba(255,255,255,0.6);font-family:var(--mono);font-size:11px;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:4px}
+.review-field .rf-value{color:rgba(255,255,255,0.92);font-weight:500}
 .review-type-select{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:16px}
 .review-type-btn{padding:12px 16px;border:1px solid var(--border-dark);border-radius:6px;background:transparent;color:rgba(255,255,255,0.4);font-size:13px;font-weight:500;font-family:var(--font);cursor:pointer;transition:all .2s;text-align:left}
 .review-type-btn:hover{border-color:rgba(255,255,255,0.2);color:rgba(255,255,255,0.6)}
@@ -3835,7 +3835,7 @@ async function renderAdminReview() {
       '<div class="review-body">';
     
     // === Basic Info Section ===
-    html += '<div style="font-size:11px;color:rgba(255,255,255,0.3);margin-bottom:8px;font-family:var(--mono);text-transform:uppercase;letter-spacing:1px">기업 기본 정보</div>';
+    html += '<div style="font-size:11px;color:rgba(255,255,255,0.65);margin-bottom:8px;font-family:var(--mono);text-transform:uppercase;letter-spacing:1px;font-weight:600">기업 기본 정보</div>';
     var basicFields = [
       ['회사명 (영문)', app.brand_name_en],
       ['대표자', app.ceo_name],
@@ -3852,7 +3852,7 @@ async function renderAdminReview() {
     });
 
     // === Contact Section ===
-    html += '<div style="font-size:11px;color:rgba(255,255,255,0.3);margin:16px 0 8px;font-family:var(--mono);text-transform:uppercase;letter-spacing:1px">담당자 정보</div>';
+    html += '<div style="font-size:11px;color:rgba(255,255,255,0.65);margin:16px 0 8px;font-family:var(--mono);text-transform:uppercase;letter-spacing:1px;font-weight:600">담당자 정보</div>';
     var contactFields = [
       ['담당자', app.contact_name],
       ['직함', app.contact_position],
@@ -3866,7 +3866,7 @@ async function renderAdminReview() {
     });
 
     // === Product & Business Section ===
-    html += '<div style="font-size:11px;color:rgba(255,255,255,0.3);margin:16px 0 8px;font-family:var(--mono);text-transform:uppercase;letter-spacing:1px">제품 / 비즈니스 정보</div>';
+    html += '<div style="font-size:11px;color:rgba(255,255,255,0.65);margin:16px 0 8px;font-family:var(--mono);text-transform:uppercase;letter-spacing:1px;font-weight:600">제품 / 비즈니스 정보</div>';
     var bizFields = [
       ['제품 카테고리', app.product_category],
       ['제품 설명', app.product_description],
@@ -3898,7 +3898,7 @@ async function renderAdminReview() {
         'english_team': '영어 가능 인력',
         'marketing_budget': '마케팅 예산'
       };
-      html += '<div style="font-size:11px;color:rgba(255,255,255,0.3);margin:16px 0 8px;font-family:var(--mono);text-transform:uppercase;letter-spacing:1px">추가 정보</div>';
+      html += '<div style="font-size:11px;color:rgba(255,255,255,0.65);margin:16px 0 8px;font-family:var(--mono);text-transform:uppercase;letter-spacing:1px;font-weight:600">추가 정보</div>';
       Object.keys(extra).forEach(function(key) {
         var val = extra[key];
         if (val && val.toString().trim()) {
