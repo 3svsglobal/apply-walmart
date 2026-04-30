@@ -1528,7 +1528,7 @@ button{cursor:pointer;font-family:var(--font)}
       <div class="sidebar-bottom"><div style="cursor:pointer;color:rgba(255,255,255,0.3);margin-bottom:8px" onclick="showBrandPwChange()">비밀번호 변경</div><div style="cursor:pointer;color:rgba(255,255,255,0.3);margin-bottom:8px" onclick="sessionStorage.removeItem('wm_session');switchTab('landing')">← 로그아웃</div>Walmart Entry Program<br>by 3Stripe Venture Studio</div>
     </div>
     <div class="dash-main">
-      <div class="dash-topbar"><div class="dash-title"><h2>대시보드</h2><p>Walmart 입점 프로그램 운영 현황</p></div><div class="dash-actions"><input class="dash-search" placeholder="검색..."><div class="noti-dot"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.4)" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg></div><div class="dash-avatar">JB</div></div></div>
+      <div class="dash-topbar"><div class="dash-title"><h2>대시보드</h2><p>Walmart 입점 프로그램 운영 현황</p></div><div class="dash-actions"><input class="dash-search" placeholder="브랜드 검색..." id="admin-search-input" oninput="filterAdminBrands(this.value)"><div class="noti-dot" id="admin-noti-bell" onclick="showAdminInbox()" style="cursor:pointer" title="신규 메시지 / 알림"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.4)" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg></div><div class="dash-avatar" onclick="showAdminProfileMenu(event)" style="cursor:pointer" title="프로필 / 로그아웃">JB</div></div></div>
 
       <!-- ADMIN: Dashboard View -->
       <div class="dash-content" id="admin-dashboard">
@@ -4225,7 +4225,9 @@ async function renderAdminDashboard() {
       var phaseLbl = (b.current_phase || 'contract').replace('phase', 'Phase ');
       var typeBadge = b.apply_type === 'voucher' ? '<span style="font-size:10px;padding:2px 8px;border-radius:999px;background:rgba(0,135,90,0.15);color:var(--lime);margin-left:6px">바우처</span>' : '<span style="font-size:10px;padding:2px 8px;border-radius:999px;background:rgba(0,113,220,0.15);color:var(--accent);margin-left:6px">직접참여</span>';
       var statusDot = b.portal_active ? '<div style="width:6px;height:6px;border-radius:50%;background:#00d68f"></div>' : '<div style="width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,0.15)"></div>';
-      pHtml += '<div class="brand-card" style="margin-bottom:8px"><div class="brand-header" style="margin-bottom:0"><div class="brand-info"><div class="brand-icon">' + initial + '</div><div><div class="brand-name">' + (b.name_ko || b.name_en) + typeBadge + '</div><div class="brand-sub">' + phaseLbl + ' · ' + (b.portal_email || '') + '</div></div></div>' + statusDot + '</div></div>';
+      var brandIdEsc = (b.id || '').replace(/'/g, "\\'");
+      var brandNameEsc = (b.name_ko || b.name_en || '').replace(/'/g, "\\'");
+      pHtml += '<div class="brand-card admin-brand-clickable" data-brand-id="' + (b.id || '') + '" data-brand-name="' + (b.name_ko || b.name_en || '') + '" style="margin-bottom:8px;cursor:pointer;transition:all .15s" onclick="showAdminBrandMessages(\'' + brandIdEsc + '\',\'' + brandNameEsc + '\')" onmouseenter="this.style.borderColor=\'rgba(0,113,220,0.3)\';this.style.background=\'rgba(0,113,220,0.04)\'" onmouseleave="this.style.borderColor=\'\';this.style.background=\'\'"><div class="brand-header" style="margin-bottom:0"><div class="brand-info"><div class="brand-icon">' + initial + '</div><div><div class="brand-name">' + (b.name_ko || b.name_en) + typeBadge + ' <span class="admin-unread-badge" data-brand-id="' + (b.id || '') + '" style="display:none;font-size:10px;padding:2px 7px;border-radius:999px;background:var(--red);color:#fff;margin-left:6px;font-weight:700;font-family:var(--mono)">0</span></div><div class="brand-sub">' + phaseLbl + ' \u00b7 ' + (b.portal_email || '') + '</div></div></div>' + statusDot + '</div></div>';
     });
     pipelineEl.innerHTML = pHtml;
   }
@@ -4287,6 +4289,9 @@ async function renderAdminDashboard() {
     phHtml += '</div>';
     phaseEl.innerHTML = phHtml;
   }
+
+  // unread 메시지 배지 갱신
+  if (typeof loadAdminUnreadCounts === 'function') loadAdminUnreadCounts();
 }
 
 
@@ -4945,6 +4950,138 @@ async function updateBrandPhase(brandId, newPhase) {
   await supabase.from('wm_brands').update({ current_phase: newPhase, updated_at: new Date().toISOString() }).eq('id', brandId);
   if (wmBrandData[brandId]) wmBrandData[brandId].phase = newPhase;
   showWmBrandDetailDB(brandId);
+}
+
+// ─── ADMIN: INBOX (전체 브랜드 신규 메시지) ───
+async function showAdminInbox() {
+  if (!supabase) return;
+  // 모든 브랜드의 신규 메시지(read_by_admin=false, sender_role=brand) 조회
+  var res = await supabase.from('wm_messages')
+    .select('*')
+    .eq('sender_role', 'brand')
+    .eq('read_by_admin', false)
+    .order('created_at', { ascending: false });
+  var msgs = (res && res.data) || [];
+
+  // 브랜드별 그룹핑
+  var byBrand = {};
+  msgs.forEach(function(m) {
+    var bid = m.brand_id || 'unknown';
+    if (!byBrand[bid]) byBrand[bid] = [];
+    byBrand[bid].push(m);
+  });
+
+  // 브랜드 이름 조회
+  var brandsRes = await supabase.from('wm_brands').select('id, name_ko, name_en');
+  var brandMap = {};
+  (brandsRes.data || []).forEach(function(b) {
+    brandMap[b.id] = b.name_ko || b.name_en || b.id;
+  });
+
+  // 모달 만들기
+  var existing = document.getElementById('admin-inbox-modal');
+  if (existing) existing.remove();
+  var modal = document.createElement('div');
+  modal.id = 'admin-inbox-modal';
+  modal.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,0.7);z-index:9999;display:flex;align-items:center;justify-content:center;backdrop-filter:blur(8px)';
+
+  var listHtml = '';
+  if (Object.keys(byBrand).length === 0) {
+    listHtml = '<div style="text-align:center;padding:40px;color:rgba(255,255,255,0.3)">신규 메시지가 없습니다.</div>';
+  } else {
+    Object.keys(byBrand).forEach(function(bid) {
+      var bName = brandMap[bid] || bid;
+      var bMsgs = byBrand[bid];
+      var latest = bMsgs[0];
+      var preview = (latest.content || '').slice(0, 80);
+      var bIdEsc = bid.replace(/'/g, "\\'");
+      var bNameEsc = bName.replace(/'/g, "\\'");
+      listHtml += '<div onclick="document.getElementById(\'admin-inbox-modal\').remove();showAdminBrandMessages(\'' + bIdEsc + '\',\'' + bNameEsc + '\')" style="padding:14px 16px;border:1px solid rgba(255,255,255,0.06);border-radius:10px;margin-bottom:8px;cursor:pointer;background:rgba(255,255,255,0.02);transition:all .15s" onmouseenter="this.style.borderColor=\'rgba(0,113,220,0.4)\'" onmouseleave="this.style.borderColor=\'rgba(255,255,255,0.06)\'"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px"><div style="font-weight:600;color:#fff;font-size:14px">' + bName + ' <span style="font-size:10px;padding:2px 7px;border-radius:999px;background:var(--red);color:#fff;margin-left:4px;font-weight:700;font-family:var(--mono)">' + bMsgs.length + '</span></div><div style="font-size:11px;color:rgba(255,255,255,0.3);font-family:var(--mono)">' + (latest.created_at || '').slice(0, 16).replace('T', ' ') + '</div></div><div style="font-size:13px;color:rgba(255,255,255,0.55);overflow:hidden;text-overflow:ellipsis;white-space:nowrap">' + preview + (preview.length >= 80 ? '...' : '') + '</div></div>';
+    });
+  }
+
+  modal.innerHTML = '<div style="background:#0a1628;border:1px solid rgba(255,255,255,0.1);border-radius:16px;padding:28px;max-width:560px;width:90%;max-height:80vh;overflow-y:auto;position:relative">' +
+    '<button onclick="document.getElementById(\'admin-inbox-modal\').remove()" style="position:absolute;top:14px;right:14px;background:none;border:none;color:rgba(255,255,255,0.4);font-size:24px;cursor:pointer;line-height:1">&times;</button>' +
+    '<h3 style="color:#fff;font-size:18px;margin:0 0 6px;letter-spacing:-0.5px">📬 신규 메시지</h3>' +
+    '<p style="color:rgba(255,255,255,0.4);font-size:13px;margin:0 0 20px">읽지 않은 브랜드 메시지를 확인하세요.</p>' +
+    listHtml +
+    '</div>';
+  document.body.appendChild(modal);
+  modal.addEventListener('click', function(e) { if (e.target === modal) modal.remove(); });
+}
+
+// ─── ADMIN: 프로필 / 로그아웃 메뉴 ───
+function showAdminProfileMenu(event) {
+  event && event.stopPropagation && event.stopPropagation();
+  var existing = document.getElementById('admin-profile-menu');
+  if (existing) { existing.remove(); return; }
+  var menu = document.createElement('div');
+  menu.id = 'admin-profile-menu';
+  menu.style.cssText = 'position:fixed;top:60px;right:24px;background:#0a1628;border:1px solid rgba(255,255,255,0.1);border-radius:10px;padding:8px;z-index:10000;min-width:200px;box-shadow:0 8px 24px rgba(0,0,0,0.4)';
+  menu.innerHTML = '<div style="padding:10px 14px;border-bottom:1px solid rgba(255,255,255,0.06);margin-bottom:4px"><div style="font-size:13px;color:#fff;font-weight:600">JB 관리자</div><div style="font-size:11px;color:rgba(255,255,255,0.4);font-family:var(--mono);margin-top:2px">jw@3svs.com</div></div>' +
+    '<div onclick="document.getElementById(\'admin-profile-menu\').remove();showAdminView(\'settings\')" style="padding:10px 14px;font-size:13px;color:rgba(255,255,255,0.7);cursor:pointer;border-radius:6px" onmouseenter="this.style.background=\'rgba(255,255,255,0.06)\'" onmouseleave="this.style.background=\'\'"><span style="margin-right:8px">⚙</span>설정</div>' +
+    '<div onclick="if(confirm(\'로그아웃하시겠습니까?\')){sessionStorage.removeItem(\'wm_session\');switchTab(\'landing\')}" style="padding:10px 14px;font-size:13px;color:rgba(255,255,255,0.7);cursor:pointer;border-radius:6px" onmouseenter="this.style.background=\'rgba(255,255,255,0.06)\'" onmouseleave="this.style.background=\'\'"><span style="margin-right:8px">←</span>로그아웃</div>';
+  document.body.appendChild(menu);
+  setTimeout(function() {
+    document.addEventListener('click', function closeMenu(e) {
+      if (!menu.contains(e.target)) {
+        menu.remove();
+        document.removeEventListener('click', closeMenu);
+      }
+    });
+  }, 100);
+}
+
+// ─── ADMIN: 브랜드 검색 필터 ───
+function filterAdminBrands(query) {
+  var q = (query || '').trim().toLowerCase();
+  var cards = document.querySelectorAll('#admin-brand-pipeline .admin-brand-clickable');
+  cards.forEach(function(card) {
+    var name = (card.getAttribute('data-brand-name') || '').toLowerCase();
+    var id = (card.getAttribute('data-brand-id') || '').toLowerCase();
+    var match = !q || name.indexOf(q) >= 0 || id.indexOf(q) >= 0;
+    card.style.display = match ? '' : 'none';
+  });
+}
+
+// ─── ADMIN: 브랜드별 unread 메시지 배지 + 벨 카운트 갱신 ───
+async function loadAdminUnreadCounts() {
+  if (!supabase) return;
+  var res = await supabase.from('wm_messages')
+    .select('brand_id')
+    .eq('sender_role', 'brand')
+    .eq('read_by_admin', false);
+  var msgs = (res && res.data) || [];
+  var counts = {};
+  msgs.forEach(function(m) {
+    counts[m.brand_id] = (counts[m.brand_id] || 0) + 1;
+  });
+  // 카드별 배지 업데이트
+  document.querySelectorAll('.admin-unread-badge').forEach(function(badge) {
+    var bid = badge.getAttribute('data-brand-id');
+    var c = counts[bid] || 0;
+    if (c > 0) { badge.textContent = c; badge.style.display = ''; }
+    else { badge.style.display = 'none'; }
+  });
+  // 벨 카운트 (총합)
+  var total = msgs.length;
+  var bell = document.getElementById('admin-noti-bell');
+  if (bell) {
+    var existing = bell.querySelector('.bell-count-badge');
+    if (total > 0) {
+      if (!existing) {
+        var span = document.createElement('span');
+        span.className = 'bell-count-badge';
+        span.style.cssText = 'position:absolute;top:-4px;right:-4px;min-width:18px;height:18px;padding:0 5px;background:var(--red);color:#fff;font-size:10px;font-weight:700;border-radius:9px;display:flex;align-items:center;justify-content:center;font-family:var(--mono)';
+        span.textContent = total;
+        bell.appendChild(span);
+      } else {
+        existing.textContent = total;
+      }
+    } else if (existing) {
+      existing.remove();
+    }
+  }
 }
 
 // ─── ADMIN: BRAND DETAIL (from admin dashboard) ───
