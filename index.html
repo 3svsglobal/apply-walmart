@@ -2036,6 +2036,7 @@ button{cursor:pointer;font-family:var(--font)}
         <div class="sidebar-item" onclick="showBrandView('phase')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>Phase 현황</div>
         <div class="sidebar-item" onclick="showBrandView('docs')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>서류 관리</div>
         <div class="sidebar-item" onclick="showBrandView('messages')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>문의 / 메시지 <span class="sidebar-badge" id="brand-msg-badge" style="display:none">0</span></div>
+        <div class="sidebar-item" onclick="showBrandView('contracts')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>계약서</div>
         <div class="sidebar-item" onclick="showBrandView('cost')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>비용 현황</div>
       </div>
       <div class="sidebar-bottom"><div style="cursor:pointer;color:rgba(255,255,255,0.3);margin-bottom:8px" onclick="showBrandPwChange()">비밀번호 변경</div><div style="cursor:pointer;color:rgba(255,255,255,0.3);margin-bottom:8px" onclick="sessionStorage.removeItem('wm_session');switchTab('landing')">← 로그아웃</div>Walmart Entry Program<br>by 3Stripe Venture Studio</div>
@@ -2153,6 +2154,17 @@ button{cursor:pointer;font-family:var(--font)}
           <div class="msg-input-row">
             <textarea class="msg-input" id="msg-input" placeholder="메시지를 입력하세요..." rows="1"></textarea>
             <button class="msg-send-btn" onclick="sendPortalMessage()">전송</button>
+          </div>
+        </div>
+
+        <!-- 계약서 -->
+        <div class="portal-info-section" id="portal-contracts-section" data-brand-view="contracts" style="display:none">
+          <div class="portal-info-title">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+            계약서
+          </div>
+          <div id="brand-contracts-list" style="margin-top:12px">
+            <div style="text-align:center;padding:32px 0;color:rgba(255,255,255,0.15);font-size:13px">불러오는 중...</div>
           </div>
         </div>
 
@@ -3442,23 +3454,28 @@ function renderContractPage(contractId) {
 
   // Update each signer section
   // Add role selector to contract page
+  // 세션/컨텍스트에서 역할 자동 결정 (구 클릭 픽커 제거)
   var rolePicker = document.getElementById('contract-role-picker');
-  if (!rolePicker) {
-    rolePicker = document.createElement('div');
-    rolePicker.id = 'contract-role-picker';
-    rolePicker.style.cssText = 'text-align:center;padding:20px;margin-bottom:20px;background:rgba(255,255,255,0.03);border:1px solid var(--border);border-radius:12px';
-    rolePicker.innerHTML = '<div style="font-size:13px;color:rgba(255,255,255,0.4);margin-bottom:12px;font-family:var(--mono)">서명하려면 역할을 선택하세요 / Select your role to sign:</div>' +
-      '<div style="display:flex;gap:8px;justify-content:center;flex-wrap:wrap">' +
-      '<button class="contract-role-btn" data-role="brand" onclick="selectContractRole(\x27brand\x27)" style="padding:10px 20px;border-radius:8px;border:1px solid var(--border);background:rgba(255,255,255,0.05);color:#fff;cursor:pointer;font-weight:600;transition:all .2s">Brand (브랜드사)</button>' +
-      '<button class="contract-role-btn" data-role="admin" onclick="selectContractRole(\x27admin\x27)" style="padding:10px 20px;border-radius:8px;border:1px solid var(--border);background:rgba(255,255,255,0.05);color:#fff;cursor:pointer;font-weight:600;transition:all .2s">3SVS (관리자)</button>' +
-      '<button class="contract-role-btn" data-role="walmart" onclick="selectContractRole(\x27walmart\x27)" style="padding:10px 20px;border-radius:8px;border:1px solid var(--border);background:rgba(255,255,255,0.05);color:#fff;cursor:pointer;font-weight:600;transition:all .2s">Startup Junkie</button></div>';
-    var sigContainer = document.querySelector('.contract-page .sig-section, .contract-page');
-    if (!sigContainer) sigContainer = document.getElementById('contract-content');
-    if (sigContainer) {
-      var sigPanels = sigContainer.querySelector('[id^="sig-gate-brand"]');
-      if (sigPanels && sigPanels.parentElement) sigPanels.parentElement.parentElement.insertBefore(rolePicker, sigPanels.parentElement);
-      else sigContainer.appendChild(rolePicker);
+  if (rolePicker) rolePicker.style.display = 'none';
+  var contextRole = window._contractContextRole || (typeof _detectSessionRole === 'function' ? _detectSessionRole() : null);
+  // 비로그인 진입(외부 공유 링크) 안내 배너
+  var existingBanner = document.getElementById('contract-readonly-banner');
+  if (!contextRole) {
+    if (!existingBanner) {
+      var banner = document.createElement('div');
+      banner.id = 'contract-readonly-banner';
+      banner.style.cssText = 'text-align:center;padding:16px 20px;margin-bottom:20px;background:rgba(255,165,0,0.08);border:1px solid rgba(255,165,0,0.25);border-radius:12px;color:#ffa500';
+      banner.innerHTML = '<div style="font-weight:700;margin-bottom:4px">읽기 전용 모드 / Read-only Preview</div><div style="font-size:13px;opacity:.85;color:rgba(255,255,255,0.7)">서명하려면 포털에 로그인하세요. / Please log in to sign.</div>';
+      var sigContainer = document.querySelector('.contract-page');
+      if (sigContainer) {
+        var firstSig = sigContainer.querySelector('.sig-section');
+        if (firstSig) sigContainer.insertBefore(banner, firstSig);
+        else sigContainer.appendChild(banner);
+      }
     }
+  } else {
+    if (existingBanner) existingBanner.remove();
+    selectContractRole(contextRole);
   }
   
   var roles = ['brand', 'admin', 'walmart'];
@@ -3676,7 +3693,7 @@ function copyContractLink(contractId) {
   var brandParam = c ? '&brand=' + encodeURIComponent(c.brandId) : '';
   var link = window.location.origin + window.location.pathname + '?c=' + contractId + brandParam;
   if (navigator.clipboard) {
-    navigator.clipboard.writeText(link).then(function() { alert('링크가 클립보드에 복사되었습니다!\n' + link); });
+    navigator.clipboard.writeText(link).then(function() { alert('외부 검토용 read-only 링크가 복사되었습니다.\n서명은 포털 로그인 후에만 가능합니다.\n\n' + link); });
   } else {
     prompt('아래 링크를 복사하세요:', link);
   }
@@ -3757,11 +3774,13 @@ function renderSignerPill(contract, role, label) {
 }
 
 function openContractPageAsAdmin(contractId) {
+  window._contractContextRole = 'admin';
   switchTab('contract');
   renderContractPage(contractId);
 }
 
 function previewContract(contractId) {
+  window._contractContextRole = (typeof _detectSessionRole === 'function') ? _detectSessionRole() : null;
   switchTab('contract');
   renderContractPage(contractId);
 }
@@ -3777,18 +3796,26 @@ function approvePortalAccess(brandId) {
 function getWmContractsHtml(brandId) {
   var brandContracts = contracts.filter(function(c){ return c.brandId === brandId; });
   if (brandContracts.length === 0) return '<div style="text-align:center;padding:20px;opacity:.4">No contracts yet</div>';
+  var sessionRole = (typeof _detectSessionRole === 'function') ? _detectSessionRole() : null;
   var html = '';
   brandContracts.forEach(function(c) {
     var tpl = contractTemplates[c.type];
     var status = getContractStatus(c);
     html += '<div class="contract-card">' +
       '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">' +
-      '<div><h4 style="margin:0;font-size:15px">' + tpl.title + '</h4><div style="font-size:12px;opacity:.5;margin-top:2px">' + c.id + ' · ' + c.createdAt + '</div></div>' +
+      '<div><h4 style="margin:0;font-size:15px">' + tpl.title + '</h4><div style="font-size:12px;opacity:.5;margin-top:2px">' + c.id + ' \u00b7 ' + c.createdAt + '</div></div>' +
       '<span class="contract-badge ' + status + '">' + getContractStatusLabel(status) + '</span></div>' +
       '<div class="contract-signers">' + renderSignerPill(c,'brand','Brand') + renderSignerPill(c,'admin','3SVS') + renderSignerPill(c,'walmart','Startup Junkie') + '</div>' +
-      '<div style="display:flex;gap:8px">';
-    if (!c.signatures.walmart.signed) {
-      html += '<button onclick="openContractPageAsAdmin(\'' + c.id + '\')" style="background:#8fc5f2;color:#000;border:none;padding:6px 16px;border-radius:6px;font-size:13px;font-weight:600;cursor:pointer">Sign as Startup Junkie</button>';
+      '<div style="display:flex;gap:8px;flex-wrap:wrap">';
+    // 관리자(admin)는 3SVS 슬롯과 Startup Junkie 슬롯 양쪽 모두 서명 가능 (proxy)
+    if (sessionRole === 'admin' && !c.signatures.admin.signed) {
+      html += '<button onclick="openContractAsRole(\'' + c.id + '\',\'admin\')" style="background:#98fe00;color:#000;border:none;padding:6px 16px;border-radius:6px;font-size:13px;font-weight:600;cursor:pointer">Sign as 3SVS</button>';
+    }
+    if (sessionRole === 'admin' && !c.signatures.walmart.signed) {
+      html += '<button onclick="openContractAsRole(\'' + c.id + '\',\'walmart\')" style="background:#8fc5f2;color:#000;border:none;padding:6px 16px;border-radius:6px;font-size:13px;font-weight:600;cursor:pointer">Sign as Startup Junkie</button>';
+    }
+    if (sessionRole === 'walmart' && !c.signatures.walmart.signed) {
+      html += '<button onclick="openContractAsRole(\'' + c.id + '\',\'walmart\')" style="background:#8fc5f2;color:#000;border:none;padding:6px 16px;border-radius:6px;font-size:13px;font-weight:600;cursor:pointer">Sign as Startup Junkie</button>';
     }
     html += '<button onclick="previewContract(\'' + c.id + '\')" style="background:rgba(255,255,255,.08);color:#fff;border:none;padding:6px 16px;border-radius:6px;font-size:13px;cursor:pointer">View Contract</button></div></div>';
   });
@@ -4520,31 +4547,102 @@ var _currentBrandId = null;
 var _currentBrandData = null;
 
 function showBrandView(view) {
-  // Toggle view sections
-  var sections = {
-    'dashboard': ['portal-phase-bar','portal-cost-a','portal-cost-b','portal-sku-section','portal-checklist-section','portal-stats-section'],
-    'phase': ['portal-phase-bar','portal-checklist-section'],
-    'docs': ['portal-docs-section'],
-    'messages': ['portal-messages-section'],
-    'cost': ['portal-cost-a','portal-cost-b']
-  };
-  // Hide all brand-view sections
+  // Toggle view sections (multi-token data-brand-view 지원)
   document.querySelectorAll('[data-brand-view]').forEach(function(el) { el.style.display = 'none'; });
-  // Show selected
-  var targets = sections[view] || sections['dashboard'];
-  // For dashboard, show everything
   if (view === 'dashboard') {
-    document.querySelectorAll('[data-brand-view]').forEach(function(el) { el.style.display = ''; });
+    document.querySelectorAll('[data-brand-view]').forEach(function(el) {
+      var attr = el.getAttribute('data-brand-view') || '';
+      var tokens = attr.split(/\s+/);
+      if (tokens.indexOf('dashboard') >= 0 || attr === 'always') el.style.display = '';
+    });
   } else {
     document.querySelectorAll('[data-brand-view]').forEach(function(el) {
-      if (el.getAttribute('data-brand-view') === view || el.getAttribute('data-brand-view') === 'always') el.style.display = '';
+      var attr = el.getAttribute('data-brand-view') || '';
+      var tokens = attr.split(/\s+/);
+      if (tokens.indexOf(view) >= 0 || attr === 'always') el.style.display = '';
     });
   }
   // Update sidebar active state
   var navItems = document.querySelectorAll('#brand-sidebar-nav .sidebar-item');
-  navItems.forEach(function(item, idx) { item.classList.remove('active'); });
-  var viewIdx = {'dashboard':0,'phase':1,'docs':2,'messages':3,'cost':4}[view] || 0;
-  if (navItems[viewIdx]) navItems[viewIdx].classList.add('active');
+  navItems.forEach(function(item) { item.classList.remove('active'); });
+  var viewIdx = {'dashboard':0,'phase':1,'docs':2,'messages':3,'contracts':4,'cost':5}[view];
+  if (typeof viewIdx === 'number' && navItems[viewIdx]) navItems[viewIdx].classList.add('active');
+  // Lazy load contracts when entering contracts view
+  if (view === 'contracts' && typeof loadBrandContracts === 'function') {
+    loadBrandContracts(_currentBrandId);
+  }
+}
+
+// ─── BRAND CONTRACTS (포털 내장) ───
+async function loadBrandContracts(brandId) {
+  var listEl = document.getElementById('brand-contracts-list');
+  if (!listEl) return;
+  if (!brandId || !supabase) {
+    listEl.innerHTML = '<div style="text-align:center;padding:32px 0;color:rgba(255,255,255,0.15);font-size:13px">불러올 수 없습니다.</div>';
+    return;
+  }
+  listEl.innerHTML = '<div style="text-align:center;padding:32px 0;color:rgba(255,255,255,0.15);font-size:13px">불러오는 중...</div>';
+  var res = await supabase.from('wm_contracts').select('*').eq('brand_id', brandId).order('created_at', {ascending: false});
+  if (!res.data || res.data.length === 0) {
+    listEl.innerHTML = '<div style="text-align:center;padding:32px 0;color:rgba(255,255,255,0.15);font-size:13px">아직 생성된 계약서가 없습니다.<br><span style="font-size:12px">계약서가 준비되면 여기에 표시됩니다.</span></div>';
+    return;
+  }
+  // Sync to local contracts array
+  res.data.forEach(function(row) {
+    var local = dbContractToLocal(row);
+    var existing = contracts.find(function(x){ return x.id === local.id; });
+    if (existing) Object.assign(existing, local); else contracts.push(local);
+    if (!wmBrandData[row.brand_id]) {
+      wmBrandData[row.brand_id] = {
+        name: row.brand_name_en || row.brand_name_ko || row.brand_id,
+        info: { ceo: row.ceo_name || '', category: '', founded: '', hq: '', website: '', employees: '', revenue: '' },
+        skus: [], docs: [], memo: ''
+      };
+    }
+  });
+  var html = '';
+  res.data.forEach(function(row) {
+    var c = contracts.find(function(x){ return x.id === row.id; });
+    if (!c) return;
+    var tpl = contractTemplates[c.type] || contractTemplates['service'];
+    var status = getContractStatus(c);
+    html += '<div class="contract-card" style="margin-bottom:14px">' +
+      '<div style="display:flex;justify-content:space-between;align-items:start;margin-bottom:10px">' +
+      '<div><h4 style="margin:0;font-size:15px">' + tpl.title + '</h4>' +
+      '<div style="font-size:12px;opacity:.5;margin-top:2px">' + c.id + ' \u00b7 ' + c.createdAt + '</div></div>' +
+      '<span class="contract-badge ' + status + '">' + getContractStatusLabel(status) + '</span></div>' +
+      '<div class="contract-signers">' +
+      renderSignerPill(c, 'brand', 'Brand') +
+      renderSignerPill(c, 'admin', '3SVS') +
+      renderSignerPill(c, 'walmart', 'Startup Junkie') +
+      '</div>' +
+      '<div style="display:flex;gap:8px;margin-top:8px">';
+    if (!c.signatures.brand.signed) {
+      html += '<button onclick="openContractAsRole(\'' + c.id + '\',\'brand\')" style="background:#0071dc;color:#fff;border:none;padding:8px 18px;border-radius:6px;font-size:13px;font-weight:600;cursor:pointer">서명하기</button>';
+    }
+    html += '<button onclick="openContractAsRole(\'' + c.id + '\',\'brand\')" style="background:rgba(255,255,255,.08);color:#fff;border:none;padding:8px 18px;border-radius:6px;font-size:13px;cursor:pointer">계약서 보기</button>';
+    html += '</div></div>';
+  });
+  listEl.innerHTML = html;
+}
+
+// 컨텍스트 기반 계약서 진입
+function openContractAsRole(contractId, role) {
+  window._contractContextRole = role;
+  switchTab('contract');
+  renderContractPage(contractId);
+}
+
+// 세션 기반 역할 자동 감지
+function _detectSessionRole() {
+  try {
+    var s = JSON.parse(sessionStorage.getItem('wm_session') || 'null');
+    if (!s) return null;
+    if (s.type === 'brand') return 'brand';
+    if (s.type === 'admin') return 'admin';
+    if (s.type === 'walmart') return 'walmart';
+  } catch(e) {}
+  return null;
 }
 
 // ─── BRAND PORTAL DATA LOADING ───
@@ -4639,12 +4737,25 @@ var _contractSignerRole = null;
 
 function selectContractRole(role) {
   _contractSignerRole = role;
-  // Show only the selected role's sign button
+  // 세션 역할에 따라 어떤 슬롯을 활성화할지 결정
+  // - admin 세션: admin과 walmart 양쪽 활성 (proxy 가능)
+  // - 그 외: 본인 슬롯만 활성
+  var sessionRole = (typeof _detectSessionRole === 'function') ? _detectSessionRole() : null;
+  var allowed;
+  if (sessionRole === 'admin') {
+    allowed = ['admin', 'walmart'];
+  } else if (sessionRole === 'brand') {
+    allowed = ['brand'];
+  } else if (sessionRole === 'walmart') {
+    allowed = ['walmart'];
+  } else {
+    allowed = []; // 비로그인: 모두 비활성 (read-only)
+  }
   ['brand','admin','walmart'].forEach(function(r) {
     var gate = document.getElementById('sig-gate-' + r);
-    if (gate) gate.style.display = (r === role) ? '' : 'none';
+    if (gate) gate.style.display = (allowed.indexOf(r) >= 0) ? '' : 'none';
   });
-  // Update role selector buttons
+  // Update role selector buttons (있다면)
   document.querySelectorAll('.contract-role-btn').forEach(function(btn) {
     btn.classList.toggle('selected', btn.getAttribute('data-role') === role);
   });
