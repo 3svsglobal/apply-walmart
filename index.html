@@ -165,6 +165,32 @@ button{cursor:pointer;font-family:var(--font)}
 .pdm-lbl{font-size:12px;color:var(--text-muted);margin-top:4px;font-weight:400}
 .phase-steps-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:8px}
 .phase-step-card{padding:20px;border:1px solid var(--border);border-radius:var(--radius);transition:all .2s;position:relative}
+
+/* ─── Phase Pricing-style Package Cards ─── */
+.phase-pkg-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:20px;margin:32px 0 56px}
+.phase-pkg{position:relative;padding:32px 28px;border:1px solid var(--border);border-radius:16px;background:var(--bg);cursor:pointer;transition:all .25s ease;display:flex;flex-direction:column}
+.phase-pkg:hover{border-color:rgba(0,113,220,0.5);transform:translateY(-4px);box-shadow:0 12px 32px rgba(0,113,220,0.12)}
+.phase-pkg.selected{border-color:var(--accent);background:rgba(0,113,220,0.03);box-shadow:0 0 0 1px var(--accent)}
+.phase-pkg-popular{border-color:var(--accent);background:linear-gradient(180deg,rgba(0,113,220,0.05) 0%,transparent 60%);box-shadow:0 8px 24px rgba(0,113,220,0.1)}
+.phase-pkg-popular:hover{transform:translateY(-6px);box-shadow:0 16px 40px rgba(0,113,220,0.18)}
+.phase-pkg-popular-badge{position:absolute;top:-12px;left:50%;transform:translateX(-50%);padding:6px 16px;background:var(--accent);color:#fff;font-size:11px;font-weight:700;letter-spacing:0.8px;border-radius:999px;font-family:var(--mono);white-space:nowrap;box-shadow:0 4px 12px rgba(0,113,220,0.3)}
+.phase-pkg-num{font-size:13px;font-weight:700;color:var(--accent);font-family:var(--mono);letter-spacing:1.5px;margin-bottom:14px}
+.phase-pkg-title{font-size:22px;font-weight:900;letter-spacing:-0.8px;line-height:1.2;margin:0 0 10px;color:var(--text);word-break:keep-all}
+.phase-pkg-tag{font-size:14px;color:var(--text-muted);line-height:1.55;margin:0 0 16px;word-break:keep-all}
+.phase-pkg-meta{display:flex;align-items:center;gap:6px;font-size:13px;font-weight:600;color:var(--text);font-family:var(--mono)}
+.phase-pkg-meta .phase-pkg-clock{font-size:14px}
+.phase-pkg-divider{height:1px;background:var(--border);margin:22px 0}
+.phase-pkg-section-label{font-size:11px;font-weight:700;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.8px;margin-bottom:12px;font-family:var(--mono)}
+.phase-pkg-list{list-style:none;padding:0;margin:0 0 8px}
+.phase-pkg-list li{font-size:13.5px;color:var(--text);padding:5px 0 5px 22px;position:relative;line-height:1.5;word-break:keep-all}
+.phase-pkg-list li::before{content:'\2713';position:absolute;left:0;top:5px;color:var(--lime);font-weight:700;font-size:13px}
+.phase-pkg-more{font-size:12px;color:var(--text-muted);font-style:italic;padding-left:22px}
+.phase-pkg-outcome{font-size:14px;font-weight:600;color:var(--lime);padding:12px 16px;background:rgba(0,135,90,0.08);border:1px solid rgba(0,135,90,0.15);border-radius:8px;line-height:1.4;word-break:keep-all}
+.phase-pkg-btn{margin-top:auto;padding:14px 20px;background:var(--accent);color:#fff;border:none;border-radius:8px;font-size:14px;font-weight:600;cursor:pointer;transition:all .2s;font-family:var(--font);margin-top:24px}
+.phase-pkg-btn:hover{background:#005bb5;transform:translateY(-1px);box-shadow:0 6px 16px rgba(0,113,220,0.25)}
+.phase-pkg-popular .phase-pkg-btn{background:var(--accent);box-shadow:0 4px 12px rgba(0,113,220,0.2)}
+@media(max-width:768px){.phase-pkg-grid{grid-template-columns:1fr;gap:16px}.phase-pkg{padding:24px 20px}.phase-pkg-popular-badge{top:-10px}}
+
 .phase-step-card:hover{border-color:rgba(0,0,0,0.12);transform:translateY(-2px);box-shadow:0 4px 12px rgba(0,0,0,0.04)}
 .psc-num{font-family:var(--mono);font-size:11px;color:rgba(0,0,0,0.15);font-weight:500;margin-bottom:8px}
 .phase-step-card h4{font-size:15px;font-weight:700;letter-spacing:-0.3px;color:var(--text);margin-bottom:4px;line-height:1.3}
@@ -844,12 +870,75 @@ button{cursor:pointer;font-family:var(--font)}
     <h2 class="st" id="cms-proc-title"><span class="ko">3-Phase 입점 프로세스</span><span class="en">3-Phase Entry Process</span></h2>
     <p class="sd" id="cms-proc-desc"><span class="ko">온라인 론칭부터 오프라인 매장 입점까지. 각 Phase는 검증을 거쳐야 다음으로 넘어갑니다 — 리스크를 최소화하면서 확실하게 진행합니다.</span><span class="en">From online launch to in-store entry. Each Phase must be validated before moving forward — minimizing risk while ensuring solid progress.</span></p>
 
-    <!-- Phase Overview Cards -->
-    <div class="proc-wrap"><div class="proc-cards">
-      <div class="pc phase-tab active" onclick="showPhase(0)"><div class="sn">01</div><h4>Phase 1</h4><p>Foundation & Online Setup</p><span style="font-family:var(--mono);font-size:11px;color:var(--text-muted);margin-top:4px;display:block"><span class="ko">4~8주</span><span class="en">4-8 weeks</span></span></div>
-      <div class="pc phase-tab" onclick="showPhase(1)"><div class="sn">02</div><h4>Phase 2</h4><p>Market Experiment & Data</p><span style="font-family:var(--mono);font-size:11px;color:var(--text-muted);margin-top:4px;display:block"><span class="ko">4~8주</span><span class="en">4-8 weeks</span></span></div>
-      <div class="pc phase-tab" onclick="showPhase(2)"><div class="sn">03</div><h4>Phase 3</h4><p>Test P.O. & Store Launch</p><span style="font-family:var(--mono);font-size:11px;color:var(--text-muted);margin-top:4px;display:block"><span class="ko">4~8주</span><span class="en">4-8 weeks</span></span></div>
-    </div></div>
+    <!-- Phase Pricing-style Package Cards -->
+    <div class="phase-pkg-grid">
+      <!-- Phase 1 -->
+      <div class="phase-pkg" data-phase="0" onclick="selectPhasePkg(0)">
+        <div class="phase-pkg-num">01</div>
+        <h3 class="phase-pkg-title"><span class="ko">기반 구축 & 온라인 셋업</span><span class="en">Foundation & Online Setup</span></h3>
+        <p class="phase-pkg-tag"><span class="ko">Walmart.com 마켓플레이스 정식 등록과 온라인 판매 시작</span><span class="en">Official Walmart.com listing and online launch</span></p>
+        <div class="phase-pkg-meta"><span class="phase-pkg-clock">⏱</span><span class="ko">4~8주</span><span class="en">4-8 weeks</span></div>
+        <div class="phase-pkg-divider"></div>
+        <div class="phase-pkg-section-label"><span class="ko">포함 사항</span><span class="en">What's Included</span></div>
+        <ul class="phase-pkg-list">
+          <li><span class="ko">마켓플레이스 신청 & 승인</span><span class="en">Marketplace Application & Approval</span></li>
+          <li><span class="ko">Item 360 셋업 & 상품 등록</span><span class="en">Item 360 Setup & Listings</span></li>
+          <li><span class="ko">SEO 최적화 & A/B 테스트</span><span class="en">SEO Optimization & A/B Testing</span></li>
+          <li><span class="ko">Sponsored Products 광고 셋업</span><span class="en">Sponsored Products Campaign</span></li>
+          <li><span class="ko">컴플라이언스 & 운영 SLA</span><span class="en">Compliance & Operational SLAs</span></li>
+        </ul>
+        <div class="phase-pkg-more"><span class="ko">+ 9개 추가 단계</span><span class="en">+ 9 more steps</span></div>
+        <div class="phase-pkg-divider"></div>
+        <div class="phase-pkg-section-label"><span class="ko">기대 결과</span><span class="en">Outcome</span></div>
+        <div class="phase-pkg-outcome"><span class="ko">🟢 Walmart.com 공식 판매 시작</span><span class="en">🟢 Live sales on Walmart.com</span></div>
+        <button class="phase-pkg-btn" onclick="event.stopPropagation();selectPhasePkg(0)"><span class="ko">자세히 보기 →</span><span class="en">See Full Details →</span></button>
+      </div>
+
+      <!-- Phase 2 (POPULAR) -->
+      <div class="phase-pkg phase-pkg-popular" data-phase="1" onclick="selectPhasePkg(1)">
+        <div class="phase-pkg-popular-badge">★ <span class="ko">핵심 단계</span><span class="en">CORE STAGE</span></div>
+        <div class="phase-pkg-num">02</div>
+        <h3 class="phase-pkg-title"><span class="ko">시장 테스트 & 데이터</span><span class="en">Market Test & Data</span></h3>
+        <p class="phase-pkg-tag"><span class="ko">실시간 매출 데이터 수집과 광고·재고 최적화</span><span class="en">Real-time sales data and ads/inventory optimization</span></p>
+        <div class="phase-pkg-meta"><span class="phase-pkg-clock">⏱</span><span class="ko">4~8주</span><span class="en">4-8 weeks</span></div>
+        <div class="phase-pkg-divider"></div>
+        <div class="phase-pkg-section-label"><span class="ko">포함 사항</span><span class="en">What's Included</span></div>
+        <ul class="phase-pkg-list">
+          <li><span class="ko">리스팅 헬스 모니터링</span><span class="en">Listing Health Monitoring</span></li>
+          <li><span class="ko">성과 분석 & 리포트</span><span class="en">Performance Tracking & Reports</span></li>
+          <li><span class="ko">광고 최적화 & 동적 가격</span><span class="en">Ad Optimization & Dynamic Pricing</span></li>
+          <li><span class="ko">수요 예측 & 재고 보충</span><span class="en">Demand Forecast & Replenishment</span></li>
+          <li><span class="ko">바이어 포털 연동</span><span class="en">Buyer Portal Coordination</span></li>
+        </ul>
+        <div class="phase-pkg-more"><span class="ko">+ 4개 추가 단계</span><span class="en">+ 4 more steps</span></div>
+        <div class="phase-pkg-divider"></div>
+        <div class="phase-pkg-section-label"><span class="ko">기대 결과</span><span class="en">Outcome</span></div>
+        <div class="phase-pkg-outcome"><span class="ko">🟢 검증된 매출 데이터 & 최적화 완료</span><span class="en">🟢 Validated sales data & optimization</span></div>
+        <button class="phase-pkg-btn" onclick="event.stopPropagation();selectPhasePkg(1)"><span class="ko">자세히 보기 →</span><span class="en">See Full Details →</span></button>
+      </div>
+
+      <!-- Phase 3 -->
+      <div class="phase-pkg" data-phase="2" onclick="selectPhasePkg(2)">
+        <div class="phase-pkg-num">03</div>
+        <h3 class="phase-pkg-title"><span class="ko">테스트 P.O. & 매장 입점</span><span class="en">Test P.O. & Store Launch</span></h3>
+        <p class="phase-pkg-tag"><span class="ko">500~1,000개 매장 입점과 오프라인 매출 시작</span><span class="en">500-1,000 store rollout and offline sales launch</span></p>
+        <div class="phase-pkg-meta"><span class="phase-pkg-clock">⏱</span><span class="ko">4~8주</span><span class="en">4-8 weeks</span></div>
+        <div class="phase-pkg-divider"></div>
+        <div class="phase-pkg-section-label"><span class="ko">포함 사항</span><span class="en">What's Included</span></div>
+        <ul class="phase-pkg-list">
+          <li><span class="ko">최종 라인 리뷰</span><span class="en">Final Line Review</span></li>
+          <li><span class="ko">테스트 P.O. 발행</span><span class="en">Test P.O. Generation</span></li>
+          <li><span class="ko">500~1,000개 매장 롤아웃</span><span class="en">500-1,000 Stores Rollout</span></li>
+          <li><span class="ko">매출 런칭 & 매장 할당</span><span class="en">Sales Launch & Store Allocation</span></li>
+          <li><span class="ko">론칭 후 360° 리뷰</span><span class="en">Post-Launch 360° Review</span></li>
+        </ul>
+        <div class="phase-pkg-more"><span class="ko">+ 6개 추가 단계</span><span class="en">+ 6 more steps</span></div>
+        <div class="phase-pkg-divider"></div>
+        <div class="phase-pkg-section-label"><span class="ko">기대 결과</span><span class="en">Outcome</span></div>
+        <div class="phase-pkg-outcome"><span class="ko">🟢 오프라인 매장 입점 시작</span><span class="en">🟢 In-store retail launch</span></div>
+        <button class="phase-pkg-btn" onclick="event.stopPropagation();selectPhasePkg(2)"><span class="ko">자세히 보기 →</span><span class="en">See Full Details →</span></button>
+      </div>
+    </div>
 
     <!-- ── Phase 1 Detail ── -->
     <div class="phase-deep" id="phase-deep-0">
@@ -3141,6 +3230,20 @@ function addSuccessCard() {
   container.appendChild(card);
   ['new-sc-flag','new-sc-brand','new-sc-origin','new-sc-result','new-sc-result-label','new-sc-detail'].forEach(function(id) { document.getElementById(id).value = ''; });
   showCmsToast('성공사례 카드가 추가되었습니다');
+}
+
+function selectPhasePkg(idx) {
+  // 카드 강조
+  document.querySelectorAll('.phase-pkg').forEach(function(el, i) {
+    el.classList.toggle('selected', i === idx);
+  });
+  // 기존 14단계 상세 표시 (showPhase 함수 활용)
+  if (typeof showPhase === 'function') showPhase(idx);
+  // 부드럽게 상세 영역으로 스크롤
+  setTimeout(function() {
+    var deep = document.getElementById('phase-deep-' + idx);
+    if (deep) deep.scrollIntoView({behavior: 'smooth', block: 'start'});
+  }, 120);
 }
 
 function showPhase(idx) {
