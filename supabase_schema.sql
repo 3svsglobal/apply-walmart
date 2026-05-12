@@ -288,3 +288,82 @@ ALTER TABLE wm_messages ENABLE ROW LEVEL SECURITY;
 CREATE POLICY "Anyone can read messages" ON wm_messages FOR SELECT USING (true);
 CREATE POLICY "Anyone can insert messages" ON wm_messages FOR INSERT WITH CHECK (true);
 CREATE POLICY "Anyone can update messages" ON wm_messages FOR UPDATE USING (true);
+
+
+-- ═══════════════════════════════════════════════════════════
+-- 데이터 정합성 보강 (2026-05-12 추가)
+-- 모두 idempotent — 이미 적용된 환경에서 재실행해도 안전.
+-- RLS / portal_password 해시화는 별도 마이그레이션(Phase 2)에서 처리.
+-- ═══════════════════════════════════════════════════════════
+
+-- 1. wm_brands.updated_at 자동 갱신 trigger
+--    DEFAULT now() 만 있어서 INSERT 시점만 채워지고 UPDATE 에선 정지된
+--    상태였음. 모든 UPDATE 에서 자동 refresh 되도록 trigger 추가.
+
+CREATE OR REPLACE FUNCTION wm_set_updated_at()
+RETURNS TRIGGER AS $$
+BEGIN
+  NEW.updated_at = now();
+  RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+DROP TRIGGER IF EXISTS wm_brands_set_updated_at ON wm_brands;
+CREATE TRIGGER wm_brands_set_updated_at
+  BEFORE UPDATE ON wm_brands
+  FOR EACH ROW
+  EXECUTE FUNCTION wm_set_updated_at();
+
+-- 2. wm_brands.portal_email partial UNIQUE
+--    NULL 다중 허용 (포탈 미발급 브랜드는 NULL). 발급된 이메일은 1개만.
+--    기존 중복 데이터가 있으면 인덱스 생성이 실패하므로, 실패 시 SELECT 로
+--    중복 확인 후 정리 → 재실행.
+
+CREATE UNIQUE INDEX IF NOT EXISTS idx_brands_portal_email_unique
+  ON wm_brands(portal_email)
+  WHERE portal_email IS NOT NULL;
+
+-- 3. wm_contracts.brand_id → wm_brands(id) FK
+--    NOT VALID 로 추가 — 기존 row 검증은 skip, 신규 INSERT/UPDATE 에만
+--    제약 적용. 기존 데이터 정합성 정리 후 ALTER TABLE ... VALIDATE
+--    CONSTRAINT 로 검증.
+--    DO 블록으로 감싸서 idempotent 보장 (constraint 가 이미 있으면 skip).
+
+DO $$
+BEGIN
+  IF NOT EXISTS (
+    SELECT 1 FROM pg_constraint
+    WHERE conname = 'wm_contracts_brand_id_fk'
+  ) THEN
+    ALTER TABLE wm_contracts
+      ADD CONSTRAINT wm_contracts_brand_id_fk
+      FOREIGN KEY (brand_id)
+      REFERENCES wm_brands(id)
+      ON UPDATE CASCADE
+      NOT VALID;
+  END IF;
+END $$;
+
+-- 4. status 전환 audit log (선택) — 누가 언제 approve/reject 했는지
+--    추적 가능하도록 별도 테이블. 향후 admin dashboard 에 history 표시용.
+
+CREATE TABLE IF NOT EXISTS wm_status_log (
+  id            UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+  created_at    TIMESTAMPTZ DEFAULT now(),
+  table_name    TEXT NOT NULL,    -- 'wm_applications' | 'wm_contracts' | 'wm_brands'
+  row_id        TEXT NOT NULL,    -- 변경 대상 row 의 id (TEXT 통일)
+  old_status    TEXT,
+  new_status    TEXT NOT NULL,
+  changed_by    TEXT,             -- email or auth.uid()::text
+  note          TEXT
+);
+
+CREATE INDEX IF NOT EXISTS idx_status_log_row
+  ON wm_status_log(table_name, row_id, created_at DESC);
+
+ALTER TABLE wm_status_log ENABLE ROW LEVEL SECURITY;
+
+-- Audit log 조회는 admin만 — Phase 2 RLS 마이그레이션 후 명시적 admin
+-- 정책으로 교체. 지금은 RLS ON + 정책 없음 = 누구도 access 못함
+-- (서버 측 service_role 만 통과). frontend 가 직접 조회 시도 시 빈
+-- 결과 반환. 향후 admin RPC 함수로 노출.

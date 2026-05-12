@@ -3,4 +3,8 @@ enabled = true
 port = 54321
 
 [functions.send-notification]
-verify_jwt = false
+# JWT verification ON — function only accepts requests with a valid
+# Supabase JWT (anon key included). Combined with origin allow-list
+# inside the function body, this closes the unauthenticated-email
+# surface that allowed any caller to send mail via our Resend key.
+verify_jwt = true
