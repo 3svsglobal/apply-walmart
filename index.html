@@ -4,18 +4,45 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Walmart Entry Program — 3Stripe Venture Studio</title>
-<style>
-@import url('https://api.fontshare.com/v2/css?f[]=satoshi@400,500,700,900&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;500&display=swap');
-@import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css');
 
+<!-- Content-Security-Policy: 외부 자원은 명시된 도메인만 허용. Supabase
+     호출, 폰트 CDN, Unsplash 이미지, jsdelivr (Pretendard) 가 의도된
+     출처. style/script 의 'unsafe-inline' 은 현재 단일 HTML 의 inline
+     style/onclick 사용에 필요 — 향후 자산 분리 시 nonce/hash 로 강화. -->
+<meta http-equiv="Content-Security-Policy" content="
+  default-src 'self';
+  script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://unpkg.com;
+  style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://api.fontshare.com https://cdn.jsdelivr.net;
+  font-src 'self' https://fonts.gstatic.com https://api.fontshare.com https://cdn.fontshare.com https://cdn.jsdelivr.net data:;
+  img-src 'self' data: https://images.unsplash.com https://*.supabase.co;
+  connect-src 'self' https://*.supabase.co wss://*.supabase.co;
+  frame-ancestors 'none';
+  base-uri 'self';
+  form-action 'self';
+">
+<meta http-equiv="X-Content-Type-Options" content="nosniff">
+<meta name="referrer" content="strict-origin-when-cross-origin">
+
+<!-- 폰트 CDN — preconnect 로 TLS/DNS 미리 warm-up. @import 는 render-
+     blocking 이라 <link rel="stylesheet"> 로 옮김. -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preconnect" href="https://api.fontshare.com">
+<link rel="preconnect" href="https://cdn.jsdelivr.net">
+<link rel="stylesheet" href="https://api.fontshare.com/v2/css?f[]=satoshi@400,500,700,900&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+
+<style>
 :root {
   --bg: #ffffff;
   --bg-alt: #f5f5f7;
   --bg-dark: #0a1628;
   --bg-footer: #0a1628;
   --accent: #0071dc;
+  --accent-hover: #005bb5;
   --accent-light: #e6f0fa;
+  --accent-shadow: rgba(0,113,220,0.3);
   --accent-orange: #ff9500;
   --lime: #00875a;
   --lime-light: #e6f4ee;
@@ -31,6 +58,22 @@
   --sec-px: 48px;
   --radius: 8px;
   --content-max: 1200px;
+}
+
+/* 모바일에서 section 패딩이 너무 큼 — breakpoint 별 축소. */
+@media (max-width: 1024px) {
+  :root { --sec-py: 80px; --sec-px: 32px; }
+}
+@media (max-width: 768px) {
+  :root { --sec-py: 56px; --sec-px: 20px; }
+}
+
+/* 키보드 사용자 가시성 — 모든 인터랙티브 요소의 :focus-visible 보장.
+   WCAG 2.4.7 Focus Visible. */
+:where(button, a, input, select, textarea, [tabindex]):focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+  border-radius: 4px;
 }
 
 /* ─── LANGUAGE TOGGLE ─── */
@@ -66,7 +109,7 @@ button{cursor:pointer;font-family:var(--font)}
 .si{max-width:var(--content-max);margin:0 auto}
 .sec-divider{height:1px;background:var(--border);max-width:var(--content-max);margin:0 auto}
 .btn-primary{display:inline-flex;align-items:center;padding:16px 32px;background:var(--accent);border:none;border-radius:var(--radius);color:#fff;font-family:var(--font);font-size:16px;font-weight:600;cursor:pointer;transition:all .2s;gap:8px}
-.btn-primary:hover{background:#005bb5;transform:translateY(-1px);box-shadow:0 4px 12px rgba(0,113,220,0.3)}
+.btn-primary:hover{background:var(--accent-hover);transform:translateY(-1px);box-shadow:0 4px 12px var(--accent-shadow)}
 .btn-outline{display:inline-flex;align-items:center;padding:16px 32px;background:transparent;border:1px solid var(--border);border-radius:var(--radius);color:var(--text);font-family:var(--font);font-size:16px;font-weight:500;cursor:pointer;transition:all .2s}
 .btn-outline:hover{border-color:var(--text);background:rgba(0,0,0,0.02)}
 .btn-dark{display:inline-flex;align-items:center;padding:16px 32px;background:#fff;border:none;border-radius:var(--radius);color:var(--text);font-family:var(--font);font-size:16px;font-weight:600;cursor:pointer;transition:all .2s}
@@ -719,17 +762,17 @@ button{cursor:pointer;font-family:var(--font)}
 <body>
 
 <!-- TAB NAV -->
-<div class="tab-nav">
+<nav class="tab-nav" role="tablist" aria-label="Main navigation">
   <div class="tab-logo">3SVS <span>Walmart Program</span></div>
-  <div class="tab-sep"></div>
-  <button class="tab-btn active" onclick="switchTab('landing')">Home</button>
-  <button class="tab-btn" onclick="switchTab('apply')"><span class="ko">프로그램 신청</span><span class="en">Apply</span></button>
-  <button class="tab-btn" onclick="switchTab('login')"><span class="ko">로그인</span><span class="en">Login</span></button>
-  <div class="lang-toggle">
-    <button onclick="setLang('ko')">KR</button>
-    <button class="active" onclick="setLang('en')">EN</button>
+  <div class="tab-sep" aria-hidden="true"></div>
+  <button type="button" class="tab-btn active" role="tab" aria-selected="true" aria-controls="view-landing" onclick="switchTab('landing')">Home</button>
+  <button type="button" class="tab-btn" role="tab" aria-selected="false" aria-controls="view-apply" onclick="switchTab('apply')"><span class="ko">프로그램 신청</span><span class="en">Apply</span></button>
+  <button type="button" class="tab-btn" role="tab" aria-selected="false" aria-controls="view-login" onclick="switchTab('login')"><span class="ko">로그인</span><span class="en">Login</span></button>
+  <div class="lang-toggle" role="group" aria-label="Language">
+    <button type="button" onclick="setLang('ko')" aria-label="한국어">KR</button>
+    <button type="button" class="active" onclick="setLang('en')" aria-label="English">EN</button>
   </div>
-</div>
+</nav>
 
 <!-- ═══════════════════════════════════════ -->
 <!-- LANDING -->
@@ -2538,7 +2581,7 @@ async function dbSaveApplication(formData) {
   
   try {
     var res = await supabase.from('wm_applications').insert([obj]).select();
-    console.log('Application saved to DB:', res);
+    // application persisted; response object intentionally not logged (PII)
     var saved = res.data ? res.data[0] : null;
     if (!saved) return null;
     // 첨부파일 업로드 (Brand Deck + Additional Docs + SKU List)
@@ -2574,7 +2617,7 @@ async function dbCreateContract(contractData) {
   if (!supabase) return null;
   try {
     var res = await supabase.from('wm_contracts').insert([contractData]).select();
-    console.log('Contract saved to DB:', res);
+    // contract persisted; response not logged (contains signature URLs)
     return res.data ? res.data[0] : null;
   } catch(e) {
     console.error('DB contract create failed:', e);
@@ -2662,8 +2705,10 @@ function dbContractToLocal(row) {
 
 
 
-// ─── ADMIN PASSWORD ───
-let ADMIN_PW = '3svs2026';
+// ─── ADMIN AUTH ───
+// 관리자 인증은 Supabase Auth 만 사용. 2026-05-12 이전 평문 ADMIN_PW
+// 폴백은 public repo 에 그대로 노출되는 보안 결함이라 제거됨.
+// 신규 admin 계정은 Supabase Dashboard > Authentication > Users 에서 추가.
 
 function showAdminModal() {
   document.getElementById('admin-pw-input').value = '';
@@ -2676,28 +2721,32 @@ function hideAdminModal() {
 }
 async function checkAdminPw() {
   const pw = document.getElementById('admin-pw-input').value;
-  // Try Supabase Auth first (if email is provided)
-  var emailInput = document.getElementById('admin-pw-email');
-  if (emailInput && emailInput.value && supabase) {
-    try {
-      var authRes = await supabase.auth.signInWithPassword({ email: emailInput.value.trim(), password: pw });
-      if (authRes.data && authRes.data.user) {
-        _currentAdminUser = authRes.data.user;
-        hideAdminModal();
-        switchTab('admin');
-        return;
-      }
-    } catch(e) {}
+  const emailInput = document.getElementById('admin-pw-email');
+  if (!supabase) {
+    alert('인증 시스템 오류. 잠시 후 다시 시도해주세요.');
+    return;
   }
-  // Fallback: simple password
-  if (pw === ADMIN_PW) {
-    hideAdminModal();
-    switchTab('admin');
-  } else {
+  if (!emailInput || !emailInput.value) {
     document.getElementById('admin-pw-error').style.display = 'block';
-    document.getElementById('admin-pw-input').value = '';
-    document.getElementById('admin-pw-input').focus();
+    document.getElementById('admin-pw-error').textContent = '관리자 이메일을 입력해주세요.';
+    return;
   }
+  try {
+    const authRes = await supabase.auth.signInWithPassword({
+      email: emailInput.value.trim(),
+      password: pw,
+    });
+    if (authRes.data && authRes.data.user) {
+      _currentAdminUser = authRes.data.user;
+      hideAdminModal();
+      switchTab('admin');
+      return;
+    }
+  } catch(e) { /* falls through to error UI */ }
+  document.getElementById('admin-pw-error').style.display = 'block';
+  document.getElementById('admin-pw-error').textContent = '이메일 또는 비밀번호가 올바르지 않습니다.';
+  document.getElementById('admin-pw-input').value = '';
+  document.getElementById('admin-pw-input').focus();
 }
 
 // ─── LOGIN SYSTEM ───
@@ -2720,23 +2769,23 @@ function handleLogin() {
 }
 
 async function loginAdmin(email, pw, role) {
-  // Try Supabase Auth first
-  if (supabase) {
-    try {
-      var authRes = await supabase.auth.signInWithPassword({ email: email, password: pw });
-      if (authRes.data && authRes.data.user) {
-        _currentAdminUser = authRes.data.user;
-        sessionStorage.setItem('wm_session', JSON.stringify({type: role === 'walmart' ? 'walmart' : 'admin'})); switchTab(role === 'walmart' ? 'walmart' : 'admin');
-        return;
-      }
-    } catch(e) { console.log('Supabase Auth not configured, falling back to password check'); }
+  if (!supabase) {
+    alert('인증 시스템 오류. 잠시 후 다시 시도해주세요.');
+    return;
   }
-  // Fallback to simple password check (for backward compatibility)
-  if (pw === ADMIN_PW) {
-    sessionStorage.setItem('wm_session', JSON.stringify({type: role === 'walmart' ? 'walmart' : 'admin'})); switchTab(role === 'walmart' ? 'walmart' : 'admin');
-  } else {
-    alert('이메일 또는 비밀번호가 올바르지 않습니다.');
-  }
+  try {
+    const authRes = await supabase.auth.signInWithPassword({ email, password: pw });
+    if (authRes.data && authRes.data.user) {
+      _currentAdminUser = authRes.data.user;
+      sessionStorage.setItem(
+        'wm_session',
+        JSON.stringify({ type: role === 'walmart' ? 'walmart' : 'admin' }),
+      );
+      switchTab(role === 'walmart' ? 'walmart' : 'admin');
+      return;
+    }
+  } catch(e) { /* falls through to error alert */ }
+  alert('이메일 또는 비밀번호가 올바르지 않습니다.');
 }
 
 var _currentAdminUser = null;
@@ -3014,7 +3063,7 @@ function submitApply() {
   // Save to Supabase DB (primary) + Formspree (email backup)
   dbSaveApplication(fd).then(function(saved) {
     if (saved) {
-      console.log('Saved to DB, id:', saved.id);
+      // application saved (id not logged)
       document.getElementById('apply-success-modal').classList.add('show');
       sendNotification('application_submitted', { message: (saved.brand_name_ko || saved.brand_name_en || '새 기업') + '이(가) 신청서를 제출했습니다.', appId: saved.id });
     } else {
@@ -3056,13 +3105,19 @@ function setLang(lang) {
 
 function switchTab(id) {
   document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
-  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => {
+    b.classList.remove('active');
+    b.setAttribute('aria-selected', 'false');
+  });
   document.getElementById('view-' + id).classList.add('active');
   // Match tab button by data-view or content mapping
   const tabMap = {'landing':'home','apply':'프로그램 신청','login':'로그인'};
   const target = tabMap[id] || '';
   document.querySelectorAll('.tab-btn').forEach(b => {
-    if (b.textContent.trim().toLowerCase() === target.toLowerCase()) b.classList.add('active');
+    if (b.textContent.trim().toLowerCase() === target.toLowerCase()) {
+      b.classList.add('active');
+      b.setAttribute('aria-selected', 'true');
+    }
   });
   // Hide tab-nav for internal views (admin/portal have their own sidebar)
   const tabNav = document.querySelector('.tab-nav');
@@ -3405,17 +3460,38 @@ function saveWmMemo(brandId) {
   if (btn) { btn.textContent = 'Saved ✓'; setTimeout(function(){ btn.textContent = 'Save Note'; }, 1500); }
 }
 
-function changeAdminPw() {
+async function changeAdminPw() {
   var cur = document.getElementById('settings-cur-pw');
   var nw = document.getElementById('settings-new-pw');
   var cf = document.getElementById('settings-cf-pw');
   if (!cur || !nw || !cf) return;
-  if (cur.value !== ADMIN_PW) { alert('현재 비밀번호가 일치하지 않습니다.'); return; }
-  if (nw.value.length < 4) { alert('새 비밀번호는 4자 이상이어야 합니다.'); return; }
+  if (!supabase || !_currentAdminUser) {
+    alert('관리자로 로그인 후 시도해주세요.');
+    return;
+  }
+  if (nw.value.length < 8) { alert('새 비밀번호는 8자 이상이어야 합니다.'); return; }
   if (nw.value !== cf.value) { alert('새 비밀번호가 일치하지 않습니다.'); return; }
-  ADMIN_PW = nw.value;
-  alert('비밀번호가 변경되었습니다.');
-  cur.value = ''; nw.value = ''; cf.value = '';
+
+  // 현재 비밀번호 재인증 → 새 비밀번호 적용. Supabase Auth.
+  try {
+    const reauth = await supabase.auth.signInWithPassword({
+      email: _currentAdminUser.email,
+      password: cur.value,
+    });
+    if (!reauth.data || !reauth.data.user) {
+      alert('현재 비밀번호가 일치하지 않습니다.');
+      return;
+    }
+    const update = await supabase.auth.updateUser({ password: nw.value });
+    if (update.error) {
+      alert('비밀번호 변경 실패: ' + update.error.message);
+      return;
+    }
+    alert('비밀번호가 변경되었습니다.');
+    cur.value = ''; nw.value = ''; cf.value = '';
+  } catch (e) {
+    alert('비밀번호 변경 중 오류가 발생했습니다.');
+  }
 }
 
 
@@ -4601,12 +4677,12 @@ async function sendNotification(type, data) {
     });
 
     if (response.ok) {
-      console.log('Notification sent:', type);
+      // notification dispatched
     } else {
-      console.log('Edge Function not configured yet - notification saved locally only');
+      // edge function not configured — notification saved locally only
     }
   } catch(e) {
-    console.log('Notification edge function unavailable:', e.message);
+    // notification edge function unavailable; saved locally
   }
 }
 
@@ -4934,7 +5010,7 @@ async function restoreSession() {
     } else if (sess.type === 'walmart') {
       switchTab('walmart');
     }
-  } catch(e) { console.log('Session restore failed:', e); }
+  } catch(e) { /* session restore failed — fall through to login prompt */ }
 }
 
 // ─── CONTRACT ROLE SELECTOR ───
