@@ -2552,8 +2552,12 @@ async function dbSaveApplication(formData) {
         try {
           var up = await supabase.storage.from('wm-signatures').upload(path, fval);
           if (up.error) { console.warn('Upload failed:', fval.name, up.error); continue; }
-          var url = SUPABASE_URL + '/storage/v1/object/public/wm-signatures/' + path;
-          attachedFiles.push({ field: fkey, name: fval.name, url: url, size: fval.size, type: fval.type });
+          // Phase 2 — private bucket 전환 대비: signed URL (24h) 로 발급.
+          // bucket 이 public 인 상태에서도 signed URL 은 그대로 동작.
+          // attached_files 에는 path 도 함께 저장해서 만료 시 재발급 가능.
+          var signedRes = await supabase.storage.from('wm-signatures').createSignedUrl(path, 60 * 60 * 24);
+          var signedUrl = (signedRes.data && signedRes.data.signedUrl) || '';
+          attachedFiles.push({ field: fkey, name: fval.name, url: signedUrl, path: path, size: fval.size, type: fval.type });
         } catch(upErr) { console.warn('Upload exception:', fval.name, upErr); }
       }
     }
@@ -2595,27 +2599,22 @@ async function dbGetContract(contractId) {
 
 async function dbUpdateSignature(contractId, role, sigData) {
   if (!supabase) return false;
-  var update = {};
-  update['sig_' + role + '_signed'] = true;
-  update['sig_' + role + '_name'] = sigData.name;
-  update['sig_' + role + '_date'] = new Date().toISOString();
-  update['sig_' + role + '_sig_url'] = sigData.sig;
-  update['sig_' + role + '_seal_url'] = sigData.seal;
-  
-  // Check if all 3 signed
+  // Phase 2 — sign_contract RPC 가 anon UPDATE 차단을 우회하는 단일
+  // 경로. role 검증 + sig_* 필드 일괄 set + 3자 서명 완료 시 status
+  // = 'completed' 자동 전환을 SECURITY DEFINER 안에서 일괄 처리.
   try {
-    var res = await supabase.from('wm_contracts').update(update).eq('id', contractId).select();
-    if (res.data && res.data[0]) {
-      var c = res.data[0];
-      if (c.sig_brand_signed && c.sig_admin_signed && c.sig_walmart_signed) {
-        await supabase.from('wm_contracts').update({status: 'completed'}).eq('id', contractId);
-      } else {
-        await supabase.from('wm_contracts').update({status: 'partial'}).eq('id', contractId);
-      }
+    var res = await supabase.rpc('sign_contract', {
+      p_contract_id: contractId,
+      p_role: role,
+      p_signer_name: sigData.name,
+      p_sig_url: sigData.sig,
+      p_seal_url: sigData.seal,
+    });
+    if (res.error) {
+      return false;
     }
-    return true;
+    return res.data === true;
   } catch(e) {
-    console.error('DB signature update failed:', e);
     return false;
   }
 }
@@ -2744,34 +2743,44 @@ var _currentAdminUser = null;
 async function loginBrand(email, pw) {
   if (!supabase) { alert('시스템 오류. 잠시 후 다시 시도해주세요.'); return; }
 
-  var res = await supabase.from('wm_brands')
-    .select('*')
-    .eq('portal_email', email)
-    .eq('portal_password', pw)
-    .eq('portal_active', true)
-    .single();
+  // Phase 2 — brand_login RPC 가 평문 비교 대체. SECURITY DEFINER 안에서
+  // crypt(p_password, portal_password) 해시 매칭 + portal_active 검증.
+  // 결과는 portal 표시에 필요한 column 만 노출.
+  var loginRes = await supabase.rpc('brand_login', { p_email: email, p_password: pw });
+  var row = (loginRes.data && loginRes.data.length > 0) ? loginRes.data[0] : null;
 
-  if (res.data) {
-    var brand = res.data;
-    var type = brand.apply_type || 'direct';
+  if (row) {
+    // brand_id 컬럼명을 frontend 가 기대하는 id 로 정규화 + 기존
+    // _currentBrandData 시그니처(name_ko / name_en / ceo_name / apply_type
+    // / current_phase / status 등) 유지.
+    var brand = {
+      id: row.brand_id,
+      name_ko: row.name_ko,
+      name_en: row.name_en,
+      ceo_name: row.ceo_name || '',
+      apply_type: row.apply_type || 'direct',
+      current_phase: row.current_phase,
+      status: row.status,
+      portal_email: row.portal_email,
+      voucher_total_amount: row.voucher_total_amount,
+      voucher_used_amount: row.voucher_used_amount,
+    };
     var name = brand.name_ko || brand.name_en;
     var icon = (brand.name_en || brand.name_ko || '?')[0].toUpperCase();
-    var ceo = brand.ceo_name || '';
     _currentBrandEmail = email;
     _currentBrandId = brand.id;
     _currentBrandData = brand;
-    sessionStorage.setItem('wm_session', JSON.stringify({type:'brand', email:email, pw:pw}));
-    setPortalType(type, name, icon, ceo);
+    // ⚠ 평문 비밀번호 sessionStorage 저장 금지 — restoreSession 은 brand
+    // 의 경우 재로그인 페이지로만 안내 (type 만 기록).
+    sessionStorage.setItem('wm_session', JSON.stringify({ type: 'brand', email: email }));
+    setPortalType(brand.apply_type, name, icon, brand.ceo_name);
     switchTab('portal');
     loadBrandPortalData(brand);
   } else {
-    // Check if email exists but wrong password or not yet approved
-    var emailCheck = await supabase.from('wm_brands')
-      .select('portal_active')
-      .eq('portal_email', email)
-      .single();
-
-    if (emailCheck.data && !emailCheck.data.portal_active) {
+    // 비활성 portal vs 잘못된 자격증명 분기 — 별도 RPC 한 번.
+    var statusRes = await supabase.rpc('brand_portal_status', { p_email: email });
+    var st = (statusRes.data && statusRes.data.length > 0) ? statusRes.data[0] : null;
+    if (st && st.exists_flag && !st.portal_active) {
       switchTab('portal-locked');
     } else {
       alert('이메일 또는 비밀번호가 올바르지 않습니다.');
@@ -4315,26 +4324,21 @@ async function submitBrandPwChange() {
     return;
   }
 
-  // Verify current password
-  var check = await supabase.from('wm_brands')
-    .select('id')
-    .eq('portal_email', _currentBrandEmail)
-    .eq('portal_password', curPw)
-    .single();
-
-  if (!check.data) {
-    errEl.textContent = '현재 비밀번호가 올바르지 않습니다.';
-    errEl.style.display = 'block';
-    return;
-  }
-
-  // Update password
-  var res = await supabase.from('wm_brands')
-    .update({ portal_password: newPw })
-    .eq('portal_email', _currentBrandEmail);
+  // Phase 2 — brand_change_password RPC 안에서 평문 비교 + bcrypt
+  // 해시 저장을 일괄 처리. 평문 PW 가 frontend 에 머무는 시간 최소화.
+  var res = await supabase.rpc('brand_change_password', {
+    p_email: _currentBrandEmail,
+    p_current_password: curPw,
+    p_new_password: newPw,
+  });
 
   if (res.error) {
     errEl.textContent = '변경 실패: ' + res.error.message;
+    errEl.style.display = 'block';
+    return;
+  }
+  if (res.data !== true) {
+    errEl.textContent = '현재 비밀번호가 올바르지 않거나 새 비밀번호가 정책을 만족하지 않습니다 (8자 이상).';
     errEl.style.display = 'block';
     return;
   }
@@ -4927,14 +4931,16 @@ async function restoreSession() {
   if (!saved) return;
   try {
     var sess = JSON.parse(saved);
-    if (sess.type === 'brand' && sess.email && sess.pw) {
-      await loginBrand(sess.email, sess.pw);
-    } else if (sess.type === 'admin') {
+    // Phase 2 — brand 자동 복원 제거. 평문 PW 를 sessionStorage 에
+    // 더 이상 저장하지 않으므로(loginBrand 변경) brand 가 새 탭/새로고침
+    // 시엔 다시 로그인. admin / walmart 는 Supabase Auth 가 자체 세션
+    // 관리, 여기서는 화면 라우팅만.
+    if (sess.type === 'admin') {
       switchTab('admin');
     } else if (sess.type === 'walmart') {
       switchTab('walmart');
     }
-  } catch(e) { console.log('Session restore failed:', e); }
+  } catch(e) { /* session restore failed — fall through to landing */ }
 }
 
 // ─── CONTRACT ROLE SELECTOR ───
@@ -5326,13 +5332,14 @@ async function uploadSkuFile(file) {
     return;
   }
   
-  // Save file record to wm_messages as a file-type message
-  var publicUrl = SUPABASE_URL + '/storage/v1/object/public/wm-signatures/' + path;
+  // Phase 2 — bucket private 전환 대비: 메시지에는 path 만 저장하고
+  // 표시 시점에 createSignedUrl 로 새로 발급. 평문 long-lived public URL
+  // 을 wm_messages 에 영구 보관하지 않음.
   await supabase.from('wm_messages').insert([{
     brand_id: _currentBrandId,
     sender_role: 'brand',
     sender_name: document.getElementById('portal-brand-name')?.textContent || 'Brand',
-    content: '[FILE] ' + file.name + ' ||| ' + publicUrl + ' ||| ' + formatFileSize(file.size)
+    content: '[FILE] ' + file.name + ' ||| storage:' + path + ' ||| ' + formatFileSize(file.size)
   }]);
   
   loadSkuFiles(_currentBrandId);
