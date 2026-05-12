@@ -147,19 +147,34 @@ WHERE portal_password IS NOT NULL
   AND portal_password NOT LIKE '$2_$%';
 
 -- 7-b. 비밀번호 검증 RPC — frontend 의 `.eq('portal_password', pw)`
---      비교를 대체. anon 호출 가능 (SECURITY DEFINER).
+--      비교를 대체. anon 호출 가능 (SECURITY DEFINER). 반환 컬럼은
+--      frontend 의 loginBrand / loadBrandPortalData 가 필요로 하는
+--      portal 표시용 필드 모두 포함.
 CREATE OR REPLACE FUNCTION brand_login(
   p_email TEXT,
   p_password TEXT
 )
-RETURNS TABLE (brand_id TEXT, name_ko TEXT, name_en TEXT, current_phase TEXT, status TEXT)
+RETURNS TABLE (
+  brand_id        TEXT,
+  name_ko         TEXT,
+  name_en         TEXT,
+  ceo_name        TEXT,
+  apply_type      TEXT,
+  current_phase   TEXT,
+  status          TEXT,
+  portal_email    TEXT,
+  voucher_total_amount NUMERIC,
+  voucher_used_amount  NUMERIC
+)
 LANGUAGE plpgsql
 SECURITY DEFINER
 SET search_path = public, pg_temp
 AS $$
 BEGIN
   RETURN QUERY
-    SELECT b.id, b.name_ko, b.name_en, b.current_phase, b.status
+    SELECT b.id, b.name_ko, b.name_en, b.ceo_name, b.apply_type,
+           b.current_phase, b.status, b.portal_email,
+           b.voucher_total_amount, b.voucher_used_amount
       FROM wm_brands b
      WHERE b.portal_email = p_email
        AND b.portal_password = crypt(p_password, b.portal_password)
@@ -168,6 +183,28 @@ END;
 $$;
 
 GRANT EXECUTE ON FUNCTION brand_login(TEXT, TEXT) TO anon, authenticated;
+
+-- 7-b-extra. portal_email 존재 여부 확인 RPC — login 실패 시 "비활성화"
+--    vs "잘못된 자격증명" 분기를 위한 최소 정보. 비밀번호는 검증 안 함.
+CREATE OR REPLACE FUNCTION brand_portal_status(p_email TEXT)
+RETURNS TABLE (portal_active BOOLEAN, exists_flag BOOLEAN)
+LANGUAGE plpgsql
+SECURITY DEFINER
+SET search_path = public, pg_temp
+AS $$
+BEGIN
+  RETURN QUERY
+    SELECT b.portal_active, true AS exists_flag
+      FROM wm_brands b
+     WHERE b.portal_email = p_email
+     LIMIT 1;
+  IF NOT FOUND THEN
+    RETURN QUERY SELECT false AS portal_active, false AS exists_flag;
+  END IF;
+END;
+$$;
+
+GRANT EXECUTE ON FUNCTION brand_portal_status(TEXT) TO anon, authenticated;
 
 -- 7-c. 비밀번호 변경 RPC — 현재 PW 검증 + 새 PW 해시 후 저장.
 CREATE OR REPLACE FUNCTION brand_change_password(
