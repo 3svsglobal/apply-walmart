@@ -55,7 +55,7 @@ button{cursor:pointer;font-family:var(--font)}
 .tab-logo{font-size:18px;font-weight:700;color:var(--text);margin-right:24px;white-space:nowrap}
 .tab-logo span{font-weight:400;opacity:.4}
 .tab-btn{padding:7px 16px;border:1px solid var(--border);border-radius:999px;background:transparent;color:var(--text-muted);font-family:var(--mono);font-size:11px;font-weight:400;text-transform:uppercase;letter-spacing:0.5px;transition:all .2s;white-space:nowrap}
-.tab-btn:hover{border-color:rgba(0,0,0,0.2);color:var(--text)}
+.tab-btn:hover{border-color:rgba(0,0,0,0.62);color:var(--text)}
 .tab-btn.active{background:var(--bg-dark);color:#fff;border-color:var(--bg-dark);font-weight:500}
 .tab-sep{width:1px;height:24px;background:var(--border);margin:0 12px;flex-shrink:0}
 .view{display:none}.view.active{display:block}
@@ -103,11 +103,11 @@ button{cursor:pointer;font-family:var(--font)}
 /* ─── WHY WALMART ─── */
 .why-walmart-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:48px}
 .ww-stat{padding:36px 28px;background:var(--bg-alt);border:1px solid var(--border);border-radius:var(--radius);transition:all .3s;position:relative}
-.ww-stat:hover{transform:translateY(-4px);box-shadow:0 8px 24px rgba(0,0,0,0.06);border-color:rgba(0,0,0,0.12)}
+.ww-stat:hover{transform:translateY(-4px);box-shadow:0 8px 24px rgba(0,0,0,0.06);border-color:rgba(0,0,0,0.55)}
 .ww-stat .ww-num{font-family:var(--font);font-size:44px;font-weight:900;letter-spacing:-3px;color:var(--text);line-height:.9;font-stretch:95%}
 .ww-stat .ww-num em{font-style:normal;color:var(--accent)}
 .ww-stat .ww-label{font-size:15px;color:var(--text-muted);margin-top:10px;font-weight:500;line-height:1.4}
-.ww-stat .ww-sub{font-family:var(--mono);font-size:11px;color:rgba(0,0,0,0.25);margin-top:8px;text-transform:uppercase}
+.ww-stat .ww-sub{font-family:var(--mono);font-size:11px;color:rgba(0,0,0,0.65);margin-top:8px;text-transform:uppercase}
 
 .compare-section{margin-top:64px;padding:48px;background:var(--bg-dark);border-radius:var(--radius);color:#fff;position:relative;overflow:hidden}
 .compare-grid{display:grid;grid-template-columns:1fr 60px 1fr;gap:0;align-items:center}
@@ -122,7 +122,7 @@ button{cursor:pointer;font-family:var(--font)}
 
 .success-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:48px}
 .success-card{padding:32px;background:var(--bg-alt);border:1px solid var(--border);border-radius:var(--radius);transition:all .3s}
-.success-card:hover{transform:translateY(-4px);box-shadow:0 8px 24px rgba(0,0,0,0.06);border-color:rgba(0,0,0,0.12)}
+.success-card:hover{transform:translateY(-4px);box-shadow:0 8px 24px rgba(0,0,0,0.06);border-color:rgba(0,0,0,0.55)}
 .success-card .sc-flag{font-size:28px;margin-bottom:12px}
 .success-card .sc-brand{font-size:20px;font-weight:900;letter-spacing:-0.8px;color:var(--text);margin-bottom:4px}
 .success-card .sc-origin{font-size:13px;color:var(--text-muted);margin-bottom:16px;font-weight:400}
@@ -135,8 +135,8 @@ button{cursor:pointer;font-family:var(--font)}
 .proc-wrap::-webkit-scrollbar{display:none}
 .proc-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
 .pc{padding:40px;background:var(--bg-alt);border:1px solid var(--border);border-radius:var(--radius);transition:all .3s;position:relative;overflow:hidden}
-.pc:hover{transform:translateY(-4px);box-shadow:0 8px 24px rgba(0,0,0,0.06);border-color:rgba(0,0,0,0.12)}
-.pc .sn{font-family:var(--font);font-size:72px;font-weight:900;color:rgba(0,0,0,0.04);position:absolute;top:-8px;right:12px;line-height:1;letter-spacing:-4px}
+.pc:hover{transform:translateY(-4px);box-shadow:0 8px 24px rgba(0,0,0,0.06);border-color:rgba(0,0,0,0.55)}
+.pc .sn{font-family:var(--font);font-size:72px;font-weight:900;color:rgba(0,0,0,0.55);position:absolute;top:-8px;right:12px;line-height:1;letter-spacing:-4px}
 .pc h4{font-family:var(--font);font-size:22px;font-weight:700;margin-bottom:10px;letter-spacing:-1px;color:var(--text);position:relative}
 .pc p{font-size:15px;color:var(--text-muted);line-height:1.6;font-weight:400;position:relative}
 
@@ -144,7 +144,7 @@ button{cursor:pointer;font-family:var(--font)}
 .svc-list{display:flex;flex-direction:column}
 .svc-item{padding:36px 0;border-bottom:1px solid var(--border);display:grid;grid-template-columns:48px 1fr auto;gap:28px;align-items:start;transition:padding .3s}
 .svc-item:first-child{border-top:1px solid var(--border)}
-.svc-num{font-family:var(--font);font-size:16px;font-weight:700;color:rgba(0,0,0,0.12);padding-top:4px}
+.svc-num{font-family:var(--font);font-size:16px;font-weight:700;color:rgba(0,0,0,0.55);padding-top:4px}
 .svc-body h3{font-family:var(--font);font-size:26px;font-weight:700;letter-spacing:-1.2px;line-height:1.1;margin-bottom:8px;color:var(--text);transition:color .2s}
 .svc-item:hover .svc-body h3{color:var(--accent)}
 .svc-body p{font-size:16px;color:var(--text-muted);line-height:1.6;font-weight:400}
@@ -194,8 +194,8 @@ button{cursor:pointer;font-family:var(--font)}
 .phase-pkg-popular .phase-pkg-btn{background:var(--accent);box-shadow:0 4px 12px rgba(0,113,220,0.2)}
 @media(max-width:768px){.phase-pkg-grid{grid-template-columns:1fr;gap:16px}.phase-pkg{padding:24px 20px}.phase-pkg-popular-badge{top:-10px}}
 
-.phase-step-card:hover{border-color:rgba(0,0,0,0.12);transform:translateY(-2px);box-shadow:0 4px 12px rgba(0,0,0,0.04)}
-.psc-num{font-family:var(--mono);font-size:11px;color:rgba(0,0,0,0.15);font-weight:500;margin-bottom:8px}
+.phase-step-card:hover{border-color:rgba(0,0,0,0.55);transform:translateY(-2px);box-shadow:0 4px 12px rgba(0,0,0,0.04)}
+.psc-num{font-family:var(--mono);font-size:11px;color:rgba(0,0,0,0.6);font-weight:500;margin-bottom:8px}
 .phase-step-card h4{font-size:15px;font-weight:700;letter-spacing:-0.3px;color:var(--text);margin-bottom:4px;line-height:1.3}
 .phase-step-card p{font-size:13px;color:var(--text-muted);line-height:1.5}
 .phase-deep-output{margin-top:32px;padding:20px 24px;background:var(--bg-alt);border-radius:var(--radius)}
@@ -238,7 +238,7 @@ button{cursor:pointer;font-family:var(--font)}
 .file-upload-zone:hover,.file-upload-zone.dragover{border-color:var(--accent);background:var(--accent-light)}
 .fuz-icon{font-size:28px;margin-bottom:8px}
 .fuz-text{font-size:14px;color:var(--text-muted)}
-.fuz-hint{font-size:12px;color:rgba(0,0,0,0.25);margin-top:4px}
+.fuz-hint{font-size:12px;color:rgba(0,0,0,0.65);margin-top:4px}
 .file-preview{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px}
 .file-item{display:flex;align-items:center;gap:8px;padding:8px 14px;background:var(--bg-alt);border:1px solid var(--border);border-radius:var(--radius);font-size:13px;color:var(--text)}
 .file-item .file-remove{color:var(--red);cursor:pointer;font-weight:700;margin-left:4px}
@@ -260,7 +260,7 @@ button{cursor:pointer;font-family:var(--font)}
 .country-pill input[type=checkbox]{margin:0;cursor:pointer;accent-color:var(--accent)}
 .country-pill:has(input:checked){border-color:var(--accent);background:rgba(0,113,220,0.08);color:var(--accent);font-weight:600}
 .form-radio-pill span{display:block;padding:10px 20px;border:1px solid var(--border);border-radius:999px;font-size:14px;color:var(--text-muted);transition:all .2s;font-weight:500}
-.form-radio-pill:hover span{border-color:rgba(0,0,0,0.15);color:var(--text)}
+.form-radio-pill:hover span{border-color:rgba(0,0,0,0.6);color:var(--text)}
 .form-radio-pill input:checked ~ span{background:var(--accent);border-color:var(--accent);color:#fff}
 
 /* ─── CTA APPLY SECTION ─── */
@@ -275,7 +275,7 @@ button{cursor:pointer;font-family:var(--font)}
 /* ─── FORM ─── */
 .form-input{width:100%;padding:14px 16px;background:var(--bg-alt);border:1px solid var(--border);border-radius:var(--radius);color:var(--text);font-family:inherit;font-size:15px;outline:none;transition:border-color .2s}
 .form-input:focus{border-color:var(--accent)}
-.form-input::placeholder{color:rgba(0,0,0,0.3)}
+.form-input::placeholder{color:rgba(0,0,0,0.65)}
 .form-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px}
 
 /* ─── TYPE RADIO ─── */
@@ -284,7 +284,7 @@ button{cursor:pointer;font-family:var(--font)}
 .type-radio input{position:absolute;opacity:0;pointer-events:none}
 .type-radio-card{padding:24px;border:2px solid var(--border);border-radius:var(--radius);transition:all .2s;background:var(--bg)}
 .type-radio input:checked ~ .type-radio-card{border-color:var(--accent);background:var(--accent-light)}
-.type-radio-card:hover{border-color:rgba(0,0,0,0.15)}
+.type-radio-card:hover{border-color:rgba(0,0,0,0.6)}
 .type-radio-card h4{font-size:17px;font-weight:700;letter-spacing:-0.5px;margin-bottom:4px;color:var(--text)}
 .type-radio-card p{font-size:13px;color:var(--text-muted);line-height:1.5}
 .type-radio-dot{width:18px;height:18px;border-radius:50%;border:2px solid var(--border);position:absolute;top:24px;right:24px;transition:all .2s}
@@ -365,7 +365,7 @@ button{cursor:pointer;font-family:var(--font)}
 .tl-dot.done{background:#00d68f;border-color:#00d68f}
 .tl-dot.active{background:var(--accent);border-color:var(--accent);box-shadow:0 0 12px rgba(0,113,220,0.4)}
 .tl-dot.payment{background:var(--accent-orange);border-color:var(--accent-orange)}
-.tl-label{font-size:11px;color:rgba(0,0,0,0.25);font-weight:400;white-space:nowrap}
+.tl-label{font-size:11px;color:rgba(0,0,0,0.65);font-weight:400;white-space:nowrap}
 .tl-label.done{color:#00d68f}.tl-label.active{color:var(--accent);font-weight:600}.tl-label.payment{color:var(--accent-orange)}
 .tl-line{flex:1;height:1px;background:var(--border-dark);min-width:32px}
 .tl-line.done{background:#00d68f}
@@ -375,23 +375,23 @@ button{cursor:pointer;font-family:var(--font)}
 .noti-icon.action{background:var(--accent)}.noti-icon.warning{background:var(--accent-orange)}.noti-icon.info{background:rgba(0,0,0,0.2)}
 .noti-text{font-size:14px;color:rgba(0,0,0,0.5);line-height:1.5}
 .noti-text strong{color:rgba(0,0,0,0.75);font-weight:600}
-.noti-time{font-family:var(--mono);font-size:11px;color:rgba(0,0,0,0.15);margin-top:4px}
+.noti-time{font-family:var(--mono);font-size:11px;color:rgba(0,0,0,0.6);margin-top:4px}
 .meeting-item{padding:14px 0;border-bottom:1px solid var(--border-dark);display:flex;justify-content:space-between;align-items:center}
 .meeting-item:last-child{border-bottom:none}
 .meeting-title{font-size:14px;font-weight:600;color:rgba(0,0,0,0.7)}
-.meeting-meta{font-size:12px;color:rgba(0,0,0,0.25);margin-top:3px}
-.meeting-date{font-family:var(--mono);font-size:12px;color:rgba(0,0,0,0.2);text-align:right;white-space:nowrap}
+.meeting-meta{font-size:12px;color:rgba(0,0,0,0.65);margin-top:3px}
+.meeting-date{font-family:var(--mono);font-size:12px;color:rgba(0,0,0,0.62);text-align:right;white-space:nowrap}
 .action-item{padding:16px;border:1px solid var(--border-dark);border-radius:8px;margin-bottom:6px;display:flex;justify-content:space-between;align-items:center;transition:all .2s}
-.action-item:hover{border-color:rgba(0,0,0,0.15);transform:translateY(-1px)}
+.action-item:hover{border-color:rgba(0,0,0,0.6);transform:translateY(-1px)}
 .action-title{font-size:14px;font-weight:500;color:rgba(0,0,0,0.65)}
-.action-meta{font-size:12px;color:rgba(0,0,0,0.2);margin-top:3px}
+.action-meta{font-size:12px;color:rgba(0,0,0,0.62);margin-top:3px}
 .priority{padding:3px 8px;border-radius:999px;font-size:10px;font-weight:600;text-transform:uppercase;font-family:var(--mono)}
 .priority.urgent{background:rgba(233,69,96,0.15);color:var(--red)}
 .priority.high{background:rgba(255,149,0,0.12);color:var(--accent-orange)}
 .pay-item{padding:14px 0;border-bottom:1px solid var(--border-dark);display:flex;justify-content:space-between;align-items:center}
 .pay-item:last-child{border-bottom:none}
 .pay-label{font-size:14px;font-weight:500;color:rgba(0,0,0,0.6)}
-.pay-sub{font-size:12px;color:rgba(0,0,0,0.25);margin-top:2px}
+.pay-sub{font-size:12px;color:rgba(0,0,0,0.65);margin-top:2px}
 .pay-status{font-size:12px;font-family:var(--mono)}
 .pay-status.paid{color:#00d68f}.pay-status.pending{color:var(--accent-orange)}
 .portal-phase{padding:32px;border:1px solid var(--border-dark);border-radius:8px;margin-bottom:24px;background:linear-gradient(135deg,rgba(0,113,220,0.05) 0%,transparent 60%)}
@@ -399,9 +399,9 @@ button{cursor:pointer;font-family:var(--font)}
 .portal-phase-badge{font-family:var(--mono);font-size:10px;padding:3px 8px;border-radius:999px;background:rgba(0,113,220,0.15);color:var(--accent)}
 .pipeline-summary{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-bottom:32px}
 .pipe-stat{padding:24px;border:1px solid var(--border-dark);border-radius:8px;text-align:center;transition:all .3s}
-.pipe-stat:hover{border-color:rgba(0,0,0,0.15);transform:translateY(-2px)}
+.pipe-stat:hover{border-color:rgba(0,0,0,0.6);transform:translateY(-2px)}
 .pipe-stat .val{font-size:32px;font-weight:900;letter-spacing:-2px;color:var(--text)}
-.pipe-stat .lbl{font-size:12px;color:rgba(0,0,0,0.25);margin-top:6px}
+.pipe-stat .lbl{font-size:12px;color:rgba(0,0,0,0.65);margin-top:6px}
 
 /* ─── REVIEW PANEL (Admin) ─── */
 .review-card{padding:28px;border:1px solid var(--border-dark);border-radius:8px;margin-bottom:12px;background:linear-gradient(135deg,rgba(255,149,0,0.04) 0%,transparent 60%)}
@@ -413,9 +413,9 @@ button{cursor:pointer;font-family:var(--font)}
 .review-field .rf-value{color:rgba(0,0,0,0.92);font-weight:500}
 .review-type-select{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:16px}
 .review-type-btn{padding:12px 16px;border:1px solid var(--border-dark);border-radius:6px;background:transparent;color:rgba(0,0,0,0.4);font-size:13px;font-weight:500;font-family:var(--font);cursor:pointer;transition:all .2s;text-align:left}
-.review-type-btn:hover{border-color:rgba(0,0,0,0.2);color:rgba(0,0,0,0.6)}
+.review-type-btn:hover{border-color:rgba(0,0,0,0.62);color:rgba(0,0,0,0.6)}
 .review-type-btn.selected{border-color:var(--accent);color:var(--accent);background:rgba(0,113,220,0.08)}
-.review-type-btn .rtb-label{font-size:11px;font-family:var(--mono);color:rgba(0,0,0,0.2);display:block;margin-bottom:2px}
+.review-type-btn .rtb-label{font-size:11px;font-family:var(--mono);color:rgba(0,0,0,0.62);display:block;margin-bottom:2px}
 .review-type-btn.selected .rtb-label{color:rgba(0,113,220,0.5)}
 .review-actions{display:flex;gap:8px}
 .btn-approve{padding:10px 24px;border:none;border-radius:6px;background:var(--lime);color:var(--text);font-size:13px;font-weight:600;font-family:var(--font);cursor:pointer;transition:all .2s}
@@ -428,20 +428,20 @@ button{cursor:pointer;font-family:var(--font)}
 .portal-info-title{font-size:15px;font-weight:700;color:var(--text);margin-bottom:20px;display:flex;align-items:center;gap:8px}
 .portal-cost-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
 .portal-cost-card{padding:24px;border:1px solid var(--border-dark);border-radius:8px;transition:all .3s}
-.portal-cost-card:hover{border-color:rgba(0,0,0,0.15)}
-.portal-cost-card .pc-label{font-family:var(--mono);font-size:10px;color:rgba(0,0,0,0.25);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:8px}
+.portal-cost-card:hover{border-color:rgba(0,0,0,0.6)}
+.portal-cost-card .pc-label{font-family:var(--mono);font-size:10px;color:rgba(0,0,0,0.65);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:8px}
 .portal-cost-card .pc-value{font-size:28px;font-weight:900;letter-spacing:-1.5px;color:var(--text);margin-bottom:4px}
 .portal-cost-card .pc-value em{font-style:normal;color:var(--accent)}
-.portal-cost-card .pc-desc{font-size:13px;color:rgba(0,0,0,0.3);line-height:1.5}
+.portal-cost-card .pc-desc{font-size:13px;color:rgba(0,0,0,0.65);line-height:1.5}
 .portal-cost-card.highlight{border-color:rgba(0,135,90,0.3);background:rgba(0,135,90,0.06)}
 .portal-phase-detail{margin-top:12px}
 .portal-phase-item{padding:20px 0;border-bottom:1px solid var(--border-dark);display:grid;grid-template-columns:60px 1fr;gap:20px;align-items:start}
 .portal-phase-item:first-child{border-top:1px solid var(--border-dark)}
-.portal-phase-num{font-size:36px;font-weight:900;color:rgba(0,0,0,0.06);letter-spacing:-2px}
+.portal-phase-num{font-size:36px;font-weight:900;color:rgba(0,0,0,0.55);letter-spacing:-2px}
 .portal-phase-body h4{font-size:16px;font-weight:700;letter-spacing:-0.5px;color:var(--text);margin-bottom:6px}
 .portal-phase-body p{font-size:14px;color:rgba(0,0,0,0.45);line-height:1.6}
 .portal-phase-body .phase-tags{margin-top:8px;display:flex;flex-wrap:wrap;gap:4px}
-.portal-phase-body .phase-tags span{padding:3px 10px;font-size:11px;border:1px solid var(--border-dark);border-radius:999px;color:rgba(0,0,0,0.25)}
+.portal-phase-body .phase-tags span{padding:3px 10px;font-size:11px;border:1px solid var(--border-dark);border-radius:999px;color:rgba(0,0,0,0.65)}
 
 /* ─── CMS (Admin Content Editor) ─── */
 .cms-section{border:1px solid var(--border-dark);border-radius:8px;margin-bottom:8px;overflow:hidden}
@@ -449,14 +449,14 @@ button{cursor:pointer;font-family:var(--font)}
 .cms-section-header:hover{background:rgba(0,0,0,0.03)}
 .cms-section-title{font-size:14px;font-weight:600;color:rgba(0,0,0,0.7);display:flex;align-items:center;gap:10px}
 .cms-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
-.cms-toggle{font-size:10px;color:rgba(0,0,0,0.2);transition:transform .2s}
+.cms-toggle{font-size:10px;color:rgba(0,0,0,0.62);transition:transform .2s}
 .cms-section.open .cms-toggle{transform:rotate(180deg)}
 .cms-section-body{padding:0 20px 20px;border-top:1px solid var(--border-dark)}
 .cms-field{margin-bottom:16px}
 .cms-label{display:block;font-size:12px;font-weight:500;color:rgba(0,0,0,0.45);margin-bottom:6px;font-family:var(--mono);letter-spacing:0.3px}
 .cms-input{width:100%;padding:10px 14px;background:rgba(0,0,0,0.04);border:1px solid var(--border-dark);border-radius:6px;color:var(--text);font-family:var(--font);font-size:14px;outline:none;transition:border-color .2s;resize:vertical}
 .cms-input:focus{border-color:var(--accent)}
-.cms-input::placeholder{color:rgba(0,0,0,0.15)}
+.cms-input::placeholder{color:rgba(0,0,0,0.6)}
 .cms-apply{padding:10px 24px;border:none;border-radius:6px;background:var(--accent);color:var(--text);font-size:13px;font-weight:600;font-family:var(--font);cursor:pointer;transition:all .2s;display:flex;align-items:center;gap:6px}
 .cms-apply:hover{background:#005bb5;transform:translateY(-1px)}
 .cms-apply.saved{background:var(--lime)}
@@ -465,7 +465,7 @@ button{cursor:pointer;font-family:var(--font)}
 
 /* ─── WALMART PORTAL — BRAND DETAIL ─── */
 .wm-detail-back{display:flex;align-items:center;gap:8px;padding:8px 14px;border:1px solid var(--border-dark);border-radius:999px;background:transparent;color:rgba(0,0,0,0.4);font-size:12px;font-family:var(--mono);cursor:pointer;transition:all .2s;margin-bottom:20px;width:fit-content}
-.wm-detail-back:hover{border-color:rgba(0,0,0,0.2);color:rgba(0,0,0,0.7)}
+.wm-detail-back:hover{border-color:rgba(0,0,0,0.62);color:rgba(0,0,0,0.7)}
 .wm-brand-header{display:flex;align-items:center;gap:16px;margin-bottom:28px}
 .wm-brand-header .brand-icon{width:52px;height:52px;font-size:22px}
 .wm-brand-header-info h3{font-size:22px;font-weight:900;letter-spacing:-1px;color:var(--text);margin-bottom:2px}
@@ -475,129 +475,129 @@ button{cursor:pointer;font-family:var(--font)}
 .wm-section-title .wm-count{font-family:var(--mono);font-size:10px;padding:3px 8px;border-radius:999px;background:rgba(0,113,220,0.15);color:var(--accent);font-weight:400}
 .wm-info-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
 .wm-info-item{padding:14px 16px;border:1px solid var(--border-dark);border-radius:6px}
-.wm-info-label{font-family:var(--mono);font-size:10px;color:rgba(0,0,0,0.2);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:4px}
+.wm-info-label{font-family:var(--mono);font-size:10px;color:rgba(0,0,0,0.62);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:4px}
 .wm-info-value{font-size:14px;color:rgba(0,0,0,0.8);font-weight:500}
 .wm-sku-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
 .wm-sku-card{padding:20px;border:1px solid var(--border-dark);border-radius:8px;transition:all .2s}
-.wm-sku-card:hover{border-color:rgba(0,0,0,0.15)}
+.wm-sku-card:hover{border-color:rgba(0,0,0,0.6)}
 .wm-sku-top{display:flex;justify-content:space-between;align-items:start;margin-bottom:12px}
 .wm-sku-status{font-family:var(--mono);font-size:10px;padding:3px 10px;border-radius:999px;font-weight:500;letter-spacing:0.5px}
 .wm-sku-status.live{background:rgba(0,135,90,0.15);color:var(--lime)}
 .wm-sku-status.pending{background:rgba(255,149,0,0.15);color:var(--accent-orange)}
 .wm-sku-name{font-size:15px;font-weight:700;color:var(--text);letter-spacing:-0.3px;margin-bottom:4px}
-.wm-sku-meta{font-size:12px;color:rgba(0,0,0,0.25);line-height:1.5;margin-bottom:12px}
+.wm-sku-meta{font-size:12px;color:rgba(0,0,0,0.65);line-height:1.5;margin-bottom:12px}
 .wm-sku-meta span{display:inline-block;margin-right:12px}
 .wm-sku-comments{border-top:1px solid var(--border-dark);padding-top:12px}
-.wm-sku-comments-title{font-family:var(--mono);font-size:10px;color:rgba(0,0,0,0.2);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:8px}
+.wm-sku-comments-title{font-family:var(--mono);font-size:10px;color:rgba(0,0,0,0.62);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:8px}
 .wm-comment{padding:8px 12px;background:rgba(0,0,0,0.03);border-radius:6px;margin-bottom:6px;font-size:13px;color:rgba(0,0,0,0.6);line-height:1.5}
-.wm-comment .wm-comment-meta{font-size:11px;color:rgba(0,0,0,0.15);margin-top:4px;font-family:var(--mono)}
+.wm-comment .wm-comment-meta{font-size:11px;color:rgba(0,0,0,0.6);margin-top:4px;font-family:var(--mono)}
 .wm-comment-input-row{display:flex;gap:6px;margin-top:6px}
 .wm-comment-input{flex:1;padding:8px 12px;background:rgba(0,0,0,0.04);border:1px solid var(--border-dark);border-radius:6px;color:var(--text);font-size:13px;font-family:var(--font);outline:none;transition:border-color .2s}
 .wm-comment-input:focus{border-color:var(--accent)}
-.wm-comment-input::placeholder{color:rgba(0,0,0,0.12)}
+.wm-comment-input::placeholder{color:rgba(0,0,0,0.55)}
 .wm-comment-btn{padding:8px 16px;border:none;border-radius:6px;background:var(--accent);color:var(--text);font-size:12px;font-weight:600;font-family:var(--font);cursor:pointer;transition:all .2s;white-space:nowrap}
 .wm-comment-btn:hover{background:#005bb5}
 .wm-doc-list{display:flex;flex-direction:column;gap:6px}
 .wm-doc-item{display:flex;align-items:center;justify-content:space-between;padding:14px 16px;border:1px solid var(--border-dark);border-radius:6px;transition:all .2s}
-.wm-doc-item:hover{border-color:rgba(0,0,0,0.15);background:rgba(0,0,0,0.02)}
+.wm-doc-item:hover{border-color:rgba(0,0,0,0.6);background:rgba(0,0,0,0.02)}
 .wm-doc-info{display:flex;align-items:center;gap:12px}
 .wm-doc-icon{width:36px;height:36px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0}
 .wm-doc-icon.pdf{background:rgba(233,69,96,0.15)}
 .wm-doc-icon.ppt{background:rgba(255,149,0,0.15)}
 .wm-doc-icon.img{background:rgba(0,113,220,0.15)}
 .wm-doc-name{font-size:14px;font-weight:500;color:rgba(0,0,0,0.7)}
-.wm-doc-size{font-size:11px;color:rgba(0,0,0,0.2);font-family:var(--mono);margin-top:2px}
+.wm-doc-size{font-size:11px;color:rgba(0,0,0,0.62);font-family:var(--mono);margin-top:2px}
 .wm-doc-dl{padding:8px 16px;border:1px solid var(--border-dark);border-radius:6px;background:transparent;color:rgba(0,0,0,0.4);font-size:12px;font-family:var(--mono);cursor:pointer;transition:all .2s}
 .wm-doc-dl:hover{border-color:var(--accent);color:var(--accent)}
 .wm-memo-area{width:100%;min-height:100px;padding:14px 16px;background:rgba(0,0,0,0.04);border:1px solid var(--border-dark);border-radius:8px;color:var(--text);font-size:14px;font-family:var(--font);line-height:1.6;outline:none;resize:vertical;transition:border-color .2s}
 .wm-memo-area:focus{border-color:var(--accent)}
-.wm-memo-area::placeholder{color:rgba(0,0,0,0.12)}
+.wm-memo-area::placeholder{color:rgba(0,0,0,0.55)}
 .wm-memo-actions{display:flex;justify-content:space-between;align-items:center;margin-top:8px}
 .wm-memo-save{padding:8px 20px;border:none;border-radius:6px;background:var(--accent);color:var(--text);font-size:13px;font-weight:600;font-family:var(--font);cursor:pointer;transition:all .2s}
 .wm-memo-save:hover{background:#005bb5}
 .wm-memo-save.saved{background:var(--lime)}
-.wm-memo-time{font-size:11px;color:rgba(0,0,0,0.15);font-family:var(--mono)}
+.wm-memo-time{font-size:11px;color:rgba(0,0,0,0.6);font-family:var(--mono)}
 .wm-brand-card-clickable{cursor:pointer;transition:all .2s}
-.wm-brand-card-clickable:hover{border-color:rgba(0,0,0,0.2);transform:translateY(-2px);box-shadow:0 4px 16px rgba(0,0,0,0.3)}
+.wm-brand-card-clickable:hover{border-color:rgba(0,0,0,0.62);transform:translateY(-2px);box-shadow:0 4px 16px rgba(0,0,0,0.3)}
 
-/* ─── E-SIGNATURE / CONTRACT ─── */
-.sig-overlay{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.7);z-index:9999;display:flex;align-items:center;justify-content:center}
-.sig-modal{background:#1a1a1a;border:1px solid rgba(255,255,255,.12);border-radius:16px;padding:32px;max-width:600px;width:90%;max-height:90vh;overflow-y:auto}
-.sig-modal h3{margin:0 0 8px;font-size:20px}
-.sig-modal p{margin:0 0 20px;opacity:.6;font-size:14px}
-.sig-pad-wrap{background:#fff;border-radius:8px;margin-bottom:16px;position:relative}
+/* ─── E-SIGNATURE / CONTRACT (라이트 톤) ─── */
+.sig-overlay{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.5);z-index:9999;display:flex;align-items:center;justify-content:center}
+.sig-modal{background:#fff;color:var(--text);border:1px solid var(--border);border-radius:16px;padding:32px;max-width:600px;width:90%;max-height:90vh;overflow-y:auto;box-shadow:0 24px 64px rgba(0,0,0,0.18)}
+.sig-modal h3{margin:0 0 8px;font-size:20px;color:var(--text)}
+.sig-modal p{margin:0 0 20px;color:var(--text-muted);font-size:14px}
+.sig-pad-wrap{background:#fff;border:1px solid var(--border);border-radius:8px;margin-bottom:16px;position:relative}
 .sig-pad-wrap canvas{display:block;border-radius:8px;cursor:crosshair;width:100%;height:180px}
-.sig-pad-clear{position:absolute;top:8px;right:8px;background:rgba(0,0,0,.5);color:#fff;border:none;border-radius:6px;padding:4px 12px;font-size:12px;cursor:pointer}
-.sig-upload-zone{border:2px dashed rgba(255,255,255,.15);border-radius:12px;padding:24px;text-align:center;cursor:pointer;transition:all .2s;position:relative;overflow:hidden}
-.sig-upload-zone:hover{border-color:rgba(152,254,0,.4);background:rgba(152,254,0,.03)}
-.sig-upload-zone.has-file{border-color:rgba(152,254,0,.3);border-style:solid;background:rgba(152,254,0,.04)}
+.sig-pad-clear{position:absolute;top:8px;right:8px;background:rgba(0,0,0,.05);color:var(--text-muted);border:1px solid var(--border);border-radius:6px;padding:4px 12px;font-size:12px;cursor:pointer}
+.sig-upload-zone{border:2px dashed rgba(0,0,0,0.15);border-radius:12px;padding:24px;text-align:center;cursor:pointer;transition:all .2s;position:relative;overflow:hidden;background:var(--surface-alt)}
+.sig-upload-zone:hover{border-color:var(--accent);background:var(--accent-light)}
+.sig-upload-zone.has-file{border-color:var(--lime);border-style:solid;background:var(--lime-light)}
 .sig-upload-zone img{max-width:200px;max-height:100px;object-fit:contain;margin-top:8px}
 .sig-upload-zone input[type=file]{position:absolute;top:0;left:0;width:100%;height:100%;opacity:0;cursor:pointer}
 .sig-upload-icon{font-size:28px;margin-bottom:6px}
-.sig-upload-label{font-size:13px;opacity:.6}
-.contract-page{max-width:900px;margin:0 auto;padding:40px 20px;min-height:100vh}
+.sig-upload-label{font-size:13px;color:var(--text-muted)}
+.contract-page{max-width:900px;margin:0 auto;padding:40px 20px;min-height:100vh;background:var(--bg);color:var(--text)}
 .contract-page-header{text-align:center;margin-bottom:32px}
-.contract-page-header h1{font-size:24px;margin:0 0 8px}
-.contract-page-header .contract-page-sub{font-size:14px;opacity:.5}
-.contract-page-header .contract-page-id{font-family:var(--mono);font-size:12px;opacity:.3;margin-top:4px}
-.contract-page-doc{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.08);border-radius:16px;padding:32px;margin-bottom:32px;line-height:1.9;font-size:14px}
-.contract-page-doc h3{text-align:center;font-size:20px;margin:0 0 8px;letter-spacing:2px}
-.contract-page-doc .contract-page-doc-sub{text-align:center;font-size:14px;opacity:.5;margin-bottom:24px}
-.contract-page-doc .clause{margin-bottom:16px}
-.contract-page-doc .clause-title{font-weight:600;margin-bottom:4px;color:#98fe00}
-.sig-section{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.08);border-radius:16px;padding:24px;margin-bottom:16px}
+.contract-page-header h1{font-size:24px;margin:0 0 8px;color:var(--text)}
+.contract-page-header .contract-page-sub{font-size:14px;color:var(--text-muted)}
+.contract-page-header .contract-page-id{font-family:var(--mono);font-size:12px;color:var(--text-faint);margin-top:4px}
+.contract-page-doc{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:32px;margin-bottom:32px;line-height:1.9;font-size:14px;color:var(--text)}
+.contract-page-doc h3{text-align:center;font-size:20px;margin:0 0 8px;letter-spacing:2px;color:var(--text)}
+.contract-page-doc .contract-page-doc-sub{text-align:center;font-size:14px;color:var(--text-muted);margin-bottom:24px}
+.contract-page-doc .clause{margin-bottom:16px;color:var(--text)}
+.contract-page-doc .clause-title{font-weight:700;margin-bottom:4px;color:var(--accent)}
+.sig-section{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:24px;margin-bottom:16px;color:var(--text)}
 .sig-section-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px}
-.sig-section-header h4{margin:0;font-size:16px}
+.sig-section-header h4{margin:0;font-size:16px;color:var(--text)}
 .sig-row{display:flex;gap:16px;flex-wrap:wrap}
 .sig-slot{flex:1;min-width:200px}
-.sig-slot-label{font-size:12px;font-weight:600;margin-bottom:8px;opacity:.7}
-.sig-complete-banner{background:rgba(152,254,0,.1);border:1px solid rgba(152,254,0,.3);border-radius:12px;padding:20px;text-align:center;margin-top:24px}
-.sig-complete-banner h3{color:#98fe00;margin:0 0 8px}
-.sig-complete-banner p{margin:0;opacity:.6;font-size:14px}
+.sig-slot-label{font-size:12px;font-weight:600;margin-bottom:8px;color:var(--text-muted)}
+.sig-complete-banner{background:var(--lime-light);border:1px solid rgba(0,135,90,0.25);border-radius:12px;padding:20px;text-align:center;margin-top:24px}
+.sig-complete-banner h3{color:var(--lime);margin:0 0 8px}
+.sig-complete-banner p{margin:0;color:var(--text-muted);font-size:14px}
 .sig-actions{display:flex;gap:12px;justify-content:flex-end}
 .sig-actions button{padding:10px 24px;border-radius:8px;font-weight:600;cursor:pointer;border:none;font-size:14px}
-.sig-btn-cancel{background:rgba(255,255,255,.1);color:#fff}
-.sig-btn-sign{background:#98fe00;color:#000}
+.sig-btn-cancel{background:var(--surface-alt);color:var(--text);border:1px solid var(--border)}
+.sig-btn-sign{background:var(--accent);color:#fff}
 .sig-btn-sign:disabled{opacity:.4;cursor:not-allowed}
-.contract-card{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);border-radius:12px;padding:20px;margin-bottom:12px;transition:all .2s}
-.contract-card:hover{border-color:rgba(255,255,255,.2)}
-.contract-card h4{margin:0 0 4px;font-size:16px}
-.contract-card .contract-sub{font-size:13px;opacity:.5;margin-bottom:12px}
+.contract-card{background:var(--surface);color:var(--text);border:1px solid var(--border);border-radius:12px;padding:20px;margin-bottom:12px;transition:all .2s}
+.contract-card:hover{border-color:rgba(0,113,220,0.4);box-shadow:0 4px 12px rgba(0,0,0,0.04)}
+.contract-card h4{margin:0 0 4px;font-size:16px;color:var(--text)}
+.contract-card .contract-sub{font-size:13px;color:var(--text-muted);margin-bottom:12px}
 .contract-signers{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:12px}
-.contract-signer{display:flex;align-items:center;gap:8px;padding:6px 14px;border-radius:8px;font-size:13px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08)}
-.contract-signer.signed{border-color:rgba(152,254,0,.3);background:rgba(152,254,0,.06)}
-.contract-signer .sig-check{width:18px;height:18px;border-radius:50%;border:2px solid rgba(255,255,255,.2);display:flex;align-items:center;justify-content:center;font-size:10px}
-.contract-signer.signed .sig-check{border-color:#98fe00;background:#98fe00;color:#000}
+.contract-signer{display:flex;align-items:center;gap:8px;padding:6px 14px;border-radius:8px;font-size:13px;background:var(--surface-alt);border:1px solid var(--border);color:var(--text)}
+.contract-signer.signed{border-color:rgba(0,135,90,0.3);background:var(--lime-light);color:var(--lime)}
+.contract-signer .sig-check{width:18px;height:18px;border-radius:50%;border:2px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:10px;background:#fff}
+.contract-signer.signed .sig-check{border-color:var(--lime);background:var(--lime);color:#fff}
 .contract-badge{display:inline-block;padding:2px 10px;border-radius:20px;font-size:11px;font-weight:600}
-.contract-badge.draft{background:rgba(255,255,255,.1);color:rgba(255,255,255,.5)}
-.contract-badge.pending{background:rgba(143,197,242,.15);color:#8fc5f2}
-.contract-badge.partial{background:rgba(240,173,78,.15);color:#f0ad4e}
-.contract-badge.completed{background:rgba(152,254,0,.15);color:#98fe00}
-.contract-doc{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.08);border-radius:10px;padding:24px;margin:16px 0;font-size:13px;line-height:1.8}
-.contract-doc h4{text-align:center;font-size:18px;margin:0 0 20px;letter-spacing:2px}
-.contract-doc .clause{margin-bottom:12px}
-.contract-doc .clause-title{font-weight:600;margin-bottom:4px}
-.sig-thumb{width:120px;height:60px;border:1px dashed rgba(255,255,255,.2);border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:11px;opacity:.5;overflow:hidden}
+.contract-badge.draft{background:var(--surface-alt);color:var(--text-muted)}
+.contract-badge.pending{background:var(--accent-light);color:var(--accent)}
+.contract-badge.partial{background:rgba(240,173,78,.15);color:#b06d00}
+.contract-badge.completed{background:var(--lime-light);color:var(--lime)}
+.contract-doc{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:24px;margin:16px 0;font-size:13px;line-height:1.8;color:var(--text)}
+.contract-doc h4{text-align:center;font-size:18px;margin:0 0 20px;letter-spacing:2px;color:var(--text)}
+.contract-doc .clause{margin-bottom:12px;color:var(--text)}
+.contract-doc .clause-title{font-weight:700;margin-bottom:4px;color:var(--accent)}
+.sig-thumb{width:120px;height:60px;border:1px dashed rgba(0,0,0,0.2);border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:11px;color:var(--text-muted);background:var(--surface-alt);overflow:hidden}
 .sig-thumb img{width:100%;height:100%;object-fit:contain}
-.sig-thumb.signed{border-color:rgba(152,254,0,.3);opacity:1}
-.admin-contract-create{background:rgba(152,254,0,.08);border:1px dashed rgba(152,254,0,.3);border-radius:12px;padding:20px;margin-bottom:20px}
-.admin-contract-create select,.admin-contract-create input{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);border-radius:8px;padding:8px 12px;color:#fff;font-size:14px;width:100%;margin-bottom:10px}
+.sig-thumb.signed{border-color:var(--lime);background:var(--lime-light);color:var(--lime)}
+.admin-contract-create{background:var(--accent-light);border:1px dashed rgba(0,113,220,0.3);border-radius:12px;padding:20px;margin-bottom:20px}
+.admin-contract-create select,.admin-contract-create input{background:#fff;border:1px solid var(--border);border-radius:8px;padding:8px 12px;color:var(--text);font-size:14px;width:100%;margin-bottom:10px}
 
 
-/* ─── LOCKED STATE ─── */
-.locked-overlay{padding:80px 40px;text-align:center;border:1px dashed rgba(255,255,255,0.1);border-radius:8px;margin-bottom:12px}
-.locked-icon{font-size:48px;margin-bottom:16px;opacity:0.15}
-.locked-title{font-size:18px;font-weight:700;color:rgba(255,255,255,0.4);letter-spacing:-0.5px;margin-bottom:8px}
-.locked-desc{font-size:14px;color:rgba(255,255,255,0.2);line-height:1.6;max-width:360px;margin:0 auto}
+/* ─── LOCKED STATE (라이트) ─── */
+.locked-overlay{padding:80px 40px;text-align:center;border:1px dashed rgba(0,0,0,0.12);border-radius:8px;margin-bottom:12px;background:var(--surface-alt)}
+.locked-icon{font-size:48px;margin-bottom:16px;opacity:0.5}
+.locked-title{font-size:18px;font-weight:700;color:var(--text);letter-spacing:-0.5px;margin-bottom:8px}
+.locked-desc{font-size:14px;color:var(--text-muted);line-height:1.6;max-width:360px;margin:0 auto}
 
-/* ─── CTA ─── */
-.cta-sec{text-align:center;padding:140px var(--sec-px);position:relative;overflow:hidden;background:var(--bg-dark);color:#fff}
+/* ─── CTA (랜딩 다크 영역 — 의도적 보존) ─── */
+.cta-sec{text-align:center;padding:140px var(--sec-px);position:relative;overflow:hidden;background:var(--bg-footer);color:#fff}
 .cta-sec h2{font-family:var(--font);font-size:48px;font-weight:900;letter-spacing:-2.5px;line-height:1.0;margin-bottom:20px;color:#fff}
 .cta-sec h2 em{font-style:normal;color:var(--accent)}
-.cta-sec p{font-size:18px;color:rgba(255,255,255,0.4);margin-bottom:40px;font-weight:400;line-height:1.5}
+.cta-sec p{font-size:18px;color:rgba(255,255,255,0.6);margin-bottom:40px;font-weight:400;line-height:1.5}
 
-/* ─── FOOTER ─── */
-.footer{background:var(--bg-dark);padding:48px var(--sec-px);border-top:1px solid var(--border-dark)}
+/* ─── FOOTER (다크 보존) ─── */
+.footer{background:var(--bg-footer);padding:48px var(--sec-px);border-top:1px solid rgba(255,255,255,0.08)}
 .footer-inner{max-width:var(--content-max);margin:0 auto;display:flex;justify-content:space-between;align-items:center}
 .footer-copy{font-size:12px;color:rgba(255,255,255,0.2);font-family:var(--mono)}
 .footer-admin{font-size:11px;color:rgba(255,255,255,0.1);cursor:pointer;font-family:var(--mono);transition:color .2s;user-select:none}
@@ -3265,7 +3265,7 @@ function applyCms(section) {
     var wmVal = document.querySelector('[data-target="wm-num"]').value;
     var cpVal = document.querySelector('[data-target="cp-num"]').value;
     document.getElementById('cms-wm-num').innerHTML = wmVal.replace(/M/g, '<em style="color:var(--accent)">M</em>');
-    document.getElementById('cms-cp-num').innerHTML = cpVal.replace(/M/g, '<em style="color:rgba(0,0,0,0.2)">M</em>');
+    document.getElementById('cms-cp-num').innerHTML = cpVal.replace(/M/g, '<em style="color:rgba(0,0,0,0.62)">M</em>');
     document.getElementById('cms-compare-insight').innerHTML = document.querySelector('[data-target="compare-insight"]').value;
   }
   if (section === 'success') {
@@ -4227,7 +4227,7 @@ async function renderAdminReview() {
     }
 
     if (app.apply_type === 'voucher' && app.voucher_amount) {
-      html += '<div style="font-size:11px;color:rgba(0,0,0,0.3);margin:16px 0 8px;font-family:var(--mono);text-transform:uppercase;letter-spacing:1px">수출바우처</div>';
+      html += '<div style="font-size:11px;color:rgba(0,0,0,0.65);margin:16px 0 8px;font-family:var(--mono);text-transform:uppercase;letter-spacing:1px">수출바우처</div>';
       html += '<div class="review-field"><div class="rf-label">바우처 잔액</div><div class="rf-value">' + app.voucher_amount + '</div></div>';
       if (app.voucher_number) html += '<div class="review-field"><div class="rf-label">바우처 번호</div><div class="rf-value">' + app.voucher_number + '</div></div>';
     }
@@ -4254,7 +4254,7 @@ async function renderAdminReview() {
             var icon = fext === 'pdf' ? '📄' : (fext === 'pptx' || fext === 'ppt') ? '📊' : (fext === 'xlsx' || fext === 'xls' || fext === 'csv') ? '📈' : (['png','jpg','jpeg','gif'].indexOf(fext) >= 0) ? '🖼️' : '📎';
             var sizeStr = f.size ? (f.size < 1048576 ? (f.size/1024).toFixed(1) + ' KB' : (f.size/1048576).toFixed(1) + ' MB') : '';
             var fieldLabel = f.field === 'Brand Deck' ? '브랜드 소개서' : (f.field === 'Additional Docs' ? '추가 서류' : (f.field === 'SKU List' ? 'SKU 리스트' : (f.field || '')));
-            html += '<div style="display:flex;align-items:center;gap:12px;padding:10px 14px;border:1px solid rgba(0,0,0,0.06);border-radius:6px;margin-bottom:6px;background:rgba(0,0,0,0.02)">' +
+            html += '<div style="display:flex;align-items:center;gap:12px;padding:10px 14px;border:1px solid rgba(0,0,0,0.12);border-radius:6px;margin-bottom:6px;background:rgba(0,0,0,0.02)">' +
               '<span style="font-size:18px">' + icon + '</span>' +
               '<div style="flex:1;min-width:0">' +
                 '<div style="font-size:13px;color:var(--text);font-weight:500;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">' + fname + '</div>' +
@@ -4268,10 +4268,10 @@ async function renderAdminReview() {
     }
     if (!_hasAttachments) {
       html += '<div style="font-size:11px;color:rgba(0,0,0,0.65);margin:16px 0 8px;font-family:var(--mono);text-transform:uppercase;letter-spacing:1px;font-weight:600">첨부파일</div>' +
-        '<div style="padding:14px 16px;border:1px dashed rgba(0,0,0,0.08);border-radius:6px;background:rgba(0,0,0,0.015);color:rgba(0,0,0,0.4);font-size:13px;display:flex;align-items:center;gap:10px"><span style="font-size:16px">📎</span>이 신청에는 첨부된 파일이 없습니다.</div>';
+        '<div style="padding:14px 16px;border:1px dashed rgba(0,0,0,0.14);border-radius:6px;background:rgba(0,0,0,0.015);color:rgba(0,0,0,0.4);font-size:13px;display:flex;align-items:center;gap:10px"><span style="font-size:16px">📎</span>이 신청에는 첨부된 파일이 없습니다.</div>';
     }
 
-    html += '<div style="font-size:13px;color:rgba(0,0,0,0.25);margin:20px 0 12px;font-family:var(--mono)">기업 유형 확정</div>' +
+    html += '<div style="font-size:13px;color:rgba(0,0,0,0.65);margin:20px 0 12px;font-family:var(--mono)">기업 유형 확정</div>' +
       '<div class="review-type-select">' +
       '<button class="review-type-btn' + (app.apply_type !== 'voucher' ? ' selected' : '') + '" onclick="selectReviewType(this,\'direct\')">' +
       '<span class="rtb-label">A Type</span>직접 참여 기업</button>' +
@@ -4284,7 +4284,7 @@ async function renderAdminReview() {
   
   // Processed applications
   if (processed.length > 0) {
-    html += '<div style="margin-top:32px;margin-bottom:12px;font-size:13px;color:rgba(0,0,0,0.2);font-family:var(--mono)">최근 처리 완료</div>';
+    html += '<div style="margin-top:32px;margin-bottom:12px;font-size:13px;color:rgba(0,0,0,0.62);font-family:var(--mono)">최근 처리 완료</div>';
     processed.forEach(function(app) {
       var initial = (app.brand_name_ko || app.brand_name_en || '?')[0];
       var statusBadge = app.status === 'approved' ? '<span class="brand-badge badge-active">승인됨</span>' : '<span class="brand-badge badge-rejected" style="background:rgba(255,59,48,.15);color:#ff3b30">반려</span>';
@@ -4619,7 +4619,7 @@ async function renderAdminDashboard() {
   brandCountEl.textContent = brands.length + ' brands';
 
   if (brands.length === 0) {
-    pipelineEl.innerHTML = '<div style="text-align:center;padding:40px 0;color:rgba(0,0,0,0.2);font-size:14px">등록된 브랜드가 없습니다.<br><span style="font-size:12px">접수 심사에서 신청을 승인하면 여기에 표시됩니다.</span></div>';
+    pipelineEl.innerHTML = '<div style="text-align:center;padding:40px 0;color:rgba(0,0,0,0.62);font-size:14px">등록된 브랜드가 없습니다.<br><span style="font-size:12px">접수 심사에서 신청을 승인하면 여기에 표시됩니다.</span></div>';
   } else {
     var pHtml = '';
     brands.forEach(function(b) {
@@ -4658,7 +4658,7 @@ async function renderAdminDashboard() {
   notiCountEl.textContent = activities.length;
 
   if (activities.length === 0) {
-    notiEl.innerHTML = '<div style="text-align:center;padding:24px 0;color:rgba(0,0,0,0.2);font-size:13px">최근 활동이 없습니다.</div>';
+    notiEl.innerHTML = '<div style="text-align:center;padding:24px 0;color:rgba(0,0,0,0.62);font-size:13px">최근 활동이 없습니다.</div>';
   } else {
     notiEl.innerHTML = activities.slice(0, 5).map(function(a) { return a.html; }).join('');
   }
@@ -4666,7 +4666,7 @@ async function renderAdminDashboard() {
   // Contract summary
   var summaryEl = document.getElementById('admin-contract-summary');
   if (ctrs.length === 0) {
-    summaryEl.innerHTML = '<div style="text-align:center;padding:24px 0;color:rgba(0,0,0,0.2);font-size:13px">계약이 없습니다.</div>';
+    summaryEl.innerHTML = '<div style="text-align:center;padding:24px 0;color:rgba(0,0,0,0.62);font-size:13px">계약이 없습니다.</div>';
   } else {
     summaryEl.innerHTML = '<div style="padding:4px 0">' +
       '<div style="display:flex;justify-content:space-between;padding:6px 0;font-size:13px;border-bottom:1px solid rgba(0,0,0,0.04)"><span style="opacity:.5">전체 계약</span><span style="font-weight:600">' + ctrs.length + '</span></div>' +
@@ -4677,7 +4677,7 @@ async function renderAdminDashboard() {
   // Phase distribution
   var phaseEl = document.getElementById('admin-phase-dist');
   if (brands.length === 0) {
-    phaseEl.innerHTML = '<div style="text-align:center;padding:24px 0;color:rgba(0,0,0,0.2);font-size:13px">브랜드가 없습니다.</div>';
+    phaseEl.innerHTML = '<div style="text-align:center;padding:24px 0;color:rgba(0,0,0,0.62);font-size:13px">브랜드가 없습니다.</div>';
   } else {
     var phases = { contract: 0, phase1: 0, phase2: 0, phase3: 0, completed: 0 };
     brands.forEach(function(b) { var p = b.current_phase || 'contract'; if (phases[p] !== undefined) phases[p]++; else phases.contract++; });
@@ -4729,7 +4729,7 @@ function renderTemplateEditor() {
       '<span>' + cl.title.split('/')[0].trim() + (isEdited ? ' ✎' : '') + '</span>' +
       '<button onclick="editTemplateClause(\'' + type + '\',' + idx + ')" style="background:rgba(0,0,0,0.06);color:rgba(0,0,0,0.4);border:none;padding:3px 10px;border-radius:4px;font-size:11px;cursor:pointer">' + (isEdited ? '수정됨' : '편집') + '</button>' +
       '</div>' +
-      '<div style="font-size:11px;color:rgba(0,0,0,0.2);line-height:1.5;max-height:60px;overflow:hidden">' + (editedText || cl.text).slice(0, 200) + '...</div></div>';
+      '<div style="font-size:11px;color:rgba(0,0,0,0.62);line-height:1.5;max-height:60px;overflow:hidden">' + (editedText || cl.text).slice(0, 200) + '...</div></div>';
   });
   document.getElementById('template-editor-content').innerHTML = html;
 }
@@ -4868,7 +4868,7 @@ function updateNotiDot() {
 
 function showNotiToast(noti) {
   var toast = document.createElement('div');
-  toast.style.cssText = 'position:fixed;top:20px;right:20px;z-index:99999;background:#1a1a2e;border:1px solid rgba(0,0,0,0.1);border-left:3px solid ' + noti.config.color + ';border-radius:8px;padding:14px 20px;min-width:280px;max-width:400px;box-shadow:0 8px 32px rgba(0,0,0,0.3);animation:slideInRight .3s ease;font-family:var(--font)';
+  toast.style.cssText = 'position:fixed;top:20px;right:20px;z-index:99999;background:#1a1a2e;border:1px solid rgba(0,0,0,0.14);border-left:3px solid ' + noti.config.color + ';border-radius:8px;padding:14px 20px;min-width:280px;max-width:400px;box-shadow:0 8px 32px rgba(0,0,0,0.3);animation:slideInRight .3s ease;font-family:var(--font)';
   toast.innerHTML = '<div style="display:flex;align-items:start;gap:10px"><span style="font-size:18px">' + noti.config.icon + '</span><div><div style="font-size:13px;font-weight:600;color:var(--text);margin-bottom:2px">' + noti.config.title + '</div><div style="font-size:12px;color:rgba(0,0,0,0.4)">' + (noti.data.message || '') + '</div></div></div>';
   document.body.appendChild(toast);
   setTimeout(function() {
@@ -4985,13 +4985,13 @@ async function loadBrandContracts(brandId) {
   var listEl = document.getElementById('brand-contracts-list');
   if (!listEl) return;
   if (!brandId || !supabase) {
-    listEl.innerHTML = '<div style="text-align:center;padding:32px 0;color:rgba(0,0,0,0.15);font-size:13px">불러올 수 없습니다.</div>';
+    listEl.innerHTML = '<div style="text-align:center;padding:32px 0;color:rgba(0,0,0,0.6);font-size:13px">불러올 수 없습니다.</div>';
     return;
   }
-  listEl.innerHTML = '<div style="text-align:center;padding:32px 0;color:rgba(0,0,0,0.15);font-size:13px">불러오는 중...</div>';
+  listEl.innerHTML = '<div style="text-align:center;padding:32px 0;color:rgba(0,0,0,0.6);font-size:13px">불러오는 중...</div>';
   var res = await supabase.from('wm_contracts').select('*').eq('brand_id', brandId).order('created_at', {ascending: false});
   if (!res.data || res.data.length === 0) {
-    listEl.innerHTML = '<div style="text-align:center;padding:32px 0;color:rgba(0,0,0,0.15);font-size:13px">아직 생성된 계약서가 없습니다.<br><span style="font-size:12px">계약서가 준비되면 여기에 표시됩니다.</span></div>';
+    listEl.innerHTML = '<div style="text-align:center;padding:32px 0;color:rgba(0,0,0,0.6);font-size:13px">아직 생성된 계약서가 없습니다.<br><span style="font-size:12px">계약서가 준비되면 여기에 표시됩니다.</span></div>';
     return;
   }
   // Sync to local contracts array
@@ -5102,7 +5102,7 @@ function renderMessages(messages, viewerRole) {
   var thread = document.getElementById('msg-thread');
   if (!thread) return;
   if (messages.length === 0) {
-    thread.innerHTML = '<div style="text-align:center;padding:32px 0;color:rgba(0,0,0,0.15);font-size:13px">아직 메시지가 없습니다.</div>';
+    thread.innerHTML = '<div style="text-align:center;padding:32px 0;color:rgba(0,0,0,0.6);font-size:13px">아직 메시지가 없습니다.</div>';
   } else {
     var html = '';
     messages.forEach(function(m) {
@@ -5184,7 +5184,7 @@ async function showAdminBrandMessages(brandId, brandName) {
   
   var msgsHtml = '';
   if (messages.length === 0) {
-    msgsHtml = '<div style="text-align:center;padding:40px;color:rgba(0,0,0,0.2)">메시지 없음</div>';
+    msgsHtml = '<div style="text-align:center;padding:40px;color:rgba(0,0,0,0.62)">메시지 없음</div>';
   } else {
     messages.forEach(function(m) {
       var isAdmin = m.sender_role === 'admin';
@@ -5292,7 +5292,7 @@ function renderWmPipeline() {
   if (!el) return;
   var keys = Object.keys(wmBrandData);
   if (keys.length === 0) {
-    el.innerHTML = '<div style="text-align:center;padding:60px 0;color:rgba(0,0,0,0.15);font-size:14px">등록된 브랜드가 없습니다.</div>';
+    el.innerHTML = '<div style="text-align:center;padding:60px 0;color:rgba(0,0,0,0.6);font-size:14px">등록된 브랜드가 없습니다.</div>';
     return;
   }
   var html = '<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:16px">';
@@ -5389,7 +5389,7 @@ async function showAdminInbox() {
 
   var listHtml = '';
   if (Object.keys(byBrand).length === 0) {
-    listHtml = '<div style="text-align:center;padding:40px;color:rgba(0,0,0,0.3)">신규 메시지가 없습니다.</div>';
+    listHtml = '<div style="text-align:center;padding:40px;color:rgba(0,0,0,0.65)">신규 메시지가 없습니다.</div>';
   } else {
     Object.keys(byBrand).forEach(function(bid) {
       var bName = brandMap[bid] || bid;
@@ -5398,11 +5398,11 @@ async function showAdminInbox() {
       var preview = (latest.content || '').slice(0, 80);
       var bIdEsc = bid.replace(/'/g, "\\'");
       var bNameEsc = bName.replace(/'/g, "\\'");
-      listHtml += '<div onclick="document.getElementById(\'admin-inbox-modal\').remove();showAdminBrandMessages(\'' + bIdEsc + '\',\'' + bNameEsc + '\')" style="padding:14px 16px;border:1px solid rgba(0,0,0,0.06);border-radius:10px;margin-bottom:8px;cursor:pointer;background:rgba(0,0,0,0.02);transition:all .15s" onmouseenter="this.style.borderColor=\'rgba(0,113,220,0.4)\'" onmouseleave="this.style.borderColor=\'rgba(0,0,0,0.06)\'"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px"><div style="font-weight:600;color:var(--text);font-size:14px">' + bName + ' <span style="font-size:10px;padding:2px 7px;border-radius:999px;background:var(--red);color:var(--text);margin-left:4px;font-weight:700;font-family:var(--mono)">' + bMsgs.length + '</span></div><div style="font-size:11px;color:rgba(0,0,0,0.3);font-family:var(--mono)">' + (latest.created_at || '').slice(0, 16).replace('T', ' ') + '</div></div><div style="font-size:13px;color:rgba(0,0,0,0.55);overflow:hidden;text-overflow:ellipsis;white-space:nowrap">' + preview + (preview.length >= 80 ? '...' : '') + '</div></div>';
+      listHtml += '<div onclick="document.getElementById(\'admin-inbox-modal\').remove();showAdminBrandMessages(\'' + bIdEsc + '\',\'' + bNameEsc + '\')" style="padding:14px 16px;border:1px solid rgba(0,0,0,0.12);border-radius:10px;margin-bottom:8px;cursor:pointer;background:rgba(0,0,0,0.02);transition:all .15s" onmouseenter="this.style.borderColor=\'rgba(0,113,220,0.4)\'" onmouseleave="this.style.borderColor=\'rgba(0,0,0,0.06)\'"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px"><div style="font-weight:600;color:var(--text);font-size:14px">' + bName + ' <span style="font-size:10px;padding:2px 7px;border-radius:999px;background:var(--red);color:var(--text);margin-left:4px;font-weight:700;font-family:var(--mono)">' + bMsgs.length + '</span></div><div style="font-size:11px;color:rgba(0,0,0,0.65);font-family:var(--mono)">' + (latest.created_at || '').slice(0, 16).replace('T', ' ') + '</div></div><div style="font-size:13px;color:rgba(0,0,0,0.55);overflow:hidden;text-overflow:ellipsis;white-space:nowrap">' + preview + (preview.length >= 80 ? '...' : '') + '</div></div>';
     });
   }
 
-  modal.innerHTML = '<div style="background:#fff;border:1px solid rgba(0,0,0,0.1);border-radius:16px;padding:28px;max-width:560px;width:90%;max-height:80vh;overflow-y:auto;position:relative">' +
+  modal.innerHTML = '<div style="background:#fff;border:1px solid rgba(0,0,0,0.14);border-radius:16px;padding:28px;max-width:560px;width:90%;max-height:80vh;overflow-y:auto;position:relative">' +
     '<button onclick="document.getElementById(\'admin-inbox-modal\').remove()" style="position:absolute;top:14px;right:14px;background:none;border:none;color:rgba(0,0,0,0.4);font-size:24px;cursor:pointer;line-height:1">&times;</button>' +
     '<h3 style="color:var(--text);font-size:18px;margin:0 0 6px;letter-spacing:-0.5px">📬 신규 메시지</h3>' +
     '<p style="color:rgba(0,0,0,0.4);font-size:13px;margin:0 0 20px">읽지 않은 브랜드 메시지를 확인하세요.</p>' +
@@ -5419,7 +5419,7 @@ function showAdminProfileMenu(event) {
   if (existing) { existing.remove(); return; }
   var menu = document.createElement('div');
   menu.id = 'admin-profile-menu';
-  menu.style.cssText = 'position:fixed;top:60px;right:24px;background:#fff;border:1px solid rgba(0,0,0,0.1);border-radius:10px;padding:8px;z-index:10000;min-width:200px;box-shadow:0 8px 24px rgba(0,0,0,0.4)';
+  menu.style.cssText = 'position:fixed;top:60px;right:24px;background:#fff;border:1px solid rgba(0,0,0,0.14);border-radius:10px;padding:8px;z-index:10000;min-width:200px;box-shadow:0 8px 24px rgba(0,0,0,0.4)';
   menu.innerHTML = '<div style="padding:10px 14px;border-bottom:1px solid rgba(0,0,0,0.06);margin-bottom:4px"><div style="font-size:13px;color:var(--text);font-weight:600">JB 관리자</div><div style="font-size:11px;color:rgba(0,0,0,0.4);font-family:var(--mono);margin-top:2px">jw@3svs.com</div></div>' +
     '<div onclick="document.getElementById(\'admin-profile-menu\').remove();showAdminView(\'settings\')" style="padding:10px 14px;font-size:13px;color:rgba(0,0,0,0.7);cursor:pointer;border-radius:6px" onmouseenter="this.style.background=\'rgba(0,0,0,0.06)\'" onmouseleave="this.style.background=\'\'"><span style="margin-right:8px">⚙</span>설정</div>' +
     '<div onclick="if(confirm(\'로그아웃하시겠습니까?\')){sessionStorage.removeItem(\'wm_session\');switchTab(\'landing\')}" style="padding:10px 14px;font-size:13px;color:rgba(0,0,0,0.7);cursor:pointer;border-radius:6px" onmouseenter="this.style.background=\'rgba(0,0,0,0.06)\'" onmouseleave="this.style.background=\'\'"><span style="margin-right:8px">←</span>로그아웃</div>';
@@ -5563,7 +5563,7 @@ async function loadSkuFiles(brandId) {
   if (!listEl) return;
   
   if (files.length === 0) {
-    listEl.innerHTML = '<div style="text-align:center;padding:20px 0;color:rgba(0,0,0,0.12);font-size:13px">업로드된 파일이 없습니다.</div>';
+    listEl.innerHTML = '<div style="text-align:center;padding:20px 0;color:rgba(0,0,0,0.55);font-size:13px">업로드된 파일이 없습니다.</div>';
     if (countEl) countEl.textContent = '0 files';
     return;
   }
@@ -5580,10 +5580,10 @@ async function loadSkuFiles(brandId) {
     var ext = fileName.split('.').pop().toLowerCase();
     var icon = ext === 'pdf' ? '📄' : (ext === 'xlsx' || ext === 'xls' || ext === 'csv') ? '📊' : '🖼️';
     
-    html += '<div style="display:flex;align-items:center;justify-content:space-between;padding:12px 16px;border:1px solid rgba(0,0,0,0.06);border-radius:8px;margin-bottom:6px;background:rgba(0,0,0,0.02)">' +
+    html += '<div style="display:flex;align-items:center;justify-content:space-between;padding:12px 16px;border:1px solid rgba(0,0,0,0.12);border-radius:8px;margin-bottom:6px;background:rgba(0,0,0,0.02)">' +
       '<div style="display:flex;align-items:center;gap:12px"><span style="font-size:20px">' + icon + '</span><div>' +
       '<div style="font-size:14px;color:var(--text);font-weight:500">' + fileName + '</div>' +
-      '<div style="font-size:11px;color:rgba(0,0,0,0.25);font-family:var(--mono)">' + date + (fileSize ? ' · ' + fileSize : '') + '</div>' +
+      '<div style="font-size:11px;color:rgba(0,0,0,0.65);font-family:var(--mono)">' + date + (fileSize ? ' · ' + fileSize : '') + '</div>' +
       '</div></div>' +
       '<a href="' + fileUrl + '" target="_blank" style="color:var(--accent);font-size:13px;text-decoration:none;font-weight:500">열기</a></div>';
   });
