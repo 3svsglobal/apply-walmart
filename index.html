@@ -2564,18 +2564,28 @@ async function dbSaveApplication(formData) {
     if (!saved) return null;
     // 첨부파일 업로드 (Brand Deck + Additional Docs + SKU List)
     var attachedFiles = [];
+    var uploadFailures = [];
+    var attemptedFiles = 0;
     for (var entry of formData.entries()) {
       var fkey = entry[0];
       var fval = entry[1];
       if (fval instanceof File && (fkey === 'Brand Deck' || fkey === 'Additional Docs' || fkey === 'SKU List')) {
+        attemptedFiles++;
         var safeName = fval.name.replace(/[^a-zA-Z0-9\uAC00-\uD7AF._-]/g, '_');
         var path = 'applications/' + saved.id + '/' + Date.now() + '_' + safeName;
         try {
           var up = await supabase.storage.from('wm-signatures').upload(path, fval);
-          if (up.error) { console.warn('Upload failed:', fval.name, up.error); continue; }
+          if (up.error) {
+            console.warn('Upload failed:', fval.name, up.error);
+            uploadFailures.push(fval.name + ' (' + (up.error.message || 'unknown error') + ')');
+            continue;
+          }
           var url = SUPABASE_URL + '/storage/v1/object/public/wm-signatures/' + path;
           attachedFiles.push({ field: fkey, name: fval.name, url: url, size: fval.size, type: fval.type });
-        } catch(upErr) { console.warn('Upload exception:', fval.name, upErr); }
+        } catch(upErr) {
+          console.warn('Upload exception:', fval.name, upErr);
+          uploadFailures.push(fval.name + ' (' + (upErr.message || 'network error') + ')');
+        }
       }
     }
     if (attachedFiles.length > 0) {
@@ -2583,6 +2593,11 @@ async function dbSaveApplication(formData) {
         await supabase.from('wm_applications').update({ attached_files: JSON.stringify(attachedFiles) }).eq('id', saved.id);
         saved.attached_files = JSON.stringify(attachedFiles);
       } catch(updErr) { console.warn('attached_files update failed:', updErr); }
+    }
+    if (uploadFailures.length > 0) {
+      saved._uploadFailures = uploadFailures;
+      saved._uploadAttempted = attemptedFiles;
+      saved._uploadSucceeded = attachedFiles.length;
     }
     return saved;
   } catch(e) {
@@ -3038,6 +3053,11 @@ function submitApply() {
       console.log('Saved to DB, id:', saved.id);
       document.getElementById('apply-success-modal').classList.add('show');
       sendNotification('application_submitted', { message: (saved.brand_name_ko || saved.brand_name_en || '새 기업') + '이(가) 신청서를 제출했습니다.', appId: saved.id });
+      if (saved._uploadFailures && saved._uploadFailures.length > 0) {
+        setTimeout(function() {
+          alert('⚠️ 신청은 정상 접수되었으나 첨부파일 ' + saved._uploadFailures.length + '/' + saved._uploadAttempted + '건이 업로드되지 않았습니다.\n\n실패 파일:\n- ' + saved._uploadFailures.join('\n- ') + '\n\n관리자에게 별도 전달해 주세요.');
+        }, 800);
+      }
     } else {
       // DB failed, try Formspree as fallback
       return fetch('https://formspree.io/f/xqewlbry', {
@@ -4211,10 +4231,12 @@ async function renderAdminReview() {
     html += '</div>';
 
     // === 첨부파일 ===
+    var _hasAttachments = false;
     if (app.attached_files) {
       try {
         var attachedList = JSON.parse(app.attached_files);
         if (Array.isArray(attachedList) && attachedList.length > 0) {
+          _hasAttachments = true;
           var _totalBytes = attachedList.reduce(function(s, x) { return s + (x.size || 0); }, 0);
           var _totalStr = _totalBytes < 1048576 ? (_totalBytes/1024).toFixed(0) + ' KB' : (_totalBytes/1048576).toFixed(1) + ' MB';
           var _urlsJson = JSON.stringify(attachedList.map(function(x){ return x.url; }).filter(Boolean)).replace(/"/g,'&quot;');
@@ -4240,8 +4262,12 @@ async function renderAdminReview() {
         }
       } catch(e) { console.warn('attached_files parse failed', e); }
     }
+    if (!_hasAttachments) {
+      html += '<div style="font-size:11px;color:rgba(255,255,255,0.65);margin:16px 0 8px;font-family:var(--mono);text-transform:uppercase;letter-spacing:1px;font-weight:600">첨부파일</div>' +
+        '<div style="padding:14px 16px;border:1px dashed rgba(255,255,255,0.08);border-radius:6px;background:rgba(255,255,255,0.015);color:rgba(255,255,255,0.4);font-size:13px;display:flex;align-items:center;gap:10px"><span style="font-size:16px">📎</span>이 신청에는 첨부된 파일이 없습니다.</div>';
+    }
 
-    html += '<div style="font-size:13px;color:rgba(255,255,255,0.25);margin-bottom:12px;font-family:var(--mono)">기업 유형 확정</div>' +
+    html += '<div style="font-size:13px;color:rgba(255,255,255,0.25);margin:20px 0 12px;font-family:var(--mono)">기업 유형 확정</div>' +
       '<div class="review-type-select">' +
       '<button class="review-type-btn' + (app.apply_type !== 'voucher' ? ' selected' : '') + '" onclick="selectReviewType(this,\'direct\')">' +
       '<span class="rtb-label">A Type</span>직접 참여 기업</button>' +
