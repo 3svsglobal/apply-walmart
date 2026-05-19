@@ -109,15 +109,15 @@ button{cursor:pointer;font-family:var(--font)}
 .ww-stat .ww-label{font-size:15px;color:var(--text-muted);margin-top:10px;font-weight:500;line-height:1.4}
 .ww-stat .ww-sub{font-family:var(--font);font-size:12px;color:var(--text-muted);margin-top:8px}
 
-.compare-section{margin-top:64px;padding:48px;background:var(--bg-dark);border-radius:var(--radius);color:#fff;position:relative;overflow:hidden}
+.compare-section{margin-top:64px;padding:48px;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);color:var(--text);position:relative;overflow:hidden;box-shadow:0 4px 20px rgba(0,0,0,0.03)}
 .compare-grid{display:grid;grid-template-columns:1fr 60px 1fr;gap:0;align-items:center}
 .compare-brand{text-align:center}
-.compare-brand .cb-name{font-size:24px;font-weight:900;letter-spacing:-1.5px;margin-bottom:8px}
-.compare-brand .cb-num{font-size:52px;font-weight:900;letter-spacing:-3px;line-height:.9;font-stretch:95%}
-.compare-brand .cb-unit{font-size:13px;color:rgba(0,0,0,0.45);margin-top:8px;font-weight:400}
-.compare-vs{text-align:center;font-family:var(--font);font-size:14px;color:rgba(255,255,255,0.2);font-weight:400}
-.compare-bar{margin-top:24px;height:6px;border-radius:3px;overflow:hidden;display:flex;gap:2px}
-.compare-insight{margin-top:20px;text-align:center;font-size:15px;color:rgba(255,255,255,0.4);font-weight:400;line-height:1.6}
+.compare-brand .cb-name{font-size:24px;font-weight:900;letter-spacing:-1.5px;margin-bottom:8px;color:var(--text)}
+.compare-brand .cb-num{font-size:52px;font-weight:900;letter-spacing:-3px;line-height:.9;font-stretch:95%;color:var(--text)}
+.compare-brand .cb-unit{font-size:13px;color:var(--text-muted);margin-top:8px;font-weight:500}
+.compare-vs{text-align:center;font-family:var(--font);font-size:14px;color:var(--text-faint);font-weight:600}
+.compare-bar{margin-top:24px;height:6px;border-radius:3px;overflow:hidden;display:flex;gap:2px;background:var(--surface-alt)}
+.compare-insight{margin-top:20px;text-align:center;font-size:15px;color:var(--text-muted);font-weight:500;line-height:1.6}
 .compare-insight strong{color:var(--accent);font-weight:700}
 
 .success-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:48px}
@@ -215,17 +215,17 @@ button{cursor:pointer;font-family:var(--font)}
 .phase-note strong{color:var(--text);font-weight:700}
 
 /* ─── ROLE MATRIX ─── */
-.role-matrix{margin-top:56px;padding:40px;background:var(--bg-dark);border-radius:var(--radius);color:#fff}
-.role-matrix-title{font-size:20px;font-weight:900;letter-spacing:-0.8px;margin-bottom:24px;color:#fff}
+.role-matrix{margin-top:56px;padding:40px;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);color:var(--text);box-shadow:0 4px 20px rgba(0,0,0,0.03)}
+.role-matrix-title{font-size:20px;font-weight:900;letter-spacing:-0.8px;margin-bottom:24px;color:var(--text)}
 .role-matrix-grid{display:flex;flex-direction:column;gap:0}
-.role-matrix-header{display:grid;grid-template-columns:100px 1fr 1fr;gap:12px;padding-bottom:12px;border-bottom:1px solid var(--border-dark)}
-.role-matrix-header div{font-family:var(--font);font-size:12px;color:rgba(255,255,255,0.25);letter-spacing:0.5px}
+.role-matrix-header{display:grid;grid-template-columns:100px 1fr 1fr;gap:12px;padding-bottom:12px;border-bottom:1px solid var(--border)}
+.role-matrix-header div{font-family:var(--font);font-size:12px;color:var(--text-muted);letter-spacing:0.5px;font-weight:600}
 .role-matrix-header div:first-child{color:transparent}
-.role-matrix-row{display:grid;grid-template-columns:100px 1fr 1fr;gap:12px;padding:16px 0;border-bottom:1px solid var(--border-dark)}
+.role-matrix-row{display:grid;grid-template-columns:100px 1fr 1fr;gap:12px;padding:16px 0;border-bottom:1px solid var(--border)}
 .role-matrix-row:last-child{border-bottom:none}
-.rmr-phase{font-family:var(--font);font-size:12px;color:var(--accent);font-weight:500;padding-top:2px}
-.rmr-cell{font-size:14px;color:rgba(255,255,255,0.6);line-height:1.6}
-.rmr-muted{color:rgba(255,255,255,0.2)}
+.rmr-phase{font-family:var(--font);font-size:13px;color:var(--accent);font-weight:600;padding-top:2px}
+.rmr-cell{font-size:14px;color:var(--text);line-height:1.6}
+.rmr-muted{color:var(--text-faint)}
 
 /* ─── FORM STEPS ─── */
 .form-step{padding:14px 18px;font-size:13px;font-weight:500;color:var(--text-muted);background:none;border:none;border-bottom:2px solid transparent;white-space:nowrap;transition:all .2s;font-family:var(--font)}
@@ -264,13 +264,13 @@ button{cursor:pointer;font-family:var(--font)}
 .form-radio-pill input:checked ~ span{background:var(--accent);border-color:var(--accent);color:#fff}
 
 /* ─── CTA APPLY SECTION ─── */
-.cta-apply-section{padding:140px var(--sec-px);text-align:center;position:relative;background:var(--bg-dark);color:#fff}
+.cta-apply-section{padding:140px var(--sec-px);text-align:center;position:relative;background:var(--surface-alt);color:var(--text)}
 .cta-apply-inner{position:relative;z-index:2;max-width:720px;margin:0 auto}
 .cta-apply-cards{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:48px;margin-bottom:40px}
-.cta-apply-card{padding:36px 28px;border:1px solid rgba(255,255,255,0.1);border-radius:var(--radius);text-align:left;position:relative;overflow:hidden;background:rgba(255,255,255,0.03)}
-.cta-apply-card .sn{font-family:var(--font);font-size:80px;font-weight:900;color:rgba(255,255,255,0.03);position:absolute;top:-12px;right:12px;line-height:1;letter-spacing:-4px}
-.cta-apply-card h3{font-size:22px;font-weight:900;letter-spacing:-1.2px;margin-bottom:8px;position:relative;color:#fff}
-.cta-apply-card .type-sub{font-size:14px;color:rgba(255,255,255,0.4);line-height:1.6;position:relative}
+.cta-apply-card{padding:36px 28px;border:1px solid var(--border);border-radius:var(--radius);text-align:left;position:relative;overflow:hidden;background:var(--surface)}
+.cta-apply-card .sn{font-family:var(--font);font-size:80px;font-weight:900;color:rgba(0,0,0,0.04);position:absolute;top:-12px;right:12px;line-height:1;letter-spacing:-4px}
+.cta-apply-card h3{font-size:22px;font-weight:900;letter-spacing:-1.2px;margin-bottom:8px;position:relative;color:var(--text)}
+.cta-apply-card .type-sub{font-size:14px;color:var(--text-muted);line-height:1.6;position:relative}
 
 /* ─── FORM ─── */
 .form-input{width:100%;padding:14px 16px;background:var(--bg-alt);border:1px solid var(--border);border-radius:var(--radius);color:var(--text);font-family:inherit;font-size:15px;outline:none;transition:border-color .2s}
@@ -293,7 +293,7 @@ button{cursor:pointer;font-family:var(--font)}
 /* ─── LOGIN ─── */
 .login-section{min-height:100vh;display:grid;grid-template-columns:1fr 1fr}
 .login-left{padding:80px 64px;display:flex;flex-direction:column;justify-content:center;background:var(--bg)}
-.login-right{background:var(--bg-dark);display:flex;align-items:center;justify-content:center;padding:64px;color:#fff}
+.login-right{background:var(--surface-alt);display:flex;align-items:center;justify-content:center;padding:64px;color:var(--text)}
 .login-tabs{display:flex;gap:0;margin-bottom:32px;border-bottom:1px solid var(--border)}
 .login-tab{padding:12px 24px;font-size:14px;font-weight:500;color:var(--text-muted);background:none;border:none;border-bottom:2px solid transparent;transition:all .2s}
 .login-tab:hover{color:var(--text)}
@@ -590,18 +590,18 @@ button{cursor:pointer;font-family:var(--font)}
 .locked-title{font-size:18px;font-weight:700;color:var(--text);letter-spacing:-0.5px;margin-bottom:8px}
 .locked-desc{font-size:14px;color:var(--text-muted);line-height:1.6;max-width:360px;margin:0 auto}
 
-/* ─── CTA (랜딩 다크 영역 — 의도적 보존) ─── */
-.cta-sec{text-align:center;padding:140px var(--sec-px);position:relative;overflow:hidden;background:var(--bg-footer);color:#fff}
-.cta-sec h2{font-family:var(--font);font-size:48px;font-weight:900;letter-spacing:-2.5px;line-height:1.0;margin-bottom:20px;color:#fff}
+/* ─── CTA (라이트 톤) ─── */
+.cta-sec{text-align:center;padding:140px var(--sec-px);position:relative;overflow:hidden;background:var(--surface-alt);color:var(--text);border-top:1px solid var(--border)}
+.cta-sec h2{font-family:var(--font);font-size:48px;font-weight:900;letter-spacing:-2.5px;line-height:1.0;margin-bottom:20px;color:var(--text)}
 .cta-sec h2 em{font-style:normal;color:var(--accent)}
-.cta-sec p{font-size:18px;color:rgba(255,255,255,0.6);margin-bottom:40px;font-weight:400;line-height:1.5}
+.cta-sec p{font-size:18px;color:var(--text-muted);margin-bottom:40px;font-weight:500;line-height:1.5}
 
-/* ─── FOOTER (다크 보존) ─── */
-.footer{background:var(--bg-footer);padding:48px var(--sec-px);border-top:1px solid rgba(255,255,255,0.08)}
+/* ─── FOOTER (라이트 톤) ─── */
+.footer{background:var(--surface-alt);padding:48px var(--sec-px);border-top:1px solid var(--border)}
 .footer-inner{max-width:var(--content-max);margin:0 auto;display:flex;justify-content:space-between;align-items:center}
-.footer-copy{font-size:12px;color:rgba(255,255,255,0.2);font-family:var(--font)}
-.footer-admin{font-size:12px;color:rgba(255,255,255,0.1);cursor:pointer;font-family:var(--font);transition:color .2s;user-select:none}
-.footer-admin:hover{color:rgba(255,255,255,0.3)}
+.footer-copy{font-size:12px;color:var(--text-muted);font-family:var(--font)}
+.footer-admin{font-size:12px;color:var(--text-faint);cursor:pointer;font-family:var(--font);transition:color .2s;user-select:none}
+.footer-admin:hover{color:var(--accent)}
 .modal-overlay{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.6);backdrop-filter:blur(8px);z-index:9999;display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .3s}
 .modal-overlay.show{opacity:1;pointer-events:auto}
 .modal-box{background:#fff;border-radius:12px;padding:40px;max-width:380px;width:90%;box-shadow:0 24px 48px rgba(0,0,0,0.15);transform:translateY(20px);transition:transform .3s}
