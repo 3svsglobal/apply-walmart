@@ -4,6 +4,23 @@
 
 ---
 
+## ✅ 2026-05-19 자동 실행 완료 항목
+
+당일 세션에서 Claude가 이미 처리한 항목 (확인용):
+
+- [x] `migration_2026-05-19.sql` 운영 DB에 적용 — `attached_files`, `portal_password`, `wm_messages` 모두 존재 확인됨
+- [x] Edge Function `send-notification` 재배포 (application_rejected 템플릿 포함)
+- [x] `git push origin main` 완료 → Vercel 자동 배포 대기
+
+이미 등록되어 있던 항목 (변경 불필요):
+- [x] Supabase Storage 버킷 `wm-signatures`
+- [x] Resend `RESEND_API_KEY` 시크릿 등록
+- [x] `supabase link` 프로젝트 연결
+
+남은 일은 ▼ 아래 **6. E2E 동작 테스트**.
+
+---
+
 ## 1. DB 마이그레이션 (Supabase) — 5분
 
 미반영 컬럼/테이블이 있어 반드시 먼저 실행해야 함.
