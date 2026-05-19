@@ -3443,7 +3443,7 @@ function addWmSkuComment(brandId, skuIdx) {
   if (!brand || !brand.skus[skuIdx]) return;
   var now = new Date();
   var dateStr = now.getFullYear() + '-' + String(now.getMonth()+1).padStart(2,'0') + '-' + String(now.getDate()).padStart(2,'0');
-  brand.skus[skuIdx].comments.push({ author: 'Walmart Buyer', text: input.value.trim(), time: dateStr });
+  brand.skus[skuIdx].comments.push({ author: 'Startup Junkie', text: input.value.trim(), time: dateStr });
   showWmBrandDetail(brandId);
 }
 
@@ -3618,7 +3618,7 @@ function confirmSign(role) {
   if (!c) { alert('Contract not found.'); return; }
   if (c.signatures[role].signed) { alert('Already signed.'); return; }
   var now = new Date().toISOString().slice(0, 10);
-  var nameMap = { brand: (wmBrandData[c.brandId] ? wmBrandData[c.brandId].info.ceo : 'Brand'), admin: '배종원 (3SVS)', walmart: 'Walmart Buyer' };
+  var nameMap = { brand: (wmBrandData[c.brandId] ? wmBrandData[c.brandId].info.ceo : 'Brand'), admin: '배종원 (3SVS)', walmart: 'Startup Junkie' };
   c.signatures[role] = {
     signed: true,
     name: nameMap[role],
