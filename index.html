@@ -844,7 +844,7 @@ button{cursor:pointer;font-family:var(--font)}
       </div>
       <div class="compare-bar" style="max-width:600px;margin:24px auto 0">
         <div style="flex:5;background:var(--accent);height:6px;border-radius:3px"></div>
-        <div style="flex:1;background:rgba(0,0,0,0.6);height:6px;border-radius:3px"></div>
+        <div style="flex:1;background:rgba(0,0,0,0.08);height:6px;border-radius:3px"></div>
       </div>
       <div class="compare-insight" id="cms-compare-insight"><span class="ko">월마트의 사용자 기반은 쿠팡보다 <strong>4~5배</strong> 크며, 글로벌 19개국에 걸쳐 있습니다.</span><span class="en">Walmart's user base is <strong>4-5x larger</strong> than Coupang, spanning 19 countries globally.</span></div>
     </div>
@@ -980,7 +980,7 @@ button{cursor:pointer;font-family:var(--font)}
           
         </div>
       </div>
-            <div style="padding:14px 20px;border:1px solid rgba(0,0,0,0.6);border-radius:8px;margin-bottom:16px;background:rgba(0,0,0,0.6)">
+            <div style="padding:14px 20px;border:1px solid var(--border);border-radius:8px;margin-bottom:16px;background:var(--surface-alt)">
         <p style="font-size:13px;color:rgba(0,0,0,0.45);line-height:1.6;margin:0 0 12px 0"><span class="ko">※ 본 Phase에서는 다음과 같은 프로세스가 진행될 수 있으며, 세부 프로세스는 브랜드별·상품별로 상이할 수 있습니다.</span><span class="en">※ The following processes may be conducted during this Phase. Specific steps may vary by brand and product.</span></p>
       </div>
 <div class="phase-steps-grid">
@@ -1092,7 +1092,7 @@ button{cursor:pointer;font-family:var(--font)}
           
         </div>
       </div>
-            <div style="padding:14px 20px;border:1px solid rgba(0,0,0,0.6);border-radius:8px;margin-bottom:16px;background:rgba(0,0,0,0.6)">
+            <div style="padding:14px 20px;border:1px solid var(--border);border-radius:8px;margin-bottom:16px;background:var(--surface-alt)">
         <p style="font-size:13px;color:rgba(0,0,0,0.45);line-height:1.6;margin:0 0 12px 0"><span class="ko">※ 본 Phase에서는 다음과 같은 프로세스가 진행될 수 있으며, 세부 프로세스는 브랜드별·상품별로 상이할 수 있습니다.</span><span class="en">※ The following processes may be conducted during this Phase. Specific steps may vary by brand and product.</span></p>
       </div>
 <div class="phase-steps-grid">
@@ -1175,7 +1175,7 @@ button{cursor:pointer;font-family:var(--font)}
           
         </div>
       </div>
-            <div style="padding:14px 20px;border:1px solid rgba(0,0,0,0.6);border-radius:8px;margin-bottom:16px;background:rgba(0,0,0,0.6)">
+            <div style="padding:14px 20px;border:1px solid var(--border);border-radius:8px;margin-bottom:16px;background:var(--surface-alt)">
         <p style="font-size:13px;color:rgba(0,0,0,0.45);line-height:1.6;margin:0 0 12px 0"><span class="ko">※ 본 Phase에서는 다음과 같은 프로세스가 진행될 수 있으며, 세부 프로세스는 브랜드별·상품별로 상이할 수 있습니다.</span><span class="en">※ The following processes may be conducted during this Phase. Specific steps may vary by brand and product.</span></p>
       </div>
 <div class="phase-steps-grid">
@@ -2142,13 +2142,13 @@ button{cursor:pointer;font-family:var(--font)}
             <option value="service_voucher" style="display:none">B Type — 수출바우처 연계 계약</option>
           </select>
           <div style="margin-bottom:16px">
-          <label style="display:block;font-size:12px;color:rgba(0,0,0,0.6);margin-bottom:6px;font-family:var(--mono)">계약서 커스터마이징 (선택)</label>
+          <label style="display:block;font-size:12px;color:var(--text-muted);margin-bottom:6px;font-weight:600">계약서 커스터마이징 (선택)</label>
           <div style="display:flex;gap:8px;margin-bottom:8px">
-            <button onclick="toggleTemplateEditor()" id="template-edit-toggle" style="background:rgba(0,0,0,0.6);color:rgba(0,0,0,0.55);border:1px solid rgba(0,0,0,0.6);padding:6px 14px;border-radius:6px;font-size:12px;cursor:pointer">조항 편집 ▼</button>
-            <button onclick="resetTemplateEdits()" style="background:rgba(0,0,0,0.6);color:rgba(0,0,0,0.6);border:1px solid rgba(0,0,0,0.6);padding:6px 14px;border-radius:6px;font-size:12px;cursor:pointer">기본값 복원</button>
+            <button onclick="toggleTemplateEditor()" id="template-edit-toggle" style="background:#fff;color:var(--text);border:1px solid var(--border);padding:6px 14px;border-radius:6px;font-size:12px;cursor:pointer;font-weight:500">조항 편집 ▼</button>
+            <button onclick="resetTemplateEdits()" style="background:#fff;color:var(--text-muted);border:1px solid var(--border);padding:6px 14px;border-radius:6px;font-size:12px;cursor:pointer">기본값 복원</button>
           </div>
-          <div id="template-editor" style="display:none;max-height:400px;overflow-y:auto;border:1px solid rgba(0,0,0,0.6);border-radius:8px;padding:12px;background:rgba(0,0,0,0.2)">
-            <div id="template-editor-content" style="font-size:13px;color:rgba(0,0,0,0.55)">계약 유형을 선택하면 조항이 표시됩니다.</div>
+          <div id="template-editor" style="display:none;max-height:400px;overflow-y:auto;border:1px solid var(--border);border-radius:8px;padding:12px;background:var(--surface-alt)">
+            <div id="template-editor-content" style="font-size:13px;color:var(--text)">계약 유형을 선택하면 조항이 표시됩니다.</div>
           </div>
         </div>
         <button onclick="createContract()" style="background:var(--accent);color:var(--text);border:none;padding:12px 24px;border-radius:8px;font-weight:600;cursor:pointer;width:100%;font-size:14px">계약서 생성 및 발송</button>
@@ -2321,7 +2321,7 @@ button{cursor:pointer;font-family:var(--font)}
 <div id="view-portal-locked" class="view">
   <div class="dash-layout">
     <div class="sidebar">
-      <div class="sidebar-logo"><div class="sidebar-logo-icon" style="background:rgba(0,0,0,0.6)">?</div><div class="sidebar-logo-text"><span id="locked-brand-name">-</span> <span>Brand Portal</span></div></div>
+      <div class="sidebar-logo"><div class="sidebar-logo-icon" style="background:var(--accent)">?</div><div class="sidebar-logo-text"><span id="locked-brand-name">-</span> <span>Brand Portal</span></div></div>
       <div class="sidebar-nav">
         <div class="sidebar-item active"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>대시보드</div>
         <div class="sidebar-item" style="opacity:0.7;pointer-events:none"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>Phase 현황</div>
@@ -5740,21 +5740,21 @@ function formatFileSize(bytes) {
 
 <!-- Brand Password Change Modal -->
 <div id="brand-pw-modal" style="display:none;position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,0.7);backdrop-filter:blur(8px);display:none;align-items:center;justify-content:center">
-  <div style="background:#1a1a2e;border:1px solid rgba(0,0,0,0.6);border-radius:16px;padding:32px;max-width:420px;width:90%;position:relative">
+  <div style="background:#fff;border:1px solid var(--border);border-radius:16px;padding:32px;max-width:420px;width:90%;position:relative;box-shadow:0 24px 64px rgba(0,0,0,0.2)">
     <button onclick="hideBrandPwModal()" style="position:absolute;top:12px;right:12px;background:none;border:none;color:rgba(0,0,0,0.6);font-size:20px;cursor:pointer">&times;</button>
     <h3 style="color:var(--text);font-size:18px;margin-bottom:4px;letter-spacing:-0.5px">비밀번호 변경</h3>
     <p style="color:rgba(0,0,0,0.6);font-size:13px;margin-bottom:24px">포탈 로그인 비밀번호를 변경합니다.</p>
     <div style="margin-bottom:16px">
       <label style="display:block;font-size:12px;color:rgba(0,0,0,0.6);margin-bottom:6px;font-family:var(--mono)">현재 비밀번호</label>
-      <input type="password" id="brand-cur-pw" style="width:100%;padding:10px 14px;background:rgba(0,0,0,0.6);border:1px solid rgba(0,0,0,0.6);border-radius:8px;color:var(--text);font-size:14px;box-sizing:border-box" placeholder="현재 비밀번호 입력">
+      <input type="password" id="brand-cur-pw" style="width:100%;padding:10px 14px;background:var(--surface-alt);border:1px solid var(--border);border-radius:8px;color:var(--text);font-size:14px;box-sizing:border-box" placeholder="현재 비밀번호 입력">
     </div>
     <div style="margin-bottom:16px">
       <label style="display:block;font-size:12px;color:rgba(0,0,0,0.6);margin-bottom:6px;font-family:var(--mono)">새 비밀번호</label>
-      <input type="password" id="brand-new-pw" style="width:100%;padding:10px 14px;background:rgba(0,0,0,0.6);border:1px solid rgba(0,0,0,0.6);border-radius:8px;color:var(--text);font-size:14px;box-sizing:border-box" placeholder="4자 이상">
+      <input type="password" id="brand-new-pw" style="width:100%;padding:10px 14px;background:var(--surface-alt);border:1px solid var(--border);border-radius:8px;color:var(--text);font-size:14px;box-sizing:border-box" placeholder="4자 이상">
     </div>
     <div style="margin-bottom:24px">
       <label style="display:block;font-size:12px;color:rgba(0,0,0,0.6);margin-bottom:6px;font-family:var(--mono)">새 비밀번호 확인</label>
-      <input type="password" id="brand-cf-pw" style="width:100%;padding:10px 14px;background:rgba(0,0,0,0.6);border:1px solid rgba(0,0,0,0.6);border-radius:8px;color:var(--text);font-size:14px;box-sizing:border-box" placeholder="비밀번호 재입력">
+      <input type="password" id="brand-cf-pw" style="width:100%;padding:10px 14px;background:var(--surface-alt);border:1px solid var(--border);border-radius:8px;color:var(--text);font-size:14px;box-sizing:border-box" placeholder="비밀번호 재입력">
     </div>
     <div id="brand-pw-error" style="display:none;color:#ff3b30;font-size:13px;margin-bottom:12px"></div>
     <button onclick="submitBrandPwChange()" style="width:100%;background:#98fe00;color:#000;border:none;padding:12px;border-radius:8px;font-weight:600;font-size:15px;cursor:pointer">변경하기</button>
