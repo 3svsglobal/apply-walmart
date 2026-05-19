@@ -673,9 +673,20 @@ button{cursor:pointer;font-family:var(--font)}
 .sku-add-icon{font-size:28px;font-weight:300}
 .sku-add-text{font-size:13px;font-weight:500}
 
+/* ─── MOBILE NAV (햄버거 메뉴) ─── */
+#mobile-menu-btn{display:none;position:fixed;top:12px;left:12px;z-index:1100;width:42px;height:42px;border-radius:10px;background:rgba(20,20,24,0.92);border:1px solid rgba(255,255,255,0.12);align-items:center;justify-content:center;cursor:pointer;backdrop-filter:blur(12px);box-shadow:0 4px 16px rgba(0,0,0,0.4)}
+#mobile-menu-btn span{display:block;width:18px;height:2px;background:#fff;border-radius:2px;position:relative}
+#mobile-menu-btn span::before,#mobile-menu-btn span::after{content:'';position:absolute;left:0;width:18px;height:2px;background:#fff;border-radius:2px;transition:transform .2s}
+#mobile-menu-btn span::before{top:-6px}#mobile-menu-btn span::after{top:6px}
+#mobile-menu-btn.open span{background:transparent}
+#mobile-menu-btn.open span::before{transform:translateY(6px) rotate(45deg)}
+#mobile-menu-btn.open span::after{transform:translateY(-6px) rotate(-45deg)}
+#mobile-menu-backdrop{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.55);z-index:1000;backdrop-filter:blur(2px)}
+#mobile-menu-backdrop.show{display:block}
+
 /* ─── RESPONSIVE ─── */
 @media(max-width:1200px){.dash-grid{grid-template-columns:1fr}.stat-grid{grid-template-columns:repeat(2,1fr)}.pipeline-summary{grid-template-columns:repeat(3,1fr)}.portal-cost-grid{grid-template-columns:1fr}.review-body{grid-template-columns:1fr}.wm-sku-grid{grid-template-columns:1fr}.wm-info-grid{grid-template-columns:1fr}}
-@media(max-width:768px){:root{--sec-px:20px;--sec-py:80px}.tab-nav{height:56px;padding:0 16px}.hero{padding:0 20px}.hero h1{font-size:40px;letter-spacing:-2px}.hero-desc{font-size:16px}.st{font-size:28px;letter-spacing:-1px}.sd{font-size:16px;margin-bottom:36px}.login-section{grid-template-columns:1fr}.login-right{display:none}.login-left{padding:48px 20px}.dash-layout{grid-template-columns:1fr}.sidebar{display:none}.dash-content{padding:20px}.cta-apply-cards{grid-template-columns:1fr}.type-radio-group{grid-template-columns:1fr}.form-row{grid-template-columns:1fr}.proc-cards{grid-template-columns:1fr}.stats-bar-row{gap:36px}.stat-num{font-size:36px}.cta-sec h2{font-size:32px;letter-spacing:-1.2px}.cta-sec{padding:80px 20px 60px}.why-walmart-stats{grid-template-columns:1fr}.ww-stat .ww-num{font-size:36px}.compare-grid{grid-template-columns:1fr;gap:24px}.compare-vs{display:none}.compare-brand .cb-num{font-size:40px}.compare-section{padding:32px 20px}.success-cards{grid-template-columns:1fr}.hero-partners{display:none}.phase-deep{padding:24px}.phase-deep-header{flex-direction:column;gap:20px}.phase-deep-meta{justify-content:flex-start}.phase-steps-grid{grid-template-columns:1fr}.role-matrix{padding:24px}.role-matrix-header,.role-matrix-row{grid-template-columns:60px 1fr 1fr;gap:8px}.rmr-cell{font-size:13px}.review-type-select{grid-template-columns:1fr}.review-actions{flex-direction:column}.form-radio-inline{flex-direction:column}.form-nav{flex-direction:column;gap:12px}.form-nav .btn-outline,.form-nav .btn-primary{width:100%;justify-content:center}#form-steps{gap:0;overflow-x:auto;-webkit-overflow-scrolling:touch}.form-step{font-size:12px;padding:12px 12px}}
+@media(max-width:768px){:root{--sec-px:20px;--sec-py:80px}.tab-nav{height:56px;padding:0 16px}.hero{padding:0 20px}.hero h1{font-size:40px;letter-spacing:-2px}.hero-desc{font-size:16px}.st{font-size:28px;letter-spacing:-1px}.sd{font-size:16px;margin-bottom:36px}.login-section{grid-template-columns:1fr}.login-right{display:none}.login-left{padding:48px 20px}.dash-layout{grid-template-columns:1fr}.sidebar{position:fixed;top:0;left:0;width:260px;height:100vh;z-index:1050;transform:translateX(-100%);transition:transform .25s ease;background:rgba(15,15,18,0.98);backdrop-filter:blur(20px)}.sidebar.open{transform:translateX(0)}.dash-content{padding:20px}.dash-topbar{padding:16px 20px 16px 64px}#mobile-menu-btn[data-enabled="1"]{display:flex}.cta-apply-cards{grid-template-columns:1fr}.type-radio-group{grid-template-columns:1fr}.form-row{grid-template-columns:1fr}.proc-cards{grid-template-columns:1fr}.stats-bar-row{gap:36px}.stat-num{font-size:36px}.cta-sec h2{font-size:32px;letter-spacing:-1.2px}.cta-sec{padding:80px 20px 60px}.why-walmart-stats{grid-template-columns:1fr}.ww-stat .ww-num{font-size:36px}.compare-grid{grid-template-columns:1fr;gap:24px}.compare-vs{display:none}.compare-brand .cb-num{font-size:40px}.compare-section{padding:32px 20px}.success-cards{grid-template-columns:1fr}.hero-partners{display:none}.phase-deep{padding:24px}.phase-deep-header{flex-direction:column;gap:20px}.phase-deep-meta{justify-content:flex-start}.phase-steps-grid{grid-template-columns:1fr}.role-matrix{padding:24px}.role-matrix-header,.role-matrix-row{grid-template-columns:60px 1fr 1fr;gap:8px}.rmr-cell{font-size:13px}.review-type-select{grid-template-columns:1fr}.review-actions{flex-direction:column}.form-radio-inline{flex-direction:column}.form-nav{flex-direction:column;gap:12px}.form-nav .btn-outline,.form-nav .btn-primary{width:100%;justify-content:center}#form-steps{gap:0;overflow-x:auto;-webkit-overflow-scrolling:touch}.form-step{font-size:12px;padding:12px 12px}}
 
 /* ─── PRINT CSS (계약서 PDF 인쇄) ─── */
 @media print {
@@ -717,6 +728,10 @@ button{cursor:pointer;font-family:var(--font)}
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 </head>
 <body>
+
+<!-- MOBILE MENU (관리자/포탈 사이드바 토글) -->
+<button id="mobile-menu-btn" onclick="toggleMobileMenu()" aria-label="메뉴 열기"><span></span></button>
+<div id="mobile-menu-backdrop" onclick="closeMobileMenu()"></div>
 
 <!-- TAB NAV -->
 <div class="tab-nav">
@@ -1647,6 +1662,12 @@ button{cursor:pointer;font-family:var(--font)}
           <div class="stat-card"><div class="val" id="dash-stat-pending">-</div><div class="lbl">접수 심사 대기</div><div class="change warn" id="dash-stat-pending-sub">loading...</div></div>
           <div class="stat-card"><div class="val" id="dash-stat-contracts">-</div><div class="lbl">계약 현황</div><div class="change" id="dash-stat-contracts-sub">loading...</div></div>
           <div class="stat-card"><div class="val" id="dash-stat-completed">-</div><div class="lbl">서명 완료</div><div class="change" id="dash-stat-completed-sub">loading...</div></div>
+        </div>
+        <div class="stat-grid" style="margin-top:12px">
+          <div class="stat-card"><div class="val" id="dash-stat-approval">-</div><div class="lbl">승인률</div><div class="change" id="dash-stat-approval-sub">loading...</div></div>
+          <div class="stat-card"><div class="val" id="dash-stat-avgdays">-</div><div class="lbl">평균 처리일</div><div class="change" id="dash-stat-avgdays-sub">loading...</div></div>
+          <div class="stat-card"><div class="val" id="dash-stat-mtd">-</div><div class="lbl">이번 달 신규</div><div class="change" id="dash-stat-mtd-sub">loading...</div></div>
+          <div class="stat-card"><div class="val" id="dash-stat-attachments">-</div><div class="lbl">첨부 파일</div><div class="change" id="dash-stat-attachments-sub">loading...</div></div>
         </div>
         <div class="dash-grid">
           <div><div class="panel"><div class="panel-title">브랜드 파이프라인 <span class="count" id="admin-brand-count">0 brands</span></div>
@@ -3068,10 +3089,41 @@ function switchTab(id) {
   const tabNav = document.querySelector('.tab-nav');
   const internalViews = ['admin', 'portal', 'portal-locked', 'walmart', 'contract'];
   tabNav.style.display = internalViews.includes(id) ? 'none' : '';
+  // 모바일 햄버거 버튼: dash-layout이 있는 뷰에서만 활성
+  var menuBtn = document.getElementById('mobile-menu-btn');
+  if (menuBtn) {
+    var hasDashLayout = ['admin','portal','walmart','portal-locked'].indexOf(id) >= 0;
+    menuBtn.dataset.enabled = hasDashLayout ? '1' : '';
+  }
+  closeMobileMenu();
   window.scrollTo(0, 0);
   if (id === 'admin') showAdminView('dashboard');
   if (id === 'walmart') loadWmBrands();
 }
+
+function toggleMobileMenu() {
+  var view = document.querySelector('.view.active');
+  if (!view) return;
+  var sidebar = view.querySelector('.sidebar');
+  if (!sidebar) return;
+  var isOpen = sidebar.classList.toggle('open');
+  document.getElementById('mobile-menu-backdrop').classList.toggle('show', isOpen);
+  document.getElementById('mobile-menu-btn').classList.toggle('open', isOpen);
+}
+
+function closeMobileMenu() {
+  document.querySelectorAll('.sidebar.open').forEach(function(s) { s.classList.remove('open'); });
+  var bd = document.getElementById('mobile-menu-backdrop');
+  if (bd) bd.classList.remove('show');
+  var btn = document.getElementById('mobile-menu-btn');
+  if (btn) btn.classList.remove('open');
+}
+
+// 사이드바 항목 클릭 시 모바일에서 자동 닫힘
+document.addEventListener('click', function(e) {
+  var item = e.target.closest('.sidebar-item');
+  if (item && window.innerWidth <= 768) setTimeout(closeMobileMenu, 100);
+});
 
 // Admin sub-views
 function showAdminView(view) {
@@ -3808,7 +3860,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
 
-function createContract() {
+async function createContract() {
   var brandSel = document.getElementById('contract-brand-select');
   var typeSel = document.getElementById('contract-type-select');
   if (!brandSel.value) { alert('브랜드를 선택해주세요.'); return; }
@@ -3821,7 +3873,27 @@ function createContract() {
   var contractType = applyType === 'voucher' ? 'service_voucher' : typeSel.value;
   typeSel.value = contractType;
 
-  var newId = 'CTR-2026-' + String(contracts.length + 1).padStart(3, '0');
+  // 계약 ID: DB의 올해 최대 번호 + 1 (동시 생성 충돌 방지)
+  var year = new Date().getFullYear();
+  var prefix = 'CTR-' + year + '-';
+  var maxNum = 0;
+  if (supabase) {
+    try {
+      var idRes = await supabase.from('wm_contracts').select('id').like('id', prefix + '%');
+      if (idRes.data) {
+        idRes.data.forEach(function(r) {
+          var n = parseInt((r.id || '').replace(prefix, ''), 10);
+          if (!isNaN(n) && n > maxNum) maxNum = n;
+        });
+      }
+    } catch(e) { console.warn('contract id scan failed', e); }
+  }
+  // contracts 로컬 배열도 함께 고려
+  contracts.forEach(function(c) {
+    var n = parseInt((c.id || '').replace(prefix, ''), 10);
+    if (!isNaN(n) && n > maxNum) maxNum = n;
+  });
+  var newId = prefix + String(maxNum + 1).padStart(3, '0');
   var localContract = {
     id: newId,
     brandId: brandValue,
@@ -4005,6 +4077,14 @@ window.addEventListener('load', function() { checkContractUrl();
   if (!window.location.search.includes('contract=')) restoreSession(); });
 
 
+function openAllAttachments(urls) {
+  if (!Array.isArray(urls) || urls.length === 0) return;
+  if (urls.length > 6 && !confirm('첨부파일 ' + urls.length + '개를 모두 새 탭으로 엽니다. 계속할까요?')) return;
+  urls.forEach(function(u, i) {
+    setTimeout(function() { window.open(u, '_blank', 'noopener,noreferrer'); }, i * 80);
+  });
+}
+
 async function renderAdminReview() {
   var el = document.getElementById('admin-review-list');
   if (!el) return;
@@ -4026,10 +4106,22 @@ async function renderAdminReview() {
     var initial = (app.brand_name_ko || app.brand_name_en || '?')[0];
     var typeLabel = app.apply_type === 'voucher' ? '수출바우처' : '직접참여';
     var date = app.created_at ? app.created_at.slice(0,10) : '';
-    
+
+    // 첨부파일 개수 미리 계산
+    var attachedCount = 0;
+    if (app.attached_files) {
+      try {
+        var _list = JSON.parse(app.attached_files);
+        if (Array.isArray(_list)) attachedCount = _list.length;
+      } catch(e) {}
+    }
+    var attachBadge = attachedCount > 0
+      ? ' <span title="첨부파일 ' + attachedCount + '건" style="display:inline-flex;align-items:center;gap:4px;font-size:11px;padding:2px 8px;border-radius:999px;background:rgba(0,113,220,0.12);color:var(--accent);margin-left:6px;font-family:var(--mono);font-weight:600">📎 ' + attachedCount + '</span>'
+      : '';
+
     html += '<div class="review-card" data-app-id="' + app.id + '">' +
       '<div class="review-header"><div class="review-info"><div class="brand-icon">' + initial + '</div><div>' +
-      '<div class="brand-name">' + (app.brand_name_ko || app.brand_name_en) + ' <span class="brand-badge badge-pending">심사 대기</span></div>' +
+      '<div class="brand-name">' + (app.brand_name_ko || app.brand_name_en) + ' <span class="brand-badge badge-pending">심사 대기</span>' + attachBadge + '</div>' +
       '<div class="brand-sub">접수일: ' + date + ' · 신청 유형: ' + typeLabel + '</div>' +
       '</div></div></div>' +
       '<div class="review-body">';
@@ -4123,7 +4215,13 @@ async function renderAdminReview() {
       try {
         var attachedList = JSON.parse(app.attached_files);
         if (Array.isArray(attachedList) && attachedList.length > 0) {
-          html += '<div style="font-size:11px;color:rgba(255,255,255,0.65);margin:16px 0 8px;font-family:var(--mono);text-transform:uppercase;letter-spacing:1px;font-weight:600">첨부파일 (' + attachedList.length + ')</div>';
+          var _totalBytes = attachedList.reduce(function(s, x) { return s + (x.size || 0); }, 0);
+          var _totalStr = _totalBytes < 1048576 ? (_totalBytes/1024).toFixed(0) + ' KB' : (_totalBytes/1048576).toFixed(1) + ' MB';
+          var _urlsJson = JSON.stringify(attachedList.map(function(x){ return x.url; }).filter(Boolean)).replace(/"/g,'&quot;');
+          html += '<div style="display:flex;align-items:center;justify-content:space-between;margin:16px 0 8px">' +
+            '<div style="font-size:11px;color:rgba(255,255,255,0.65);font-family:var(--mono);text-transform:uppercase;letter-spacing:1px;font-weight:600">첨부파일 (' + attachedList.length + ') · ' + _totalStr + '</div>' +
+            '<button onclick="openAllAttachments(' + _urlsJson + ')" style="background:rgba(0,113,220,0.12);border:1px solid rgba(0,113,220,0.3);color:var(--accent);font-size:11px;font-family:var(--mono);font-weight:600;padding:4px 10px;border-radius:6px;cursor:pointer">↗ 전체 새 탭 열기</button>' +
+            '</div>';
           attachedList.forEach(function(f) {
             var fname = f.name || 'file';
             var fext = fname.split('.').pop().toLowerCase();
@@ -4196,7 +4294,26 @@ async function approveApplication(appId) {
 
   // Generate temp password
   var tempPw = 'wm' + Math.random().toString(36).slice(2, 8);
-  var brandSlug = (app.brand_name_en || app.brand_name_ko || 'brand').toLowerCase().replace(/[^a-z0-9]/g, '').slice(0, 20);
+  var baseSlug = (app.brand_name_en || app.brand_name_ko || 'brand').toLowerCase().replace(/[^a-z0-9]/g, '').slice(0, 20) || 'brand';
+  var brandSlug = baseSlug;
+  // 중복 체크 후 접미사 추가 (-2, -3, ...)
+  try {
+    var existing = await supabase.from('wm_brands').select('id').like('id', baseSlug + '%');
+    if (existing.data && existing.data.length > 0) {
+      // 이미 같은 application_id로 만든 게 있으면 그대로 쓰기
+      var sameApp = existing.data.find(function(r) { return r.id === baseSlug; });
+      // application_id로 매칭 확인
+      var dupRes = await supabase.from('wm_brands').select('id, application_id').eq('id', baseSlug).single();
+      if (dupRes.data && dupRes.data.application_id === appId) {
+        brandSlug = baseSlug; // 같은 신청 → 재승인이면 동일 slug 유지
+      } else if (dupRes.data) {
+        // 다른 신청이 이미 baseSlug 점유 → 접미사 부여
+        var n = 2;
+        while (existing.data.some(function(r){ return r.id === baseSlug + '-' + n; })) n++;
+        brandSlug = baseSlug + '-' + n;
+      }
+    }
+  } catch(e) { console.warn('slug dup check failed', e); }
   var loginEmail = app.contact_email;
 
   // Create brand record in wm_brands
@@ -4261,12 +4378,19 @@ async function rejectApplication(appId) {
   var reason = prompt('반려 사유를 입력하세요:');
   if (reason === null) return;
   if (supabase) {
+    var appRes = await supabase.from('wm_applications').select('contact_email, brand_name_ko, brand_name_en').eq('id', appId).single();
+    var app = appRes.data || {};
     await supabase.from('wm_applications').update({
       status: 'rejected',
       admin_notes: reason,
       reviewed_at: new Date().toISOString()
     }).eq('id', appId);
-    sendNotification('application_rejected', { message: '신청이 반려되었습니다. 사유: ' + (reason || '미지정'), appId: appId });
+    sendNotification('application_rejected', {
+      message: reason || '미지정',
+      brandName: app.brand_name_ko || app.brand_name_en || '신청 기업',
+      email: app.contact_email,
+      appId: appId
+    });
   }
   renderAdminReview();
 }
@@ -4404,6 +4528,54 @@ async function renderAdminDashboard() {
 
   document.getElementById('dash-stat-completed').textContent = completedContracts.length;
   document.getElementById('dash-stat-completed-sub').textContent = completedContracts.length > 0 ? completedContracts.length + ' fully executed' : 'none yet';
+
+  // ─── 추가 KPI: 승인률 / 평균 처리일 / 이달 신규 / 첨부파일 통계 ───
+  var processedApps = apps.filter(function(a) { return a.status === 'approved' || a.status === 'rejected' || a.status === 'contracted'; });
+  var approvedApps = apps.filter(function(a) { return a.status === 'approved' || a.status === 'contracted'; });
+  var approvalRate = processedApps.length > 0 ? Math.round(approvedApps.length / processedApps.length * 100) : 0;
+  document.getElementById('dash-stat-approval').textContent = processedApps.length > 0 ? approvalRate + '%' : '—';
+  document.getElementById('dash-stat-approval-sub').textContent = processedApps.length > 0 ? (approvedApps.length + '/' + processedApps.length + ' approved') : 'no data yet';
+
+  var daysSum = 0, daysCount = 0;
+  approvedApps.forEach(function(a) {
+    if (a.created_at && a.approved_at) {
+      var diff = (new Date(a.approved_at).getTime() - new Date(a.created_at).getTime()) / (1000 * 60 * 60 * 24);
+      if (diff >= 0 && diff < 365) { daysSum += diff; daysCount++; }
+    }
+  });
+  var avgDays = daysCount > 0 ? (daysSum / daysCount).toFixed(1) : '—';
+  document.getElementById('dash-stat-avgdays').textContent = avgDays + (daysCount > 0 ? 'd' : '');
+  document.getElementById('dash-stat-avgdays-sub').textContent = daysCount > 0 ? ('from submitted → approved') : 'no approvals yet';
+
+  var now = new Date();
+  var monthStart = new Date(now.getFullYear(), now.getMonth(), 1).getTime();
+  var mtdApps = apps.filter(function(a) { return a.created_at && new Date(a.created_at).getTime() >= monthStart; });
+  document.getElementById('dash-stat-mtd').textContent = mtdApps.length;
+  var prevMonthStart = new Date(now.getFullYear(), now.getMonth() - 1, 1).getTime();
+  var prevMonthApps = apps.filter(function(a) {
+    if (!a.created_at) return false;
+    var t = new Date(a.created_at).getTime();
+    return t >= prevMonthStart && t < monthStart;
+  });
+  var delta = mtdApps.length - prevMonthApps.length;
+  var deltaTxt = delta === 0 ? '동일' : (delta > 0 ? '↑ ' + delta : '↓ ' + Math.abs(delta));
+  document.getElementById('dash-stat-mtd-sub').textContent = 'vs 전월 ' + deltaTxt;
+
+  var fileCount = 0, totalBytes = 0;
+  apps.forEach(function(a) {
+    if (a.attached_files) {
+      try {
+        var list = JSON.parse(a.attached_files);
+        if (Array.isArray(list)) {
+          fileCount += list.length;
+          list.forEach(function(f) { if (f.size) totalBytes += f.size; });
+        }
+      } catch(e) {}
+    }
+  });
+  document.getElementById('dash-stat-attachments').textContent = fileCount;
+  var sizeStr = totalBytes < 1048576 ? (totalBytes/1024).toFixed(0) + ' KB' : (totalBytes < 1073741824 ? (totalBytes/1048576).toFixed(1) + ' MB' : (totalBytes/1073741824).toFixed(2) + ' GB');
+  document.getElementById('dash-stat-attachments-sub').textContent = fileCount > 0 ? (sizeStr + ' total') : 'no files yet';
 
   // Update sidebar badges
   var reviewBadge = document.querySelector('#admin-nav-review .sidebar-badge');

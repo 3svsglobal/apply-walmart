@@ -77,6 +77,32 @@ const emailTemplates: Record<string, (data: any) => { subject: string; html: str
     `,
   }),
 
+  application_rejected: (data) => ({
+    subject: `[월마트 입점] 신청 검토 결과 안내`,
+    to: [data.email || ADMIN_EMAIL],
+    html: `
+      <div style="font-family:sans-serif;max-width:600px;margin:0 auto;padding:20px">
+        <h2 style="color:#d4380d">신청 검토 결과 안내</h2>
+        <p>안녕하세요,</p>
+        <p>Walmart Marketplace 입점 프로그램에 관심을 가져주셔서 감사합니다.</p>
+        <p>아쉽게도 이번에는 입점 승인이 어렵게 되었음을 안내드립니다.</p>
+        <div style="background:#fff7e6;border-left:3px solid #f0ad4e;padding:12px 16px;border-radius:4px;margin:16px 0">
+          <p style="margin:0 0 4px;font-size:13px;color:#666">검토 의견</p>
+          <p style="margin:0;white-space:pre-wrap">${(data.message || '').replace(/^.*사유:\s*/, '')}</p>
+        </div>
+        <p>제품 라인업 보강이나 추가 자료 준비 후 재신청을 환영합니다.</p>
+        <p style="margin-top:20px">
+          <a href="https://www.applywalmart.info"
+             style="background:#0071dc;color:#fff;padding:12px 24px;border-radius:8px;text-decoration:none;display:inline-block">
+            프로그램 안내 보기
+          </a>
+        </p>
+        <hr style="border:none;border-top:1px solid #eee;margin:24px 0">
+        <p style="color:#999;font-size:12px">Walmart Entry Program by 3Stripe Venture Studio</p>
+      </div>
+    `,
+  }),
+
   contract_created: (data) => ({
     subject: `[월마트 입점] 계약서가 생성되었습니다 — ${data.brandName}`,
     to: [ADMIN_EMAIL],
