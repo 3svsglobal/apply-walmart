@@ -53,7 +53,7 @@ button{cursor:pointer;font-family:var(--font)}
 /* ─── TAB NAV ─── */
 .tab-nav{position:sticky;top:0;z-index:100;display:flex;align-items:center;height:64px;padding:0 var(--sec-px);background:rgba(255,255,255,0.92);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);border-bottom:1px solid var(--border);gap:8px;overflow-x:auto}
 .tab-logo{font-size:18px;font-weight:700;color:var(--text);margin-right:24px;white-space:nowrap}
-.tab-logo span{font-weight:400;opacity:.4}
+.tab-logo span{font-weight:400;opacity:.75}
 .tab-btn{padding:7px 16px;border:1px solid var(--border);border-radius:999px;background:transparent;color:var(--text-muted);font-family:var(--mono);font-size:11px;font-weight:400;text-transform:uppercase;letter-spacing:0.5px;transition:all .2s;white-space:nowrap}
 .tab-btn:hover{border-color:rgba(0,0,0,0.62);color:var(--text)}
 .tab-btn.active{background:var(--bg-dark);color:#fff;border-color:var(--bg-dark);font-weight:500}
@@ -77,7 +77,7 @@ button{cursor:pointer;font-family:var(--font)}
 
 /* ─── HERO ─── */
 .hero{min-height:100vh;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding:0 var(--sec-px);position:relative;overflow:hidden;background:var(--bg-dark);color:#fff}
-.hero-bg{position:absolute;inset:0;background-image:url('https://images.unsplash.com/photo-1604719312566-8912e9227c6a?w=1920&q=80');background-position:center;background-size:cover;background-repeat:no-repeat;opacity:0.15}
+.hero-bg{position:absolute;inset:0;background-image:url('https://images.unsplash.com/photo-1604719312566-8912e9227c6a?w=1920&q=80');background-position:center;background-size:cover;background-repeat:no-repeat;opacity:0.6}
 .hero-overlay{position:absolute;inset:0;background:linear-gradient(180deg,rgba(10,22,40,0.7) 0%,rgba(10,22,40,0.95) 100%)}
 .hero-inner{max-width:900px;margin:0 auto;width:100%;position:relative;z-index:2;display:flex;flex-direction:column;align-items:center}
 .hero-badge{display:inline-flex;align-items:center;gap:8px;padding:8px 18px;border:1px solid rgba(255,255,255,0.15);border-radius:999px;font-family:var(--mono);font-size:11px;font-weight:400;text-transform:uppercase;letter-spacing:1px;color:rgba(255,255,255,0.5);margin-bottom:32px;background:rgba(255,255,255,0.04)}
@@ -88,7 +88,7 @@ button{cursor:pointer;font-family:var(--font)}
 .hero-btns{display:flex;gap:12px;align-items:center;flex-wrap:wrap;justify-content:center}
 .hero-partners{margin-top:72px;display:flex;flex-direction:column;align-items:center;gap:20px}
 .hero-partners-label{font-family:var(--mono);font-size:11px;color:rgba(255,255,255,0.2);text-transform:uppercase;letter-spacing:1.5px}
-.hero-partners-row{display:flex;gap:40px;align-items:center;opacity:0.3}
+.hero-partners-row{display:flex;gap:40px;align-items:center;opacity:0.7}
 .hero-partners-row span{font-size:15px;font-weight:600;color:#fff;white-space:nowrap}
 
 /* ─── STATS BAR ─── */
@@ -558,7 +558,7 @@ button{cursor:pointer;font-family:var(--font)}
 .sig-actions button{padding:10px 24px;border-radius:8px;font-weight:600;cursor:pointer;border:none;font-size:14px}
 .sig-btn-cancel{background:var(--surface-alt);color:var(--text);border:1px solid var(--border)}
 .sig-btn-sign{background:var(--accent);color:#fff}
-.sig-btn-sign:disabled{opacity:.4;cursor:not-allowed}
+.sig-btn-sign:disabled{opacity:.75;cursor:not-allowed}
 .contract-card{background:var(--surface);color:var(--text);border:1px solid var(--border);border-radius:12px;padding:20px;margin-bottom:12px;transition:all .2s}
 .contract-card:hover{border-color:rgba(0,113,220,0.4);box-shadow:0 4px 12px rgba(0,0,0,0.04)}
 .contract-card h4{margin:0 0 4px;font-size:16px;color:var(--text)}
@@ -646,7 +646,7 @@ button{cursor:pointer;font-family:var(--font)}
 .cl-check{width:22px;height:22px;border-radius:50%;border:2px solid rgba(255,255,255,0.15);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:12px;transition:all .2s}
 .cl-item.done .cl-check{background:var(--lime);border-color:var(--lime);color:#fff}
 .cl-item.active .cl-check{background:var(--accent);border-color:var(--accent);color:#fff;animation:pulse-check 2s infinite}
-.cl-item.pending .cl-check{opacity:0.3}
+.cl-item.pending .cl-check{opacity:0.7}
 @keyframes pulse-check{0%,100%{box-shadow:0 0 0 0 rgba(0,113,220,0.4)}50%{box-shadow:0 0 0 6px rgba(0,113,220,0)}}
 .cl-body{flex:1;min-width:0}
 .cl-title{font-size:14px;font-weight:600;color:rgba(255,255,255,0.85);letter-spacing:-0.3px}
@@ -1694,7 +1694,7 @@ button{cursor:pointer;font-family:var(--font)}
           <p style="font-size:13px;color:rgba(255,255,255,0.3)">신청 기업을 검토하고 참여 유형을 확정한 뒤 승인하세요. 승인된 기업만 전용 포털에 접근할 수 있습니다.</p>
         </div>
 
-        <div id="admin-review-list"><div style="text-align:center;padding:40px;opacity:.4">Loading applications...</div></div>
+        <div id="admin-review-list"><div style="text-align:center;padding:40px;opacity:.75">Loading applications...</div></div>
       </div>
 
       <!-- ADMIN: CMS View (콘텐츠 관리) -->
@@ -2151,7 +2151,7 @@ button{cursor:pointer;font-family:var(--font)}
             <div id="template-editor-content" style="font-size:13px;color:rgba(255,255,255,0.5)">계약 유형을 선택하면 조항이 표시됩니다.</div>
           </div>
         </div>
-        <button onclick="createContract()" style="background:#98fe00;color:#000;border:none;padding:10px 24px;border-radius:8px;font-weight:600;cursor:pointer;width:100%">계약서 생성 및 발송</button>
+        <button onclick="createContract()" style="background:var(--accent);color:#fff;border:none;padding:12px 24px;border-radius:8px;font-weight:600;cursor:pointer;width:100%;font-size:14px">계약서 생성 및 발송</button>
         </div>
         <div id="admin-contracts-list"></div>
       </div>
@@ -2324,10 +2324,10 @@ button{cursor:pointer;font-family:var(--font)}
       <div class="sidebar-logo"><div class="sidebar-logo-icon" style="background:rgba(255,255,255,0.1)">?</div><div class="sidebar-logo-text"><span id="locked-brand-name">-</span> <span>Brand Portal</span></div></div>
       <div class="sidebar-nav">
         <div class="sidebar-item active"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>대시보드</div>
-        <div class="sidebar-item" style="opacity:0.25;pointer-events:none"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>Phase 현황</div>
-        <div class="sidebar-item" style="opacity:0.25;pointer-events:none"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>서류 관리</div>
-        <div class="sidebar-item" style="opacity:0.25;pointer-events:none"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>미팅 일정</div>
-        <div class="sidebar-item" style="opacity:0.25;pointer-events:none"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>비용 현황</div>
+        <div class="sidebar-item" style="opacity:0.7;pointer-events:none"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>Phase 현황</div>
+        <div class="sidebar-item" style="opacity:0.7;pointer-events:none"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>서류 관리</div>
+        <div class="sidebar-item" style="opacity:0.7;pointer-events:none"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>미팅 일정</div>
+        <div class="sidebar-item" style="opacity:0.7;pointer-events:none"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>비용 현황</div>
       </div>
       <div class="sidebar-bottom"><div style="cursor:pointer;color:rgba(255,255,255,0.3);margin-bottom:8px" onclick="showBrandPwChange()">비밀번호 변경</div><div style="cursor:pointer;color:rgba(255,255,255,0.3);margin-bottom:8px" onclick="sessionStorage.removeItem('wm_session');switchTab('landing')">← 로그아웃</div>Walmart Entry Program<br>by 3Stripe Venture Studio</div>
     </div>
@@ -3746,7 +3746,7 @@ function renderContractPage(contractId) {
       }
       if (sealZone) {
         sealZone.classList.add('has-file');
-        sealZone.innerHTML = sig.seal ? '<img src="' + sig.seal + '">' : '<div style="font-style:italic;opacity:.4;padding:20px">No seal uploaded</div>';
+        sealZone.innerHTML = sig.seal ? '<img src="' + sig.seal + '">' : '<div style="font-style:italic;opacity:.75;padding:20px">No seal uploaded</div>';
       }
     } else {
       badge.className = 'contract-badge pending';
@@ -4018,7 +4018,7 @@ function _renderAdminContractsList() {
       renderSignerPill(c, 'walmart', 'Startup Junkie') +
       '</div>' +
       '<div style="background:rgba(0,0,0,.04);border-radius:8px;padding:8px 12px;margin:8px 0;display:flex;align-items:center;gap:8px">' +
-      '<span style="font-family:var(--mono);font-size:11px;opacity:.4;flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">' + link + '</span>' +
+      '<span style="font-family:var(--mono);font-size:11px;opacity:.75;flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">' + link + '</span>' +
       '<button onclick="copyContractLink(\'' + c.id + '\')" style="background:rgba(0,0,0,.1);color:var(--text);border:none;padding:4px 12px;border-radius:6px;font-size:12px;cursor:pointer;white-space:nowrap">Copy Link</button>' +
       '</div>' +
       '<div style="display:flex;gap:8px">';
@@ -4030,7 +4030,7 @@ function _renderAdminContractsList() {
     }
     html += '<button onclick="previewContract(\'' + c.id + '\')" style="background:rgba(0,0,0,.08);color:var(--text);border:none;padding:6px 16px;border-radius:6px;font-size:13px;cursor:pointer">계약서 보기</button></div></div>';
   });
-  if (contracts.length === 0) html = '<div style="text-align:center;padding:40px;opacity:.4">생성된 계약이 없습니다.</div>';
+  if (contracts.length === 0) html = '<div style="text-align:center;padding:40px;opacity:.75">생성된 계약이 없습니다.</div>';
   el.innerHTML = html;
 }
 
@@ -4064,7 +4064,7 @@ function approvePortalAccess(brandId) {
 // Walmart brand detail: contracts section
 function getWmContractsHtml(brandId) {
   var brandContracts = contracts.filter(function(c){ return c.brandId === brandId; });
-  if (brandContracts.length === 0) return '<div style="text-align:center;padding:20px;opacity:.4">No contracts yet</div>';
+  if (brandContracts.length === 0) return '<div style="text-align:center;padding:20px;opacity:.75">No contracts yet</div>';
   var sessionRole = (typeof _detectSessionRole === 'function') ? _detectSessionRole() : null;
   var html = '';
   brandContracts.forEach(function(c) {
@@ -4112,11 +4112,11 @@ function openAllAttachments(urls) {
 async function renderAdminReview() {
   var el = document.getElementById('admin-review-list');
   if (!el) return;
-  el.innerHTML = '<div style="text-align:center;padding:40px;opacity:.4">Loading...</div>';
+  el.innerHTML = '<div style="text-align:center;padding:40px;opacity:.75">Loading...</div>';
   
   var apps = await dbLoadApplications();
   if (!apps || apps.length === 0) {
-    el.innerHTML = '<div style="text-align:center;padding:40px;opacity:.4">접수된 신청이 없습니다.</div>';
+    el.innerHTML = '<div style="text-align:center;padding:40px;opacity:.75">접수된 신청이 없습니다.</div>';
     return;
   }
   
@@ -4310,7 +4310,7 @@ async function renderAdminReview() {
     }
   });
   
-  el.innerHTML = html || '<div style="text-align:center;padding:40px;opacity:.4">접수된 신청이 없습니다.</div>';
+  el.innerHTML = html || '<div style="text-align:center;padding:40px;opacity:.75">접수된 신청이 없습니다.</div>';
 }
 
 async function approveApplication(appId) {
@@ -4643,7 +4643,7 @@ async function renderAdminDashboard() {
     var date = a.created_at ? a.created_at.slice(0, 10) : '';
     var icon = a.status === 'approved' ? '✅' : a.status === 'rejected' ? '❌' : '📋';
     var label = a.status === 'approved' ? '승인됨' : a.status === 'rejected' ? '반려' : '신규 접수';
-    activities.push({ date: a.created_at || '', html: '<div style="padding:8px 0;border-bottom:1px solid rgba(0,0,0,0.04);font-size:13px"><span style="margin-right:8px">' + icon + '</span>' + (a.brand_name_ko || a.brand_name_en) + ' — ' + label + '<div style="font-size:11px;opacity:.3;margin-top:2px">' + date + '</div></div>' });
+    activities.push({ date: a.created_at || '', html: '<div style="padding:8px 0;border-bottom:1px solid rgba(0,0,0,0.04);font-size:13px"><span style="margin-right:8px">' + icon + '</span>' + (a.brand_name_ko || a.brand_name_en) + ' — ' + label + '<div style="font-size:11px;opacity:.7;margin-top:2px">' + date + '</div></div>' });
   });
 
   ctrs.slice(0, 3).forEach(function(c) {
@@ -4651,7 +4651,7 @@ async function renderAdminDashboard() {
     var signCount = [c.sig_brand_signed, c.sig_admin_signed, c.sig_walmart_signed].filter(Boolean).length;
     var icon = signCount === 3 ? '📝' : '✍️';
     var label = signCount === 3 ? '서명 완료' : signCount + '/3 서명';
-    activities.push({ date: c.created_at || '', html: '<div style="padding:8px 0;border-bottom:1px solid rgba(0,0,0,0.04);font-size:13px"><span style="margin-right:8px">' + icon + '</span>' + (c.brand_name_ko || c.id) + ' — ' + label + '<div style="font-size:11px;opacity:.3;margin-top:2px">' + date + '</div></div>' });
+    activities.push({ date: c.created_at || '', html: '<div style="padding:8px 0;border-bottom:1px solid rgba(0,0,0,0.04);font-size:13px"><span style="margin-right:8px">' + icon + '</span>' + (c.brand_name_ko || c.id) + ' — ' + label + '<div style="font-size:11px;opacity:.7;margin-top:2px">' + date + '</div></div>' });
   });
 
   activities.sort(function(a, b) { return b.date.localeCompare(a.date); });
@@ -5342,7 +5342,7 @@ function showWmBrandDetailDB(brandId) {
   container.innerHTML = '<button class="wm-detail-back" onclick="showWmView(\x27pipeline\x27);loadWmBrands()">← Back to Pipeline</button>' +
     '<div class="wm-brand-header"><div class="brand-icon" style="width:48px;height:48px;font-size:20px;border-radius:12px">' + (brand.nameEn || brand.name || '?')[0].toUpperCase() + '</div><div><h2 style="margin:0;font-size:22px">' + brand.name + '</h2><p style="margin:4px 0 0;opacity:.6">' + phaseLabel + ' · ' + (brand.info.category || '-') + '</p></div></div>' +
     '<div class="wm-section"><div class="wm-section-title">Phase 관리</div><div style="display:flex;gap:8px;flex-wrap:wrap">' + phaseBtns + '</div></div>' +
-    '<div class="wm-section"><div class="wm-section-title">Company Information</div><div class="wm-info-grid">' + (infoHtml || '<div style="opacity:.3">정보 없음</div>') + '</div></div>' +
+    '<div class="wm-section"><div class="wm-section-title">Company Information</div><div class="wm-info-grid">' + (infoHtml || '<div style="opacity:.7">정보 없음</div>') + '</div></div>' +
     '<div class="wm-section"><div class="wm-section-title">Messages</div><button id="wm-msg-btn" style="background:rgba(0,113,220,0.1);color:var(--accent);border:1px solid rgba(0,113,220,0.2);padding:8px 16px;border-radius:8px;cursor:pointer;font-size:13px">메시지 확인 / 답변</button></div>' +
     '<div class="wm-section"><div class="wm-section-title">Contracts</div>' + getWmContractsHtml(brandId) + '</div>';
 }
@@ -5700,7 +5700,7 @@ function formatFileSize(bytes) {
     <div id="contract-complete-banner" class="sig-complete-banner" style="display:none">
       <h3>All Parties Have Signed</h3>
       <p>This contract is fully executed. All parties will receive a confirmation.</p>
-      <div style="margin-top:12px;font-family:var(--mono);font-size:12px;opacity:.4" id="contract-complete-timestamp"></div>
+      <div style="margin-top:12px;font-family:var(--mono);font-size:12px;opacity:.75" id="contract-complete-timestamp"></div>
     </div>
 
     <!-- Contract Execution Info (print only) -->
