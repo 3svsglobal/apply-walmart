@@ -1383,6 +1383,14 @@ button{cursor:pointer;font-family:var(--font)}
       <h3 class="form-sec-title"><span class="ko">브랜드 정보</span><span class="en">Brand Information</span></h3>
       <p class="form-sec-desc"><span class="ko">브랜드와 제품에 대한 기본 정보를 입력해주세요.</span><span class="en">Please provide basic information about your brand and products.</span></p>
 
+      <div style="padding:16px 20px;border:1px solid rgba(0,113,220,0.18);border-radius:var(--radius);margin-bottom:24px;background:var(--accent-light);display:flex;gap:12px;align-items:flex-start">
+        <div style="font-size:20px;line-height:1.2">💡</div>
+        <div style="font-size:13.5px;line-height:1.65;color:var(--text)">
+          <strong style="color:var(--accent);font-weight:700"><span class="ko">작성 안내</span><span class="en">A quick note before you start</span></strong><br>
+          <span class="ko">한 번 신청·입력하신 후에도 모든 항목은 실무자와의 미팅을 통해 자유롭게 수정·보완할 수 있습니다. 지금은 <strong>알고 계신 정보 위주로 편하게</strong> 적어주시면 충분합니다. 일부 항목을 모르거나 확정되지 않았다면 비워두거나 "미정"으로 두셔도 좋습니다.</span><span class="en">All entries can be freely revised or expanded later in a working session with our team. Just fill in what you currently know — feel free to leave anything uncertain blank or mark it as "TBD". This is not a final commitment.</span>
+        </div>
+      </div>
+
       <div class="form-field-label"><span class="ko">브랜드명 *</span><span class="en">Brand Name *</span></div>
       <div style="margin-bottom:12px"><input class="form-input" name="Brand Name" placeholder="Please enter in English (e.g., Bibigo, Sulwhasoo)" data-req="1"></div>
 
@@ -1422,6 +1430,54 @@ button{cursor:pointer;font-family:var(--font)}
           <option>50,000 to 100,000</option>
           <option>Over 100,000</option>
         </select>
+      </div>
+
+      <!-- ─── 리테일 채널 / 월마트 전략 ─── -->
+      <div style="margin-top:28px;margin-bottom:12px;padding-top:20px;border-top:1px dashed var(--border)">
+        <div style="font-size:13px;font-weight:700;color:var(--accent);margin-bottom:4px;font-family:var(--font)"><span class="ko">/ 리테일 채널 & 월마트 전략</span><span class="en">/ Retail Channels & Walmart Strategy</span></div>
+        <div style="font-size:12.5px;color:var(--text-muted);line-height:1.6"><span class="ko">현재 다른 리테일 채널 상황과 월마트 진출 전략을 알려주세요. 확정되지 않은 항목은 가볍게 표시만 해주셔도 됩니다.</span><span class="en">Tell us about your current retail channels and Walmart strategy. For uncertain items, a rough indication is enough.</span></div>
+      </div>
+
+      <div class="form-field-label"><span class="ko">미국·해외에서 이미 접촉 중이거나 판매 중인 다른 리테일 채널이 있나요?</span><span class="en">Any other US/overseas retail channels you're already in contact with or selling through?</span></div>
+      <div class="form-radio-inline" data-radio-name="other-retail">
+        <label class="form-radio-pill"><input type="radio" name="other-retail" value="selling"><span class="ko">판매 중</span><span class="en">Selling</span></label>
+        <label class="form-radio-pill"><input type="radio" name="other-retail" value="in-talks"><span class="ko">접촉/논의 중</span><span class="en">In talks</span></label>
+        <label class="form-radio-pill"><input type="radio" name="other-retail" value="none"><span class="ko">없음</span><span class="en">None yet</span></label>
+        <label class="form-radio-pill"><input type="radio" name="other-retail" value="undecided"><span class="ko">미정</span><span class="en">TBD</span></label>
+      </div>
+
+      <div class="form-field-label" style="margin-top:12px"><span class="ko">어떤 채널인가요? (있다면)</span><span class="en">Which channels? (if any)</span></div>
+      <div style="margin-bottom:12px"><textarea class="form-input" name="Other Retail Channels" placeholder="e.g., Costco (in talks), Whole Foods (selling), Amazon, HEB, Kroger, etc." rows="2" style="resize:vertical"></textarea></div>
+
+      <div class="form-field-label"><span class="ko">채널별로 별도의 세일즈 조직(브로커/세일즈팀)을 갖추고 있나요?</span><span class="en">Do you have separate sales teams or brokers per channel?</span></div>
+      <div class="form-radio-inline" data-radio-name="channel-sales-org">
+        <label class="form-radio-pill"><input type="radio" name="channel-sales-org" value="yes"><span class="ko">예</span><span class="en">Yes</span></label>
+        <label class="form-radio-pill"><input type="radio" name="channel-sales-org" value="partial"><span class="ko">일부</span><span class="en">Partial</span></label>
+        <label class="form-radio-pill"><input type="radio" name="channel-sales-org" value="no"><span class="ko">아니오</span><span class="en">No</span></label>
+        <label class="form-radio-pill"><input type="radio" name="channel-sales-org" value="undecided"><span class="ko">미정</span><span class="en">TBD</span></label>
+      </div>
+
+      <div class="form-field-label" style="margin-top:12px"><span class="ko">Sam's Club 진출도 함께 희망하시나요?</span><span class="en">Are you also interested in entering Sam's Club?</span> <span style="font-weight:400;color:var(--text-muted)"><span class="ko">(월마트와 같은 패밀리사)</span><span class="en">(part of the Walmart family)</span></span></div>
+      <div class="form-radio-inline" data-radio-name="sams-club">
+        <label class="form-radio-pill"><input type="radio" name="sams-club" value="yes"><span class="ko">예, 희망</span><span class="en">Yes</span></label>
+        <label class="form-radio-pill"><input type="radio" name="sams-club" value="considering"><span class="ko">고려 중</span><span class="en">Considering</span></label>
+        <label class="form-radio-pill"><input type="radio" name="sams-club" value="walmart-only"><span class="ko">월마트만</span><span class="en">Walmart only</span></label>
+        <label class="form-radio-pill"><input type="radio" name="sams-club" value="undecided"><span class="ko">미정</span><span class="en">TBD</span></label>
+      </div>
+
+      <div class="form-field-label" style="margin-top:12px"><span class="ko">Walmart / Sam's Club의 PB(자체 브랜드) 상품으로 진행하는 것도 오픈되어 있나요?</span><span class="en">Are you open to manufacturing under Walmart / Sam's Club private label (PB)?</span></div>
+      <div class="form-radio-inline" data-radio-name="pb-open">
+        <label class="form-radio-pill"><input type="radio" name="pb-open" value="open"><span class="ko">오픈</span><span class="en">Open to it</span></label>
+        <label class="form-radio-pill"><input type="radio" name="pb-open" value="considering"><span class="ko">고려 중</span><span class="en">Considering</span></label>
+        <label class="form-radio-pill"><input type="radio" name="pb-open" value="brand-only"><span class="ko">자사 브랜드만</span><span class="en">Own brand only</span></label>
+        <label class="form-radio-pill"><input type="radio" name="pb-open" value="undecided"><span class="ko">미정</span><span class="en">TBD</span></label>
+      </div>
+
+      <div class="form-field-label" style="margin-top:12px"><span class="ko">전체 전략 방향</span><span class="en">Overall strategic direction</span></div>
+      <div class="form-radio-inline" data-radio-name="strategy">
+        <label class="form-radio-pill"><input type="radio" name="strategy" value="walmart-focus"><span class="ko">월마트 집중</span><span class="en">Walmart-focused</span></label>
+        <label class="form-radio-pill"><input type="radio" name="strategy" value="multi-retail"><span class="ko">멀티 리테일</span><span class="en">Multi-retail</span></label>
+        <label class="form-radio-pill"><input type="radio" name="strategy" value="undecided"><span class="ko">아직 미정</span><span class="en">TBD</span></label>
       </div>
 
       <div class="form-nav"><button class="btn-outline" onclick="goFormStep(0)"><span class="ko">← 이전</span><span class="en">← Previous</span></button><button class="btn-primary" onclick="validateAndGo(1, 2)"><span class="ko">다음: 수출 & 물류 →</span><span class="en">Next: Export & Logistics →</span></button></div>
@@ -2534,7 +2590,13 @@ async function dbSaveApplication(formData) {
     'mfg-type': 'mfg_type',
     'eng-team': 'english_team',
     'mkt-budget': 'marketing_budget',
-    'SKU Description': 'sku_description'
+    'SKU Description': 'sku_description',
+    'Other Retail Channels': 'other_retail_channels',
+    'other-retail': 'other_retail_status',
+    'channel-sales-org': 'channel_sales_org',
+    'sams-club': 'sams_club_interest',
+    'pb-open': 'pb_open',
+    'strategy': 'strategy_direction'
   };
   var extraData = {};
   var _firstName = '', _lastName = '', _phoneCode = '', _phone = '';
@@ -3034,7 +3096,8 @@ function submitApply() {
   });
 
   // Radio buttons
-  ['export-exp','us-warehouse','packaging','mfg-type','eng-team','mkt-budget'].forEach(name => {
+  ['export-exp','us-warehouse','packaging','mfg-type','eng-team','mkt-budget',
+   'other-retail','channel-sales-org','sams-club','pb-open','strategy'].forEach(name => {
     const checked = document.querySelector('input[name="' + name + '"]:checked');
     fd.append(name, checked ? checked.value : 'N/A');
   });
@@ -4213,7 +4276,13 @@ async function renderAdminReview() {
         'mfg_type': '제조 유형',
         'english_team': '영어 가능 인력',
         'marketing_budget': '마케팅 예산',
-        'sku_description': '주요 SKU / 제품 정보'
+        'sku_description': '주요 SKU / 제품 정보',
+        'other_retail_status': '타 리테일 채널 상태',
+        'other_retail_channels': '타 리테일 채널 (상세)',
+        'channel_sales_org': '채널별 세일즈 조직',
+        'sams_club_interest': "Sam's Club 진출 의향",
+        'pb_open': 'PB 상품 가능성',
+        'strategy_direction': '전략 방향'
       };
       html += '<div style="font-size:12px;color:var(--text-muted);margin:16px 0 8px;font-family:var(--font);letter-spacing:0;font-weight:600">추가 정보</div>';
       Object.keys(extra).forEach(function(key) {
