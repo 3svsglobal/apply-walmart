@@ -5232,8 +5232,8 @@ async function renderAdminDashboard() {
     return t >= prevMonthStart && t < monthStart;
   });
   var delta = mtdApps.length - prevMonthApps.length;
-  var deltaTxt = delta === 0 ? '동일' : (delta > 0 ? '↑ ' + delta : '↓ ' + Math.abs(delta));
-  document.getElementById('dash-stat-mtd-sub').textContent = 'vs 전월 ' + deltaTxt;
+  var deltaTxt = delta === 0 ? _kn('동일','same') : (delta > 0 ? '↑ ' + delta : '↓ ' + Math.abs(delta));
+  document.getElementById('dash-stat-mtd-sub').textContent = _kn('vs 전월 ','vs last month ') + deltaTxt;
 
   var fileCount = 0, totalBytes = 0;
   apps.forEach(function(a) {
@@ -5269,7 +5269,7 @@ async function renderAdminDashboard() {
     brands.forEach(function(b) {
       var initial = (b.name_ko || b.name_en || '?')[0];
       var phaseLbl = (b.current_phase || 'contract').replace('phase', 'Phase ');
-      var typeBadge = b.apply_type === 'voucher' ? '<span style="font-size:10px;padding:2px 8px;border-radius:999px;background:rgba(0,135,90,0.15);color:var(--lime);margin-left:6px">바우처</span>' : '<span style="font-size:10px;padding:2px 8px;border-radius:999px;background:rgba(0,113,220,0.15);color:var(--accent);margin-left:6px">직접참여</span>';
+      var typeBadge = b.apply_type === 'voucher' ? '<span style="font-size:10px;padding:2px 8px;border-radius:999px;background:rgba(0,135,90,0.15);color:var(--lime);margin-left:6px">' + _kn('바우처','Voucher') + '</span>' : '<span style="font-size:10px;padding:2px 8px;border-radius:999px;background:rgba(0,113,220,0.15);color:var(--accent);margin-left:6px">' + _kn('직접참여','Direct') + '</span>';
       var statusDot = b.portal_active ? '<div style="width:6px;height:6px;border-radius:50%;background:#00d68f"></div>' : '<div style="width:6px;height:6px;border-radius:50%;background:rgba(0,0,0,0.15)"></div>';
       var brandIdEsc = (b.id || '').replace(/'/g, "\\'");
       var brandNameEsc = (b.name_ko || b.name_en || '').replace(/'/g, "\\'");
