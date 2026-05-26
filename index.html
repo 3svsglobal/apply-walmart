@@ -1796,20 +1796,20 @@ button{cursor:pointer;font-family:var(--font)}
     <div class="sidebar">
       <div class="sidebar-logo"><div class="sidebar-logo-icon">W</div><div class="sidebar-logo-text">3SVS Admin <span>Walmart Program</span></div></div>
       <div class="sidebar-nav">
-        <div class="sidebar-item" onclick="showAdminView('dashboard')" id="admin-nav-dashboard"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>대시보드</div>
-        <div class="sidebar-item" onclick="showAdminView('brands')" id="admin-nav-brands"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 22V4a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v18Z"/><path d="M6 12H4a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h2"/><path d="M18 9h2a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2h-2"/></svg>브랜드 관리<span class="sidebar-badge">3</span></div>
-        <div class="sidebar-item" onclick="showAdminView('review')" id="admin-nav-review"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><rect x="8" y="2" width="8" height="4" rx="1"/></svg>접수 심사<span class="sidebar-badge">2</span></div>
-        <div class="sidebar-item" onclick="showAdminView('cost')" id="admin-nav-cost"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>비용 정산</div>
-        <div class="sidebar-item" onclick="showAdminView('cms')" id="admin-nav-cms"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>콘텐츠 관리</div>
+        <div class="sidebar-item" onclick="showAdminView('dashboard')" id="admin-nav-dashboard"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg><span class="ko">대시보드</span><span class="en">Dashboard</span></div>
+        <div class="sidebar-item" onclick="showAdminView('brands')" id="admin-nav-brands"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 22V4a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v18Z"/><path d="M6 12H4a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h2"/><path d="M18 9h2a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2h-2"/></svg><span class="ko">브랜드 관리</span><span class="en">Brands</span><span class="sidebar-badge">3</span></div>
+        <div class="sidebar-item" onclick="showAdminView('review')" id="admin-nav-review"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><rect x="8" y="2" width="8" height="4" rx="1"/></svg><span class="ko">접수 심사</span><span class="en">Review</span><span class="sidebar-badge">2</span></div>
+        <div class="sidebar-item" onclick="showAdminView('cost')" id="admin-nav-cost"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg><span class="ko">비용 정산</span><span class="en">Settlement</span></div>
+        <div class="sidebar-item" onclick="showAdminView('cms')" id="admin-nav-cms"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg><span class="ko">콘텐츠 관리</span><span class="en">CMS</span></div>
         <!-- VOUCHER_HIDDEN: 바우처 사업 일시 중단 (2026-04-30). 재활성화 시 style="display:none" 제거 -->
-        <div class="sidebar-item" onclick="showAdminView('voucher')" id="admin-nav-voucher" style="display:none"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>수출바우처</div>
-        <div class="sidebar-item" onclick="showAdminView('contracts')" id="admin-nav-contracts"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>계약 관리</div>
+        <div class="sidebar-item" onclick="showAdminView('voucher')" id="admin-nav-voucher" style="display:none"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg><span class="ko">수출바우처</span><span class="en">Voucher</span></div>
+        <div class="sidebar-item" onclick="showAdminView('contracts')" id="admin-nav-contracts"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg><span class="ko">계약 관리</span><span class="en">Contracts</span></div>
         <div class="sidebar-item" onclick="showAdminView('settings')" id="admin-nav-settings"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>설정</div>
       </div>
-      <div class="sidebar-bottom"><div style="cursor:pointer;color:rgba(0,0,0,0.6);margin-bottom:8px" onclick="showBrandPwChange()">비밀번호 변경</div><div style="cursor:pointer;color:rgba(0,0,0,0.6);margin-bottom:8px" onclick="sessionStorage.removeItem('wm_session');switchTab('landing')">← 로그아웃</div>Walmart Entry Program<br>by 3Stripe Venture Studio</div>
+      <div class="sidebar-bottom"><div style="cursor:pointer;color:rgba(0,0,0,0.6);margin-bottom:8px" onclick="showBrandPwChange()"><span class="ko">비밀번호 변경</span><span class="en">Change Password</span></div><div style="cursor:pointer;color:rgba(0,0,0,0.6);margin-bottom:8px" onclick="sessionStorage.removeItem('wm_session');switchTab('landing')"><span class="ko">← 로그아웃</span><span class="en">← Log Out</span></div>Walmart Entry Program<br>by 3Stripe Venture Studio</div>
     </div>
     <div class="dash-main">
-      <div class="dash-topbar"><div class="dash-title"><h2>대시보드</h2><p>Walmart 입점 프로그램 운영 현황</p></div><div class="dash-actions"><input class="dash-search" placeholder="브랜드 검색..." id="admin-search-input" oninput="filterAdminBrands(this.value)"><div class="noti-dot" id="admin-noti-bell" onclick="showAdminInbox()" style="cursor:pointer" title="신규 메시지 / 알림"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="rgba(0,0,0,0.6)" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg></div><div class="dash-avatar" onclick="showAdminProfileMenu(event)" style="cursor:pointer" title="프로필 / 로그아웃">JB</div></div></div>
+      <div class="dash-topbar"><div class="dash-title"><h2 id="admin-page-title-h"><span class="ko">대시보드</span><span class="en">Dashboard</span></h2><p id="admin-page-title-p"><span class="ko">Walmart 입점 프로그램 운영 현황</span><span class="en">Walmart Entry Program — Operations Overview</span></p></div><div class="dash-actions"><input class="dash-search" placeholder="" id="admin-search-input" oninput="filterAdminBrands(this.value)"><div class="lang-toggle" style="margin-left:0"><button onclick="setLang('ko')" id="admin-lang-ko">KR</button><button class="active" onclick="setLang('en')" id="admin-lang-en">EN</button></div><div class="noti-dot" id="admin-noti-bell" onclick="showAdminInbox()" style="cursor:pointer" title="Inbox"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="rgba(0,0,0,0.6)" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg></div><div class="dash-avatar" onclick="showAdminProfileMenu(event)" style="cursor:pointer" title="Profile">JB</div></div></div>
 
       <!-- ADMIN: Dashboard View -->
       <div class="dash-content" id="admin-dashboard">
@@ -1842,7 +1842,7 @@ button{cursor:pointer;font-family:var(--font)}
       <!-- ADMIN: Review View (접수 심사) -->
       <div class="dash-content" id="admin-review" style="display:none">
         <div style="margin-bottom:24px">
-          <h3 style="font-size:18px;font-weight:700;color:var(--text);letter-spacing:-0.5px;margin-bottom:4px">접수 심사</h3>
+          <h3 style="font-size:18px;font-weight:700;color:var(--text);letter-spacing:-0.5px;margin-bottom:4px"><span class="ko">접수 심사</span><span class="en">Application Review</span></h3>
           <p style="font-size:13px;color:rgba(0,0,0,0.6)">신청 기업을 검토하고 참여 유형을 확정한 뒤 승인하세요. 승인된 기업만 전용 포털에 접근할 수 있습니다.</p>
         </div>
 
@@ -1852,7 +1852,7 @@ button{cursor:pointer;font-family:var(--font)}
       <!-- ADMIN: CMS View (콘텐츠 관리) -->
       <div class="dash-content" id="admin-cms" style="display:none">
         <div style="margin-bottom:24px">
-          <h3 style="font-size:18px;font-weight:700;color:var(--text);letter-spacing:-0.5px;margin-bottom:4px">콘텐츠 관리</h3>
+          <h3 style="font-size:18px;font-weight:700;color:var(--text);letter-spacing:-0.5px;margin-bottom:4px"><span class="ko">콘텐츠 관리</span><span class="en">Content Management</span></h3>
           <p style="font-size:13px;color:rgba(0,0,0,0.6)">랜딩 페이지의 주요 문구를 수정할 수 있습니다. 수정 후 "적용" 버튼을 누르면 실시간으로 반영됩니다.</p>
         </div>
 
@@ -2201,7 +2201,7 @@ button{cursor:pointer;font-family:var(--font)}
       <!-- ADMIN: Cost View (비용 정산) -->
       <div class="dash-content" id="admin-cost" style="display:none">
         <div style="margin-bottom:24px">
-          <h3 style="font-size:18px;font-weight:700;color:var(--text);letter-spacing:-0.5px;margin-bottom:4px">비용 정산</h3>
+          <h3 style="font-size:18px;font-weight:700;color:var(--text);letter-spacing:-0.5px;margin-bottom:4px"><span class="ko">비용 정산</span><span class="en">Settlement</span></h3>
           <p style="font-size:13px;color:rgba(0,0,0,0.6)">브랜드별 결제 내역과 정산 현황을 관리합니다.</p>
         </div>
         <div class="stat-grid">
@@ -2235,7 +2235,7 @@ button{cursor:pointer;font-family:var(--font)}
       <!-- ADMIN: Settings View (설정) -->
       <div class="dash-content" id="admin-settings" style="display:none">
         <div style="margin-bottom:24px">
-          <h3 style="font-size:18px;font-weight:700;color:var(--text);letter-spacing:-0.5px;margin-bottom:4px">설정</h3>
+          <h3 style="font-size:18px;font-weight:700;color:var(--text);letter-spacing:-0.5px;margin-bottom:4px"><span class="ko">설정</span><span class="en">Settings</span></h3>
           <p style="font-size:13px;color:rgba(0,0,0,0.6)">프로그램 관리 설정</p>
         </div>
 
@@ -2366,25 +2366,25 @@ button{cursor:pointer;font-family:var(--font)}
     <div class="sidebar">
       <div class="sidebar-logo"><div class="sidebar-logo-icon" id="portal-brand-icon">-</div><div class="sidebar-logo-text"><span id="portal-brand-name">-</span> <span>Brand Portal</span></div></div>
       <div class="sidebar-nav" id="brand-sidebar-nav">
-        <div class="sidebar-item active" onclick="showBrandView('dashboard')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>대시보드</div>
-        <div class="sidebar-item" onclick="showBrandView('phase')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>Phase 현황</div>
-        <div class="sidebar-item" onclick="showBrandView('docs')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>서류 관리</div>
-        <div class="sidebar-item" onclick="showBrandView('messages')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>문의 / 메시지 <span class="sidebar-badge" id="brand-msg-badge" style="display:none">0</span></div>
-        <div class="sidebar-item" onclick="showBrandView('contracts')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>계약서</div>
+        <div class="sidebar-item active" onclick="showBrandView('dashboard')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg><span class="ko">대시보드</span><span class="en">Dashboard</span></div>
+        <div class="sidebar-item" onclick="showBrandView('phase')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg><span class="ko">Phase 현황</span><span class="en">Phase Status</span></div>
+        <div class="sidebar-item" onclick="showBrandView('docs')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg><span class="ko">서류 관리</span><span class="en">Documents</span></div>
+        <div class="sidebar-item" onclick="showBrandView('messages')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg><span class="ko">문의 / 메시지</span><span class="en">Messages</span> <span class="sidebar-badge" id="brand-msg-badge" style="display:none">0</span></div>
+        <div class="sidebar-item" onclick="showBrandView('contracts')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg><span class="ko">계약서</span><span class="en">Contracts</span></div>
       </div>
-      <div class="sidebar-bottom"><div style="cursor:pointer;color:rgba(0,0,0,0.6);margin-bottom:8px" onclick="showBrandPwChange()">비밀번호 변경</div><div style="cursor:pointer;color:rgba(0,0,0,0.6);margin-bottom:8px" onclick="sessionStorage.removeItem('wm_session');switchTab('landing')">← 로그아웃</div>Walmart Entry Program<br>by 3Stripe Venture Studio</div>
+      <div class="sidebar-bottom"><div style="cursor:pointer;color:rgba(0,0,0,0.6);margin-bottom:8px" onclick="showBrandPwChange()"><span class="ko">비밀번호 변경</span><span class="en">Change Password</span></div><div style="cursor:pointer;color:rgba(0,0,0,0.6);margin-bottom:8px" onclick="sessionStorage.removeItem('wm_session');switchTab('landing')"><span class="ko">← 로그아웃</span><span class="en">← Log Out</span></div>Walmart Entry Program<br>by 3Stripe Venture Studio</div>
     </div>
     <div class="dash-main">
       <div class="dash-topbar"><div class="dash-title"><h2 id="portal-topbar-title">브랜드 대시보드</h2><p id="portal-topbar-sub">Walmart 입점 프로그램 진행 현황</p></div><div class="dash-actions"><div class="noti-dot" onclick="scrollToBrandMessages()" title="메시지로 이동" style="cursor:pointer"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="rgba(0,0,0,0.6)" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg></div><div class="dash-avatar" id="portal-avatar" onclick="toggleBrandProfileMenu(event)" title="계정 메뉴" style="cursor:pointer">--</div></div></div>
       <div class="dash-content">
         <!-- Phase Progress -->
-        <div class="portal-phase" id="portal-phase-bar" data-brand-view="dashboard phase"><div class="portal-phase-title">진행 현황 <span class="portal-phase-badge" id="portal-phase-badge">대기</span></div><div class="timeline" style="padding:12px 0" id="portal-phase-timeline"></div></div>
+        <div class="portal-phase" id="portal-phase-bar" data-brand-view="dashboard phase"><div class="portal-phase-title"><span class="ko">진행 현황</span><span class="en">Progress</span> <span class="portal-phase-badge" id="portal-phase-badge">대기</span></div><div class="timeline" style="padding:12px 0" id="portal-phase-timeline"></div></div>
 
         <!-- Phase Detail (승인 후에만 보이는 상세 정보) -->
         <div class="portal-info-section">
           <div class="portal-info-title">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>
-            Phase별 상세
+            <span class="ko">Phase별 상세</span><span class="en">Phase Details</span>
           </div>
           <div class="portal-phase-detail">
             <div class="portal-phase-item"><div class="portal-phase-num">01</div><div class="portal-phase-body"><h4>Phase 1 — Online Launch</h4><p>Walmart.com 마켓플레이스에 제품을 등록하고 온라인 판매를 시작합니다. 30일간 실제 판매 데이터를 수집하여 시장 반응을 검증합니다.</p><div class="phase-tags"><span>Marketplace Application</span><span>Item 360</span><span>Listings & SEO</span><span>Sponsored Products</span><span>OTIF & SQEP</span><span>Product Compliance</span></div></div></div>
@@ -2397,7 +2397,7 @@ button{cursor:pointer;font-family:var(--font)}
         <div class="portal-info-section" id="portal-sku-section" data-brand-view="dashboard phase docs">
           <div class="portal-info-title">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>
-            SKU / 제품 자료
+            <span class="ko">SKU / 제품 자료</span><span class="en">SKU / Product Files</span>
             <span style="font-family:var(--mono);font-size:10px;padding:3px 8px;border-radius:999px;background:rgba(0,135,90,0.15);color:var(--lime);font-weight:400;margin-left:4px" id="portal-sku-count">0 files</span>
           </div>
           <!-- Upload area -->
@@ -2417,7 +2417,7 @@ button{cursor:pointer;font-family:var(--font)}
         <div class="portal-info-section">
           <div class="portal-info-title">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
-            진행상황 체크리스트
+            <span class="ko">진행상황 체크리스트</span><span class="en">Progress Checklist</span>
           </div>
           <div class="phase-checklist" id="portal-checklist" data-brand-view="dashboard phase">
             <div style="text-align:center;padding:32px 0;color:rgba(0,0,0,0.6);font-size:13px">프로그램이 시작되면 Phase별 진행 상황이 여기에 표시됩니다.</div>
@@ -2428,7 +2428,7 @@ button{cursor:pointer;font-family:var(--font)}
         <div class="portal-info-section" id="portal-messages-section" data-brand-view="dashboard messages">
           <div class="portal-info-title">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
-            메시지 / 문의
+            <span class="ko">메시지 / 문의</span><span class="en">Messages</span>
             <span style="font-family:var(--mono);font-size:10px;padding:3px 8px;border-radius:999px;background:rgba(0,113,220,0.15);color:var(--accent);font-weight:400;margin-left:4px" id="portal-msg-count">0 messages</span>
           </div>
           <div class="msg-thread" id="msg-thread">
@@ -2444,7 +2444,7 @@ button{cursor:pointer;font-family:var(--font)}
         <div class="portal-info-section" id="portal-contracts-section" data-brand-view="contracts" style="display:none">
           <div class="portal-info-title">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
-            계약서
+            <span class="ko">계약서</span><span class="en">Contracts</span>
           </div>
           <div id="brand-contracts-list" style="margin-top:12px">
             <div style="text-align:center;padding:32px 0;color:rgba(0,0,0,0.6);font-size:13px">불러오는 중...</div>
@@ -2470,13 +2470,13 @@ button{cursor:pointer;font-family:var(--font)}
     <div class="sidebar">
       <div class="sidebar-logo"><div class="sidebar-logo-icon" style="background:var(--accent)">?</div><div class="sidebar-logo-text"><span id="locked-brand-name">-</span> <span>Brand Portal</span></div></div>
       <div class="sidebar-nav">
-        <div class="sidebar-item active"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>대시보드</div>
-        <div class="sidebar-item" style="opacity:0.7;pointer-events:none"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>Phase 현황</div>
-        <div class="sidebar-item" style="opacity:0.7;pointer-events:none"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>서류 관리</div>
+        <div class="sidebar-item active"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg><span class="ko">대시보드</span><span class="en">Dashboard</span></div>
+        <div class="sidebar-item" style="opacity:0.7;pointer-events:none"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg><span class="ko">Phase 현황</span><span class="en">Phase Status</span></div>
+        <div class="sidebar-item" style="opacity:0.7;pointer-events:none"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg><span class="ko">서류 관리</span><span class="en">Documents</span></div>
         <div class="sidebar-item" style="opacity:0.7;pointer-events:none"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>미팅 일정</div>
         <div class="sidebar-item" style="opacity:0.7;pointer-events:none"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>비용 현황</div>
       </div>
-      <div class="sidebar-bottom"><div style="cursor:pointer;color:rgba(0,0,0,0.6);margin-bottom:8px" onclick="showBrandPwChange()">비밀번호 변경</div><div style="cursor:pointer;color:rgba(0,0,0,0.6);margin-bottom:8px" onclick="sessionStorage.removeItem('wm_session');switchTab('landing')">← 로그아웃</div>Walmart Entry Program<br>by 3Stripe Venture Studio</div>
+      <div class="sidebar-bottom"><div style="cursor:pointer;color:rgba(0,0,0,0.6);margin-bottom:8px" onclick="showBrandPwChange()"><span class="ko">비밀번호 변경</span><span class="en">Change Password</span></div><div style="cursor:pointer;color:rgba(0,0,0,0.6);margin-bottom:8px" onclick="sessionStorage.removeItem('wm_session');switchTab('landing')"><span class="ko">← 로그아웃</span><span class="en">← Log Out</span></div>Walmart Entry Program<br>by 3Stripe Venture Studio</div>
     </div>
     <div class="dash-main">
       <div class="dash-topbar"><div class="dash-title"><h2 id="locked-topbar-name">-</h2><p>신청서 접수 완료 · 심사 진행 중</p></div><div class="dash-actions"><div class="dash-avatar" id="locked-avatar">--</div></div></div>
