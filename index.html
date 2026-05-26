@@ -451,14 +451,15 @@ button{cursor:pointer;font-family:var(--font)}
 .review-info .brand-name{font-size:26px;font-weight:800;letter-spacing:-0.7px;display:flex;align-items:center;flex-wrap:wrap;gap:10px;color:var(--text);font-family:var(--font)}
 .review-info .brand-sub{font-size:14px;color:var(--text-muted);margin-top:6px;font-weight:500;font-family:var(--font)}
 
-/* Body: 2-column grid */
-.review-body{padding:24px 30px;display:grid;grid-template-columns:repeat(2,1fr);gap:14px;align-items:start}
-.review-section{background:var(--surface-alt);border:1px solid var(--border);border-radius:12px;padding:20px 22px}
-.review-section.full{grid-column:1/-1}
-.rs-title{font-size:13.5px;font-weight:700;color:var(--accent);letter-spacing:0.2px;margin-bottom:16px;display:flex;align-items:center;gap:8px;font-family:var(--font)}
+/* Body: 단일 column stack — 카드들은 위→아래로 자연스럽게 흐름 */
+.review-body{padding:22px 28px;display:flex;flex-direction:column;gap:12px}
+.review-section{background:var(--surface-alt);border:1px solid var(--border);border-radius:12px;padding:18px 22px;width:100%}
+.review-section.full{width:100%}
+.rs-title{font-size:13.5px;font-weight:700;color:var(--accent);letter-spacing:0.2px;margin-bottom:14px;display:flex;align-items:center;gap:8px;font-family:var(--font)}
 .rs-title::before{content:'';width:16px;height:2.5px;background:var(--accent);border-radius:2px;display:inline-block}
-.rs-fields{display:grid;grid-template-columns:1fr;gap:14px}
-.rs-fields.cols-2{grid-template-columns:1fr 1fr;gap:16px 24px}
+/* rs-fields auto-fit — 화면 폭에 따라 2~4 컬럼 자동, 짧은 값은 더 빽빽하게 */
+.rs-fields{display:grid;grid-template-columns:repeat(auto-fit, minmax(200px, 1fr));gap:14px 28px}
+.rs-fields.cols-2{grid-template-columns:repeat(auto-fit, minmax(220px, 1fr));gap:14px 28px}
 .review-field{min-width:0;font-family:var(--font)}
 .review-field .rf-label{color:var(--text-muted);font-family:var(--font);font-size:13px;font-weight:600;letter-spacing:0;margin-bottom:4px}
 .review-field .rf-value{color:var(--text);font-weight:500;font-size:15.5px;line-height:1.55;word-break:break-word;font-family:var(--font)}
