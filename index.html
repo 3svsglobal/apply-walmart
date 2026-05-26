@@ -1804,7 +1804,7 @@ button{cursor:pointer;font-family:var(--font)}
         <!-- VOUCHER_HIDDEN: 바우처 사업 일시 중단 (2026-04-30). 재활성화 시 style="display:none" 제거 -->
         <div class="sidebar-item" onclick="showAdminView('voucher')" id="admin-nav-voucher" style="display:none"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg><span class="ko">수출바우처</span><span class="en">Voucher</span></div>
         <div class="sidebar-item" onclick="showAdminView('contracts')" id="admin-nav-contracts"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg><span class="ko">계약 관리</span><span class="en">Contracts</span></div>
-        <div class="sidebar-item" onclick="showAdminView('settings')" id="admin-nav-settings"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>설정</div>
+        <div class="sidebar-item" onclick="showAdminView('settings')" id="admin-nav-settings"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg><span class="ko">설정</span><span class="en">Settings</span></div>
       </div>
       <div class="sidebar-bottom"><div style="cursor:pointer;color:rgba(0,0,0,0.6);margin-bottom:8px" onclick="showBrandPwChange()"><span class="ko">비밀번호 변경</span><span class="en">Change Password</span></div><div style="cursor:pointer;color:rgba(0,0,0,0.6);margin-bottom:8px" onclick="sessionStorage.removeItem('wm_session');switchTab('landing')"><span class="ko">← 로그아웃</span><span class="en">← Log Out</span></div>Walmart Entry Program<br>by 3Stripe Venture Studio</div>
     </div>
@@ -1814,27 +1814,27 @@ button{cursor:pointer;font-family:var(--font)}
       <!-- ADMIN: Dashboard View -->
       <div class="dash-content" id="admin-dashboard">
         <div class="stat-grid">
-          <div class="stat-card"><div class="val" id="dash-stat-brands">-</div><div class="lbl">참여 브랜드</div><div class="change" id="dash-stat-brands-sub">loading...</div></div>
-          <div class="stat-card"><div class="val" id="dash-stat-pending">-</div><div class="lbl">접수 심사 대기</div><div class="change warn" id="dash-stat-pending-sub">loading...</div></div>
-          <div class="stat-card"><div class="val" id="dash-stat-contracts">-</div><div class="lbl">계약 현황</div><div class="change" id="dash-stat-contracts-sub">loading...</div></div>
-          <div class="stat-card"><div class="val" id="dash-stat-completed">-</div><div class="lbl">서명 완료</div><div class="change" id="dash-stat-completed-sub">loading...</div></div>
+          <div class="stat-card"><div class="val" id="dash-stat-brands">-</div><div class="lbl"><span class="ko">참여 브랜드</span><span class="en">Active Brands</span></div><div class="change" id="dash-stat-brands-sub">loading...</div></div>
+          <div class="stat-card"><div class="val" id="dash-stat-pending">-</div><div class="lbl"><span class="ko">접수 심사 대기</span><span class="en">Pending Review</span></div><div class="change warn" id="dash-stat-pending-sub">loading...</div></div>
+          <div class="stat-card"><div class="val" id="dash-stat-contracts">-</div><div class="lbl"><span class="ko">계약 현황</span><span class="en">Contracts</span></div><div class="change" id="dash-stat-contracts-sub">loading...</div></div>
+          <div class="stat-card"><div class="val" id="dash-stat-completed">-</div><div class="lbl"><span class="ko">서명 완료</span><span class="en">Signed</span></div><div class="change" id="dash-stat-completed-sub">loading...</div></div>
         </div>
         <div class="stat-grid" style="margin-top:12px">
-          <div class="stat-card"><div class="val" id="dash-stat-approval">-</div><div class="lbl">승인률</div><div class="change" id="dash-stat-approval-sub">loading...</div></div>
-          <div class="stat-card"><div class="val" id="dash-stat-avgdays">-</div><div class="lbl">평균 처리일</div><div class="change" id="dash-stat-avgdays-sub">loading...</div></div>
-          <div class="stat-card"><div class="val" id="dash-stat-mtd">-</div><div class="lbl">이번 달 신규</div><div class="change" id="dash-stat-mtd-sub">loading...</div></div>
-          <div class="stat-card"><div class="val" id="dash-stat-attachments">-</div><div class="lbl">첨부 파일</div><div class="change" id="dash-stat-attachments-sub">loading...</div></div>
+          <div class="stat-card"><div class="val" id="dash-stat-approval">-</div><div class="lbl"><span class="ko">승인률</span><span class="en">Approval Rate</span></div><div class="change" id="dash-stat-approval-sub">loading...</div></div>
+          <div class="stat-card"><div class="val" id="dash-stat-avgdays">-</div><div class="lbl"><span class="ko">평균 처리일</span><span class="en">Avg. Days</span></div><div class="change" id="dash-stat-avgdays-sub">loading...</div></div>
+          <div class="stat-card"><div class="val" id="dash-stat-mtd">-</div><div class="lbl"><span class="ko">이번 달 신규</span><span class="en">New This Month</span></div><div class="change" id="dash-stat-mtd-sub">loading...</div></div>
+          <div class="stat-card"><div class="val" id="dash-stat-attachments">-</div><div class="lbl"><span class="ko">첨부 파일</span><span class="en">Attachments</span></div><div class="change" id="dash-stat-attachments-sub">loading...</div></div>
         </div>
         <div class="dash-grid">
-          <div><div class="panel"><div class="panel-title">브랜드 파이프라인 <span class="count" id="admin-brand-count">0 brands</span></div>
-            <div id="admin-brand-pipeline" style="text-align:center;padding:40px 0;color:rgba(0,0,0,0.6);font-size:14px">로딩 중...</div>
+          <div><div class="panel"><div class="panel-title"><span class="ko">브랜드 파이프라인</span><span class="en">Brand Pipeline</span> <span class="count" id="admin-brand-count">0 brands</span></div>
+            <div id="admin-brand-pipeline" style="text-align:center;padding:40px 0;color:rgba(0,0,0,0.6);font-size:14px"><span class="ko">로딩 중...</span><span class="en">Loading...</span></div>
           </div></div>
           <div style="display:flex;flex-direction:column;gap:8px">
-            <div class="panel"><div class="panel-title">최근 활동 <span class="count" id="admin-noti-count">0</span></div>
-              <div id="admin-noti-list" style="text-align:center;padding:24px 0;color:rgba(0,0,0,0.6);font-size:13px">로딩 중...</div>
+            <div class="panel"><div class="panel-title"><span class="ko">최근 활동</span><span class="en">Recent Activity</span> <span class="count" id="admin-noti-count">0</span></div>
+              <div id="admin-noti-list" style="text-align:center;padding:24px 0;color:rgba(0,0,0,0.6);font-size:13px"><span class="ko">로딩 중...</span><span class="en">Loading...</span></div>
             </div>
-            <div class="panel"><div class="panel-title">계약 요약</div><div id="admin-contract-summary" style="text-align:center;padding:24px 0;color:rgba(0,0,0,0.6);font-size:13px">로딩 중...</div></div>
-            <div class="panel"><div class="panel-title">Phase 분포</div><div id="admin-phase-dist" style="text-align:center;padding:24px 0;color:rgba(0,0,0,0.6);font-size:13px">로딩 중...</div></div>
+            <div class="panel"><div class="panel-title"><span class="ko">계약 요약</span><span class="en">Contract Summary</span></div><div id="admin-contract-summary" style="text-align:center;padding:24px 0;color:rgba(0,0,0,0.6);font-size:13px"><span class="ko">로딩 중...</span><span class="en">Loading...</span></div></div>
+            <div class="panel"><div class="panel-title"><span class="ko">Phase 분포</span><span class="en">Phase Distribution</span></div><div id="admin-phase-dist" style="text-align:center;padding:24px 0;color:rgba(0,0,0,0.6);font-size:13px"><span class="ko">로딩 중...</span><span class="en">Loading...</span></div></div>
           </div>
         </div>
       </div>
@@ -3344,7 +3344,20 @@ function setLang(lang) {
   document.querySelectorAll('.lang-toggle button').forEach(b => {
     if ((lang === 'ko' && b.textContent === 'KR') || (lang === 'en' && b.textContent === 'EN')) b.classList.add('active');
   });
+  // 입력 placeholder 등 dynamic 텍스트 갱신
+  var ph = lang === 'en' ? 'Search brands...' : '브랜드 검색...';
+  var search = document.getElementById('admin-search-input');
+  if (search) search.placeholder = ph;
+  // 현재 보이는 admin 화면이 있다면 동적 렌더 다시
+  if (typeof renderAdminDashboard === 'function' && document.getElementById('admin-dashboard') && document.getElementById('admin-dashboard').style.display !== 'none') {
+    try { renderAdminDashboard(); } catch(e){}
+  }
+  if (typeof renderAdminReview === 'function' && document.getElementById('admin-review') && document.getElementById('admin-review').style.display !== 'none') {
+    try { renderAdminReview(); } catch(e){}
+  }
 }
+function _isEn() { return document.documentElement.lang === 'en'; }
+function _kn(ko, en) { return _isEn() ? en : ko; }
 
 function switchTab(id) {
   document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
@@ -3412,17 +3425,17 @@ function showAdminView(view) {
   var topTitle = document.querySelector('#view-admin .dash-title h2');
   var topSub = document.querySelector('#view-admin .dash-title p');
   var titles = {
-    dashboard: ['대시보드', 'Walmart 입점 프로그램 운영 현황'],
-    review: ['접수 심사', '신청 기업 검토 및 유형 확정 · 승인'],
-    cms: ['콘텐츠 관리', '랜딩 페이지 문구 수정 · 실시간 반영'],
-    cost: ['비용 정산', '브랜드별 결제 내역 · 정산 현황'],
-    voucher: ['수출바우처', '수출바우처 연계 기업 관리'],
-    settings: ['설정', '프로그램 관리 설정'],
-    contracts: ['계약 관리', '전자서명 계약 생성 · 서명 현황 관리']
+    dashboard: ['대시보드', 'Walmart 입점 프로그램 운영 현황', 'Dashboard', 'Walmart Entry Program — Operations Overview'],
+    review: ['접수 심사', '신청 기업 검토 및 유형 확정 · 승인', 'Application Review', 'Review applicants and confirm participation type'],
+    cms: ['콘텐츠 관리', '랜딩 페이지 문구 수정 · 실시간 반영', 'Content Management', 'Landing page text and image management'],
+    cost: ['비용 정산', '브랜드별 결제 내역 · 정산 현황', 'Settlement', 'Per-brand payment and settlement'],
+    voucher: ['수출바우처', '수출바우처 연계 기업 관리', 'Export Voucher', 'Voucher-linked brand management'],
+    settings: ['설정', '프로그램 관리 설정', 'Settings', 'Admin account and system settings'],
+    contracts: ['계약 관리', '전자서명 계약 생성 · 서명 현황 관리', 'Contract Management', 'E-signed contract creation and signature tracking']
   };
   var t = titles[view] || titles.dashboard;
-  topTitle.textContent = t[0];
-  topSub.textContent = t[1];
+  topTitle.innerHTML = '<span class="ko">' + t[0] + '</span><span class="en">' + t[2] + '</span>';
+  topSub.innerHTML = '<span class="ko">' + t[1] + '</span><span class="en">' + t[3] + '</span>';
   if (view === 'dashboard') renderAdminDashboard();
   if (view === 'contracts') { renderAdminContracts(); loadApprovedBrandsForContract(); }
   if (view === 'review') renderAdminReview();
@@ -5273,7 +5286,7 @@ async function renderAdminDashboard() {
   apps.slice(0, 5).forEach(function(a) {
     var date = a.created_at ? a.created_at.slice(0, 10) : '';
     var icon = a.status === 'approved' ? '✅' : a.status === 'rejected' ? '❌' : '📋';
-    var label = a.status === 'approved' ? '승인됨' : a.status === 'rejected' ? '반려' : '신규 접수';
+    var label = a.status === 'approved' ? _kn('승인됨','Approved') : a.status === 'rejected' ? _kn('반려','Rejected') : _kn('신규 접수','New submission');
     activities.push({ date: a.created_at || '', html: '<div style="padding:8px 0;border-bottom:1px solid rgba(0,0,0,0.04);font-size:13px"><span style="margin-right:8px">' + icon + '</span>' + (a.brand_name_ko || a.brand_name_en) + ' — ' + label + '<div style="font-size:11px;opacity:.7;margin-top:2px">' + date + '</div></div>' });
   });
 
@@ -5281,7 +5294,7 @@ async function renderAdminDashboard() {
     var date = c.created_at ? c.created_at.slice(0, 10) : '';
     var signCount = [c.sig_brand_signed, c.sig_admin_signed, c.sig_walmart_signed].filter(Boolean).length;
     var icon = signCount === 3 ? '📝' : '✍️';
-    var label = signCount === 3 ? '서명 완료' : signCount + '/3 서명';
+    var label = signCount === 3 ? _kn('서명 완료','Fully signed') : signCount + _kn('/3 서명','/3 signed');
     activities.push({ date: c.created_at || '', html: '<div style="padding:8px 0;border-bottom:1px solid rgba(0,0,0,0.04);font-size:13px"><span style="margin-right:8px">' + icon + '</span>' + (c.brand_name_ko || c.id) + ' — ' + label + '<div style="font-size:11px;opacity:.7;margin-top:2px">' + date + '</div></div>' });
   });
 
@@ -5289,7 +5302,7 @@ async function renderAdminDashboard() {
   notiCountEl.textContent = activities.length;
 
   if (activities.length === 0) {
-    notiEl.innerHTML = '<div style="text-align:center;padding:24px 0;color:rgba(0,0,0,0.62);font-size:13px">최근 활동이 없습니다.</div>';
+    notiEl.innerHTML = '<div style="text-align:center;padding:24px 0;color:rgba(0,0,0,0.62);font-size:13px">' + _kn('최근 활동이 없습니다.','No recent activity.') + '</div>';
   } else {
     notiEl.innerHTML = activities.slice(0, 5).map(function(a) { return a.html; }).join('');
   }
@@ -5297,22 +5310,22 @@ async function renderAdminDashboard() {
   // Contract summary
   var summaryEl = document.getElementById('admin-contract-summary');
   if (ctrs.length === 0) {
-    summaryEl.innerHTML = '<div style="text-align:center;padding:24px 0;color:rgba(0,0,0,0.62);font-size:13px">계약이 없습니다.</div>';
+    summaryEl.innerHTML = '<div style="text-align:center;padding:24px 0;color:rgba(0,0,0,0.62);font-size:13px">' + _kn('계약이 없습니다.','No contracts yet.') + '</div>';
   } else {
     summaryEl.innerHTML = '<div style="padding:4px 0">' +
-      '<div style="display:flex;justify-content:space-between;padding:6px 0;font-size:13px;border-bottom:1px solid rgba(0,0,0,0.04)"><span style="opacity:.5">전체 계약</span><span style="font-weight:600">' + ctrs.length + '</span></div>' +
-      '<div style="display:flex;justify-content:space-between;padding:6px 0;font-size:13px;border-bottom:1px solid rgba(0,0,0,0.04)"><span style="opacity:.5">서명 대기</span><span style="color:#f0ad4e;font-weight:600">' + (ctrs.length - completedContracts.length) + '</span></div>' +
-      '<div style="display:flex;justify-content:space-between;padding:6px 0;font-size:13px"><span style="opacity:.5">완료</span><span style="color:#00d68f;font-weight:600">' + completedContracts.length + '</span></div></div>';
+      '<div style="display:flex;justify-content:space-between;padding:6px 0;font-size:13px;border-bottom:1px solid rgba(0,0,0,0.04)"><span style="opacity:.5">' + _kn('전체 계약','Total') + '</span><span style="font-weight:600">' + ctrs.length + '</span></div>' +
+      '<div style="display:flex;justify-content:space-between;padding:6px 0;font-size:13px;border-bottom:1px solid rgba(0,0,0,0.04)"><span style="opacity:.5">' + _kn('서명 대기','Pending') + '</span><span style="color:#f0ad4e;font-weight:600">' + (ctrs.length - completedContracts.length) + '</span></div>' +
+      '<div style="display:flex;justify-content:space-between;padding:6px 0;font-size:13px"><span style="opacity:.5">' + _kn('완료','Completed') + '</span><span style="color:#00d68f;font-weight:600">' + completedContracts.length + '</span></div></div>';
   }
 
   // Phase distribution
   var phaseEl = document.getElementById('admin-phase-dist');
   if (brands.length === 0) {
-    phaseEl.innerHTML = '<div style="text-align:center;padding:24px 0;color:rgba(0,0,0,0.62);font-size:13px">브랜드가 없습니다.</div>';
+    phaseEl.innerHTML = '<div style="text-align:center;padding:24px 0;color:rgba(0,0,0,0.62);font-size:13px">' + _kn('브랜드가 없습니다.','No brands yet.') + '</div>';
   } else {
     var phases = { contract: 0, phase1: 0, phase2: 0, phase3: 0, completed: 0 };
     brands.forEach(function(b) { var p = b.current_phase || 'contract'; if (phases[p] !== undefined) phases[p]++; else phases.contract++; });
-    var phaseLabels = { contract: '계약', phase1: 'Phase 1', phase2: 'Phase 2', phase3: 'Phase 3', completed: '완료' };
+    var phaseLabels = { contract: _kn('계약','Contract'), phase1: 'Phase 1', phase2: 'Phase 2', phase3: 'Phase 3', completed: _kn('완료','Completed') };
     var phaseColors = { contract: 'rgba(0,0,0,0.15)', phase1: 'var(--accent)', phase2: '#f0ad4e', phase3: '#00d68f', completed: '#98fe00' };
     var phHtml = '<div style="padding:4px 0">';
     for (var key in phases) {
