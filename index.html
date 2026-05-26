@@ -440,56 +440,55 @@ button{cursor:pointer;font-family:var(--font)}
 .pipe-stat .lbl{font-size:12px;color:var(--text-muted);margin-top:6px}
 
 /* ─── REVIEW PANEL (Admin) ─── */
-/* ─── REVIEW CARD — Redesigned ─── */
-.review-card{padding:0;border:1px solid var(--border);border-radius:14px;margin-bottom:20px;background:#fff;box-shadow:0 4px 16px rgba(0,0,0,0.04);overflow:hidden}
+/* ─── REVIEW CARD — Redesigned (larger, cleaner) ─── */
+.review-card{padding:0;border:1px solid var(--border);border-radius:14px;margin-bottom:24px;background:#fff;box-shadow:0 4px 16px rgba(0,0,0,0.04);overflow:hidden;font-family:var(--font)}
 .review-card:hover{box-shadow:0 8px 24px rgba(0,0,0,0.07)}
 
-/* Header (brand + meta + status pills) */
-.review-header{display:flex;justify-content:space-between;align-items:flex-start;padding:24px 28px 20px;border-bottom:1px solid var(--border);background:linear-gradient(180deg,rgba(0,113,220,0.025) 0%,transparent 100%)}
-.review-info{display:flex;gap:16px;align-items:center}
-.review-info .brand-icon{width:56px;height:56px;font-size:22px;border-radius:12px}
-.review-info .brand-name{font-size:22px;font-weight:800;letter-spacing:-0.6px;display:flex;align-items:center;flex-wrap:wrap;gap:8px}
-.review-info .brand-sub{font-size:13px;color:var(--text-muted);margin-top:6px;font-weight:500}
+/* Header */
+.review-header{display:flex;justify-content:space-between;align-items:flex-start;padding:26px 30px 22px;border-bottom:1px solid var(--border);background:linear-gradient(180deg,rgba(0,113,220,0.03) 0%,transparent 100%)}
+.review-info{display:flex;gap:18px;align-items:center}
+.review-info .brand-icon{width:62px;height:62px;font-size:26px;border-radius:14px;font-weight:800}
+.review-info .brand-name{font-size:26px;font-weight:800;letter-spacing:-0.7px;display:flex;align-items:center;flex-wrap:wrap;gap:10px;color:var(--text);font-family:var(--font)}
+.review-info .brand-sub{font-size:14px;color:var(--text-muted);margin-top:6px;font-weight:500;font-family:var(--font)}
 
-/* Body: 4-column responsive grid of section cards */
-.review-body{padding:24px 28px;display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
-.review-section{background:var(--surface-alt);border:1px solid var(--border);border-radius:10px;padding:18px 20px}
+/* Body: 2-column grid */
+.review-body{padding:24px 30px;display:grid;grid-template-columns:repeat(2,1fr);gap:14px;align-items:start}
+.review-section{background:var(--surface-alt);border:1px solid var(--border);border-radius:12px;padding:20px 22px}
 .review-section.full{grid-column:1/-1}
-.rs-title{font-size:11px;font-weight:700;color:var(--accent);letter-spacing:0.8px;text-transform:uppercase;margin-bottom:14px;display:flex;align-items:center;gap:6px}
-.rs-title::before{content:'';width:14px;height:2px;background:var(--accent);border-radius:1px;display:inline-block}
-.rs-fields{display:grid;grid-template-columns:1fr;gap:12px}
-.rs-fields.cols-2{grid-template-columns:1fr 1fr;gap:14px 20px}
-.review-field{font-size:13px;min-width:0}
-.review-field .rf-label{color:var(--text-muted);font-family:var(--font);font-size:11px;font-weight:600;letter-spacing:0.3px;margin-bottom:3px;text-transform:uppercase}
-.review-field .rf-value{color:var(--text);font-weight:500;font-size:14px;line-height:1.5;word-break:break-word}
-.review-field .rf-value.muted{color:var(--text-muted);font-style:italic;font-weight:400}
-.review-field .rf-value a{color:var(--accent);text-decoration:none}
+.rs-title{font-size:13.5px;font-weight:700;color:var(--accent);letter-spacing:0.2px;margin-bottom:16px;display:flex;align-items:center;gap:8px;font-family:var(--font)}
+.rs-title::before{content:'';width:16px;height:2.5px;background:var(--accent);border-radius:2px;display:inline-block}
+.rs-fields{display:grid;grid-template-columns:1fr;gap:14px}
+.rs-fields.cols-2{grid-template-columns:1fr 1fr;gap:16px 24px}
+.review-field{min-width:0;font-family:var(--font)}
+.review-field .rf-label{color:var(--text-muted);font-family:var(--font);font-size:13px;font-weight:600;letter-spacing:0;margin-bottom:4px}
+.review-field .rf-value{color:var(--text);font-weight:500;font-size:15.5px;line-height:1.55;word-break:break-word;font-family:var(--font)}
+.review-field .rf-value a{color:var(--accent);text-decoration:none;font-weight:600}
 .review-field .rf-value a:hover{text-decoration:underline}
 
-/* Strategy chips (color-coded radio answers) */
+/* Strategy chips */
 .strategy-chips{display:flex;flex-wrap:wrap;gap:10px}
-.strategy-chip{display:inline-flex;align-items:center;gap:6px;padding:8px 14px;background:#fff;border:1px solid var(--border);border-radius:999px;font-size:13px;font-weight:500;color:var(--text)}
-.strategy-chip .sc-key{color:var(--text-muted);font-size:11.5px;font-weight:600}
-.strategy-chip .sc-val{padding:2px 9px;border-radius:999px;font-size:11.5px;font-weight:700;letter-spacing:0.2px}
+.strategy-chip{display:inline-flex;align-items:center;gap:8px;padding:9px 14px;background:#fff;border:1px solid var(--border);border-radius:999px;font-size:14px;font-weight:500;color:var(--text);font-family:var(--font)}
+.strategy-chip .sc-key{color:var(--text-muted);font-size:13px;font-weight:600}
+.strategy-chip .sc-val{padding:3px 11px;border-radius:999px;font-size:13px;font-weight:700;letter-spacing:0.1px}
 .sc-val.green{background:var(--lime-light);color:var(--lime)}
-.sc-val.orange{background:rgba(255,149,0,0.14);color:#b06b00}
+.sc-val.orange{background:rgba(255,149,0,0.15);color:#b06b00}
 .sc-val.blue{background:var(--accent-light);color:var(--accent)}
 .sc-val.gray{background:rgba(0,0,0,0.05);color:var(--text-muted)}
 .sc-val.red{background:rgba(233,69,96,0.12);color:var(--red)}
 
-/* Action bar (bottom) */
-.review-actions-bar{padding:20px 28px 24px;background:var(--surface-alt);border-top:1px solid var(--border)}
-.review-actions-bar .ab-title{font-size:11px;font-weight:700;color:var(--text-muted);letter-spacing:0.8px;text-transform:uppercase;margin-bottom:10px}
-.review-type-select{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px}
-.review-type-btn{padding:14px 18px;border:1.5px solid var(--border);border-radius:10px;background:#fff;color:var(--text-muted);font-size:14px;font-weight:600;font-family:var(--font);cursor:pointer;transition:all .15s;text-align:left}
+/* Action bar */
+.review-actions-bar{padding:22px 30px 26px;background:var(--surface-alt);border-top:1px solid var(--border)}
+.review-actions-bar .ab-title{font-size:13px;font-weight:700;color:var(--text-muted);letter-spacing:0;margin-bottom:12px;font-family:var(--font)}
+.review-type-select{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px}
+.review-type-btn{padding:15px 20px;border:1.5px solid var(--border);border-radius:10px;background:#fff;color:var(--text-muted);font-size:15px;font-weight:600;font-family:var(--font);cursor:pointer;transition:all .15s;text-align:left}
 .review-type-btn:hover{border-color:var(--accent);color:var(--text)}
 .review-type-btn.selected{border-color:var(--accent);color:var(--accent);background:var(--accent-light);box-shadow:0 2px 8px rgba(0,113,220,0.12)}
-.review-type-btn .rtb-label{font-size:11px;font-family:var(--font);color:var(--text-muted);display:block;margin-bottom:3px;font-weight:600;letter-spacing:0.3px;text-transform:uppercase}
+.review-type-btn .rtb-label{font-size:12px;font-family:var(--font);color:var(--text-muted);display:block;margin-bottom:3px;font-weight:700;letter-spacing:0.3px}
 .review-type-btn.selected .rtb-label{color:var(--accent)}
 .review-actions{display:flex;gap:10px}
-.btn-approve{flex:1;padding:14px 24px;border:none;border-radius:10px;background:var(--lime);color:#fff;font-size:15px;font-weight:700;font-family:var(--font);cursor:pointer;transition:all .15s;display:flex;align-items:center;justify-content:center;gap:8px;box-shadow:0 4px 12px rgba(0,135,90,0.25)}
+.btn-approve{flex:1;padding:16px 28px;border:none;border-radius:10px;background:var(--lime);color:#fff;font-size:16px;font-weight:700;font-family:var(--font);cursor:pointer;transition:all .15s;display:flex;align-items:center;justify-content:center;gap:8px;box-shadow:0 4px 12px rgba(0,135,90,0.25)}
 .btn-approve:hover{background:#006644;transform:translateY(-1px);box-shadow:0 6px 16px rgba(0,135,90,0.35)}
-.btn-reject{padding:14px 22px;border:1.5px solid var(--border);border-radius:10px;background:#fff;color:var(--text-muted);font-size:14px;font-weight:600;font-family:var(--font);cursor:pointer;transition:all .15s}
+.btn-reject{padding:16px 26px;border:1.5px solid var(--border);border-radius:10px;background:#fff;color:var(--text-muted);font-size:15px;font-weight:600;font-family:var(--font);cursor:pointer;transition:all .15s}
 .btn-reject:hover{border-color:var(--red);color:var(--red);background:rgba(233,69,96,0.04)}
 
 @media (max-width: 900px){
@@ -4524,13 +4523,19 @@ async function renderAdminReview() {
   function _esc(s) { return String(s == null ? '' : s).replace(/[&<>\"']/g, function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','\"':'&quot;',"'":'&#39;'}[c]; }); }
   function _fieldHtml(label, value, opts) {
     opts = opts || {};
-    if (value == null || String(value).trim() === '' || value === 'N/A') {
-      return '<div class="review-field"><div class="rf-label">' + _esc(label) + '</div><div class="rf-value muted">—</div></div>';
-    }
+    if (value == null || String(value).trim() === '' || value === 'N/A') return '';
     var val = String(value);
     if (opts.link && /^https?:\/\//.test(val)) val = '<a href="' + _esc(val) + '" target="_blank" rel="noopener">' + _esc(val) + '</a>';
     else val = _esc(val);
     return '<div class="review-field"><div class="rf-label">' + _esc(label) + '</div><div class="rf-value"' + (opts.pre ? ' style="white-space:pre-wrap"' : '') + '>' + val + '</div></div>';
+  }
+  function _section(title, fieldsHtml, opts) {
+    // fieldsHtml: string of joined _fieldHtml outputs (빈 문자열들 포함 가능). 모두 빈 문자열이면 카드 자체를 안 그림.
+    if (!fieldsHtml || !fieldsHtml.trim()) return '';
+    opts = opts || {};
+    var cls = 'review-section' + (opts.full ? ' full' : '');
+    var gridCls = opts.cols2 ? 'rs-fields cols-2' : 'rs-fields';
+    return '<div class="' + cls + '"><div class="rs-title">' + _esc(title) + '</div><div class="' + gridCls + '">' + fieldsHtml + '</div></div>';
   }
   function _chipFormat(value) {
     var map = {
@@ -4599,56 +4604,45 @@ async function renderAdminReview() {
 
     html += '<div class="review-body">';
 
-    html += '<div class="review-section">' +
-      '<div class="rs-title">\uD68C\uC0AC \uC815\uBCF4</div>' +
-      '<div class="rs-fields">' +
-        _fieldHtml('\uD68C\uC0AC\uBA85 (\uC601\uBB38)', app.brand_name_en) +
-        _fieldHtml('\uB300\uD45C\uC790', app.ceo_name) +
-        _fieldHtml('\uC5C5\uC885', app.industry) +
-        _fieldHtml('\uD648\uD398\uC774\uC9C0', app.homepage, {link:true}) +
-        (app.address ? _fieldHtml('\uC8FC\uC18C', app.address) : '') +
-      '</div>' +
-    '</div>';
+    html += _section('\uD68C\uC0AC \uC815\uBCF4',
+      _fieldHtml('\uB300\uD45C\uC790', app.ceo_name) +
+      _fieldHtml('\uC5C5\uC885', app.industry) +
+      _fieldHtml('\uD648\uD398\uC774\uC9C0', app.homepage, {link:true}) +
+      _fieldHtml('\uC8FC\uC18C', app.address)
+    );
 
-    html += '<div class="review-section">' +
-      '<div class="rs-title">\uB2F4\uB2F9\uC790</div>' +
-      '<div class="rs-fields">' +
-        _fieldHtml('\uC774\uB984', app.contact_name) +
-        _fieldHtml('\uC9C1\uD568', app.contact_position) +
-        _fieldHtml('\uC774\uBA54\uC77C', app.contact_email) +
-        _fieldHtml('\uC804\uD654', app.contact_phone) +
-      '</div>' +
-    '</div>';
+    html += _section('\uB2F4\uB2F9\uC790',
+      _fieldHtml('\uC774\uB984', app.contact_name) +
+      _fieldHtml('\uC9C1\uD568', app.contact_position) +
+      _fieldHtml('\uC774\uBA54\uC77C', app.contact_email) +
+      _fieldHtml('\uC804\uD654', app.contact_phone)
+    );
 
-    html += '<div class="review-section full">' +
-      '<div class="rs-title">\uC81C\uD488 \u00B7 \uBE44\uC988\uB2C8\uC2A4</div>' +
-      '<div class="rs-fields cols-2">' +
-        _fieldHtml('\uC81C\uD488 \uCE74\uD14C\uACE0\uB9AC', app.product_category) +
-        _fieldHtml('\uC5F0 \uB9E4\uCD9C (USD)', app.annual_revenue) +
-        _fieldHtml('\uC218\uCD9C \uACBD\uD5D8', app.export_experience) +
-        _fieldHtml('Instagram \uD314\uB85C\uC6CC', extra.instagram_followers) +
-        _fieldHtml('\uC81C\uD488 \uC124\uBA85', app.product_description, {pre:true}) +
-        _fieldHtml('\uBE0C\uB79C\uB4DC \uC2A4\uD1A0\uB9AC', extra.brand_story, {pre:true}) +
-        _fieldHtml('Amazon URL', extra.amazon_url, {link:true}) +
-        _fieldHtml('Instagram URL', extra.instagram_url, {link:true}) +
-      '</div>' +
-    '</div>';
+    html += _section('\uC81C\uD488 \u00B7 \uBE44\uC988\uB2C8\uC2A4',
+      _fieldHtml('\uC81C\uD488 \uCE74\uD14C\uACE0\uB9AC', app.product_category) +
+      _fieldHtml('\uC5F0 \uB9E4\uCD9C (USD)', app.annual_revenue) +
+      _fieldHtml('\uC218\uCD9C \uACBD\uD5D8', app.export_experience) +
+      _fieldHtml('Instagram \uD314\uB85C\uC6CC', extra.instagram_followers) +
+      _fieldHtml('\uC81C\uD488 \uC124\uBA85', app.product_description, {pre:true}) +
+      _fieldHtml('\uBE0C\uB79C\uB4DC \uC2A4\uD1A0\uB9AC', extra.brand_story, {pre:true}) +
+      _fieldHtml('Amazon URL', extra.amazon_url, {link:true}) +
+      _fieldHtml('Instagram URL', extra.instagram_url, {link:true}),
+      {full:true, cols2:true}
+    );
 
-    html += '<div class="review-section full">' +
-      '<div class="rs-title">\uC81C\uC870 \u00B7 \uBB3C\uB958 \u00B7 \uC6B4\uC601</div>' +
-      '<div class="rs-fields cols-2">' +
-        _fieldHtml('\uC218\uCD9C \uAD6D\uAC00', extra.export_countries) +
-        _fieldHtml('\uC0DD\uC0B0 \uC5ED\uB7C9', extra.production_capacity) +
-        _fieldHtml('\uB9AC\uB4DC \uD0C0\uC784', extra.lead_time) +
-        _fieldHtml('\uC5F0\uAC04 \uD310\uB9E4\uB7C9', extra.annual_units_sold) +
-        _fieldHtml('\uBBF8\uAD6D \uB0B4 \uCC3D\uACE0', extra.us_warehouse) +
-        _fieldHtml('\uD328\uD0A4\uC9D5 \uBCC0\uACBD', extra.packaging_modify) +
-        _fieldHtml('\uC81C\uC870 \uC720\uD615', extra.mfg_type) +
-        _fieldHtml('\uC601\uC5B4 \uAC00\uB2A5 \uC778\uB825', extra.english_team) +
-        _fieldHtml('\uB9C8\uCF00\uD305 \uC608\uC0B0', extra.marketing_budget) +
-        _fieldHtml('\uC8FC\uC694 SKU / \uC81C\uD488', extra.sku_description, {pre:true}) +
-      '</div>' +
-    '</div>';
+    html += _section('\uC81C\uC870 \u00B7 \uBB3C\uB958 \u00B7 \uC6B4\uC601',
+      _fieldHtml('\uC218\uCD9C \uAD6D\uAC00', extra.export_countries) +
+      _fieldHtml('\uC0DD\uC0B0 \uC5ED\uB7C9', extra.production_capacity) +
+      _fieldHtml('\uB9AC\uB4DC \uD0C0\uC784', extra.lead_time) +
+      _fieldHtml('\uC5F0\uAC04 \uD310\uB9E4\uB7C9', extra.annual_units_sold) +
+      _fieldHtml('\uBBF8\uAD6D \uB0B4 \uCC3D\uACE0', extra.us_warehouse) +
+      _fieldHtml('\uD328\uD0A4\uC9D5 \uBCC0\uACBD', extra.packaging_modify) +
+      _fieldHtml('\uC81C\uC870 \uC720\uD615', extra.mfg_type) +
+      _fieldHtml('\uC601\uC5B4 \uAC00\uB2A5 \uC778\uB825', extra.english_team) +
+      _fieldHtml('\uB9C8\uCF00\uD305 \uC608\uC0B0', extra.marketing_budget) +
+      _fieldHtml('\uC8FC\uC694 SKU / \uC81C\uD488', extra.sku_description, {pre:true}),
+      {full:true, cols2:true}
+    );
 
     var strategyChipsHtml = '';
     strategyChipsHtml += _chip('\uD0C0 \uB9AC\uD14C\uC77C',         extra.other_retail_status);
@@ -4657,12 +4651,13 @@ async function renderAdminReview() {
     strategyChipsHtml += _chip('PB \uC0C1\uD488',           extra.pb_open);
     strategyChipsHtml += _chip('\uC804\uB7B5 \uBC29\uD5A5',         extra.strategy_direction);
     var otherRetailDetail = extra.other_retail_channels && String(extra.other_retail_channels).trim();
-    html += '<div class="review-section full">' +
-      '<div class="rs-title">\uB9AC\uD14C\uC77C \uCC44\uB110 & \uC6D4\uB9C8\uD2B8 \uC804\uB7B5</div>' +
-      (strategyChipsHtml ? '<div class="strategy-chips" style="margin-bottom:' + (otherRetailDetail ? '12px' : '0') + '">' + strategyChipsHtml + '</div>' : '') +
-      (otherRetailDetail ? '<div class="review-field"><div class="rf-label">\uD0C0 \uCC44\uB110 \uC0C1\uC138</div><div class="rf-value">' + _esc(otherRetailDetail) + '</div></div>' : '') +
-      (!strategyChipsHtml && !otherRetailDetail ? '<div class="rf-value muted">\uC544\uC9C1 \uC785\uB825\uB41C \uC815\uBCF4\uAC00 \uC5C6\uC2B5\uB2C8\uB2E4.</div>' : '') +
-    '</div>';
+    if (strategyChipsHtml || otherRetailDetail) {
+      html += '<div class="review-section full">' +
+        '<div class="rs-title">\uB9AC\uD14C\uC77C \uCC44\uB110 & \uC6D4\uB9C8\uD2B8 \uC804\uB7B5</div>' +
+        (strategyChipsHtml ? '<div class="strategy-chips" style="margin-bottom:' + (otherRetailDetail ? '14px' : '0') + '">' + strategyChipsHtml + '</div>' : '') +
+        (otherRetailDetail ? '<div class="review-field"><div class="rf-label">\uD0C0 \uCC44\uB110 \uC0C1\uC138</div><div class="rf-value">' + _esc(otherRetailDetail) + '</div></div>' : '') +
+      '</div>';
+    }
 
     if (app.apply_type === 'voucher' && app.voucher_amount) {
       html += '<div class="review-section full">' +
