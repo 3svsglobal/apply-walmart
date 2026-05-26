@@ -2788,7 +2788,12 @@ async function dbSaveApplication(formData) {
       var fval = entry[1];
       if (fval instanceof File && (fkey === 'Brand Deck' || fkey === 'Additional Docs' || fkey === 'SKU List')) {
         attemptedFiles++;
-        var safeName = fval.name.replace(/[^a-zA-Z0-9\uAC00-\uD7AF._-]/g, '_');
+        // Supabase Storage path\uB294 ASCII\uB9CC \uD5C8\uC6A9 \u2014 \uBE44 ASCII(\uD55C\uAE00 \uB4F1) \uBAA8\uB450 underscore\uB85C
+        // \uC6D0\uBCF8 \uD30C\uC77C\uBA85\uC740 attached_files.name\uC5D0 \uADF8\uB300\uB85C \uBCF4\uC874\uB418\uBBC0\uB85C \uD45C\uC2DC\uC5D4 \uC601\uD5A5 \uC5C6\uC74C
+        var _ext = (fval.name.split('.').pop() || '').toLowerCase().replace(/[^a-z0-9]/g, '');
+        var _stem = fval.name.replace(/\.[^.]+$/, '').replace(/[^a-zA-Z0-9._-]/g, '_').slice(0, 60);
+        if (!_stem || /^_+$/.test(_stem)) _stem = 'file';
+        var safeName = _stem + (_ext ? '.' + _ext : '');
         var path = 'applications/' + saved.id + '/' + Date.now() + '_' + safeName;
         try {
           var up = await supabase.storage.from('wm-signatures').upload(path, fval);
@@ -6001,9 +6006,13 @@ async function uploadSkuFile(file) {
     return;
   }
   
+  // ASCII-only safe filename (Supabase Storage path 제약)
+  var _stem = file.name.replace(/\.[^.]+$/, '').replace(/[^a-zA-Z0-9._-]/g, '_').slice(0, 60);
+  if (!_stem || /^_+$/.test(_stem)) _stem = 'file';
+  var safeName = _stem + '.' + ext;
   var timestamp = Date.now();
-  var path = 'sku/' + _currentBrandId + '/' + timestamp + '_' + file.name;
-  
+  var path = 'sku/' + _currentBrandId + '/' + timestamp + '_' + safeName;
+
   // Upload to Supabase Storage
   var uploadArea = document.getElementById('sku-upload-area');
   uploadArea.style.opacity = '0.5';
