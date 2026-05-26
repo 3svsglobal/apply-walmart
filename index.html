@@ -2325,7 +2325,6 @@ button{cursor:pointer;font-family:var(--font)}
         <div class="sidebar-item" onclick="showBrandView('docs')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>서류 관리</div>
         <div class="sidebar-item" onclick="showBrandView('messages')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>문의 / 메시지 <span class="sidebar-badge" id="brand-msg-badge" style="display:none">0</span></div>
         <div class="sidebar-item" onclick="showBrandView('contracts')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>계약서</div>
-        <div class="sidebar-item" onclick="showBrandView('cost')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>비용 현황</div>
       </div>
       <div class="sidebar-bottom"><div style="cursor:pointer;color:rgba(0,0,0,0.6);margin-bottom:8px" onclick="showBrandPwChange()">비밀번호 변경</div><div style="cursor:pointer;color:rgba(0,0,0,0.6);margin-bottom:8px" onclick="sessionStorage.removeItem('wm_session');switchTab('landing')">← 로그아웃</div>Walmart Entry Program<br>by 3Stripe Venture Studio</div>
     </div>
@@ -2334,56 +2333,6 @@ button{cursor:pointer;font-family:var(--font)}
       <div class="dash-content">
         <!-- Phase Progress -->
         <div class="portal-phase" id="portal-phase-bar" data-brand-view="dashboard phase"><div class="portal-phase-title">진행 현황 <span class="portal-phase-badge" id="portal-phase-badge">대기</span></div><div class="timeline" style="padding:12px 0" id="portal-phase-timeline"></div></div>
-
-        <!-- Cost Structure (A Type — 승인 후에만 보이는 정보) -->
-        <div class="portal-info-section" id="portal-cost-a" data-brand-view="dashboard cost">
-          <div class="portal-info-title">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
-            비용 구조 <span style="font-family:var(--mono);font-size:10px;padding:3px 8px;border-radius:999px;background:rgba(0,113,220,0.15);color:var(--accent);font-weight:400;margin-left:4px">A Type</span>
-          </div>
-          <div class="portal-cost-grid">
-            <div class="portal-cost-card">
-              <div class="pc-label">사전 행정비용 (1회)</div>
-              <div class="pc-value" style="font-size:18px">계약서 상 계약금액</div>
-              <div class="pc-desc">계약 체결 시 1회 납부<br>프로그램 셋업, 계정 생성, 초기 컨설팅</div>
-            </div>
-            <div class="portal-cost-card">
-              <div class="pc-label">Phase별 운영비</div>
-              <div class="pc-value" style="font-size:18px">계약서 상 계약금액</div>
-              <div class="pc-desc">각 Phase 시작 시 선불 납부<br>Phase 1·2·3 동일 금액</div>
-            </div>
-            <div class="portal-cost-card">
-              <div class="pc-label">커미션 (성과 연동)</div>
-              <div class="pc-value"><em>8%</em></div>
-              <div class="pc-desc">Vendor of Record 기준<br>구체적인 요율은 계약서에 따름</div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Cost Structure (B Type — 바우처 기업용, 기본 숨김) -->
-        <div class="portal-info-section" id="portal-cost-b" data-brand-view="dashboard cost" style="display:none">
-          <div class="portal-info-title">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
-            비용 구조 <span style="font-family:var(--mono);font-size:10px;padding:3px 8px;border-radius:999px;background:rgba(0,135,90,0.15);color:var(--lime);font-weight:400;margin-left:4px">B Type · 수출바우처</span>
-          </div>
-          <div class="portal-cost-grid">
-            <div class="portal-cost-card">
-              <div class="pc-label">착수금</div>
-              <div class="pc-value" style="color:var(--lime)"><em>면제</em></div>
-              <div class="pc-desc">수출바우처 연계 기업 착수금 면제</div>
-            </div>
-            <div class="portal-cost-card">
-              <div class="pc-label">Phase별 운영비</div>
-              <div class="pc-value" style="font-size:18px">계약서 상 계약금액</div>
-              <div class="pc-desc">각 Phase 시작 시 선불 납부<br>Phase 1·2·3 동일 금액<br>수출바우처 예산으로 집행 가능</div>
-            </div>
-            <div class="portal-cost-card">
-              <div class="pc-label">커미션 (성과 연동)</div>
-              <div class="pc-value"><em>8%</em></div>
-              <div class="pc-desc">Vendor of Record 기준<br>구체적인 요율은 계약서에 따름</div>
-            </div>
-          </div>
-        </div>
 
         <!-- Phase Detail (승인 후에만 보이는 상세 정보) -->
         <div class="portal-info-section">
@@ -3052,15 +3001,7 @@ function setPortalType(type, brandName, iconLetter, ceoName) {
   const topSub = document.getElementById('portal-topbar-sub');
   topTitle.textContent = brandName + ' 대시보드';
 
-  if (type === 'voucher') {
-    topSub.textContent = 'B Type (수출바우처) · Walmart 입점 프로그램 진행 현황';
-    document.getElementById('portal-cost-a').style.display = 'none';
-    document.getElementById('portal-cost-b').style.display = '';
-  } else {
-    topSub.textContent = 'A Type (직접 참여) · Walmart 입점 프로그램 진행 현황';
-    document.getElementById('portal-cost-a').style.display = '';
-    document.getElementById('portal-cost-b').style.display = 'none';
-  }
+  topSub.textContent = 'Walmart 입점 프로그램 진행 현황';
 }
 
 // ─── LOGIN TAB SWITCHING ───
@@ -5468,7 +5409,7 @@ function showBrandView(view) {
   // Update sidebar active state
   var navItems = document.querySelectorAll('#brand-sidebar-nav .sidebar-item');
   navItems.forEach(function(item) { item.classList.remove('active'); });
-  var viewIdx = {'dashboard':0,'phase':1,'docs':2,'messages':3,'contracts':4,'cost':5}[view];
+  var viewIdx = {'dashboard':0,'phase':1,'docs':2,'messages':3,'contracts':4}[view];
   if (typeof viewIdx === 'number' && navItems[viewIdx]) navItems[viewIdx].classList.add('active');
   // Lazy load contracts when entering contracts view
   if (view === 'contracts' && typeof loadBrandContracts === 'function') {
