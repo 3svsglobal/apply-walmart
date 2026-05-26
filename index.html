@@ -116,6 +116,18 @@ button{cursor:pointer;font-family:var(--font)}
 .hero-partners-row span{font-size:15px;font-weight:600;color:#fff;white-space:nowrap;text-shadow:0 1px 6px rgba(0,0,0,0.7)}
 
 /* ─── STATS BAR ─── */
+/* ─── ACTIVE PARTNERS ─── */
+.partners-strip{padding:48px var(--sec-px);background:var(--bg);border-bottom:1px solid var(--border)}
+.partners-strip-inner{max-width:var(--content-max);margin:0 auto;text-align:center}
+.partners-strip-cap{font-family:var(--font);font-size:12px;color:var(--text-muted);font-weight:600;margin-bottom:20px;letter-spacing:1.5px;text-transform:uppercase}
+.partners-strip-cap::before{content:'';display:inline-block;width:24px;height:1px;background:var(--accent);vertical-align:middle;margin-right:10px;opacity:0.6}
+.partners-strip-cap::after{content:'';display:inline-block;width:24px;height:1px;background:var(--accent);vertical-align:middle;margin-left:10px;opacity:0.6}
+.partners-strip-grid{display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:48px 64px;padding:8px 0}
+.partner-logo{display:flex;align-items:center;justify-content:center;height:64px;max-width:200px;filter:grayscale(0.15);transition:filter .2s ease, transform .2s ease;flex-shrink:0}
+.partner-logo:hover{filter:grayscale(0) saturate(1.05);transform:translateY(-2px)}
+.partner-logo img{max-height:100%;max-width:100%;width:auto;object-fit:contain;display:block}
+@media(max-width:768px){.partners-strip{padding:36px 20px}.partners-strip-grid{gap:24px 32px}.partner-logo{height:48px;max-width:140px}}
+
 .stats-bar{padding:56px var(--sec-px);text-align:center;background:var(--bg);border-bottom:1px solid var(--border)}
 .stats-bar-cap{font-family:var(--font);font-size:12px;color:var(--text-muted);font-weight:400;margin-bottom:32px;letter-spacing:1.5px}
 .stats-bar-row{display:flex;align-items:center;justify-content:center;gap:64px;flex-wrap:wrap;max-width:var(--content-max);margin:0 auto}
@@ -802,6 +814,21 @@ button{cursor:pointer;font-family:var(--font)}
           <span>×</span>
           <span>Startup Junkie Consulting</span>
         </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Active Partners — 현재 진행 중인 파트너사 -->
+  <section class="partners-strip">
+    <div class="partners-strip-inner">
+      <div class="partners-strip-cap"><span class="ko">현재 진행 중인 파트너사</span><span class="en">Current Active Partners</span></div>
+      <div class="partners-strip-grid" id="cms-active-partners">
+        <a class="partner-logo" href="https://www.celltrionskincure.com" target="_blank" rel="noopener" aria-label="Celltrion Skincure">
+          <img src="assets/partners/celltrion-skincure.png" alt="Celltrion Skincure" loading="lazy">
+        </a>
+        <a class="partner-logo" href="#" target="_blank" rel="noopener" aria-label="Haepulip">
+          <img src="assets/partners/haepulip.png" alt="Haepulip 해풀잎" loading="lazy">
+        </a>
       </div>
     </div>
   </section>
