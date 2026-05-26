@@ -2293,6 +2293,52 @@ button{cursor:pointer;font-family:var(--font)}
             <!-- VOUCHER_HIDDEN: 바우처 사업 일시 중단 (2026-04-30). 재활성화 시 style 제거 -->
             <option value="service_voucher" style="display:none">B Type — 수출바우처 연계 계약</option>
           </select>
+
+          <!-- 계약 조건 입력 -->
+          <div style="background:#fff;border:1px solid var(--border);border-radius:10px;padding:16px 18px;margin-bottom:14px">
+            <label style="display:block;font-size:13px;color:var(--accent);margin-bottom:14px;font-weight:700">💰 계약 조건 — 아래 항목이 계약서에 자동 삽입됩니다</label>
+            <div style="display:grid;grid-template-columns:1fr 110px;gap:8px 12px;align-items:end">
+              <div>
+                <label style="display:block;font-size:11.5px;color:var(--text-muted);margin-bottom:4px;font-weight:600">착수금 (1회, 계약 체결 시)</label>
+                <input id="ct-initial" type="text" inputmode="numeric" placeholder="예: 5,000,000" style="background:#fff;border:1px solid var(--border);border-radius:8px;padding:9px 12px;font-size:14px;width:100%;margin:0">
+              </div>
+              <div>
+                <label style="display:block;font-size:11.5px;color:var(--text-muted);margin-bottom:4px;font-weight:600">통화</label>
+                <select id="ct-currency" style="background:#fff;border:1px solid var(--border);border-radius:8px;padding:9px 12px;font-size:14px;width:100%;margin:0">
+                  <option value="KRW">KRW (원)</option>
+                  <option value="USD">USD ($)</option>
+                </select>
+              </div>
+              <div>
+                <label style="display:block;font-size:11.5px;color:var(--text-muted);margin-bottom:4px;font-weight:600">Phase 1 운영비</label>
+                <input id="ct-phase1" type="text" inputmode="numeric" placeholder="예: 10,000,000" style="background:#fff;border:1px solid var(--border);border-radius:8px;padding:9px 12px;font-size:14px;width:100%;margin:0">
+              </div>
+              <div></div>
+              <div>
+                <label style="display:block;font-size:11.5px;color:var(--text-muted);margin-bottom:4px;font-weight:600">Phase 2 운영비</label>
+                <input id="ct-phase2" type="text" inputmode="numeric" placeholder="예: 10,000,000" style="background:#fff;border:1px solid var(--border);border-radius:8px;padding:9px 12px;font-size:14px;width:100%;margin:0">
+              </div>
+              <div></div>
+              <div>
+                <label style="display:block;font-size:11.5px;color:var(--text-muted);margin-bottom:4px;font-weight:600">Phase 3 운영비</label>
+                <input id="ct-phase3" type="text" inputmode="numeric" placeholder="예: 10,000,000" style="background:#fff;border:1px solid var(--border);border-radius:8px;padding:9px 12px;font-size:14px;width:100%;margin:0">
+              </div>
+              <div></div>
+              <div>
+                <label style="display:block;font-size:11.5px;color:var(--text-muted);margin-bottom:4px;font-weight:600">커미션 (성과 연동, %)</label>
+                <input id="ct-commission" type="number" min="0" max="50" step="0.5" value="8" style="background:#fff;border:1px solid var(--border);border-radius:8px;padding:9px 12px;font-size:14px;width:100%;margin:0">
+              </div>
+              <div style="font-size:12px;color:var(--text-muted);padding-bottom:9px">PO 기준</div>
+              <div style="grid-column:1/-1">
+                <label style="display:block;font-size:11.5px;color:var(--text-muted);margin-bottom:4px;font-weight:600">기타 조건 / 비고 (선택)</label>
+                <textarea id="ct-notes" rows="2" placeholder="예: 수출바우처 예산 집행 가능, 결제 조건 등" style="background:#fff;border:1px solid var(--border);border-radius:8px;padding:9px 12px;font-size:14px;width:100%;margin:0;font-family:var(--font);resize:vertical"></textarea>
+              </div>
+            </div>
+            <div style="margin-top:10px;padding:8px 12px;background:var(--surface-alt);border-radius:6px;font-size:11.5px;color:var(--text-muted);line-height:1.5">
+              💡 입력한 금액은 계약서 본문의 <code style="background:rgba(0,0,0,0.06);padding:1px 6px;border-radius:4px">제3조 (대금)</code> 등에 자동 삽입됩니다. 빈 칸은 "별도 합의된 계약금액으로 한다"로 표기됩니다.
+            </div>
+          </div>
+
           <div style="margin-bottom:16px">
           <label style="display:block;font-size:12px;color:var(--text-muted);margin-bottom:6px;font-weight:600">계약서 커스터마이징 (선택)</label>
           <div style="display:flex;gap:8px;margin-bottom:8px">
@@ -2859,6 +2905,7 @@ function dbContractToLocal(row) {
     createdAt: row.created_at ? row.created_at.slice(0,10) : '',
     brandNameKo: row.brand_name_ko,
     brandNameEn: row.brand_name_en,
+    contractTerms: row.contract_terms || {},
     signatures: {
       brand: { signed: !!row.sig_brand_signed, name: row.sig_brand_name||'', date: row.sig_brand_date ? row.sig_brand_date.slice(0,10) : '', sig: row.sig_brand_sig_url, seal: row.sig_brand_seal_url },
       admin: { signed: !!row.sig_admin_signed, name: row.sig_admin_name||'', date: row.sig_admin_date ? row.sig_admin_date.slice(0,10) : '', sig: row.sig_admin_sig_url, seal: row.sig_admin_seal_url },
@@ -3894,9 +3941,56 @@ function renderContractPage(contractId) {
     var bi = wmBrandData[c.brandId].info;
     brandNameEn = wmBrandData[c.brandId].name;
   }
+
+  // 계약 조건 — 비용/커미션 placeholder 준비
+  var ct = c.contractTerms || {};
+  var curr = ct.currency || 'KRW';
+  function _fmtMoney(v) {
+    if (v == null || v === '') return '<em>별도 합의된 계약금액</em>';
+    var n = Number(v);
+    if (isNaN(n)) return _esc(String(v));
+    var sym = curr === 'USD' ? '$' : '₩';
+    return sym + n.toLocaleString('en-US');
+  }
+  var costSummary = {
+    initial:    _fmtMoney(ct.initial),
+    phase1:     _fmtMoney(ct.phase1),
+    phase2:     _fmtMoney(ct.phase2),
+    phase3:     _fmtMoney(ct.phase3),
+    commission: (ct.commission != null ? ct.commission + '%' : '8%'),
+    notes:      ct.notes || ''
+  };
+
+  // 계약 조건 요약 박스 (조항 위)
+  bodyHtml += '<div class="contract-cost-box" style="background:rgba(0,113,220,0.05);border:1px solid rgba(0,113,220,0.2);border-radius:10px;padding:18px 22px;margin:18px 0 24px">' +
+    '<div style="font-size:13px;font-weight:700;color:var(--accent);margin-bottom:12px;letter-spacing:0.3px">계약 조건 요약 · Contract Terms</div>' +
+    '<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px 24px">' +
+      '<div><div style="font-size:11.5px;color:var(--text-muted);font-weight:600;margin-bottom:3px">착수금 (1회)</div><div style="font-size:15px;color:var(--text);font-weight:700">' + costSummary.initial + '</div></div>' +
+      '<div><div style="font-size:11.5px;color:var(--text-muted);font-weight:600;margin-bottom:3px">Phase 1 운영비</div><div style="font-size:15px;color:var(--text);font-weight:700">' + costSummary.phase1 + '</div></div>' +
+      '<div><div style="font-size:11.5px;color:var(--text-muted);font-weight:600;margin-bottom:3px">Phase 2 운영비</div><div style="font-size:15px;color:var(--text);font-weight:700">' + costSummary.phase2 + '</div></div>' +
+      '<div><div style="font-size:11.5px;color:var(--text-muted);font-weight:600;margin-bottom:3px">Phase 3 운영비</div><div style="font-size:15px;color:var(--text);font-weight:700">' + costSummary.phase3 + '</div></div>' +
+      '<div><div style="font-size:11.5px;color:var(--text-muted);font-weight:600;margin-bottom:3px">커미션 (성과 연동)</div><div style="font-size:15px;color:var(--text);font-weight:700">' + costSummary.commission + '</div></div>' +
+      '<div><div style="font-size:11.5px;color:var(--text-muted);font-weight:600;margin-bottom:3px">통화</div><div style="font-size:15px;color:var(--text);font-weight:700">' + curr + '</div></div>' +
+    '</div>' +
+    (costSummary.notes ? '<div style="margin-top:12px;padding-top:12px;border-top:1px dashed rgba(0,113,220,0.18);font-size:13px;color:var(--text);line-height:1.6;white-space:pre-wrap"><strong style="color:var(--text-muted);font-weight:600">비고:</strong> ' + _esc(costSummary.notes) + '</div>' : '') +
+  '</div>';
+
+  // 조항 본문 — placeholder 치환
+  function _applyAllReplacements(s) {
+    return s
+      .replace(/\{\{BRAND_NAME_KO\}\}/g, brandNameKo)
+      .replace(/\{\{BRAND_NAME_EN\}\}/g, brandNameEn)
+      .replace(/\{\{BRAND_SHORT\}\}/g, brandShort)
+      .replace(/\{\{COST_INITIAL\}\}/g, costSummary.initial)
+      .replace(/\{\{COST_PHASE1\}\}/g, costSummary.phase1)
+      .replace(/\{\{COST_PHASE2\}\}/g, costSummary.phase2)
+      .replace(/\{\{COST_PHASE3\}\}/g, costSummary.phase3)
+      .replace(/\{\{COMMISSION\}\}/g, costSummary.commission)
+      .replace(/\{\{CURRENCY\}\}/g, curr);
+  }
   tpl.clauses.forEach(function(cl) {
-    var clauseText = cl.text.replace(/\{\{BRAND_NAME_KO\}\}/g, brandNameKo).replace(/\{\{BRAND_NAME_EN\}\}/g, brandNameEn).replace(/\{\{BRAND_SHORT\}\}/g, brandShort).replace(/\n/g, '<br>');
-    var clauseTitle = cl.title.replace(/\{\{BRAND_SHORT\}\}/g, brandShort);
+    var clauseText = _applyAllReplacements(cl.text).replace(/\n/g, '<br>');
+    var clauseTitle = _applyAllReplacements(cl.title);
     bodyHtml += '<div class="clause"><div class="clause-title">' + clauseTitle + '</div><div>' + clauseText + '</div></div>';
   });
   document.getElementById('contract-page-body').innerHTML = bodyHtml;
@@ -4136,6 +4230,22 @@ async function createContract() {
   if (Object.keys(_templateEdits).length > 0) {
     localContract.templateEdits = JSON.parse(JSON.stringify(_templateEdits));
   }
+  // 계약 조건 수집 (비용 입력 폼)
+  function _readNum(id) {
+    var v = (document.getElementById(id) || {}).value || '';
+    v = String(v).replace(/[^\d.]/g, '');
+    return v === '' ? null : Number(v);
+  }
+  var ct = {
+    currency:    (document.getElementById('ct-currency') || {}).value || 'KRW',
+    initial:     _readNum('ct-initial'),
+    phase1:      _readNum('ct-phase1'),
+    phase2:      _readNum('ct-phase2'),
+    phase3:      _readNum('ct-phase3'),
+    commission:  (function(){ var v=_readNum('ct-commission'); return v==null ? 8 : v; })(),
+    notes:       ((document.getElementById('ct-notes') || {}).value || '').trim()
+  };
+  localContract.contractTerms = ct;
   contracts.push(localContract);
 
   // Save to DB
@@ -4147,10 +4257,17 @@ async function createContract() {
     brand_name_en: brandNameEn,
     ceo_name: '',
     status: 'pending',
-    effective_date: new Date().toISOString().slice(0,10)
+    effective_date: new Date().toISOString().slice(0,10),
+    contract_terms: ct
   });
 
+  // 입력 폼 리셋
   brandSel.value = '';
+  ['ct-initial','ct-phase1','ct-phase2','ct-phase3','ct-notes'].forEach(function(id){
+    var el = document.getElementById(id); if (el) el.value = '';
+  });
+  var cm = document.getElementById('ct-commission'); if (cm) cm.value = '8';
+
   renderAdminContracts();
   var link = window.location.origin + window.location.pathname + '?c=' + newId + '&brand=' + encodeURIComponent(brandValue);
   sendNotification('contract_created', { message: brandNameKo + ' 계약서(' + newId + ')가 생성되었습니다.', contractId: newId, brandName: brandNameKo });
