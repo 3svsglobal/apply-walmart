@@ -440,24 +440,62 @@ button{cursor:pointer;font-family:var(--font)}
 .pipe-stat .lbl{font-size:12px;color:var(--text-muted);margin-top:6px}
 
 /* ─── REVIEW PANEL (Admin) ─── */
-.review-card{padding:28px;border:1px solid var(--border-dark);border-radius:8px;margin-bottom:12px;background:linear-gradient(135deg,rgba(255,149,0,0.04) 0%,transparent 60%)}
-.review-header{display:flex;justify-content:space-between;align-items:start;margin-bottom:20px}
-.review-info{display:flex;gap:14px;align-items:start}
-.review-body{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:24px}
-.review-field{font-size:13px}
-.review-field .rf-label{color:var(--text-muted);font-family:var(--font);font-size:11.5px;font-weight:600;letter-spacing:0;margin-bottom:4px}
-.review-field .rf-value{color:var(--text);font-weight:500;font-size:14px}
-.review-type-select{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:16px}
-.review-type-btn{padding:12px 16px;border:1px solid var(--border-dark);border-radius:6px;background:transparent;color:rgba(0,0,0,0.4);font-size:13px;font-weight:500;font-family:var(--font);cursor:pointer;transition:all .2s;text-align:left}
-.review-type-btn:hover{border-color:rgba(0,0,0,0.62);color:rgba(0,0,0,0.6)}
-.review-type-btn.selected{border-color:var(--accent);color:var(--accent);background:rgba(0,113,220,0.08)}
-.review-type-btn .rtb-label{font-size:12px;font-family:var(--font);color:rgba(0,0,0,0.62);display:block;margin-bottom:2px}
-.review-type-btn.selected .rtb-label{color:rgba(0,113,220,0.5)}
-.review-actions{display:flex;gap:8px}
-.btn-approve{padding:10px 24px;border:none;border-radius:6px;background:var(--lime);color:var(--text);font-size:13px;font-weight:600;font-family:var(--font);cursor:pointer;transition:all .2s}
-.btn-approve:hover{background:#006644;transform:translateY(-1px)}
-.btn-reject{padding:10px 24px;border:1px solid var(--border-dark);border-radius:6px;background:transparent;color:rgba(0,0,0,0.45);font-size:13px;font-weight:500;font-family:var(--font);cursor:pointer;transition:all .2s}
-.btn-reject:hover{border-color:var(--red);color:var(--red)}
+/* ─── REVIEW CARD — Redesigned ─── */
+.review-card{padding:0;border:1px solid var(--border);border-radius:14px;margin-bottom:20px;background:#fff;box-shadow:0 4px 16px rgba(0,0,0,0.04);overflow:hidden}
+.review-card:hover{box-shadow:0 8px 24px rgba(0,0,0,0.07)}
+
+/* Header (brand + meta + status pills) */
+.review-header{display:flex;justify-content:space-between;align-items:flex-start;padding:24px 28px 20px;border-bottom:1px solid var(--border);background:linear-gradient(180deg,rgba(0,113,220,0.025) 0%,transparent 100%)}
+.review-info{display:flex;gap:16px;align-items:center}
+.review-info .brand-icon{width:56px;height:56px;font-size:22px;border-radius:12px}
+.review-info .brand-name{font-size:22px;font-weight:800;letter-spacing:-0.6px;display:flex;align-items:center;flex-wrap:wrap;gap:8px}
+.review-info .brand-sub{font-size:13px;color:var(--text-muted);margin-top:6px;font-weight:500}
+
+/* Body: 4-column responsive grid of section cards */
+.review-body{padding:24px 28px;display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
+.review-section{background:var(--surface-alt);border:1px solid var(--border);border-radius:10px;padding:18px 20px}
+.review-section.full{grid-column:1/-1}
+.rs-title{font-size:11px;font-weight:700;color:var(--accent);letter-spacing:0.8px;text-transform:uppercase;margin-bottom:14px;display:flex;align-items:center;gap:6px}
+.rs-title::before{content:'';width:14px;height:2px;background:var(--accent);border-radius:1px;display:inline-block}
+.rs-fields{display:grid;grid-template-columns:1fr;gap:12px}
+.rs-fields.cols-2{grid-template-columns:1fr 1fr;gap:14px 20px}
+.review-field{font-size:13px;min-width:0}
+.review-field .rf-label{color:var(--text-muted);font-family:var(--font);font-size:11px;font-weight:600;letter-spacing:0.3px;margin-bottom:3px;text-transform:uppercase}
+.review-field .rf-value{color:var(--text);font-weight:500;font-size:14px;line-height:1.5;word-break:break-word}
+.review-field .rf-value.muted{color:var(--text-muted);font-style:italic;font-weight:400}
+.review-field .rf-value a{color:var(--accent);text-decoration:none}
+.review-field .rf-value a:hover{text-decoration:underline}
+
+/* Strategy chips (color-coded radio answers) */
+.strategy-chips{display:flex;flex-wrap:wrap;gap:10px}
+.strategy-chip{display:inline-flex;align-items:center;gap:6px;padding:8px 14px;background:#fff;border:1px solid var(--border);border-radius:999px;font-size:13px;font-weight:500;color:var(--text)}
+.strategy-chip .sc-key{color:var(--text-muted);font-size:11.5px;font-weight:600}
+.strategy-chip .sc-val{padding:2px 9px;border-radius:999px;font-size:11.5px;font-weight:700;letter-spacing:0.2px}
+.sc-val.green{background:var(--lime-light);color:var(--lime)}
+.sc-val.orange{background:rgba(255,149,0,0.14);color:#b06b00}
+.sc-val.blue{background:var(--accent-light);color:var(--accent)}
+.sc-val.gray{background:rgba(0,0,0,0.05);color:var(--text-muted)}
+.sc-val.red{background:rgba(233,69,96,0.12);color:var(--red)}
+
+/* Action bar (bottom) */
+.review-actions-bar{padding:20px 28px 24px;background:var(--surface-alt);border-top:1px solid var(--border)}
+.review-actions-bar .ab-title{font-size:11px;font-weight:700;color:var(--text-muted);letter-spacing:0.8px;text-transform:uppercase;margin-bottom:10px}
+.review-type-select{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px}
+.review-type-btn{padding:14px 18px;border:1.5px solid var(--border);border-radius:10px;background:#fff;color:var(--text-muted);font-size:14px;font-weight:600;font-family:var(--font);cursor:pointer;transition:all .15s;text-align:left}
+.review-type-btn:hover{border-color:var(--accent);color:var(--text)}
+.review-type-btn.selected{border-color:var(--accent);color:var(--accent);background:var(--accent-light);box-shadow:0 2px 8px rgba(0,113,220,0.12)}
+.review-type-btn .rtb-label{font-size:11px;font-family:var(--font);color:var(--text-muted);display:block;margin-bottom:3px;font-weight:600;letter-spacing:0.3px;text-transform:uppercase}
+.review-type-btn.selected .rtb-label{color:var(--accent)}
+.review-actions{display:flex;gap:10px}
+.btn-approve{flex:1;padding:14px 24px;border:none;border-radius:10px;background:var(--lime);color:#fff;font-size:15px;font-weight:700;font-family:var(--font);cursor:pointer;transition:all .15s;display:flex;align-items:center;justify-content:center;gap:8px;box-shadow:0 4px 12px rgba(0,135,90,0.25)}
+.btn-approve:hover{background:#006644;transform:translateY(-1px);box-shadow:0 6px 16px rgba(0,135,90,0.35)}
+.btn-reject{padding:14px 22px;border:1.5px solid var(--border);border-radius:10px;background:#fff;color:var(--text-muted);font-size:14px;font-weight:600;font-family:var(--font);cursor:pointer;transition:all .15s}
+.btn-reject:hover{border-color:var(--red);color:var(--red);background:rgba(233,69,96,0.04)}
+
+@media (max-width: 900px){
+  .review-body{grid-template-columns:1fr}
+  .rs-fields.cols-2{grid-template-columns:1fr}
+}
 
 /* ─── PORTAL COST / DETAIL (gated) ─── */
 .portal-info-section{padding:28px;border:1px solid var(--border-dark);border-radius:8px;margin-bottom:12px}
@@ -4482,170 +4520,212 @@ async function renderAdminReview() {
   
   var html = '';
   
+  // Helpers for redesigned review card
+  function _esc(s) { return String(s == null ? '' : s).replace(/[&<>\"']/g, function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','\"':'&quot;',"'":'&#39;'}[c]; }); }
+  function _fieldHtml(label, value, opts) {
+    opts = opts || {};
+    if (value == null || String(value).trim() === '' || value === 'N/A') {
+      return '<div class="review-field"><div class="rf-label">' + _esc(label) + '</div><div class="rf-value muted">—</div></div>';
+    }
+    var val = String(value);
+    if (opts.link && /^https?:\/\//.test(val)) val = '<a href="' + _esc(val) + '" target="_blank" rel="noopener">' + _esc(val) + '</a>';
+    else val = _esc(val);
+    return '<div class="review-field"><div class="rf-label">' + _esc(label) + '</div><div class="rf-value"' + (opts.pre ? ' style="white-space:pre-wrap"' : '') + '>' + val + '</div></div>';
+  }
+  function _chipFormat(value) {
+    var map = {
+      'selling':       {label:'\uD310\uB9E4 \uC911',     color:'green'},
+      'in-talks':      {label:'\uC811\uCD09/\uB17C\uC758 \uC911', color:'orange'},
+      'none':          {label:'\uC5C6\uC74C',        color:'gray'},
+      'undecided':     {label:'\uBBF8\uC815',        color:'gray'},
+      'yes':           {label:'\uC608',          color:'green'},
+      'no':            {label:'\uC544\uB2C8\uC624',      color:'gray'},
+      'partial':       {label:'\uC77C\uBD80',        color:'orange'},
+      'considering':   {label:'\uACE0\uB824 \uC911',     color:'orange'},
+      'walmart-only':  {label:'\uC6D4\uB9C8\uD2B8\uB9CC',    color:'blue'},
+      'open':          {label:'\uC624\uD508',        color:'green'},
+      'brand-only':    {label:'\uC790\uC0AC \uBE0C\uB79C\uB4DC\uB9CC', color:'gray'},
+      'walmart-focus': {label:'\uC6D4\uB9C8\uD2B8 \uC9D1\uC911',  color:'blue'},
+      'multi-retail':  {label:'\uBA40\uD2F0 \uB9AC\uD14C\uC77C', color:'orange'},
+      'own':           {label:'\uC790\uCCB4 \uACF5\uC7A5',   color:'green'},
+      'outsource':     {label:'OEM',         color:'orange'},
+      'both':          {label:'\uC790\uCCB4+OEM',    color:'blue'},
+      'planned':       {label:'\uC9C4\uD589 \uC911',     color:'orange'}
+    };
+    return map[value] || {label:value, color:'gray'};
+  }
+  function _chip(key, value) {
+    if (!value || value === 'N/A') return '';
+    var f = _chipFormat(value);
+    return '<span class="strategy-chip"><span class="sc-key">' + _esc(key) + '</span><span class="sc-val ' + f.color + '">' + _esc(f.label) + '</span></span>';
+  }
+
   // Pending applications
   pending.forEach(function(app) {
     var initial = (app.brand_name_ko || app.brand_name_en || '?')[0];
-    var typeLabel = app.apply_type === 'voucher' ? '수출바우처' : '직접참여';
+    var typeLabel = app.apply_type === 'voucher' ? '\uC218\uCD9C\uBC14\uC6B0\uCC98' : '\uC9C1\uC811\uCC38\uC5EC';
     var date = app.created_at ? app.created_at.slice(0,10) : '';
 
-    // 첨부파일 개수 미리 계산
-    var attachedCount = 0;
+    var extra = {};
+    try { if (app.walmart_interest) extra = JSON.parse(app.walmart_interest) || {}; } catch(e) {}
+
+    var attachedCount = 0, attachedList = [];
     if (app.attached_files) {
       try {
-        var _list = JSON.parse(app.attached_files);
-        if (Array.isArray(_list)) attachedCount = _list.length;
-      } catch(e) {}
+        attachedList = JSON.parse(app.attached_files);
+        if (Array.isArray(attachedList)) attachedCount = attachedList.length;
+        else attachedList = [];
+      } catch(e) { attachedList = []; }
     }
     var attachBadge = attachedCount > 0
-      ? ' <span title="첨부파일 ' + attachedCount + '건" style="display:inline-flex;align-items:center;gap:4px;font-size:11px;padding:2px 8px;border-radius:999px;background:rgba(0,113,220,0.12);color:var(--accent);margin-left:6px;font-family:var(--mono);font-weight:600">📎 ' + attachedCount + '</span>'
+      ? '<span title="\uCCA8\uBD80 ' + attachedCount + '\uAC74" style="display:inline-flex;align-items:center;gap:4px;font-size:11.5px;padding:3px 9px;border-radius:999px;background:var(--accent-light);color:var(--accent);font-weight:700">\uD83D\uDCCE ' + attachedCount + '</span>'
       : '';
 
-    html += '<div class="review-card" data-app-id="' + app.id + '">' +
-      '<div class="review-header"><div class="review-info"><div class="brand-icon">' + initial + '</div><div>' +
-      '<div class="brand-name">' + (app.brand_name_ko || app.brand_name_en) + ' <span class="brand-badge badge-pending">심사 대기</span>' + attachBadge + '</div>' +
-      '<div class="brand-sub">접수일: ' + date + ' · 신청 유형: ' + typeLabel + '</div>' +
-      '</div></div></div>' +
-      '<div class="review-body">';
-    
-    // === Basic Info Section ===
-    html += '<div style="font-size:12px;color:var(--text-muted);margin-bottom:8px;font-family:var(--font);letter-spacing:0;font-weight:600">기업 기본 정보</div>';
-    var basicFields = [
-      ['회사명 (영문)', app.brand_name_en],
-      ['대표자', app.ceo_name],
-      ['업종', app.industry],
-      ['홈페이지', app.homepage],
-      ['주소', app.address]
-    ];
-    basicFields.forEach(function(f) {
-      if (f[1] && f[1].toString().trim()) {
-        var val = f[1];
-        if (f[0] === '홈페이지' && val.startsWith('http')) val = '<a href="' + val + '" target="_blank" style="color:var(--accent)">' + val + '</a>';
-        html += '<div class="review-field"><div class="rf-label">' + f[0] + '</div><div class="rf-value">' + val + '</div></div>';
-      }
-    });
+    html += '<div class="review-card" data-app-id="' + app.id + '">';
 
-    // === Contact Section ===
-    html += '<div style="font-size:12px;color:var(--text-muted);margin:16px 0 8px;font-family:var(--font);letter-spacing:0;font-weight:600">담당자 정보</div>';
-    var contactFields = [
-      ['담당자', app.contact_name],
-      ['직함', app.contact_position],
-      ['이메일', app.contact_email],
-      ['전화', app.contact_phone]
-    ];
-    contactFields.forEach(function(f) {
-      if (f[1] && f[1].toString().trim() && f[1] !== 'N/A') {
-        html += '<div class="review-field"><div class="rf-label">' + f[0] + '</div><div class="rf-value">' + f[1] + '</div></div>';
-      }
-    });
+    html += '<div class="review-header">' +
+      '<div class="review-info">' +
+        '<div class="brand-icon">' + _esc(initial) + '</div>' +
+        '<div>' +
+          '<div class="brand-name">' + _esc(app.brand_name_ko || app.brand_name_en || 'Unknown') +
+            ' <span class="brand-badge badge-pending">\uC2EC\uC0AC \uB300\uAE30</span>' +
+            ' <span class="badge-direct">' + _esc(typeLabel) + '</span>' +
+            (attachBadge ? ' ' + attachBadge : '') +
+          '</div>' +
+          '<div class="brand-sub">\uC811\uC218\uC77C ' + _esc(date) + ' \u00B7 ID <code style="font-family:var(--mono);font-size:11.5px;color:var(--text-muted)">' + _esc((app.id||'').slice(0,8)) + '</code></div>' +
+        '</div>' +
+      '</div>' +
+      '</div>';
 
-    // === Product & Business Section ===
-    html += '<div style="font-size:12px;color:var(--text-muted);margin:16px 0 8px;font-family:var(--font);letter-spacing:0;font-weight:600">제품 / 비즈니스 정보</div>';
-    var bizFields = [
-      ['제품 카테고리', app.product_category],
-      ['제품 설명', app.product_description],
-      ['연 매출 (USD)', app.annual_revenue],
-      ['수출 경험', app.export_experience]
-    ];
-    bizFields.forEach(function(f) {
-      if (f[1] && f[1].toString().trim()) {
-        html += '<div class="review-field"><div class="rf-label">' + f[0] + '</div><div class="rf-value" style="' + (f[1].length > 80 ? 'white-space:pre-wrap' : '') + '">' + f[1] + '</div></div>';
-      }
-    });
+    html += '<div class="review-body">';
 
-    // === Extra Data (from walmart_interest JSON) ===
-    var extra = null;
-    try { if (app.walmart_interest) extra = JSON.parse(app.walmart_interest); } catch(e) {}
-    if (extra && typeof extra === 'object') {
-      var extraLabels = {
-        'brand_story': '브랜드 스토리',
-        'amazon_url': 'Amazon URL',
-        'instagram_url': 'Instagram URL',
-        'instagram_followers': 'Instagram 팔로워',
-        'export_countries': '수출 국가',
-        'production_capacity': '생산 역량',
-        'lead_time': '리드 타임',
-        'annual_units_sold': '연간 판매량',
-        'us_warehouse': '미국 내 창고',
-        'packaging_modify': '패키징 변경 가능',
-        'mfg_type': '제조 유형',
-        'english_team': '영어 가능 인력',
-        'marketing_budget': '마케팅 예산',
-        'sku_description': '주요 SKU / 제품 정보',
-        'other_retail_status': '타 리테일 채널 상태',
-        'other_retail_channels': '타 리테일 채널 (상세)',
-        'channel_sales_org': '채널별 세일즈 조직',
-        'sams_club_interest': "Sam's Club 진출 의향",
-        'pb_open': 'PB 상품 가능성',
-        'strategy_direction': '전략 방향'
-      };
-      html += '<div style="font-size:12px;color:var(--text-muted);margin:16px 0 8px;font-family:var(--font);letter-spacing:0;font-weight:600">추가 정보</div>';
-      Object.keys(extra).forEach(function(key) {
-        var val = extra[key];
-        if (val && val.toString().trim()) {
-          var label = extraLabels[key] || key;
-          if ((key === 'amazon_url' || key === 'instagram_url') && val.startsWith('http')) val = '<a href="' + val + '" target="_blank" style="color:var(--accent)">' + val + '</a>';
-          html += '<div class="review-field"><div class="rf-label">' + label + '</div><div class="rf-value" style="' + (val.length > 80 ? 'white-space:pre-wrap' : '') + '">' + val + '</div></div>';
-        }
-      });
-    }
+    html += '<div class="review-section">' +
+      '<div class="rs-title">\uD68C\uC0AC \uC815\uBCF4</div>' +
+      '<div class="rs-fields">' +
+        _fieldHtml('\uD68C\uC0AC\uBA85 (\uC601\uBB38)', app.brand_name_en) +
+        _fieldHtml('\uB300\uD45C\uC790', app.ceo_name) +
+        _fieldHtml('\uC5C5\uC885', app.industry) +
+        _fieldHtml('\uD648\uD398\uC774\uC9C0', app.homepage, {link:true}) +
+        (app.address ? _fieldHtml('\uC8FC\uC18C', app.address) : '') +
+      '</div>' +
+    '</div>';
+
+    html += '<div class="review-section">' +
+      '<div class="rs-title">\uB2F4\uB2F9\uC790</div>' +
+      '<div class="rs-fields">' +
+        _fieldHtml('\uC774\uB984', app.contact_name) +
+        _fieldHtml('\uC9C1\uD568', app.contact_position) +
+        _fieldHtml('\uC774\uBA54\uC77C', app.contact_email) +
+        _fieldHtml('\uC804\uD654', app.contact_phone) +
+      '</div>' +
+    '</div>';
+
+    html += '<div class="review-section full">' +
+      '<div class="rs-title">\uC81C\uD488 \u00B7 \uBE44\uC988\uB2C8\uC2A4</div>' +
+      '<div class="rs-fields cols-2">' +
+        _fieldHtml('\uC81C\uD488 \uCE74\uD14C\uACE0\uB9AC', app.product_category) +
+        _fieldHtml('\uC5F0 \uB9E4\uCD9C (USD)', app.annual_revenue) +
+        _fieldHtml('\uC218\uCD9C \uACBD\uD5D8', app.export_experience) +
+        _fieldHtml('Instagram \uD314\uB85C\uC6CC', extra.instagram_followers) +
+        _fieldHtml('\uC81C\uD488 \uC124\uBA85', app.product_description, {pre:true}) +
+        _fieldHtml('\uBE0C\uB79C\uB4DC \uC2A4\uD1A0\uB9AC', extra.brand_story, {pre:true}) +
+        _fieldHtml('Amazon URL', extra.amazon_url, {link:true}) +
+        _fieldHtml('Instagram URL', extra.instagram_url, {link:true}) +
+      '</div>' +
+    '</div>';
+
+    html += '<div class="review-section full">' +
+      '<div class="rs-title">\uC81C\uC870 \u00B7 \uBB3C\uB958 \u00B7 \uC6B4\uC601</div>' +
+      '<div class="rs-fields cols-2">' +
+        _fieldHtml('\uC218\uCD9C \uAD6D\uAC00', extra.export_countries) +
+        _fieldHtml('\uC0DD\uC0B0 \uC5ED\uB7C9', extra.production_capacity) +
+        _fieldHtml('\uB9AC\uB4DC \uD0C0\uC784', extra.lead_time) +
+        _fieldHtml('\uC5F0\uAC04 \uD310\uB9E4\uB7C9', extra.annual_units_sold) +
+        _fieldHtml('\uBBF8\uAD6D \uB0B4 \uCC3D\uACE0', extra.us_warehouse) +
+        _fieldHtml('\uD328\uD0A4\uC9D5 \uBCC0\uACBD', extra.packaging_modify) +
+        _fieldHtml('\uC81C\uC870 \uC720\uD615', extra.mfg_type) +
+        _fieldHtml('\uC601\uC5B4 \uAC00\uB2A5 \uC778\uB825', extra.english_team) +
+        _fieldHtml('\uB9C8\uCF00\uD305 \uC608\uC0B0', extra.marketing_budget) +
+        _fieldHtml('\uC8FC\uC694 SKU / \uC81C\uD488', extra.sku_description, {pre:true}) +
+      '</div>' +
+    '</div>';
+
+    var strategyChipsHtml = '';
+    strategyChipsHtml += _chip('\uD0C0 \uB9AC\uD14C\uC77C',         extra.other_retail_status);
+    strategyChipsHtml += _chip('\uCC44\uB110\uBCC4 \uC138\uC77C\uC988\uC870\uC9C1', extra.channel_sales_org);
+    strategyChipsHtml += _chip("Sam's Club",        extra.sams_club_interest);
+    strategyChipsHtml += _chip('PB \uC0C1\uD488',           extra.pb_open);
+    strategyChipsHtml += _chip('\uC804\uB7B5 \uBC29\uD5A5',         extra.strategy_direction);
+    var otherRetailDetail = extra.other_retail_channels && String(extra.other_retail_channels).trim();
+    html += '<div class="review-section full">' +
+      '<div class="rs-title">\uB9AC\uD14C\uC77C \uCC44\uB110 & \uC6D4\uB9C8\uD2B8 \uC804\uB7B5</div>' +
+      (strategyChipsHtml ? '<div class="strategy-chips" style="margin-bottom:' + (otherRetailDetail ? '12px' : '0') + '">' + strategyChipsHtml + '</div>' : '') +
+      (otherRetailDetail ? '<div class="review-field"><div class="rf-label">\uD0C0 \uCC44\uB110 \uC0C1\uC138</div><div class="rf-value">' + _esc(otherRetailDetail) + '</div></div>' : '') +
+      (!strategyChipsHtml && !otherRetailDetail ? '<div class="rf-value muted">\uC544\uC9C1 \uC785\uB825\uB41C \uC815\uBCF4\uAC00 \uC5C6\uC2B5\uB2C8\uB2E4.</div>' : '') +
+    '</div>';
 
     if (app.apply_type === 'voucher' && app.voucher_amount) {
-      html += '<div style="font-size:12px;color:var(--text-muted);margin:16px 0 8px;font-family:var(--font);letter-spacing:0">수출바우처</div>';
-      html += '<div class="review-field"><div class="rf-label">바우처 잔액</div><div class="rf-value">' + app.voucher_amount + '</div></div>';
-      if (app.voucher_number) html += '<div class="review-field"><div class="rf-label">바우처 번호</div><div class="rf-value">' + app.voucher_number + '</div></div>';
+      html += '<div class="review-section full">' +
+        '<div class="rs-title">\uC218\uCD9C\uBC14\uC6B0\uCC98</div>' +
+        '<div class="rs-fields cols-2">' +
+          _fieldHtml('\uBC14\uC6B0\uCC98 \uC794\uC561', app.voucher_amount) +
+          _fieldHtml('\uBC14\uC6B0\uCC98 \uBC88\uD638', app.voucher_number) +
+        '</div>' +
+      '</div>';
     }
-    
+
+    html += '<div class="review-section full">';
+    if (attachedCount > 0) {
+      var _totalBytes = attachedList.reduce(function(s, x) { return s + (x.size || 0); }, 0);
+      var _totalStr = _totalBytes < 1048576 ? (_totalBytes/1024).toFixed(0) + ' KB' : (_totalBytes/1048576).toFixed(1) + ' MB';
+      var _urlsJson = JSON.stringify(attachedList.map(function(x){ return x.url; }).filter(Boolean)).replace(/"/g,'&quot;');
+      html += '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px">' +
+        '<div class="rs-title" style="margin-bottom:0">\uCCA8\uBD80\uD30C\uC77C (' + attachedCount + ') \u00B7 ' + _totalStr + '</div>' +
+        '<button onclick="openAllAttachments(' + _urlsJson + ')" style="background:var(--accent);border:none;color:#fff;font-size:12px;font-weight:600;padding:7px 14px;border-radius:8px;cursor:pointer;box-shadow:0 2px 6px rgba(0,113,220,0.25)">\u2197 \uC804\uCCB4 \uC5F4\uAE30</button>' +
+        '</div>';
+      attachedList.forEach(function(f) {
+        var fname = f.name || 'file';
+        var fext = fname.split('.').pop().toLowerCase();
+        var icon = fext === 'pdf' ? '\uD83D\uDCC4' : (fext === 'pptx' || fext === 'ppt') ? '\uD83D\uDCCA' : (fext === 'xlsx' || fext === 'xls' || fext === 'csv') ? '\uD83D\uDCC8' : (['png','jpg','jpeg','gif'].indexOf(fext) >= 0) ? '\uD83D\uDDBC\uFE0F' : '\uD83D\uDCCE';
+        var sizeStr = f.size ? (f.size < 1048576 ? (f.size/1024).toFixed(1) + ' KB' : (f.size/1048576).toFixed(1) + ' MB') : '';
+        var fieldLabel = f.field === 'Brand Deck' ? '\uBE0C\uB79C\uB4DC \uC18C\uAC1C\uC11C' : (f.field === 'Additional Docs' ? '\uCD94\uAC00 \uC11C\uB958' : (f.field === 'SKU List' ? 'SKU \uB9AC\uC2A4\uD2B8' : (f.field || '')));
+        html += '<div style="display:flex;align-items:center;gap:12px;padding:12px 16px;border:1px solid var(--border);border-radius:8px;margin-bottom:8px;background:#fff;transition:all .15s" onmouseenter="this.style.borderColor=\'rgba(0,113,220,0.4)\'" onmouseleave="this.style.borderColor=\'\'">' +
+          '<span style="font-size:22px;flex-shrink:0">' + icon + '</span>' +
+          '<div style="flex:1;min-width:0">' +
+            '<div style="font-size:14px;color:var(--text);font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">' + _esc(fname) + '</div>' +
+            '<div style="font-size:12px;color:var(--text-muted);margin-top:2px">' + _esc(fieldLabel) + (sizeStr ? ' \u00B7 ' + sizeStr : '') + '</div>' +
+          '</div>' +
+          '<a href="' + _esc(f.url || '#') + '" target="_blank" rel="noopener" style="color:var(--accent);font-size:13px;font-weight:600;text-decoration:none;white-space:nowrap;padding:8px 14px;border:1px solid rgba(0,113,220,0.3);border-radius:8px;background:var(--accent-light)">\uC5F4\uAE30 \u2192</a>' +
+        '</div>';
+      });
+    } else {
+      html += '<div class="rs-title">\uCCA8\uBD80\uD30C\uC77C</div>' +
+        '<div style="padding:18px 20px;border:1.5px dashed var(--border);border-radius:8px;background:#fff;color:var(--text-muted);font-size:13.5px;display:flex;align-items:center;gap:12px"><span style="font-size:20px;opacity:0.5">\uD83D\uDCCE</span><span>\uC774 \uC2E0\uCCAD\uC5D0\uB294 \uCCA8\uBD80\uB41C \uD30C\uC77C\uC774 \uC5C6\uC2B5\uB2C8\uB2E4.</span></div>';
+    }
     html += '</div>';
 
-    // === 첨부파일 ===
-    var _hasAttachments = false;
-    if (app.attached_files) {
-      try {
-        var attachedList = JSON.parse(app.attached_files);
-        if (Array.isArray(attachedList) && attachedList.length > 0) {
-          _hasAttachments = true;
-          var _totalBytes = attachedList.reduce(function(s, x) { return s + (x.size || 0); }, 0);
-          var _totalStr = _totalBytes < 1048576 ? (_totalBytes/1024).toFixed(0) + ' KB' : (_totalBytes/1048576).toFixed(1) + ' MB';
-          var _urlsJson = JSON.stringify(attachedList.map(function(x){ return x.url; }).filter(Boolean)).replace(/"/g,'&quot;');
-          html += '<div style="display:flex;align-items:center;justify-content:space-between;margin:16px 0 8px">' +
-            '<div style="font-size:12px;color:var(--text-muted);font-family:var(--font);letter-spacing:0;font-weight:600">첨부파일 (' + attachedList.length + ') · ' + _totalStr + '</div>' +
-            '<button onclick="openAllAttachments(' + _urlsJson + ')" style="background:rgba(0,113,220,0.12);border:1px solid rgba(0,113,220,0.3);color:var(--accent);font-size:11px;font-family:var(--mono);font-weight:600;padding:4px 10px;border-radius:6px;cursor:pointer">↗ 전체 새 탭 열기</button>' +
-            '</div>';
-          attachedList.forEach(function(f) {
-            var fname = f.name || 'file';
-            var fext = fname.split('.').pop().toLowerCase();
-            var icon = fext === 'pdf' ? '📄' : (fext === 'pptx' || fext === 'ppt') ? '📊' : (fext === 'xlsx' || fext === 'xls' || fext === 'csv') ? '📈' : (['png','jpg','jpeg','gif'].indexOf(fext) >= 0) ? '🖼️' : '📎';
-            var sizeStr = f.size ? (f.size < 1048576 ? (f.size/1024).toFixed(1) + ' KB' : (f.size/1048576).toFixed(1) + ' MB') : '';
-            var fieldLabel = f.field === 'Brand Deck' ? '브랜드 소개서' : (f.field === 'Additional Docs' ? '추가 서류' : (f.field === 'SKU List' ? 'SKU 리스트' : (f.field || '')));
-            html += '<div style="display:flex;align-items:center;gap:12px;padding:10px 14px;border:1px solid rgba(0,0,0,0.12);border-radius:6px;margin-bottom:6px;background:rgba(0,0,0,0.02)">' +
-              '<span style="font-size:18px">' + icon + '</span>' +
-              '<div style="flex:1;min-width:0">' +
-                '<div style="font-size:13px;color:var(--text);font-weight:500;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">' + fname + '</div>' +
-                '<div style="font-size:11px;color:rgba(0,0,0,0.45);font-family:var(--mono);margin-top:2px">' + fieldLabel + (sizeStr ? ' \u00b7 ' + sizeStr : '') + '</div>' +
-              '</div>' +
-              '<a href="' + (f.url || '#') + '" target="_blank" rel="noopener" style="color:var(--accent);font-size:13px;font-weight:500;text-decoration:none;white-space:nowrap;padding:6px 12px;border:1px solid rgba(0,113,220,0.3);border-radius:6px">열기 \u2192</a>' +
-            '</div>';
-          });
-        }
-      } catch(e) { console.warn('attached_files parse failed', e); }
-    }
-    if (!_hasAttachments) {
-      html += '<div style="font-size:12px;color:var(--text-muted);margin:16px 0 8px;font-family:var(--font);letter-spacing:0;font-weight:600">첨부파일</div>' +
-        '<div style="padding:14px 16px;border:1px dashed rgba(0,0,0,0.14);border-radius:6px;background:rgba(0,0,0,0.015);color:rgba(0,0,0,0.4);font-size:13px;display:flex;align-items:center;gap:10px"><span style="font-size:16px">📎</span>이 신청에는 첨부된 파일이 없습니다.</div>';
-    }
+    html += '</div>'; // /.review-body
 
-    html += '<div style="font-size:13px;color:rgba(0,0,0,0.65);margin:20px 0 12px;font-family:var(--mono)">기업 유형 확정</div>' +
+    html += '<div class="review-actions-bar">' +
+      '<div class="ab-title">\uAE30\uC5C5 \uC720\uD615 \uD655\uC815</div>' +
       '<div class="review-type-select">' +
-      '<button class="review-type-btn' + (app.apply_type !== 'voucher' ? ' selected' : '') + '" onclick="selectReviewType(this,\'direct\')">' +
-      '<span class="rtb-label">A Type</span>직접 참여 기업</button>' +
-      '<button class="review-type-btn' + (app.apply_type === 'voucher' ? ' selected' : '') + '" onclick="selectReviewType(this,\'voucher\')" style="display:none">' +
-      '<span class="rtb-label">B Type</span>수출바우처 연계 기업</button></div>' +
+        '<button class="review-type-btn' + (app.apply_type !== 'voucher' ? ' selected' : '') + '" onclick="selectReviewType(this,\'direct\')">' +
+          '<span class="rtb-label">A Type</span>\uC9C1\uC811 \uCC38\uC5EC \uAE30\uC5C5' +
+        '</button>' +
+        '<button class="review-type-btn' + (app.apply_type === 'voucher' ? ' selected' : '') + '" onclick="selectReviewType(this,\'voucher\')" style="display:none">' +
+          '<span class="rtb-label">B Type</span>\uC218\uCD9C\uBC14\uC6B0\uCC98 \uC5F0\uACC4 \uAE30\uC5C5' +
+        '</button>' +
+      '</div>' +
       '<div class="review-actions">' +
-      '<button class="btn-approve" onclick="approveApplication(\'' + app.id + '\')">승인 — 포털 권한 부여</button>' +
-      '<button class="btn-reject" onclick="rejectApplication(\'' + app.id + '\')">반려</button></div></div>';
+        '<button class="btn-approve" onclick="approveApplication(\'' + app.id + '\')"><span style="font-size:16px">\u2713</span> \uC2B9\uC778 \u2014 \uD3EC\uD138 \uAD8C\uD55C \uBD80\uC5EC</button>' +
+        '<button class="btn-reject" onclick="rejectApplication(\'' + app.id + '\')">\uBC18\uB824</button>' +
+      '</div>' +
+    '</div>';
+
+    html += '</div>'; // /.review-card
   });
-  
-  // Processed applications
+
+    // Processed applications
   if (processed.length > 0) {
     html += '<div style="margin-top:32px;margin-bottom:12px;font-size:13px;color:rgba(0,0,0,0.62);font-family:var(--mono)">최근 처리 완료</div>';
     processed.forEach(function(app) {
