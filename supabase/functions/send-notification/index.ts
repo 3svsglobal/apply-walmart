@@ -51,6 +51,55 @@ const emailTemplates: Record<string, (data: any) => { subject: string; html: str
     `,
   }),
 
+  application_received: (data) => ({
+    subject: `[월마트 입점 프로그램] ${data.brandName || '귀사'}의 신청이 정상 접수되었습니다`,
+    to: [data.email || ADMIN_EMAIL],
+    html: `
+      <div style="font-family:sans-serif;max-width:600px;margin:0 auto;padding:20px;color:#1a1a1a">
+        <h2 style="color:#0071dc;margin:0 0 8px">신청 접수 완료</h2>
+        <p style="font-size:14px;color:#555;margin:0 0 24px">Walmart Entry Program — 3Stripe Venture Studio × Startup Junkie Consulting</p>
+        <p><strong>${data.brandName || '귀사'}</strong>의 입점 프로그램 신청이 정상적으로 접수되었습니다. 운영팀이 2영업일 이내 검토 후 별도 안내드리겠습니다.</p>
+
+        <div style="background:#f6f7f9;border:1px solid #e6e6ea;border-radius:8px;padding:16px 20px;margin:24px 0">
+          <div style="font-size:12px;font-weight:700;color:#0071dc;margin-bottom:8px;letter-spacing:0.3px">📌 신청 내용 수정 링크</div>
+          <p style="margin:0 0 12px;font-size:13px;color:#555;line-height:1.55">검토 시작 전까지 아래 링크로 신청 내용을 자유롭게 수정하실 수 있습니다. 이 링크는 본인만 접근할 수 있도록 별도 발송된 것이므로 외부 공유에 주의해 주세요.</p>
+          <p style="margin:0">
+            <a href="${data.editLink || 'https://www.applywalmart.info'}"
+               style="background:#0071dc;color:#fff;padding:10px 18px;border-radius:6px;text-decoration:none;display:inline-block;font-size:13px;font-weight:600">
+              신청 내용 수정하기 →
+            </a>
+          </p>
+          <p style="margin:12px 0 0;font-size:11px;color:#999;word-break:break-all">${data.editLink || ''}</p>
+        </div>
+
+        <p style="font-size:13px;color:#666;line-height:1.65">실무자 미팅이 시작되면 모든 항목을 함께 점검·보완해 드리니, 지금 단계에서는 알고 계신 정보 위주로 채워주신 것만으로도 충분합니다. 문의는 <a href="mailto:jw@3svs.com" style="color:#0071dc">jw@3svs.com</a>로 부탁드립니다.</p>
+
+        <hr style="border:none;border-top:1px solid #eee;margin:24px 0">
+        <p style="color:#999;font-size:12px">Walmart Entry Program by 3Stripe Venture Studio</p>
+      </div>
+    `,
+  }),
+
+  application_updated: (data) => ({
+    subject: `[월마트 입점] 신청 내용 수정됨 — ${data.brandName || '신청'}`,
+    to: [ADMIN_EMAIL],
+    html: `
+      <div style="font-family:sans-serif;max-width:600px;margin:0 auto;padding:20px">
+        <h2 style="color:#f0ad4e">신청 내용 수정 알림</h2>
+        <p>${data.message || ''}</p>
+        <p style="font-size:13px;color:#666">신청 ID: <code>${data.appId || ''}</code></p>
+        <p style="margin-top:20px">
+          <a href="https://www.applywalmart.info"
+             style="background:#0071dc;color:#fff;padding:12px 24px;border-radius:8px;text-decoration:none;display:inline-block">
+            관리자 대시보드에서 확인
+          </a>
+        </p>
+        <hr style="border:none;border-top:1px solid #eee;margin:24px 0">
+        <p style="color:#999;font-size:12px">Walmart Entry Program by 3Stripe Venture Studio</p>
+      </div>
+    `,
+  }),
+
   application_approved: (data) => ({
     subject: `[월마트 입점] 신청이 승인되었습니다 — ${data.brandName}`,
     to: [data.email || ADMIN_EMAIL],

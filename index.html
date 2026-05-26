@@ -2599,16 +2599,42 @@ button{cursor:pointer;font-family:var(--font)}
 <!-- APPLY SUCCESS MODAL -->
 <!-- ═══════════════════════════════════════ -->
 <div class="modal-overlay" id="apply-success-modal">
-  <div class="modal-box" style="position:relative">
+  <div class="modal-box" style="position:relative;max-width:540px">
     <button class="modal-close" onclick="document.getElementById('apply-success-modal').classList.remove('show')">&times;</button>
     <div class="login-success">
       <div class="login-success-icon">✓</div>
-      <h3><span class="ko">신청이 완료되었습니다</span><span class="en">Application Submitted</span></h3>
-      <p><span class="ko">접수 내용을 확인 중입니다.<br>2영업일 이내 담당자가 연락드리겠습니다.</span><span class="en">We are reviewing your application.<br>Our team will contact you within 2 business days.</span></p>
-      <button class="btn-primary" style="margin-top:24px;width:100%;justify-content:center" onclick="document.getElementById('apply-success-modal').classList.remove('show');switchTab('landing')">홈으로 돌아가기</button>
+      <h3 id="apply-success-title"><span class="ko">신청이 완료되었습니다</span><span class="en">Application Submitted</span></h3>
+      <p id="apply-success-desc"><span class="ko">접수 내용을 확인 중입니다.<br>2영업일 이내 담당자가 연락드리겠습니다.</span><span class="en">We are reviewing your application.<br>Our team will contact you within 2 business days.</span></p>
+
+      <!-- 수정 링크 (신규 신청 시에만 노출) -->
+      <div id="apply-success-edit-link" style="display:none;margin-top:24px;padding:16px;background:var(--surface-alt);border:1px solid var(--border);border-radius:8px;text-align:left">
+        <div style="font-size:12px;font-weight:700;color:var(--accent);margin-bottom:8px;letter-spacing:0.3px"><span class="ko">📌 수정 링크 — 꼭 저장해 주세요</span><span class="en">📌 Edit link — please save</span></div>
+        <div style="font-size:13px;color:var(--text-muted);line-height:1.55;margin-bottom:10px"><span class="ko">아래 링크로 언제든 신청 내용을 수정하실 수 있습니다 (검토 시작 전까지). 동일 링크가 입력하신 이메일로도 발송됩니다.</span><span class="en">You can edit your application anytime with this link (until review starts). The same link is also being sent to your email.</span></div>
+        <div style="display:flex;gap:8px;align-items:stretch">
+          <input id="apply-success-edit-url" type="text" readonly style="flex:1;padding:9px 12px;background:#fff;border:1px solid var(--border);border-radius:6px;font-size:12px;font-family:var(--mono);color:var(--text);min-width:0">
+          <button onclick="copyEditLink()" style="padding:9px 14px;background:var(--accent);color:#fff;border:none;border-radius:6px;font-size:12px;font-weight:600;cursor:pointer;white-space:nowrap" id="apply-success-edit-copy"><span class="ko">복사</span><span class="en">Copy</span></button>
+        </div>
+      </div>
+
+      <button class="btn-primary" style="margin-top:24px;width:100%;justify-content:center" onclick="document.getElementById('apply-success-modal').classList.remove('show');switchTab('landing')"><span class="ko">홈으로 돌아가기</span><span class="en">Back to Home</span></button>
     </div>
   </div>
 </div>
+
+<script>
+function copyEditLink() {
+  var input = document.getElementById('apply-success-edit-url');
+  if (!input) return;
+  input.select(); input.setSelectionRange(0, 99999);
+  navigator.clipboard.writeText(input.value).then(function() {
+    var btn = document.getElementById('apply-success-edit-copy');
+    var orig = btn.innerHTML;
+    btn.innerHTML = '✓ 복사됨';
+    btn.style.background = 'var(--lime)';
+    setTimeout(function() { btn.innerHTML = orig; btn.style.background = 'var(--accent)'; }, 1800);
+  }).catch(function() { document.execCommand('copy'); });
+}
+</script>
 
 <script>
 // ═══ Supabase Configuration ═══
@@ -2616,6 +2642,19 @@ var SUPABASE_URL = 'https://ixvuvaaovcsrcfjmrrnb.supabase.co';
 var SUPABASE_ANON_KEY = 'sb_publishable_RnJc3dW4mibyxNRU2DzCLA_ec1hkoXe';
 var supabase = window.supabase ? window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY) : null;
 // ═══ Supabase DB Helper Functions ═══
+// 수정 모드일 때 현재 신청 row의 id가 들어감 (null이면 신규 insert)
+var _editingApplicationId = null;
+var _editingApplicationToken = null;
+
+function _generateEditToken() {
+  // RFC4122 v4 UUID
+  if (window.crypto && crypto.randomUUID) return crypto.randomUUID();
+  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+    var r = Math.random()*16|0, v = c==='x' ? r : (r&0x3|0x8);
+    return v.toString(16);
+  });
+}
+
 async function dbSaveApplication(formData) {
   if (!supabase) return null;
   var obj = {};
@@ -2681,10 +2720,26 @@ async function dbSaveApplication(formData) {
   else obj.apply_type = 'direct';
   
   try {
-    var res = await supabase.from('wm_applications').insert([obj]).select();
-    console.log('Application saved to DB:', res);
-    var saved = res.data ? res.data[0] : null;
-    if (!saved) return null;
+    var res, saved;
+    if (_editingApplicationId && _editingApplicationToken) {
+      // 수정 모드 — 같은 행 UPDATE (토큰 매칭 필수)
+      res = await supabase.from('wm_applications')
+        .update(obj)
+        .eq('id', _editingApplicationId)
+        .eq('edit_token', _editingApplicationToken)
+        .select();
+      console.log('Application UPDATED:', res);
+      saved = res.data ? res.data[0] : null;
+      if (!saved) { alert('수정 권한 확인 실패. 링크가 만료됐거나 잘못된 링크입니다.'); return null; }
+      saved._wasUpdate = true;
+    } else {
+      // 신규 신청 — 토큰 생성 후 insert
+      obj.edit_token = _generateEditToken();
+      res = await supabase.from('wm_applications').insert([obj]).select();
+      console.log('Application saved to DB:', res);
+      saved = res.data ? res.data[0] : null;
+      if (!saved) return null;
+    }
     // 첨부파일 업로드 (Brand Deck + Additional Docs + SKU List)
     var attachedFiles = [];
     var uploadFailures = [];
@@ -3175,8 +3230,48 @@ function submitApply() {
   dbSaveApplication(fd).then(function(saved) {
     if (saved) {
       console.log('Saved to DB, id:', saved.id);
+
+      // 모달 텍스트 — 수정 모드 vs 신규
+      var titleKo = saved._wasUpdate ? '수정 사항이 저장되었습니다' : '신청이 완료되었습니다';
+      var titleEn = saved._wasUpdate ? 'Changes Saved' : 'Application Submitted';
+      var descKo = saved._wasUpdate ? '변경하신 내용이 정상적으로 반영되었습니다.<br>같은 수정 링크로 언제든 다시 들어오실 수 있습니다.' : '접수 내용을 확인 중입니다.<br>2영업일 이내 담당자가 연락드리겠습니다.';
+      var descEn = saved._wasUpdate ? 'Your changes have been saved.<br>You can return anytime via the same edit link.' : 'We are reviewing your application.<br>Our team will contact you within 2 business days.';
+      var titleEl = document.getElementById('apply-success-title');
+      var descEl = document.getElementById('apply-success-desc');
+      if (titleEl) titleEl.innerHTML = '<span class="ko">' + titleKo + '</span><span class="en">' + titleEn + '</span>';
+      if (descEl) descEl.innerHTML = '<span class="ko">' + descKo + '</span><span class="en">' + descEn + '</span>';
+
+      // 수정 링크 박스 — 신규 신청 시에만 토큰 노출
+      var editLinkBox = document.getElementById('apply-success-edit-link');
+      var editUrlInput = document.getElementById('apply-success-edit-url');
+      if (!saved._wasUpdate && saved.edit_token && editLinkBox && editUrlInput) {
+        var editUrl = window.location.origin + window.location.pathname + '?edit=' + saved.edit_token;
+        editUrlInput.value = editUrl;
+        editLinkBox.style.display = '';
+      } else if (editLinkBox) {
+        editLinkBox.style.display = 'none';
+      }
+
       document.getElementById('apply-success-modal').classList.add('show');
-      sendNotification('application_submitted', { message: (saved.brand_name_ko || saved.brand_name_en || '새 기업') + '이(가) 신청서를 제출했습니다.', appId: saved.id });
+
+      if (saved._wasUpdate) {
+        // 수정 모드 종료 — 다음 호출은 다시 신규로
+        sendNotification('application_updated', { message: (saved.brand_name_ko || saved.brand_name_en || '신청') + ' 내용이 수정되었습니다.', appId: saved.id, brandName: saved.brand_name_ko || saved.brand_name_en });
+        _editingApplicationId = null;
+        _editingApplicationToken = null;
+      } else {
+        sendNotification('application_submitted', { message: (saved.brand_name_ko || saved.brand_name_en || '새 기업') + '이(가) 신청서를 제출했습니다.', appId: saved.id });
+        // 신청자에게도 접수 메일 + 수정 링크
+        if (saved.contact_email && saved.edit_token) {
+          var editUrl2 = window.location.origin + window.location.pathname + '?edit=' + saved.edit_token;
+          sendNotification('application_received', {
+            email: saved.contact_email,
+            brandName: saved.brand_name_ko || saved.brand_name_en || '귀사',
+            editLink: editUrl2,
+            appId: saved.id
+          });
+        }
+      }
       if (saved._uploadFailures && saved._uploadFailures.length > 0) {
         setTimeout(function() {
           alert('⚠️ 신청은 정상 접수되었으나 첨부파일 ' + saved._uploadFailures.length + '/' + saved._uploadAttempted + '건이 업로드되지 않았습니다.\n\n실패 파일:\n- ' + saved._uploadFailures.join('\n- ') + '\n\n관리자에게 별도 전달해 주세요.');
@@ -4218,7 +4313,149 @@ function closeSigModal() { document.getElementById('sig-overlay').style.display 
 // Fallback: re-check contract URL after full page load
 window.addEventListener('load', function() { checkContractUrl();
   // Restore session on page load
-  if (!window.location.search.includes('contract=')) restoreSession(); });
+  if (!window.location.search.includes('contract=')) restoreSession();
+  // 신청서 수정 링크 처리
+  checkEditUrl();
+});
+
+// ─── APPLICATION EDIT MODE ───
+async function checkEditUrl() {
+  var params = new URLSearchParams(window.location.search);
+  var token = params.get('edit');
+  if (!token) return;
+  if (!supabase) return;
+
+  // 1. 토큰으로 신청 조회
+  var res = await supabase.from('wm_applications').select('*').eq('edit_token', token).single();
+  if (res.error || !res.data) {
+    alert('유효하지 않은 수정 링크입니다. 새 신청을 진행하시거나 운영팀(jw@3svs.com)으로 문의해주세요.');
+    return;
+  }
+  var app = res.data;
+
+  // 2. 상태 차단 — 이미 검토가 끝난 경우
+  if (app.status === 'approved' || app.status === 'contracted') {
+    alert('이미 승인이 완료된 신청입니다. 변경이 필요하시면 운영팀(jw@3svs.com)으로 직접 연락 주세요.');
+    return;
+  }
+  if (app.status === 'rejected') {
+    alert('이 신청은 반려 상태입니다. 새로 신청해 주시거나 운영팀(jw@3svs.com)으로 문의해주세요.');
+    return;
+  }
+
+  // 3. 수정 모드 설정 + 신청 탭 전환
+  _editingApplicationId = app.id;
+  _editingApplicationToken = token;
+  switchTab('apply');
+  showEditModeBanner(app);
+  prefillApplicationForm(app);
+}
+
+function showEditModeBanner(app) {
+  var panel = document.querySelector('#view-apply');
+  if (!panel) return;
+  var existing = document.getElementById('edit-mode-banner');
+  if (existing) existing.remove();
+  var banner = document.createElement('div');
+  banner.id = 'edit-mode-banner';
+  banner.style.cssText = 'position:sticky;top:0;z-index:50;background:linear-gradient(135deg,#0071dc,#0058b0);color:#fff;padding:12px 24px;text-align:center;font-size:14px;font-weight:500;box-shadow:0 2px 8px rgba(0,0,0,0.15)';
+  banner.innerHTML = '✎ 수정 모드 — 기존 신청 (' + (app.brand_name_en || app.brand_name_ko || '신청') + ')의 정보를 수정 중입니다. 제출하면 기존 신청이 갱신됩니다.';
+  panel.insertBefore(banner, panel.firstChild);
+}
+
+function prefillApplicationForm(app) {
+  // 직접 매핑된 DB 컬럼 → form input name
+  var directMap = {
+    'brand_name_en': 'Brand Name',
+    'product_description': 'Brand Description',
+    'product_category': 'Category',
+    'homepage': 'Website',
+    'annual_revenue': 'Annual Revenue USD',
+    'contact_position': 'Title',
+    'contact_email': 'Email'
+  };
+  Object.keys(directMap).forEach(function(col) {
+    var name = directMap[col];
+    var input = document.querySelector('#view-apply [name="' + name + '"]');
+    if (input && app[col] != null) input.value = app[col];
+  });
+
+  // 담당자 이름 — contact_name → First/Last로 분리
+  if (app.contact_name) {
+    var parts = app.contact_name.split(/\s+/);
+    var first = document.querySelector('#view-apply [name="First Name"]');
+    var last = document.querySelector('#view-apply [name="Last Name"]');
+    if (first) first.value = parts[0] || '';
+    if (last) last.value = parts.slice(1).join(' ') || '';
+  }
+
+  // 전화 — "+82 010..." 형태 → 국가코드 + 본번호 분리
+  if (app.contact_phone) {
+    var m = app.contact_phone.match(/^(\+\d+)\s+(.+)$/);
+    var cc = document.getElementById('phone-country');
+    var phone = document.querySelector('#view-apply [name="Phone"]');
+    if (m) {
+      if (cc) cc.value = m[1];
+      if (phone) phone.value = m[2];
+    } else if (phone) {
+      phone.value = app.contact_phone;
+    }
+  }
+
+  // walmart_interest JSON에 들어간 extra 필드 + 라디오 버튼
+  var extra = {};
+  try { if (app.walmart_interest) extra = JSON.parse(app.walmart_interest); } catch(e) {}
+
+  // textarea / input 필드 (extra 안)
+  var extraInput = {
+    'brand_story': 'Brand Story',
+    'amazon_url': 'Amazon URL',
+    'instagram_url': 'Instagram URL',
+    'instagram_followers': 'Instagram Followers',
+    'export_countries': 'Export Countries',
+    'production_capacity': 'Production Capacity',
+    'lead_time': 'Lead Time',
+    'annual_units_sold': 'Annual Units Sold',
+    'sku_description': 'SKU Description',
+    'other_retail_channels': 'Other Retail Channels'
+  };
+  Object.keys(extraInput).forEach(function(k) {
+    var name = extraInput[k];
+    var input = document.querySelector('#view-apply [name="' + name + '"]');
+    if (input && extra[k] != null) input.value = extra[k];
+  });
+
+  // 라디오 버튼 — DB 컬럼명 또는 extra의 키와 form radio name 매핑
+  var radioMap = {
+    'export_experience': 'export-exp',
+    'us_warehouse': 'us-warehouse',
+    'packaging_modify': 'packaging',
+    'mfg_type': 'mfg-type',
+    'english_team': 'eng-team',
+    'marketing_budget': 'mkt-budget',
+    'other_retail_status': 'other-retail',
+    'channel_sales_org': 'channel-sales-org',
+    'sams_club_interest': 'sams-club',
+    'pb_open': 'pb-open',
+    'strategy_direction': 'strategy'
+  };
+  Object.keys(radioMap).forEach(function(k) {
+    var val = (app[k] != null && app[k] !== 'N/A') ? app[k] : (extra[k] && extra[k] !== 'N/A' ? extra[k] : null);
+    if (!val) return;
+    var radio = document.querySelector('#view-apply input[name="' + radioMap[k] + '"][value="' + val + '"]');
+    if (radio) radio.checked = true;
+  });
+
+  // 수출 국가 체크박스 동기화
+  if (extra.export_countries) {
+    var countries = String(extra.export_countries).split(',').map(function(s){return s.trim();});
+    document.querySelectorAll('#export-countries-grid input[type=checkbox]').forEach(function(cb) {
+      var c = cb.getAttribute('data-country');
+      if (countries.indexOf(c) >= 0) cb.checked = true;
+    });
+    if (typeof updateExportCountries === 'function') updateExportCountries();
+  }
+}
 
 
 function openAllAttachments(urls) {
