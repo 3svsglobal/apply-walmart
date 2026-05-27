@@ -2610,15 +2610,15 @@ button{cursor:pointer;font-family:var(--font)}
       </div>
     </div>
     <div class="dash-main">
-      <div class="dash-topbar"><div class="dash-title"><h2 id="locked-topbar-name">-</h2><p>신청서 접수 완료 · 심사 진행 중</p></div><div class="dash-actions"><div class="dash-avatar" id="locked-avatar">--</div></div></div>
+      <div class="dash-topbar"><div class="dash-title"><h2 id="locked-topbar-name">-</h2><p><span class="ko">신청서 접수 완료 · 심사 진행 중</span><span class="en">Application Received · Under Review</span></p></div><div class="dash-actions"><div class="dash-avatar" id="locked-avatar">--</div></div></div>
       <div class="dash-content">
         <!-- Status Banner -->
         <div style="padding:24px;border:1px solid rgba(255,149,0,0.2);border-radius:8px;margin-bottom:24px;background:rgba(255,149,0,0.05)">
           <div style="display:flex;align-items:center;gap:12px;margin-bottom:12px">
             <div style="width:10px;height:10px;border-radius:50%;background:var(--accent-orange);flex-shrink:0"></div>
-            <div style="font-size:16px;font-weight:700;color:var(--text);letter-spacing:-0.5px">심사 진행 중</div>
+            <div style="font-size:16px;font-weight:700;color:var(--text);letter-spacing:-0.5px"><span class="ko">심사 진행 중</span><span class="en">Under Review</span></div>
           </div>
-          <p style="font-size:14px;color:rgba(0,0,0,0.6);line-height:1.6;margin-left:22px">신청서가 접수되었으며 현재 담당자가 검토 중입니다. 승인이 완료되면 프로그램 상세 비용, Phase별 진행 내용, 일정 등을 이 포털에서 확인하실 수 있습니다.</p>
+          <p style="font-size:14px;color:rgba(0,0,0,0.6);line-height:1.6;margin-left:22px"><span class="ko">신청서가 접수되었으며 현재 담당자가 검토 중입니다. 승인이 완료되면 프로그램 상세 비용, Phase별 진행 내용, 일정 등을 이 포털에서 확인하실 수 있습니다.</span><span class="en">Your application has been received and is currently under review. Once approved, you will be able to view program details, Phase progress, and schedules from this portal.</span></p>
         </div>
 
         <!-- Submitted Info Summary -->
@@ -3186,12 +3186,12 @@ function setPortalType(type, brandName, iconLetter, ceoName) {
   document.getElementById('portal-brand-name').textContent = brandName;
   document.getElementById('portal-avatar').textContent = (ceoName || brandName).substring(0, 2).toUpperCase();
 
-  // Update topbar
+  // Update topbar — 브랜드 이름은 보존하면서 라벨만 한/영 span으로 토글
   const topTitle = document.getElementById('portal-topbar-title');
   const topSub = document.getElementById('portal-topbar-sub');
-  topTitle.textContent = brandName + ' 대시보드';
-
-  topSub.textContent = 'Walmart 입점 프로그램 진행 현황';
+  var safeBrand = (brandName || '').replace(/[&<>"']/g, function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]; });
+  topTitle.innerHTML = '<span class="ko">' + safeBrand + ' 대시보드</span><span class="en">' + safeBrand + ' Dashboard</span>';
+  topSub.innerHTML   = '<span class="ko">Walmart 입점 프로그램 진행 현황</span><span class="en">Walmart Entry Program — Progress</span>';
 }
 
 // ─── LOGIN TAB SWITCHING ───
