@@ -1798,7 +1798,6 @@ button{cursor:pointer;font-family:var(--font)}
         <div class="sidebar-item" onclick="showAdminView('dashboard')" id="admin-nav-dashboard"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg><span class="ko">대시보드</span><span class="en">Dashboard</span></div>
         <div class="sidebar-item" onclick="showAdminView('brands')" id="admin-nav-brands"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 22V4a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v18Z"/><path d="M6 12H4a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h2"/><path d="M18 9h2a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2h-2"/></svg><span class="ko">브랜드 관리</span><span class="en">Brands</span><span class="sidebar-badge">3</span></div>
         <div class="sidebar-item" onclick="showAdminView('review')" id="admin-nav-review"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><rect x="8" y="2" width="8" height="4" rx="1"/></svg><span class="ko">접수 심사</span><span class="en">Review</span><span class="sidebar-badge">2</span></div>
-        <div class="sidebar-item" onclick="showAdminView('cost')" id="admin-nav-cost"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg><span class="ko">비용 정산</span><span class="en">Settlement</span></div>
         <div class="sidebar-item" onclick="showAdminView('cms')" id="admin-nav-cms"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg><span class="ko">콘텐츠 관리</span><span class="en">CMS</span></div>
         <!-- VOUCHER_HIDDEN: 바우처 사업 일시 중단 (2026-04-30). 재활성화 시 style="display:none" 제거 -->
         <div class="sidebar-item" onclick="showAdminView('voucher')" id="admin-nav-voucher" style="display:none"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg><span class="ko">수출바우처</span><span class="en">Voucher</span></div>
@@ -2217,23 +2216,6 @@ button{cursor:pointer;font-family:var(--font)}
 
       </div>
 
-      <!-- ADMIN: Cost View (비용 정산) -->
-      <div class="dash-content" id="admin-cost" style="display:none">
-        <div style="margin-bottom:24px">
-          <h3 style="font-size:18px;font-weight:700;color:var(--text);letter-spacing:-0.5px;margin-bottom:4px"><span class="ko">비용 정산</span><span class="en">Settlement</span></h3>
-          <p style="font-size:13px;color:rgba(0,0,0,0.6)">브랜드별 결제 내역과 정산 현황을 관리합니다.</p>
-        </div>
-        <div class="stat-grid">
-          <div class="stat-card"><div class="val" id="billing-stat-total">₩0</div><div class="lbl">총 청구 금액</div></div>
-          <div class="stat-card"><div class="val" id="billing-stat-paid">₩0</div><div class="lbl">수금 완료</div></div>
-          <div class="stat-card"><div class="val" id="billing-stat-pending">₩0</div><div class="lbl">미수금</div></div>
-        </div>
-
-        <div id="admin-billing-list" style="margin-top:20px;text-align:center;padding:48px 0;color:rgba(0,0,0,0.6);font-size:14px">
-          등록된 정산 내역이 없습니다.<br><span style="font-size:12px">브랜드가 등록되고 비용이 발생하면 여기에 표시됩니다.</span>
-        </div>
-      </div>
-
       <!-- ADMIN: Voucher View (수출바우처) -->
       <div class="dash-content" id="admin-voucher" style="display:none">
         <div style="margin-bottom:24px">
@@ -2252,6 +2234,14 @@ button{cursor:pointer;font-family:var(--font)}
       </div>
 
       <!-- ADMIN: Settings View (설정) -->
+      <!-- ADMIN: Brand Detail (개별 기업 상세 관리) -->
+      <div class="dash-content" id="admin-brand-detail" style="display:none">
+        <button onclick="showAdminView('dashboard')" style="display:flex;align-items:center;gap:8px;padding:8px 14px;border:1px solid var(--border);border-radius:999px;background:#fff;color:var(--text-muted);font-size:12px;font-family:var(--font);cursor:pointer;margin-bottom:20px"><span class="ko">← 대시보드로</span><span class="en">← Back to Dashboard</span></button>
+        <div id="admin-brand-detail-body">
+          <div style="text-align:center;padding:60px 0;color:var(--text-muted)">불러오는 중...</div>
+        </div>
+      </div>
+
       <div class="dash-content" id="admin-settings" style="display:none">
         <div style="margin-bottom:24px">
           <h3 style="font-size:18px;font-weight:700;color:var(--text);letter-spacing:-0.5px;margin-bottom:4px"><span class="ko">설정</span><span class="en">Settings</span></h3>
@@ -3591,7 +3581,7 @@ document.addEventListener('click', function(e) {
 
 // Admin sub-views
 function showAdminView(view) {
-  var views = ['dashboard','review','cms','cost','voucher','settings','contracts'];
+  var views = ['dashboard','review','cms','voucher','settings','contracts','brand-detail'];
   views.forEach(function(v) {
     var el = document.getElementById('admin-' + v);
     if (el) el.style.display = 'none';
@@ -3608,10 +3598,10 @@ function showAdminView(view) {
     dashboard: ['대시보드', 'Walmart 입점 프로그램 운영 현황', 'Dashboard', 'Walmart Entry Program — Operations Overview'],
     review: ['접수 심사', '신청 기업 검토 및 유형 확정 · 승인', 'Application Review', 'Review applicants and confirm participation type'],
     cms: ['콘텐츠 관리', '랜딩 페이지 문구 수정 · 실시간 반영', 'Content Management', 'Landing page text and image management'],
-    cost: ['비용 정산', '브랜드별 결제 내역 · 정산 현황', 'Settlement', 'Per-brand payment and settlement'],
     voucher: ['수출바우처', '수출바우처 연계 기업 관리', 'Export Voucher', 'Voucher-linked brand management'],
     settings: ['설정', '프로그램 관리 설정', 'Settings', 'Admin account and system settings'],
-    contracts: ['계약 관리', '전자서명 계약 생성 · 서명 현황 관리', 'Contract Management', 'E-signed contract creation and signature tracking']
+    contracts: ['계약 관리', '전자서명 계약 생성 · 서명 현황 관리', 'Contract Management', 'E-signed contract creation and signature tracking'],
+    'brand-detail': ['기업 상세', '브랜드별 상세 관리 (메모·할 일·미팅·자료·메시지·계약)', 'Brand Detail', 'Per-brand management (notes, tasks, meetings, docs, messages, contracts)']
   };
   var t = titles[view] || titles.dashboard;
   topTitle.innerHTML = '<span class="ko">' + t[0] + '</span><span class="en">' + t[2] + '</span>';
@@ -5832,7 +5822,7 @@ async function renderAdminDashboard() {
       var statusDot = b.portal_active ? '<div style="width:6px;height:6px;border-radius:50%;background:#00d68f"></div>' : '<div style="width:6px;height:6px;border-radius:50%;background:rgba(0,0,0,0.15)"></div>';
       var brandIdEsc = (b.id || '').replace(/'/g, "\\'");
       var brandNameEsc = (b.name_ko || b.name_en || '').replace(/'/g, "\\'");
-      pHtml += '<div class="brand-card admin-brand-clickable" data-brand-id="' + (b.id || '') + '" data-brand-name="' + (b.name_ko || b.name_en || '') + '" style="margin-bottom:8px;cursor:pointer;transition:all .15s" onclick="showAdminBrandMessages(\'' + brandIdEsc + '\',\'' + brandNameEsc + '\')" onmouseenter="this.style.borderColor=\'rgba(0,113,220,0.3)\';this.style.background=\'rgba(0,113,220,0.04)\'" onmouseleave="this.style.borderColor=\'\';this.style.background=\'\'"><div class="brand-header" style="margin-bottom:0"><div class="brand-info"><div class="brand-icon">' + initial + '</div><div><div class="brand-name">' + (b.name_ko || b.name_en) + typeBadge + ' <span class="admin-unread-badge" data-brand-id="' + (b.id || '') + '" style="display:none;font-size:10px;padding:2px 7px;border-radius:999px;background:var(--red);color:var(--text);margin-left:6px;font-weight:700;font-family:var(--mono)">0</span></div><div class="brand-sub">' + phaseLbl + ' \u00b7 ' + (b.portal_email || '') + '</div></div></div>' + statusDot + '</div></div>';
+      pHtml += '<div class="brand-card admin-brand-clickable" data-brand-id="' + (b.id || '') + '" data-brand-name="' + (b.name_ko || b.name_en || '') + '" style="margin-bottom:8px;cursor:pointer;transition:all .15s" onclick="showAdminBrandDetail(\'' + brandIdEsc + '\')" onmouseenter="this.style.borderColor=\'rgba(0,113,220,0.3)\';this.style.background=\'rgba(0,113,220,0.04)\'" onmouseleave="this.style.borderColor=\'\';this.style.background=\'\'"><div class="brand-header" style="margin-bottom:0"><div class="brand-info"><div class="brand-icon">' + initial + '</div><div><div class="brand-name">' + (b.name_ko || b.name_en) + typeBadge + ' <span class="admin-unread-badge" data-brand-id="' + (b.id || '') + '" style="display:none;font-size:10px;padding:2px 7px;border-radius:999px;background:var(--red);color:var(--text);margin-left:6px;font-weight:700;font-family:var(--mono)">0</span></div><div class="brand-sub">' + phaseLbl + ' \u00b7 ' + (b.portal_email || '') + '</div></div></div><div style="display:flex;gap:8px;align-items:center"><button onclick="event.stopPropagation();showAdminBrandMessages(\'' + brandIdEsc + '\',\'' + brandNameEsc + '\')" title="' + _kn('\uba54\uc2dc\uc9c0','Messages') + '" style="background:rgba(0,113,220,0.08);border:1px solid rgba(0,113,220,0.18);color:var(--accent);width:30px;height:30px;border-radius:8px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:14px">\ud83d\udcac</button>' + statusDot + '</div></div></div>';
     });
     pipelineEl.innerHTML = pHtml;
   }
@@ -7261,6 +7251,76 @@ function showWmBrandDetailDB(brandId) {
   if (typeof loadAdminBrandDocs === 'function') loadAdminBrandDocs(brandId);
 }
 
+// ─── ADMIN: 브랜드 상세 페이지 (Walmart 브랜드 상세와 동일한 구조) ───
+async function showAdminBrandDetail(brandId) {
+  // wmBrandData가 비어있을 수 있으니 직접 DB에서 로드
+  var brand = wmBrandData[brandId];
+  if (!brand) {
+    if (!supabase) return;
+    var res = await supabase.from('wm_brands').select('*').eq('id', brandId).single();
+    if (!res.data) { alert('브랜드를 찾을 수 없습니다.'); return; }
+    var b = res.data;
+    brand = {
+      id: b.id,
+      name: b.name_ko || b.name_en || b.id,
+      nameEn: b.name_en || b.name_ko || b.id,
+      phase: b.current_phase || 'phase1',
+      info: {
+        ceo: b.ceo_name || '-',
+        category: b.category || '-',
+        website: b.website || '-',
+        revenue: b.annual_revenue || '-',
+        email: b.portal_email || ''
+      },
+      portal_email: b.portal_email || ''
+    };
+    wmBrandData[brandId] = brand;
+  }
+
+  // 관리자 페이지의 brand-detail 뷰로 전환
+  showAdminView('brand-detail');
+  var container = document.getElementById('admin-brand-detail-body');
+  if (!container) return;
+
+  var phaseLabel = {'contract':'Contract','phase1':'Phase 1','phase2':'Phase 2','phase3':'Phase 3','completed':'Completed'}[brand.phase] || brand.phase;
+  var phaseOptions = ['contract','phase1','phase2','phase3','completed'];
+  var phaseLabels = {'contract':'Contract','phase1':'Phase 1','phase2':'Phase 2','phase3':'Phase 3','completed':'Completed'};
+  var phaseBtns = '';
+  phaseOptions.forEach(function(p) {
+    var sel = p === brand.phase ? 'background:var(--accent);color:#fff' : 'background:rgba(0,0,0,0.06);color:var(--text-muted)';
+    phaseBtns += '<button onclick="updateBrandPhase(\x27' + brandId + '\x27,\x27' + p + '\x27);showAdminBrandDetail(\x27' + brandId + '\x27)" style="border:none;padding:6px 14px;border-radius:6px;font-size:12px;font-weight:600;cursor:pointer;' + sel + '">' + phaseLabels[p] + '</button>';
+  });
+
+  var infoHtml = '';
+  var infoFields = [['CEO', brand.info.ceo], ['Category', brand.info.category], ['Website', brand.info.website], ['Revenue', brand.info.revenue], ['Email', brand.info.email || brand.portal_email]];
+  infoFields.forEach(function(f) {
+    if (f[1] && f[1] !== '-') infoHtml += '<div class="wm-info-item"><span class="wm-info-label">' + f[0] + '</span><span class="wm-info-value">' + _esc(f[1]) + '</span></div>';
+  });
+
+  var brandNameEsc = (brand.name || brandId).replace(/'/g, "\\'");
+  container.innerHTML =
+    '<div class="wm-brand-header"><div class="brand-icon" style="width:48px;height:48px;font-size:20px;border-radius:12px">' + (brand.nameEn || brand.name || '?')[0].toUpperCase() + '</div><div><h2 style="margin:0;font-size:22px">' + _esc(brand.name) + '</h2><p style="margin:4px 0 0;opacity:.6">' + phaseLabel + ' · ' + (brand.info.category || '-') + '</p></div></div>' +
+    '<div class="wm-section"><div class="wm-section-title"><span class="ko">Phase 관리</span><span class="en">Phase Management</span></div><div style="display:flex;gap:8px;flex-wrap:wrap">' + phaseBtns + '</div></div>' +
+    '<div class="wm-section"><div class="wm-section-title"><span class="ko">기업 정보</span><span class="en">Company Information</span></div><div class="wm-info-grid">' + (infoHtml || '<div style="opacity:.7">정보 없음</div>') + '</div></div>' +
+    '<div class="wm-section"><div class="wm-section-title" style="display:flex;justify-content:space-between;align-items:center"><span>🗒 <span class="ko">내부 메모</span><span class="en">Internal Notes</span></span><span id="admin-notes-status" style="font-size:11px;color:var(--text-muted)"></span></div><div style="margin-top:10px;font-size:11.5px;color:var(--text-muted);margin-bottom:8px"><span class="ko">관리자·Startup Junkie 만 접근. 브랜드에는 노출되지 않습니다.</span><span class="en">Visible to admin and Startup Junkie only. Not shown to brand.</span></div><textarea id="admin-brand-notes" rows="6" data-ph-ko="이 기업에 대한 메모: 연락 이력, 협상 포인트, 주의사항 등" data-ph-en="Notes about this brand: contact history, negotiation points, things to watch..." placeholder="이 기업에 대한 메모: 연락 이력, 협상 포인트, 주의사항 등" style="width:100%;background:#fff;border:1px solid var(--border);border-radius:8px;padding:12px 14px;font-size:13.5px;color:var(--text);font-family:var(--font);resize:vertical;line-height:1.55"></textarea><div style="margin-top:8px;display:flex;justify-content:flex-end"><button onclick="adminSaveBrandNotes(\x27' + brandId + '\x27)" style="background:var(--accent);color:#fff;border:none;padding:8px 18px;border-radius:6px;font-size:12.5px;font-weight:600;cursor:pointer"><span class="ko">저장</span><span class="en">Save</span></button></div></div>' +
+    '<div class="wm-section"><div class="wm-section-title" style="display:flex;justify-content:space-between;align-items:center"><span class="ko">할 일 / Tasks</span><span class="en">Tasks</span><button onclick="showAdminTaskAddModal(\x27' + brandId + '\x27)" style="background:var(--accent);color:#fff;border:none;padding:6px 12px;border-radius:6px;font-size:12px;font-weight:600;cursor:pointer"><span class="ko">+ 할 일 등록</span><span class="en">+ Add task</span></button></div><div id="admin-brand-tasks-list" style="margin-top:10px"><div style="color:var(--text-muted);font-size:12px">불러오는 중...</div></div></div>' +
+    '<div class="wm-section"><div class="wm-section-title" style="display:flex;justify-content:space-between;align-items:center"><span class="ko">미팅 / Meetings</span><span class="en">Meetings</span><button onclick="showAdminMeetingAddModal(\x27' + brandId + '\x27)" style="background:var(--accent);color:#fff;border:none;padding:6px 12px;border-radius:6px;font-size:12px;font-weight:600;cursor:pointer"><span class="ko">+ 미팅 제안</span><span class="en">+ Propose meeting</span></button></div><div id="admin-brand-meetings-list" style="margin-top:10px"><div style="color:var(--text-muted);font-size:12px">불러오는 중...</div></div></div>' +
+    '<div class="wm-section"><div class="wm-section-title" style="display:flex;justify-content:space-between;align-items:center"><span class="ko">자료 요청 / Documents</span><span class="en">Documents</span><button onclick="showAdminDocRequestModal(\x27' + brandId + '\x27)" style="background:var(--accent);color:#fff;border:none;padding:6px 12px;border-radius:6px;font-size:12px;font-weight:600;cursor:pointer"><span class="ko">+ 자료 요청</span><span class="en">+ Request document</span></button></div><div id="admin-brand-docs-list" style="margin-top:10px"><div style="color:var(--text-muted);font-size:12px">불러오는 중...</div></div></div>' +
+    '<div class="wm-section"><div class="wm-section-title"><span class="ko">메시지</span><span class="en">Messages</span></div><button onclick="showAdminBrandMessages(\x27' + brandId + '\x27, \x27' + brandNameEsc + '\x27)" style="background:rgba(0,113,220,0.1);color:var(--accent);border:1px solid rgba(0,113,220,0.2);padding:8px 16px;border-radius:8px;cursor:pointer;font-size:13px"><span class="ko">메시지 확인 / 답변</span><span class="en">View / Reply Messages</span></button></div>' +
+    '<div class="wm-section"><div class="wm-section-title"><span class="ko">계약서</span><span class="en">Contracts</span></div>' + getWmContractsHtml(brandId) + '</div>';
+
+  // 비동기 로드
+  if (typeof loadAdminBrandNotes === 'function') loadAdminBrandNotes(brandId);
+  if (typeof loadAdminBrandTasks === 'function') loadAdminBrandTasks(brandId);
+  if (typeof loadAdminBrandMeetings === 'function') loadAdminBrandMeetings(brandId);
+  if (typeof loadAdminBrandDocs === 'function') loadAdminBrandDocs(brandId);
+  // placeholder 동기화
+  var lang = document.documentElement.lang || 'en';
+  document.querySelectorAll('#admin-brand-detail [data-ph-ko][data-ph-en]').forEach(function(el) {
+    el.setAttribute('placeholder', lang === 'ko' ? el.getAttribute('data-ph-ko') : el.getAttribute('data-ph-en'));
+  });
+}
+
 // ─── ADMIN: 기업 내부 메모 ───
 async function loadAdminBrandNotes(brandId) {
   if (!supabase) return;
@@ -7596,7 +7656,7 @@ async function loadAdminMeetingRequests() {
         slotsHtml +
         '</div>' +
         '<div style="display:flex;flex-direction:column;gap:5px;align-items:flex-end">' +
-        '<button onclick="showWmBrandDetailDB(\'' + brandEsc + '\')" style="background:#0071dc;color:#fff;border:none;padding:5px 12px;border-radius:6px;font-size:11px;cursor:pointer;font-weight:600;white-space:nowrap">브랜드 보기</button>' +
+        '<button onclick="(_currentPortalContext()===\'admin\'?showAdminBrandDetail:showWmBrandDetailDB)(\'' + brandEsc + '\')" style="background:#0071dc;color:#fff;border:none;padding:5px 12px;border-radius:6px;font-size:11px;cursor:pointer;font-weight:600;white-space:nowrap"><span class="ko">브랜드 보기</span><span class="en">View Brand</span></button>' +
         '<button onclick="adminConfirmMeeting(\'' + m.id + '\',\'' + brandEsc + '\')" style="background:#10b981;color:#fff;border:none;padding:5px 12px;border-radius:6px;font-size:11px;cursor:pointer;font-weight:600;white-space:nowrap">확정</button>' +
         '<button onclick="adminDeclineMeetingRequest(\'' + m.id + '\')" style="background:#fff;color:#ef4444;border:1px solid #ef4444;padding:4px 10px;border-radius:6px;font-size:11px;cursor:pointer;white-space:nowrap">거절</button>' +
         '</div>' +
