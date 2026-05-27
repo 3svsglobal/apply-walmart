@@ -1806,7 +1806,15 @@ button{cursor:pointer;font-family:var(--font)}
         <div class="sidebar-item" onclick="showAdminView('contracts')" id="admin-nav-contracts"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg><span class="ko">계약 관리</span><span class="en">Contracts</span></div>
         <div class="sidebar-item" onclick="showAdminView('settings')" id="admin-nav-settings"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg><span class="ko">설정</span><span class="en">Settings</span></div>
       </div>
-      <div class="sidebar-bottom"><div style="cursor:pointer;color:rgba(0,0,0,0.6);margin-bottom:8px" onclick="showBrandPwChange()"><span class="ko">비밀번호 변경</span><span class="en">Change Password</span></div><div style="cursor:pointer;color:rgba(0,0,0,0.6);margin-bottom:8px" onclick="sessionStorage.removeItem('wm_session');switchTab('landing')"><span class="ko">← 로그아웃</span><span class="en">← Log Out</span></div>Walmart Entry Program<br>by 3Stripe Venture Studio</div>
+      <div class="sidebar-bottom">
+        <div style="display:flex;gap:4px;margin-bottom:10px" class="portal-lang-toggle">
+          <button onclick="setLang('ko')" class="portal-lang-btn" data-lang="ko" style="flex:1;background:#fff;border:1px solid var(--border);color:var(--text);padding:5px 10px;border-radius:6px;font-size:11px;font-weight:600;cursor:pointer">한국어</button>
+          <button onclick="setLang('en')" class="portal-lang-btn" data-lang="en" style="flex:1;background:#fff;border:1px solid var(--border);color:var(--text);padding:5px 10px;border-radius:6px;font-size:11px;font-weight:600;cursor:pointer">English</button>
+        </div>
+        <div style="cursor:pointer;color:rgba(0,0,0,0.6);margin-bottom:8px" onclick="showBrandPwChange()"><span class="ko">비밀번호 변경</span><span class="en">Change Password</span></div>
+        <div style="cursor:pointer;color:rgba(0,0,0,0.6);margin-bottom:8px" onclick="sessionStorage.removeItem('wm_session');switchTab('landing')"><span class="ko">← 로그아웃</span><span class="en">← Log Out</span></div>
+        Walmart Entry Program<br>by 3Stripe Venture Studio
+      </div>
     </div>
     <div class="dash-main">
       <div class="dash-topbar"><div class="dash-title"><h2 id="admin-page-title-h"><span class="ko">대시보드</span><span class="en">Dashboard</span></h2><p id="admin-page-title-p"><span class="ko">Walmart 입점 프로그램 운영 현황</span><span class="en">Walmart Entry Program — Operations Overview</span></p></div><div class="dash-actions"><input class="dash-search" placeholder="" id="admin-search-input" oninput="filterAdminBrands(this.value)"><div class="lang-toggle" style="margin-left:0"><button onclick="setLang('ko')" id="admin-lang-ko">KR</button><button class="active" onclick="setLang('en')" id="admin-lang-en">EN</button></div><div class="noti-dot" id="admin-noti-bell" onclick="showAdminInbox()" style="cursor:pointer" title="Inbox"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="rgba(0,0,0,0.6)" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg></div><div class="dash-avatar" onclick="showAdminProfileMenu(event)" style="cursor:pointer" title="Profile">JB</div></div></div>
@@ -2400,7 +2408,15 @@ button{cursor:pointer;font-family:var(--font)}
         <div class="sidebar-item" onclick="showBrandView('messages')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg><span class="ko">메시지</span><span class="en">Messages</span> <span class="sidebar-badge" id="brand-msg-badge" style="display:none">0</span></div>
         <div class="sidebar-item" onclick="showBrandView('contracts')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg><span class="ko">계약서</span><span class="en">Contracts</span></div>
       </div>
-      <div class="sidebar-bottom"><div style="cursor:pointer;color:rgba(0,0,0,0.6);margin-bottom:8px" onclick="showBrandPwChange()"><span class="ko">비밀번호 변경</span><span class="en">Change Password</span></div><div style="cursor:pointer;color:rgba(0,0,0,0.6);margin-bottom:8px" onclick="sessionStorage.removeItem('wm_session');switchTab('landing')"><span class="ko">← 로그아웃</span><span class="en">← Log Out</span></div>Walmart Entry Program<br>by 3Stripe Venture Studio</div>
+      <div class="sidebar-bottom">
+        <div style="display:flex;gap:4px;margin-bottom:10px" class="portal-lang-toggle">
+          <button onclick="setLang('ko')" class="portal-lang-btn" data-lang="ko" style="flex:1;background:#fff;border:1px solid var(--border);color:var(--text);padding:5px 10px;border-radius:6px;font-size:11px;font-weight:600;cursor:pointer">한국어</button>
+          <button onclick="setLang('en')" class="portal-lang-btn" data-lang="en" style="flex:1;background:#fff;border:1px solid var(--border);color:var(--text);padding:5px 10px;border-radius:6px;font-size:11px;font-weight:600;cursor:pointer">English</button>
+        </div>
+        <div style="cursor:pointer;color:rgba(0,0,0,0.6);margin-bottom:8px" onclick="showBrandPwChange()"><span class="ko">비밀번호 변경</span><span class="en">Change Password</span></div>
+        <div style="cursor:pointer;color:rgba(0,0,0,0.6);margin-bottom:8px" onclick="sessionStorage.removeItem('wm_session');switchTab('landing')"><span class="ko">← 로그아웃</span><span class="en">← Log Out</span></div>
+        Walmart Entry Program<br>by 3Stripe Venture Studio
+      </div>
     </div>
     <div class="dash-main">
       <div class="dash-topbar"><div class="dash-title"><h2 id="portal-topbar-title">브랜드 대시보드</h2><p id="portal-topbar-sub">Walmart 입점 프로그램 진행 현황</p></div><div class="dash-actions"><div class="noti-dot" onclick="scrollToBrandMessages()" title="메시지로 이동" style="cursor:pointer"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="rgba(0,0,0,0.6)" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg></div><div class="dash-avatar" id="portal-avatar" onclick="toggleBrandProfileMenu(event)" title="계정 메뉴" style="cursor:pointer">--</div></div></div>
@@ -2571,7 +2587,15 @@ button{cursor:pointer;font-family:var(--font)}
         <div class="sidebar-item" style="opacity:0.7;pointer-events:none"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>미팅 일정</div>
         <div class="sidebar-item" style="opacity:0.7;pointer-events:none"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>비용 현황</div>
       </div>
-      <div class="sidebar-bottom"><div style="cursor:pointer;color:rgba(0,0,0,0.6);margin-bottom:8px" onclick="showBrandPwChange()"><span class="ko">비밀번호 변경</span><span class="en">Change Password</span></div><div style="cursor:pointer;color:rgba(0,0,0,0.6);margin-bottom:8px" onclick="sessionStorage.removeItem('wm_session');switchTab('landing')"><span class="ko">← 로그아웃</span><span class="en">← Log Out</span></div>Walmart Entry Program<br>by 3Stripe Venture Studio</div>
+      <div class="sidebar-bottom">
+        <div style="display:flex;gap:4px;margin-bottom:10px" class="portal-lang-toggle">
+          <button onclick="setLang('ko')" class="portal-lang-btn" data-lang="ko" style="flex:1;background:#fff;border:1px solid var(--border);color:var(--text);padding:5px 10px;border-radius:6px;font-size:11px;font-weight:600;cursor:pointer">한국어</button>
+          <button onclick="setLang('en')" class="portal-lang-btn" data-lang="en" style="flex:1;background:#fff;border:1px solid var(--border);color:var(--text);padding:5px 10px;border-radius:6px;font-size:11px;font-weight:600;cursor:pointer">English</button>
+        </div>
+        <div style="cursor:pointer;color:rgba(0,0,0,0.6);margin-bottom:8px" onclick="showBrandPwChange()"><span class="ko">비밀번호 변경</span><span class="en">Change Password</span></div>
+        <div style="cursor:pointer;color:rgba(0,0,0,0.6);margin-bottom:8px" onclick="sessionStorage.removeItem('wm_session');switchTab('landing')"><span class="ko">← 로그아웃</span><span class="en">← Log Out</span></div>
+        Walmart Entry Program<br>by 3Stripe Venture Studio
+      </div>
     </div>
     <div class="dash-main">
       <div class="dash-topbar"><div class="dash-title"><h2 id="locked-topbar-name">-</h2><p>신청서 접수 완료 · 심사 진행 중</p></div><div class="dash-actions"><div class="dash-avatar" id="locked-avatar">--</div></div></div>
@@ -3439,6 +3463,13 @@ function setLang(lang) {
   document.querySelectorAll('.lang-toggle button').forEach(b => {
     if ((lang === 'ko' && b.textContent === 'KR') || (lang === 'en' && b.textContent === 'EN')) b.classList.add('active');
   });
+  // 포탈(브랜드/Walmart) 사이드바 언어 버튼 활성화 상태
+  document.querySelectorAll('.portal-lang-btn').forEach(function(b) {
+    var isActive = b.getAttribute('data-lang') === lang;
+    b.style.background = isActive ? 'var(--accent)' : '#fff';
+    b.style.color = isActive ? '#fff' : 'var(--text)';
+    b.style.borderColor = isActive ? 'var(--accent)' : 'var(--border)';
+  });
   // 입력 placeholder 등 dynamic 텍스트 갱신
   var ph = lang === 'en' ? 'Search brands...' : '브랜드 검색...';
   var search = document.getElementById('admin-search-input');
@@ -3449,6 +3480,28 @@ function setLang(lang) {
   }
   if (typeof renderAdminReview === 'function' && document.getElementById('admin-review') && document.getElementById('admin-review').style.display !== 'none') {
     try { renderAdminReview(); } catch(e){}
+  }
+  // 브랜드 포탈이 활성화되어 있다면 동적 데이터 재렌더 (tasks/meetings/docs/messages)
+  var portalView = document.getElementById('view-portal');
+  if (portalView && portalView.classList.contains('active') && _currentBrandId) {
+    try {
+      if (typeof renderBrandTasks === 'function') renderBrandTasks();
+      if (typeof renderBrandMeetings === 'function') renderBrandMeetings();
+      if (typeof renderBrandDocsTabs === 'function') renderBrandDocsTabs();
+      if (typeof renderBrandDocsList === 'function') renderBrandDocsList();
+      if (typeof loadBrandDashboardSummary === 'function') loadBrandDashboardSummary(_currentBrandId);
+    } catch(e){ console.warn('brand portal re-render error', e); }
+  }
+  // Walmart 포탈 brand-detail이 활성화되어 있다면 재렌더
+  var wmView = document.getElementById('view-walmart');
+  if (wmView && wmView.classList.contains('active')) {
+    try {
+      if (typeof _wmCurrentBrandId !== 'undefined' && _wmCurrentBrandId) {
+        if (typeof loadAdminBrandTasks === 'function') loadAdminBrandTasks(_wmCurrentBrandId);
+        if (typeof loadAdminBrandMeetings === 'function') loadAdminBrandMeetings(_wmCurrentBrandId);
+        if (typeof loadAdminBrandDocs === 'function') loadAdminBrandDocs(_wmCurrentBrandId);
+      }
+    } catch(e){}
   }
 }
 function _isEn() { return document.documentElement.lang === 'en'; }
@@ -3542,6 +3595,14 @@ document.addEventListener('DOMContentLoaded', () => {
   if (!checkContractUrl()) {
     // default view already set
   }
+  // 초기 언어 토글 버튼 활성화 상태 (포탈 사이드바)
+  var initialLang = document.documentElement.lang || 'en';
+  document.querySelectorAll('.portal-lang-btn').forEach(function(b) {
+    var isActive = b.getAttribute('data-lang') === initialLang;
+    b.style.background = isActive ? 'var(--accent)' : '#fff';
+    b.style.color = isActive ? '#fff' : 'var(--text)';
+    b.style.borderColor = isActive ? 'var(--accent)' : 'var(--border)';
+  });
 });
 
 // Review type selection
@@ -6106,6 +6167,32 @@ function showBrandView(view) {
 }
 
 // ════════════════════════════════════════════════════════════
+// ─── PORTAL CONTEXT: admin / walmart / brand 구분 ───
+// ════════════════════════════════════════════════════════════
+function _currentPortalContext() {
+  // 활성화된 view 기준으로 현재 사용자 컨텍스트 판단
+  var wmView = document.getElementById('view-walmart');
+  if (wmView && wmView.classList.contains('active')) return 'walmart';
+  var portalView = document.getElementById('view-portal');
+  if (portalView && portalView.classList.contains('active')) return 'brand';
+  var adminView = document.getElementById('view-admin');
+  if (adminView && adminView.classList.contains('active')) return 'admin';
+  return 'admin'; // 기본값
+}
+function _roleLabel(role) {
+  if (role === 'brand') return _isEn() ? 'Brand' : '브랜드';
+  if (role === 'admin') return _isEn() ? '3SVS Admin' : '3SVS 관리자';
+  if (role === 'walmart') return _isEn() ? 'Startup Junkie' : 'Startup Junkie';
+  return role || '';
+}
+function _roleSenderName(role) {
+  if (role === 'brand') return (_currentBrandData && _currentBrandData.name) || '브랜드';
+  if (role === 'admin') return '3SVS 관리자';
+  if (role === 'walmart') return 'Startup Junkie';
+  return '시스템';
+}
+
+// ════════════════════════════════════════════════════════════
 // ─── BRAND PORTAL v2: Tasks / Meetings / Documents ───
 // ════════════════════════════════════════════════════════════
 
@@ -6175,7 +6262,7 @@ async function loadBrandDashboardSummary(brandId) {
         return '<div style="display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid var(--border)">' +
           '<span style="display:inline-block;width:6px;height:6px;border-radius:50%;background:'+prColor+';flex-shrink:0"></span>' +
           '<div style="flex:1;min-width:0"><div style="font-size:13px;font-weight:600;color:var(--text);text-overflow:ellipsis;overflow:hidden;white-space:nowrap">'+_esc(t.title)+'</div>' +
-          '<div style="font-size:11px;color:var(--text-muted);margin-top:2px">'+due+' · '+_esc(t.created_by==='admin'?'관리자':'직접')+'</div></div></div>';
+          '<div style="font-size:11px;color:var(--text-muted);margin-top:2px">'+due+' · '+_esc({admin:'관리자',walmart:'SJ',brand:'직접'}[t.created_by] || '시스템')+'</div></div></div>';
       }).join('');
     }
   }
@@ -6265,7 +6352,9 @@ function renderBrandTasks() {
     var isDone = t.status === 'completed';
     var prMap = {urgent:{l:'긴급',c:'#ef4444'}, high:{l:'높음',c:'#f59e0b'}, normal:{l:'보통',c:'#0071dc'}, low:{l:'낮음',c:'#6b7280'}};
     var pr = prMap[t.priority] || prMap.normal;
-    var creator = t.created_by === 'admin' ? '3SVS 관리자' : '직접 추가';
+    var creatorMap = { admin: '3SVS 관리자', walmart: 'Startup Junkie', brand: '직접 추가' };
+    var creator = creatorMap[t.created_by] || '시스템';
+    var creatorColor = t.created_by === 'admin' ? '#f59e0b' : (t.created_by === 'walmart' ? '#10b981' : (t.created_by === 'brand' ? '#6b7280' : '#6b7280'));
     var due = t.due_date ? _fmtDate(t.due_date) : '기한 미정';
     var daysLeft = _daysUntil(t.due_date);
     var dueColor = (daysLeft != null && daysLeft < 0 && !isDone) ? '#ef4444' : 'var(--text-muted)';
@@ -6279,7 +6368,7 @@ function renderBrandTasks() {
           (t.category ? '<span style="font-size:10px;padding:2px 8px;border-radius:999px;background:var(--surface-alt);color:var(--text-muted);font-weight:500">'+_esc(t.category)+'</span>' : '') +
         '</div>' +
         (t.description ? '<div style="font-size:13px;color:var(--text-muted);line-height:1.5;margin-bottom:6px;white-space:pre-wrap">'+_esc(t.description)+'</div>' : '') +
-        '<div style="font-size:11.5px;color:'+dueColor+'">📅 '+due+overdueBadge+' · 등록: '+creator+(isDone ? ' · ✓ '+_fmtDate(t.completed_at) : '')+'</div>' +
+        '<div style="font-size:11.5px;color:'+dueColor+';display:flex;align-items:center;gap:6px;flex-wrap:wrap">📅 '+due+overdueBadge+' · <span style="display:inline-block;padding:1px 7px;border-radius:999px;background:'+creatorColor+'22;color:'+creatorColor+';font-weight:600;font-size:10.5px">'+creator+'</span>'+(isDone ? ' · ✓ '+_fmtDate(t.completed_at) : '')+'</div>' +
       '</div>' +
     '</div>';
   }).join('');
@@ -6487,14 +6576,14 @@ function renderBrandMeetings() {
         '</div>';
     }
     var actions = '';
-    if (m.status === 'proposed' && m.proposed_by === 'admin') {
+    if (m.status === 'proposed' && (m.proposed_by === 'admin' || m.proposed_by === 'walmart')) {
       actions = '<div style="margin-top:10px;display:flex;gap:8px"><button onclick="declineMeeting(\''+m.id+'\')" style="background:#fff;color:#ef4444;border:1px solid #ef4444;padding:6px 14px;border-radius:6px;font-size:12px;cursor:pointer">거절</button></div>';
     }
     return '<div style="padding:14px;background:#fff;border:1px solid var(--border);border-radius:10px;margin-bottom:10px">' +
       '<div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;flex-wrap:wrap">' +
         '<span style="font-size:14px;font-weight:600;color:var(--text)">'+_esc(m.title)+'</span>' +
         '<span style="font-size:10px;padding:2px 8px;border-radius:999px;background:'+st.c+'22;color:'+st.c+';font-weight:600">'+st.l+'</span>' +
-        '<span style="font-size:11px;color:var(--text-muted);margin-left:auto">'+_esc(m.proposed_by==='admin'?'관리자 제안':'내가 요청')+'</span>' +
+        '<span style="font-size:11px;color:var(--text-muted);margin-left:auto">'+_esc({admin:'3SVS 관리자',walmart:'Startup Junkie',brand:'내가 요청'}[m.proposed_by] || m.proposed_by || '')+'</span>' +
       '</div>' +
       '<div style="font-size:12.5px;color:var(--text);margin-bottom:4px">🕐 '+when+(m.duration_min ? ' · '+m.duration_min+'분' : '')+'</div>' +
       (m.agenda ? '<div style="font-size:12.5px;color:var(--text-muted);line-height:1.5;margin-top:6px;white-space:pre-wrap">'+_esc(m.agenda)+'</div>' : '') +
@@ -7088,12 +7177,13 @@ async function sendAdminReplyFromModal() {
   var text = input.value.trim();
   var brandId = window._adminMsgBrandId;
   var brandName = window._adminMsgBrandName;
-  
+  var ctx = _currentPortalContext(); // 'admin' or 'walmart'
+
   if (supabase && brandId) {
     await supabase.from('wm_messages').insert([{
       brand_id: brandId,
-      sender_role: 'admin',
-      sender_name: '3SVS 관리자',
+      sender_role: ctx,
+      sender_name: _roleSenderName(ctx),
       content: text
     }]);
   }
@@ -7161,9 +7251,11 @@ function renderWmPipeline() {
   if (badge) badge.textContent = keys.length;
 }
 
+var _wmCurrentBrandId = null;
 function showWmBrandDetailDB(brandId) {
   var brand = wmBrandData[brandId];
   if (!brand) return;
+  _wmCurrentBrandId = brandId;
   showWmView('brand-detail');
   var container = document.getElementById('wm-brand-detail');
   if (!container) return;
@@ -7192,7 +7284,7 @@ function showWmBrandDetailDB(brandId) {
     '<div class="wm-section"><div class="wm-section-title" style="display:flex;justify-content:space-between;align-items:center"><span>할 일 / Tasks</span><button onclick="showAdminTaskAddModal(\x27' + brandId + '\x27)" style="background:var(--accent);color:#fff;border:none;padding:6px 12px;border-radius:6px;font-size:12px;font-weight:600;cursor:pointer">+ 할 일 등록</button></div><div id="admin-brand-tasks-list" style="margin-top:10px"><div style="color:var(--text-muted);font-size:12px">불러오는 중...</div></div></div>' +
     '<div class="wm-section"><div class="wm-section-title" style="display:flex;justify-content:space-between;align-items:center"><span>미팅 / Meetings</span><button onclick="showAdminMeetingAddModal(\x27' + brandId + '\x27)" style="background:var(--accent);color:#fff;border:none;padding:6px 12px;border-radius:6px;font-size:12px;font-weight:600;cursor:pointer">+ 미팅 제안</button></div><div id="admin-brand-meetings-list" style="margin-top:10px"><div style="color:var(--text-muted);font-size:12px">불러오는 중...</div></div></div>' +
     '<div class="wm-section"><div class="wm-section-title" style="display:flex;justify-content:space-between;align-items:center"><span>자료 요청 / Documents</span><button onclick="showAdminDocRequestModal(\x27' + brandId + '\x27)" style="background:var(--accent);color:#fff;border:none;padding:6px 12px;border-radius:6px;font-size:12px;font-weight:600;cursor:pointer">+ 자료 요청</button></div><div id="admin-brand-docs-list" style="margin-top:10px"><div style="color:var(--text-muted);font-size:12px">불러오는 중...</div></div></div>' +
-    '<div class="wm-section"><div class="wm-section-title">Messages</div><button id="wm-msg-btn" style="background:rgba(0,113,220,0.1);color:var(--accent);border:1px solid rgba(0,113,220,0.2);padding:8px 16px;border-radius:8px;cursor:pointer;font-size:13px">메시지 확인 / 답변</button></div>' +
+    '<div class="wm-section"><div class="wm-section-title">Messages</div><button id="wm-msg-btn" onclick="showAdminBrandMessages(\x27' + brandId + '\x27, \x27' + (brand.name || brandId).replace(/'/g, "\\'") + '\x27)" style="background:rgba(0,113,220,0.1);color:var(--accent);border:1px solid rgba(0,113,220,0.2);padding:8px 16px;border-radius:8px;cursor:pointer;font-size:13px">메시지 확인 / 답변</button></div>' +
     '<div class="wm-section"><div class="wm-section-title">Contracts</div>' + getWmContractsHtml(brandId) + '</div>';
 
   // 비동기 로드
@@ -7216,7 +7308,7 @@ async function loadAdminBrandTasks(brandId) {
     return '<div style="padding:10px 12px;background:#fff;border:1px solid var(--border);border-radius:8px;margin-bottom:6px;display:flex;justify-content:space-between;align-items:flex-start;gap:10px">' +
       '<div style="flex:1;min-width:0"><div style="font-size:13px;font-weight:600;color:var(--text);'+(t.status==='completed'?'text-decoration:line-through;opacity:0.6':'')+'">'+_esc(t.title)+'</div>' +
       (t.description ? '<div style="font-size:12px;color:var(--text-muted);margin-top:3px">'+_esc(t.description)+'</div>' : '') +
-      '<div style="font-size:11px;color:var(--text-muted);margin-top:4px">📅 '+due+' · '+(t.created_by==='admin'?'관리자 등록':'브랜드 등록')+'</div></div>' +
+      '<div style="font-size:11px;color:var(--text-muted);margin-top:4px;display:flex;align-items:center;gap:6px;flex-wrap:wrap">📅 '+due+' · <span style="display:inline-block;padding:1px 7px;border-radius:999px;background:'+(t.created_by==='admin'?'#f59e0b22':(t.created_by==='walmart'?'#10b98122':'#6b728022'))+';color:'+(t.created_by==='admin'?'#f59e0b':(t.created_by==='walmart'?'#10b981':'#6b7280'))+';font-weight:600;font-size:10px">'+({admin:'3SVS 관리자',walmart:'Startup Junkie',brand:'브랜드'}[t.created_by] || '시스템')+'</span></div></div>' +
       '<div style="display:flex;flex-direction:column;align-items:flex-end;gap:6px"><span style="font-size:10px;padding:2px 8px;border-radius:999px;background:'+stColor+'22;color:'+stColor+';font-weight:600">'+stLabel+'</span>' +
       '<button onclick="adminDeleteTask(\''+t.id+'\',\''+brandId+'\')" style="background:none;border:none;color:#ef4444;font-size:11px;cursor:pointer;padding:2px 4px">삭제</button></div>' +
     '</div>';
@@ -7237,7 +7329,7 @@ async function loadAdminBrandMeetings(brandId) {
     return '<div style="padding:10px 12px;background:#fff;border:1px solid var(--border);border-radius:8px;margin-bottom:6px">' +
       '<div style="display:flex;justify-content:space-between;align-items:flex-start;gap:10px"><div style="flex:1;min-width:0">' +
       '<div style="font-size:13px;font-weight:600;color:var(--text)">'+_esc(m.title)+'</div>' +
-      '<div style="font-size:11.5px;color:var(--text-muted);margin-top:3px">🕐 '+when+(m.duration_min?' · '+m.duration_min+'분':'')+' · '+(m.proposed_by==='admin'?'관리자 제안':'브랜드 요청')+'</div>' +
+      '<div style="font-size:11.5px;color:var(--text-muted);margin-top:3px">🕐 '+when+(m.duration_min?' · '+m.duration_min+'분':'')+' · '+({admin:'3SVS 관리자 제안',walmart:'Startup Junkie 제안',brand:'브랜드 요청'}[m.proposed_by] || '')+'</div>' +
       (m.agenda ? '<div style="font-size:12px;color:var(--text-muted);margin-top:4px;white-space:pre-wrap">'+_esc(m.agenda)+'</div>' : '') +
       '</div><div style="display:flex;flex-direction:column;align-items:flex-end;gap:6px"><span style="font-size:10px;padding:2px 8px;border-radius:999px;background:'+st.c+'22;color:'+st.c+';font-weight:600">'+st.l+'</span>' +
       (m.status === 'proposed' && m.proposed_by === 'brand' ? '<button onclick="adminConfirmMeeting(\''+m.id+'\',\''+brandId+'\')" style="background:#10b981;color:#fff;border:none;padding:4px 10px;border-radius:6px;font-size:11px;cursor:pointer">확정</button>' : '') +
@@ -7297,9 +7389,10 @@ function showAdminTaskAddModal(brandId) {
       { name: 'due_date', label: '마감일 (선택)', type: 'date' }
     ],
     onSubmit: async function(data) {
+      var ctx = _currentPortalContext(); // 'admin' | 'walmart'
       var res = await supabase.from('wm_tasks').insert({
         brand_id: brandId,
-        created_by: 'admin',
+        created_by: ctx,
         title: data.title,
         description: data.description || null,
         category: data.category || 'general',
@@ -7310,7 +7403,7 @@ function showAdminTaskAddModal(brandId) {
       if (res.error) throw res.error;
       loadAdminBrandTasks(brandId);
       if (typeof sendNotification === 'function') {
-        sendNotification('task_assigned', { message: '브랜드에 새 할 일이 등록되었습니다: ' + data.title, brandId: brandId });
+        sendNotification('task_assigned', { message: _roleLabel(ctx) + '이(가) 새 할 일을 등록했습니다: ' + data.title, brandId: brandId });
       }
     }
   });
@@ -7332,9 +7425,10 @@ function showAdminMeetingAddModal(brandId) {
         alert('최소 1개의 후보 시간이 필요합니다.');
         throw new Error('validation-stop');
       }
+      var ctx = _currentPortalContext();
       var res = await supabase.from('wm_meetings').insert({
         brand_id: brandId,
-        proposed_by: 'admin',
+        proposed_by: ctx,
         title: data.title,
         agenda: data.agenda || null,
         proposed_slots: data.proposed_slots,
@@ -7345,7 +7439,7 @@ function showAdminMeetingAddModal(brandId) {
       if (res.error) throw res.error;
       loadAdminBrandMeetings(brandId);
       if (typeof sendNotification === 'function') {
-        sendNotification('meeting_proposed', { message: '미팅이 제안되었습니다: ' + data.title, brandId: brandId });
+        sendNotification('meeting_proposed', { message: _roleLabel(ctx) + '이(가) 미팅을 제안했습니다: ' + data.title, brandId: brandId });
       }
     }
   });
@@ -7373,6 +7467,7 @@ function showAdminDocRequestModal(brandId) {
       ] }
     ],
     onSubmit: async function(data) {
+      var ctx = _currentPortalContext();
       var res = await supabase.from('wm_documents').insert({
         brand_id: brandId,
         category: data.category || 'walmart_request',
@@ -7381,13 +7476,14 @@ function showAdminDocRequestModal(brandId) {
         description: data.description || null,
         requested_by: data.requested_by || '3SVS',
         requested_at: new Date().toISOString(),
-        uploaded_by: 'admin',
+        uploaded_by: ctx,
+        uploaded_by_name: _roleSenderName(ctx),
         status: 'requested'
       });
       if (res.error) throw res.error;
       loadAdminBrandDocs(brandId);
       if (typeof sendNotification === 'function') {
-        sendNotification('document_requested', { message: '자료가 요청되었습니다: ' + data.name, brandId: brandId });
+        sendNotification('document_requested', { message: _roleLabel(ctx) + '이(가) 자료를 요청했습니다: ' + data.name, brandId: brandId });
       }
     }
   });
