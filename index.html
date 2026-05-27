@@ -1821,6 +1821,18 @@ button{cursor:pointer;font-family:var(--font)}
 
       <!-- ADMIN: Dashboard View -->
       <div class="dash-content" id="admin-dashboard">
+        <!-- 브랜드 미팅 요청 알림 패널 -->
+        <div id="admin-meeting-requests-panel" style="display:none;margin-bottom:16px;background:linear-gradient(135deg,#fff7ed 0%,#fef3c7 100%);border:1px solid #fbbf24;border-radius:12px;padding:16px 20px">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
+            <div style="display:flex;align-items:center;gap:8px">
+              <span style="font-size:18px">🗓️</span>
+              <span style="font-size:14px;font-weight:700;color:#92400e"><span class="ko">브랜드 미팅 요청</span><span class="en">Brand Meeting Requests</span></span>
+              <span id="admin-meeting-requests-count" style="font-size:11px;padding:2px 8px;border-radius:999px;background:#f59e0b;color:#fff;font-weight:700">0</span>
+            </div>
+            <button onclick="loadAdminMeetingRequests()" style="background:rgba(255,255,255,0.7);border:1px solid #fbbf24;color:#92400e;padding:4px 10px;border-radius:6px;font-size:11px;cursor:pointer;font-weight:600">새로고침</button>
+          </div>
+          <div id="admin-meeting-requests-list"></div>
+        </div>
         <div class="stat-grid">
           <div class="stat-card"><div class="val" id="dash-stat-brands">-</div><div class="lbl"><span class="ko">참여 브랜드</span><span class="en">Active Brands</span></div><div class="change" id="dash-stat-brands-sub">loading...</div></div>
           <div class="stat-card"><div class="val" id="dash-stat-pending">-</div><div class="lbl"><span class="ko">접수 심사 대기</span><span class="en">Pending Review</span></div><div class="change warn" id="dash-stat-pending-sub">loading...</div></div>
@@ -2657,6 +2669,18 @@ button{cursor:pointer;font-family:var(--font)}
 
       <!-- PIPELINE LIST VIEW -->
       <div class="dash-content" id="wm-pipeline">
+        <!-- 브랜드 미팅 요청 알림 패널 -->
+        <div id="wm-meeting-requests-panel" style="display:none;margin-bottom:16px;background:linear-gradient(135deg,#fff7ed 0%,#fef3c7 100%);border:1px solid #fbbf24;border-radius:12px;padding:16px 20px">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
+            <div style="display:flex;align-items:center;gap:8px">
+              <span style="font-size:18px">🗓️</span>
+              <span style="font-size:14px;font-weight:700;color:#92400e">Brand Meeting Requests</span>
+              <span id="wm-meeting-requests-count" style="font-size:11px;padding:2px 8px;border-radius:999px;background:#f59e0b;color:#fff;font-weight:700">0</span>
+            </div>
+            <button onclick="loadAdminMeetingRequests()" style="background:rgba(255,255,255,0.7);border:1px solid #fbbf24;color:#92400e;padding:4px 10px;border-radius:6px;font-size:11px;cursor:pointer;font-weight:600">Refresh</button>
+          </div>
+          <div id="wm-meeting-requests-list"></div>
+        </div>
         <div class="pipeline-summary"><div class="pipe-stat"><div class="val" id="wm-stat-total">0</div><div class="lbl">Total Brands</div></div><div class="pipe-stat"><div class="val" id="wm-stat-review">0</div><div class="lbl">Under Review</div></div><div class="pipe-stat"><div class="val" id="wm-stat-p1">0</div><div class="lbl">Phase 1</div></div><div class="pipe-stat"><div class="val" id="wm-stat-p2">0</div><div class="lbl">Phase 2</div></div><div class="pipe-stat"><div class="val" id="wm-stat-p3">0</div><div class="lbl">Phase 3</div></div></div>
 
         <div id="wm-brand-list" style="text-align:center;padding:48px 0;color:rgba(0,0,0,0.6);font-size:14px">No brands registered yet.<br><span style="font-size:12px">Approved brands will appear here.</span></div>
@@ -3584,7 +3608,7 @@ function showAdminView(view) {
   var t = titles[view] || titles.dashboard;
   topTitle.innerHTML = '<span class="ko">' + t[0] + '</span><span class="en">' + t[2] + '</span>';
   topSub.innerHTML = '<span class="ko">' + t[1] + '</span><span class="en">' + t[3] + '</span>';
-  if (view === 'dashboard') renderAdminDashboard();
+  if (view === 'dashboard') { renderAdminDashboard(); if (typeof loadAdminMeetingRequests === 'function') loadAdminMeetingRequests(); }
   if (view === 'contracts') { renderAdminContracts(); loadApprovedBrandsForContract(); }
   if (view === 'review') renderAdminReview();
 }
@@ -3906,6 +3930,7 @@ function showWmView(view) {
   document.querySelectorAll('#view-walmart .sidebar-item').forEach(function(item) { item.classList.remove('active'); });
   if (view === 'pipeline') {
     document.querySelectorAll('#view-walmart .sidebar-item')[0].classList.add('active');
+    if (typeof loadAdminMeetingRequests === 'function') loadAdminMeetingRequests();
   } else if (view === 'meetings') {
     document.querySelectorAll('#view-walmart .sidebar-item')[1].classList.add('active');
   }
@@ -6271,6 +6296,31 @@ function _daysUntil(iso) {
   } catch(e) { return null; }
 }
 
+// KST(UTC+9) 입력값 → UTC ISO 문자열 변환 (브라우저 타임존 무관)
+function _kstLocalToIso(localStr) {
+  if (!localStr) return null;
+  // localStr format: "2026-06-05T14:30" — append +09:00 to force KST
+  try {
+    var d = new Date(localStr + ':00+09:00');
+    return d.toISOString();
+  } catch(e) { return null; }
+}
+
+// ISO 시각 → KST(Asia/Seoul) 포맷 문자열
+function _fmtKST(iso) {
+  if (!iso) return '-';
+  try {
+    var d = new Date(iso);
+    if (isNaN(d.getTime())) return iso;
+    // 항상 KST로 표시 (브라우저 타임존 무관)
+    return d.toLocaleString('ko-KR', {
+      timeZone: 'Asia/Seoul',
+      year: 'numeric', month: '2-digit', day: '2-digit',
+      hour: '2-digit', minute: '2-digit', hour12: false
+    }) + ' KST';
+  } catch(e) { return iso; }
+}
+
 // ─── DASHBOARD SUMMARY ───
 async function loadBrandDashboardSummary(brandId) {
   if (!brandId || !supabase) return;
@@ -6310,7 +6360,7 @@ async function loadBrandDashboardSummary(brandId) {
       dashM.innerHTML = '<div style="text-align:center;padding:24px 0;color:var(--text-muted);font-size:13px"><span class="ko">예정된 미팅이 없습니다.</span><span class="en">No upcoming meetings.</span></div>';
     } else {
       dashM.innerHTML = upcoming.map(function(m){
-        var when = m.scheduled_at ? _fmtDateTime(m.scheduled_at) : '<em style="color:var(--text-muted)">시간 협의 중</em>';
+        var when = m.scheduled_at ? _fmtKST(m.scheduled_at) : '<em style="color:var(--text-muted)">시간 협의 중</em>';
         var stColor = m.status === 'confirmed' ? '#10b981' : (m.status === 'proposed' ? '#f59e0b' : '#6b7280');
         var stLabel = m.status === 'confirmed' ? '확정' : (m.status === 'proposed' ? '제안됨' : m.status);
         return '<div style="padding:10px 0;border-bottom:1px solid var(--border)">' +
@@ -6450,14 +6500,20 @@ function _showFormModal(opts) {
         var checked = (v === val);
         return '<label style="cursor:pointer;display:inline-flex;align-items:center"><input type="radio" name="' + _esc(f.name) + '" value="' + _esc(v) + '"' + (checked ? ' checked' : '') + ' style="display:none" id="' + id + '-' + oi + '" onchange="this.parentNode.parentNode.querySelectorAll(\'span\').forEach(function(s){s.style.background=\'#fff\';s.style.color=\'var(--text)\';s.style.borderColor=\'var(--border)\'});this.nextElementSibling.style.background=\'' + c + '\';this.nextElementSibling.style.color=\'#fff\';this.nextElementSibling.style.borderColor=\'' + c + '\'"><span style="display:inline-block;padding:7px 14px;border:1px solid ' + (checked ? c : 'var(--border)') + ';border-radius:999px;background:' + (checked ? c : '#fff') + ';color:' + (checked ? '#fff' : 'var(--text)') + ';font-size:12.5px;font-weight:600;transition:all .15s">' + _esc(l) + '</span></label>';
       }).join('') + '</div>';
-    } else if (f.type === 'date' || f.type === 'datetime-local') {
-      inp = '<input id="' + id + '" name="' + _esc(f.name) + '" type="' + f.type + '" value="' + _esc(val) + '" style="' + inputStyle + ';font-family:var(--mono)">';
+    } else if (f.type === 'date') {
+      inp = '<input id="' + id + '" name="' + _esc(f.name) + '" type="date" value="' + _esc(val) + '" style="' + inputStyle + ';font-family:var(--mono)">';
+    } else if (f.type === 'datetime-local') {
+      inp = '<input id="' + id + '" name="' + _esc(f.name) + '" type="datetime-local" value="' + _esc(val) + '" step="1800" style="' + inputStyle + ';font-family:var(--mono)">';
+    } else if (f.type === 'datetime-local-30min') {
+      // KST 기준 datetime-local, 30분 단위로 강제 (step=1800초)
+      inp = '<input id="' + id + '" name="' + _esc(f.name) + '" type="datetime-local" value="' + _esc(val) + '" step="1800" style="' + inputStyle + ';font-family:var(--mono)">';
     } else if (f.type === 'datetime-slots') {
-      // 1~3개 후보 시간 + 분 단위 duration
+      // 1~3개 후보 시간 + 분 단위 duration (KST 기준, 30분 단위)
       inp = '<div id="' + id + '-slots">' +
-        '<div style="display:grid;grid-template-columns:1fr 80px;gap:8px;margin-bottom:6px"><input type="datetime-local" id="' + id + '-s0" style="' + inputStyle + ';font-family:var(--mono)"><input type="number" id="' + id + '-d0" placeholder="분" value="30" min="15" max="180" step="15" style="' + inputStyle + ';font-family:var(--mono)"></div>' +
-        '<div style="display:grid;grid-template-columns:1fr 80px;gap:8px;margin-bottom:6px"><input type="datetime-local" id="' + id + '-s1" style="' + inputStyle + ';font-family:var(--mono)"><input type="number" id="' + id + '-d1" placeholder="분" value="30" min="15" max="180" step="15" style="' + inputStyle + ';font-family:var(--mono)"></div>' +
-        '<div style="display:grid;grid-template-columns:1fr 80px;gap:8px"><input type="datetime-local" id="' + id + '-s2" style="' + inputStyle + ';font-family:var(--mono)"><input type="number" id="' + id + '-d2" placeholder="분" value="30" min="15" max="180" step="15" style="' + inputStyle + ';font-family:var(--mono)"></div>' +
+        '<div style="font-size:11px;color:var(--text-muted);margin-bottom:6px">시각은 한국 표준시(KST, UTC+9) 기준, 30분 단위로만 선택 가능합니다.</div>' +
+        '<div style="display:grid;grid-template-columns:1fr 90px;gap:8px;margin-bottom:6px"><input type="datetime-local" id="' + id + '-s0" step="1800" style="' + inputStyle + ';font-family:var(--mono)" placeholder="1번 후보"><select id="' + id + '-d0" style="' + inputStyle + ';font-family:var(--mono)"><option value="30">30분</option><option value="60">60분</option><option value="90">90분</option><option value="120">120분</option></select></div>' +
+        '<div style="display:grid;grid-template-columns:1fr 90px;gap:8px;margin-bottom:6px"><input type="datetime-local" id="' + id + '-s1" step="1800" style="' + inputStyle + ';font-family:var(--mono)" placeholder="2번 후보"><select id="' + id + '-d1" style="' + inputStyle + ';font-family:var(--mono)"><option value="30">30분</option><option value="60">60분</option><option value="90">90분</option><option value="120">120분</option></select></div>' +
+        '<div style="display:grid;grid-template-columns:1fr 90px;gap:8px"><input type="datetime-local" id="' + id + '-s2" step="1800" style="' + inputStyle + ';font-family:var(--mono)" placeholder="3번 후보"><select id="' + id + '-d2" style="' + inputStyle + ';font-family:var(--mono)"><option value="30">30분</option><option value="60">60분</option><option value="90">90분</option><option value="120">120분</option></select></div>' +
         '</div>';
     } else {
       inp = '<input id="' + id + '" name="' + _esc(f.name) + '" type="' + (f.type || 'text') + '" value="' + _esc(val) + '" placeholder="' + _esc(f.placeholder || '') + '" style="' + inputStyle + '">';
@@ -6501,12 +6557,16 @@ function _showFormModal(opts) {
           var dEl = document.getElementById(id + '-d' + i);
           if (sEl && sEl.value) {
             try {
-              var iso = new Date(sEl.value).toISOString();
-              slots.push({ at: iso, duration_min: Number(dEl.value) || 30 });
+              // KST(UTC+9)로 해석하여 ISO 변환
+              var iso = _kstLocalToIso(sEl.value);
+              if (iso) slots.push({ at: iso, duration_min: Number(dEl.value) || 30 });
             } catch(err){}
           }
         }
         data[f.name] = slots;
+      } else if (f.type === 'datetime-local-30min') {
+        var el = document.getElementById(id);
+        data[f.name] = el ? el.value : '';
       } else {
         var el = document.getElementById(id);
         data[f.name] = el ? el.value.trim() : '';
@@ -6598,12 +6658,12 @@ function renderBrandMeetings() {
       cancelled:   { l:'취소',   c:'#6b7280' }
     };
     var st = stMap[m.status] || stMap.proposed;
-    var when = m.scheduled_at ? _fmtDateTime(m.scheduled_at) : '<em style="color:var(--text-muted)">시간 협의 중</em>';
+    var when = m.scheduled_at ? _fmtKST(m.scheduled_at) : '<em style="color:var(--text-muted)">시간 협의 중</em>';
     var proposedHtml = '';
     if (m.status === 'proposed' && m.proposed_slots && Array.isArray(m.proposed_slots) && m.proposed_slots.length) {
-      proposedHtml = '<div style="margin-top:10px;padding:10px;background:var(--surface-alt);border-radius:8px"><div style="font-size:11px;color:var(--text-muted);font-weight:600;margin-bottom:6px">제안된 시간 (택1):</div>' +
+      proposedHtml = '<div style="margin-top:10px;padding:10px;background:var(--surface-alt);border-radius:8px"><div style="font-size:11px;color:var(--text-muted);font-weight:600;margin-bottom:6px">제안된 시간 (택1, KST 기준):</div>' +
         m.proposed_slots.map(function(s, i){
-          return '<button onclick="confirmMeetingSlot(\''+m.id+'\','+i+')" style="display:block;width:100%;text-align:left;background:#fff;border:1px solid var(--border);border-radius:6px;padding:8px 12px;margin-bottom:4px;cursor:pointer;font-size:12.5px;color:var(--text)">📅 '+_fmtDateTime(s.at)+' · '+(s.duration_min || m.duration_min || 30)+'분</button>';
+          return '<button onclick="confirmMeetingSlot(\''+m.id+'\','+i+')" style="display:block;width:100%;text-align:left;background:#fff;border:1px solid var(--border);border-radius:6px;padding:8px 12px;margin-bottom:4px;cursor:pointer;font-size:12.5px;color:var(--text)">📅 '+_fmtKST(s.at)+' · '+(s.duration_min || m.duration_min || 30)+'분</button>';
         }).join('') +
         '</div>';
     }
@@ -6628,27 +6688,29 @@ function renderBrandMeetings() {
 
 function showBrandMeetingRequestModal() {
   _showFormModal({
-    title: '미팅 요청',
-    subtitle: '관리자에게 미팅을 요청합니다. 관리자가 시간을 확정하거나 다른 시간을 제안합니다.',
+    title: '미팅 요청 / Meeting Request',
+    subtitle: '관리자(3SVS) 및 Startup Junkie 측에 미팅을 요청합니다. 양쪽에서 일정을 확인 후 확정합니다.',
     submitLabel: '미팅 요청',
     fields: [
-      { name: 'title', label: '미팅 주제', type: 'text', required: true, placeholder: '예: Phase 1 준비 사항 협의' },
-      { name: 'agenda', label: '논의 안건 (선택)', type: 'textarea', rows: 3, placeholder: '다루고 싶은 주제를 적어주세요.' },
-      { name: 'scheduled_at', label: '희망 일시', type: 'datetime-local', required: true, help: '협의가 필요한 경우 가까운 일시로 제안하시면 됩니다.' },
-      { name: 'duration_min', label: '예상 소요 시간 (분)', type: 'select', value: '30', options: [
-        { value: '15', label: '15분' },
-        { value: '30', label: '30분' },
-        { value: '60', label: '60분' },
-        { value: '90', label: '90분' }
+      { name: 'title', label: '미팅 주제 / Title', type: 'text', required: true, placeholder: '예: Phase 1 준비 사항 협의' },
+      { name: 'agenda', label: '논의 안건 / Agenda (선택)', type: 'textarea', rows: 3, placeholder: '다루고 싶은 주제를 적어주세요.' },
+      { name: 'scheduled_at_kst', label: '희망 일시 — KST 기준 / Korea Standard Time (UTC+9)', type: 'datetime-local-30min', required: true, help: '30분 단위로만 선택할 수 있습니다. 한국 시각으로 입력해주세요. Time is in Korea Standard Time (UTC+9), 30-minute slots only.' },
+      { name: 'duration_min', label: '예상 소요 시간 / Duration', type: 'select', value: '30', options: [
+        { value: '30', label: '30분 / 30 min' },
+        { value: '60', label: '60분 / 60 min' },
+        { value: '90', label: '90분 / 90 min' },
+        { value: '120', label: '120분 / 120 min' }
       ] }
     ],
     onSubmit: async function(data) {
-      var iso = data.scheduled_at ? new Date(data.scheduled_at).toISOString() : null;
+      // datetime-local 값은 KST로 간주하여 UTC ISO로 변환 (브라우저 타임존 무시)
+      var iso = data.scheduled_at_kst ? _kstLocalToIso(data.scheduled_at_kst) : null;
       var res = await supabase.from('wm_meetings').insert({
         brand_id: _currentBrandId,
         proposed_by: 'brand',
         title: data.title,
         agenda: data.agenda || null,
+        scheduled_at: iso,
         proposed_slots: iso ? [{ at: iso, duration_min: Number(data.duration_min) || 30 }] : null,
         duration_min: Number(data.duration_min) || 30,
         status: 'proposed'
@@ -6656,7 +6718,12 @@ function showBrandMeetingRequestModal() {
       if (res.error) throw res.error;
       loadBrandMeetings(_currentBrandId);
       if (typeof sendNotification === 'function') {
-        sendNotification('meeting_requested', { message: '브랜드가 미팅을 요청했습니다: ' + data.title, brandId: _currentBrandId });
+        var brandName = (_currentBrandData && _currentBrandData.name) || _currentBrandId;
+        sendNotification('meeting_requested', {
+          message: brandName + '이(가) 미팅을 요청했습니다: ' + data.title + ' (' + _fmtKST(iso) + ')',
+          brandId: _currentBrandId,
+          brandName: brandName
+        });
       }
     }
   });
@@ -7357,12 +7424,17 @@ async function loadAdminBrandMeetings(brandId) {
   var stMap = { proposed:{l:'제안됨',c:'#f59e0b'}, confirmed:{l:'확정',c:'#10b981'}, declined:{l:'거절',c:'#ef4444'}, completed:{l:'완료',c:'#0071dc'}, cancelled:{l:'취소',c:'#6b7280'}, rescheduled:{l:'재조정',c:'#6b7280'} };
   el.innerHTML = rows.map(function(m){
     var st = stMap[m.status] || stMap.proposed;
-    var when = m.scheduled_at ? _fmtDateTime(m.scheduled_at) : '시간 미정';
+    var when = m.scheduled_at ? _fmtKST(m.scheduled_at) : '시간 미정';
+    var slotsHtml = '';
+    if (m.status === 'proposed' && m.proposed_slots && Array.isArray(m.proposed_slots) && m.proposed_slots.length > 0) {
+      slotsHtml = '<div style="margin-top:6px;padding:6px 8px;background:var(--surface-alt);border-radius:6px;font-size:11px"><strong style="color:var(--text-muted)">제안 시간 (KST):</strong> ' +
+        m.proposed_slots.map(function(s){ return _fmtKST(s.at) + ' (' + (s.duration_min || 30) + '분)'; }).join(' · ') + '</div>';
+    }
     return '<div style="padding:10px 12px;background:#fff;border:1px solid var(--border);border-radius:8px;margin-bottom:6px">' +
       '<div style="display:flex;justify-content:space-between;align-items:flex-start;gap:10px"><div style="flex:1;min-width:0">' +
       '<div style="font-size:13px;font-weight:600;color:var(--text)">'+_esc(m.title)+'</div>' +
       '<div style="font-size:11.5px;color:var(--text-muted);margin-top:3px">🕐 '+when+(m.duration_min?' · '+m.duration_min+'분':'')+' · '+({admin:'3SVS 관리자 제안',walmart:'Startup Junkie 제안',brand:'브랜드 요청'}[m.proposed_by] || '')+'</div>' +
-      (m.agenda ? '<div style="font-size:12px;color:var(--text-muted);margin-top:4px;white-space:pre-wrap">'+_esc(m.agenda)+'</div>' : '') +
+      (m.agenda ? '<div style="font-size:12px;color:var(--text-muted);margin-top:4px;white-space:pre-wrap">'+_esc(m.agenda)+'</div>' : '') + slotsHtml +
       '</div><div style="display:flex;flex-direction:column;align-items:flex-end;gap:6px"><span style="font-size:10px;padding:2px 8px;border-radius:999px;background:'+st.c+'22;color:'+st.c+';font-weight:600">'+st.l+'</span>' +
       (m.status === 'proposed' && m.proposed_by === 'brand' ? '<button onclick="adminConfirmMeeting(\''+m.id+'\',\''+brandId+'\')" style="background:#10b981;color:#fff;border:none;padding:4px 10px;border-radius:6px;font-size:11px;cursor:pointer">확정</button>' : '') +
       '<button onclick="adminDeleteMeeting(\''+m.id+'\',\''+brandId+'\')" style="background:none;border:none;color:#ef4444;font-size:11px;cursor:pointer;padding:2px 4px">삭제</button></div></div>' +
@@ -7540,27 +7612,34 @@ async function adminDeleteDoc(docId, brandId) {
 }
 
 function adminConfirmMeeting(meetingId, brandId) {
+  // 기존 제안 시간이 있다면 첫 슬롯을 기본값으로
+  var existingMeeting = null;
+  try {
+    // _brandMeetings 또는 직접 fetch 필요. 일단 빈 상태로 시작
+  } catch(e){}
   _showFormModal({
-    title: '미팅 확정',
-    subtitle: '브랜드가 요청한 미팅 일정을 확정합니다.',
+    title: '미팅 확정 / Confirm Meeting',
+    subtitle: '브랜드가 요청한 미팅 일정을 확정합니다. KST 기준, 30분 단위로 선택해주세요.',
     submitLabel: '확정',
     fields: [
-      { name: 'scheduled_at', label: '확정 일시', type: 'datetime-local', required: true },
-      { name: 'duration_min', label: '소요 시간 (분)', type: 'select', value: '30', options: [
-        { value: '15', label: '15분' },
+      { name: 'scheduled_at_kst', label: '확정 일시 — KST 기준 / Korea Standard Time', type: 'datetime-local-30min', required: true, help: '30분 단위로만 선택할 수 있습니다. 한국 시각 기준.' },
+      { name: 'duration_min', label: '소요 시간', type: 'select', value: '30', options: [
         { value: '30', label: '30분' },
         { value: '60', label: '60분' },
-        { value: '90', label: '90분' }
+        { value: '90', label: '90분' },
+        { value: '120', label: '120분' }
       ] },
       { name: 'meeting_url', label: '미팅 링크 (선택)', type: 'text', placeholder: 'Zoom / Google Meet URL' }
     ],
     onSubmit: async function(data) {
-      var iso = new Date(data.scheduled_at).toISOString();
+      var iso = _kstLocalToIso(data.scheduled_at_kst);
+      if (!iso) { alert('일시 형식이 올바르지 않습니다.'); throw new Error('validation-stop'); }
       var update = { status: 'confirmed', scheduled_at: iso, duration_min: Number(data.duration_min) || 30 };
       if (data.meeting_url) update.meeting_url = data.meeting_url;
       var res = await supabase.from('wm_meetings').update(update).eq('id', meetingId);
       if (res.error) throw res.error;
       loadAdminBrandMeetings(brandId);
+      if (typeof loadAdminMeetingRequests === 'function') loadAdminMeetingRequests();
     }
   });
 }
@@ -7568,6 +7647,73 @@ function adminConfirmMeeting(meetingId, brandId) {
 async function adminApproveDoc(docId, brandId) {
   await supabase.from('wm_documents').update({ status: 'approved' }).eq('id', docId);
   loadAdminBrandDocs(brandId);
+}
+
+// ════════════════════════════════════════════════════════════
+// 브랜드가 요청한 미팅 — 관리자/Walmart 양쪽 알림 패널
+// ════════════════════════════════════════════════════════════
+async function loadAdminMeetingRequests() {
+  if (!supabase) return;
+  // 브랜드가 제안한 (proposed_by='brand') + 아직 confirmed/declined 안 된 미팅
+  var res = await supabase.from('wm_meetings')
+    .select('*')
+    .eq('proposed_by', 'brand')
+    .eq('status', 'proposed')
+    .order('created_at', { ascending: false });
+  var rows = (res && res.data) || [];
+
+  // 브랜드 이름 조회
+  var brandIds = Array.from(new Set(rows.map(function(r){ return r.brand_id; }).filter(Boolean)));
+  var brandMap = {};
+  if (brandIds.length) {
+    var bRes = await supabase.from('wm_brands').select('id, name_ko, name_en').in('id', brandIds);
+    (bRes.data || []).forEach(function(b){ brandMap[b.id] = b.name_ko || b.name_en || b.id; });
+  }
+
+  // 관리자 + Walmart 양쪽 패널 동시 렌더
+  ['admin', 'wm'].forEach(function(prefix){
+    var panel = document.getElementById(prefix + '-meeting-requests-panel');
+    var list = document.getElementById(prefix + '-meeting-requests-list');
+    var countEl = document.getElementById(prefix + '-meeting-requests-count');
+    if (!panel || !list || !countEl) return;
+    if (!rows.length) {
+      panel.style.display = 'none';
+      return;
+    }
+    panel.style.display = '';
+    countEl.textContent = String(rows.length);
+    list.innerHTML = rows.map(function(m){
+      var brandName = brandMap[m.brand_id] || m.brand_id || '알 수 없음';
+      var slotsHtml = '';
+      if (m.proposed_slots && Array.isArray(m.proposed_slots) && m.proposed_slots.length) {
+        slotsHtml = '<div style="margin-top:6px;font-size:11.5px;color:#92400e"><strong>제안 시간:</strong> ' +
+          m.proposed_slots.map(function(s){ return _fmtKST(s.at) + ' (' + (s.duration_min || 30) + '분)'; }).join(' · ') + '</div>';
+      } else if (m.scheduled_at) {
+        slotsHtml = '<div style="margin-top:6px;font-size:11.5px;color:#92400e"><strong>희망 시간:</strong> ' + _fmtKST(m.scheduled_at) + ' (' + (m.duration_min || 30) + '분)</div>';
+      }
+      var brandEsc = String(m.brand_id || '').replace(/'/g, "\\'");
+      return '<div style="background:#fff;border:1px solid rgba(251,191,36,0.4);border-radius:8px;padding:12px 14px;margin-bottom:6px;display:flex;justify-content:space-between;align-items:flex-start;gap:10px">' +
+        '<div style="flex:1;min-width:0">' +
+        '<div style="display:flex;align-items:center;gap:8px;margin-bottom:3px;flex-wrap:wrap"><strong style="font-size:13.5px;color:#0a1628">' + _esc(brandName) + '</strong>' +
+        '<span style="font-size:10px;padding:2px 7px;border-radius:999px;background:#fbbf2422;color:#92400e;font-weight:600">미팅 요청</span></div>' +
+        '<div style="font-size:13px;color:var(--text);margin-bottom:2px">' + _esc(m.title) + '</div>' +
+        (m.agenda ? '<div style="font-size:11.5px;color:var(--text-muted);margin-top:3px;white-space:pre-wrap">' + _esc(m.agenda) + '</div>' : '') +
+        slotsHtml +
+        '</div>' +
+        '<div style="display:flex;flex-direction:column;gap:5px;align-items:flex-end">' +
+        '<button onclick="showWmBrandDetailDB(\'' + brandEsc + '\')" style="background:#0071dc;color:#fff;border:none;padding:5px 12px;border-radius:6px;font-size:11px;cursor:pointer;font-weight:600;white-space:nowrap">브랜드 보기</button>' +
+        '<button onclick="adminConfirmMeeting(\'' + m.id + '\',\'' + brandEsc + '\')" style="background:#10b981;color:#fff;border:none;padding:5px 12px;border-radius:6px;font-size:11px;cursor:pointer;font-weight:600;white-space:nowrap">확정</button>' +
+        '<button onclick="adminDeclineMeetingRequest(\'' + m.id + '\')" style="background:#fff;color:#ef4444;border:1px solid #ef4444;padding:4px 10px;border-radius:6px;font-size:11px;cursor:pointer;white-space:nowrap">거절</button>' +
+        '</div>' +
+      '</div>';
+    }).join('');
+  });
+}
+
+async function adminDeclineMeetingRequest(meetingId) {
+  if (!confirm('이 미팅 요청을 거절하시겠습니까?')) return;
+  await supabase.from('wm_meetings').update({ status: 'declined' }).eq('id', meetingId);
+  loadAdminMeetingRequests();
 }
 
 async function updateBrandPhase(brandId, newPhase) {
