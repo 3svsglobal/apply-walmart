@@ -2305,6 +2305,22 @@ button{cursor:pointer;font-family:var(--font)}
           </div>
         </div>
 
+        <!-- 스태프 계정 관리 (관리자 + Walmart) -->
+        <div class="portal-info-section">
+          <div class="portal-info-title" style="display:flex;justify-content:space-between;align-items:center">
+            <div style="display:flex;align-items:center;gap:8px">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+              <span class="ko">스태프 계정 관리</span><span class="en">Staff Accounts</span>
+            </div>
+            <button onclick="showStaffAddModal()" style="background:var(--accent);color:#fff;border:none;padding:6px 14px;border-radius:6px;font-size:12px;font-weight:600;cursor:pointer"><span class="ko">+ 계정 추가</span><span class="en">+ Add account</span></button>
+          </div>
+          <div style="font-size:11.5px;color:var(--text-muted);margin-bottom:10px;line-height:1.55">
+            <span class="ko">관리자(3SVS) 및 Walmart(Startup Junkie) 측 로그인 계정 관리. 신규 직원 추가, 비밀번호 재설정, 비활성화 모두 여기서 처리합니다.</span>
+            <span class="en">Manage login accounts for 3SVS Admin and Walmart (Startup Junkie) side. Add new staff, reset passwords, deactivate — all from here.</span>
+          </div>
+          <div id="staff-accounts-list" style="margin-top:10px"><div style="color:var(--text-muted);font-size:12.5px;padding:8px 0"><span class="ko">불러오는 중...</span><span class="en">Loading...</span></div></div>
+        </div>
+
         <!-- 비밀번호 변경 -->
         <div class="portal-info-section">
           <div class="portal-info-title">
@@ -3148,24 +3164,42 @@ function handleLogin() {
   }
 }
 
-async function loginAdmin(email, pw, role) {
-  // Try Supabase Auth first
+async function loginAdmin(emailOrUsername, pw, requestedRole) {
+  if (!emailOrUsername || !pw) { alert('Username/email and password required.'); return; }
+  // 1) wm_staff_accounts 테이블 조회 — username 또는 email 매칭, active=true
   if (supabase) {
     try {
-      var authRes = await supabase.auth.signInWithPassword({ email: email, password: pw });
-      if (authRes.data && authRes.data.user) {
-        _currentAdminUser = authRes.data.user;
-        sessionStorage.setItem('wm_session', JSON.stringify({type: role === 'walmart' ? 'walmart' : 'admin'})); switchTab(role === 'walmart' ? 'walmart' : 'admin');
+      var input = String(emailOrUsername).trim();
+      var res = await supabase.from('wm_staff_accounts')
+        .select('*')
+        .or('username.eq.' + input + ',email.eq.' + input)
+        .eq('password', pw)
+        .eq('active', true)
+        .limit(1);
+      var acc = res.data && res.data[0];
+      if (acc) {
+        // 마지막 로그인 시각 업데이트 (실패해도 무시)
+        supabase.from('wm_staff_accounts').update({ last_login_at: new Date().toISOString() }).eq('id', acc.id).then(function(){});
+        _currentAdminUser = acc;
+        var actualRole = acc.role; // DB에서 결정된 role 사용 (사용자가 다른 탭에서 시도해도 본인 role 적용)
+        sessionStorage.setItem('wm_session', JSON.stringify({
+          type: actualRole,
+          username: acc.username,
+          name: acc.name
+        }));
+        switchTab(actualRole === 'walmart' ? 'walmart' : 'admin');
         return;
       }
-    } catch(e) { console.log('Supabase Auth not configured, falling back to password check'); }
+    } catch(e) { console.warn('staff login error', e); }
   }
-  // Fallback to simple password check (for backward compatibility)
+  // 2) Fallback: 단일 ADMIN_PW (이전 호환)
   if (pw === ADMIN_PW) {
-    sessionStorage.setItem('wm_session', JSON.stringify({type: role === 'walmart' ? 'walmart' : 'admin'})); switchTab(role === 'walmart' ? 'walmart' : 'admin');
-  } else {
-    alert('이메일 또는 비밀번호가 올바르지 않습니다.');
+    var role = requestedRole === 'walmart' ? 'walmart' : 'admin';
+    sessionStorage.setItem('wm_session', JSON.stringify({type: role}));
+    switchTab(role === 'walmart' ? 'walmart' : 'admin');
+    return;
   }
+  alert('Username/email or password is incorrect.\n사용자명/이메일 또는 비밀번호가 올바르지 않습니다.');
 }
 
 var _currentAdminUser = null;
@@ -3656,6 +3690,97 @@ function showAdminView(view) {
   if (view === 'dashboard') { renderAdminDashboard(); if (typeof loadAdminMeetingRequests === 'function') loadAdminMeetingRequests(); }
   if (view === 'contracts') { renderAdminContracts(); loadApprovedBrandsForContract(); }
   if (view === 'review') renderAdminReview();
+  if (view === 'settings') { if (typeof loadStaffAccounts === 'function') loadStaffAccounts(); }
+}
+
+// ─── ADMIN: 스태프 계정 관리 ───
+async function loadStaffAccounts() {
+  var el = document.getElementById('staff-accounts-list');
+  if (!el || !supabase) return;
+  var res = await supabase.from('wm_staff_accounts').select('*').order('role', { ascending: true }).order('username', { ascending: true });
+  var rows = (res.data || []);
+  if (!rows.length) {
+    el.innerHTML = '<div style="color:var(--text-muted);font-size:12.5px;padding:8px 0">' + _kn('등록된 스태프 계정이 없습니다.','No staff accounts.') + '</div>';
+    return;
+  }
+  el.innerHTML = '<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:10px">' + rows.map(function(a) {
+    var roleColor = a.role === 'admin' ? '#f59e0b' : '#10b981';
+    var roleLbl = a.role === 'admin' ? '3SVS Admin' : 'Startup Junkie';
+    var inactive = !a.active;
+    var lastLogin = a.last_login_at ? _fmtKST(a.last_login_at) : (_kn('로그인 기록 없음','Never logged in'));
+    return '<div style="padding:12px 14px;background:#fff;border:1px solid var(--border);border-radius:10px;'+(inactive?'opacity:0.55;':'')+'">' +
+      '<div style="display:flex;justify-content:space-between;align-items:flex-start;gap:10px;margin-bottom:6px">' +
+        '<div style="flex:1;min-width:0"><div style="font-size:14px;font-weight:700;color:var(--text);display:flex;align-items:center;gap:8px;flex-wrap:wrap">' + _esc(a.name || a.username) + ' <span style="font-size:10px;padding:2px 8px;border-radius:999px;background:'+roleColor+'22;color:'+roleColor+';font-weight:600">'+roleLbl+'</span>' + (inactive ? '<span style="font-size:10px;padding:2px 8px;border-radius:999px;background:#ef444422;color:#ef4444;font-weight:600">'+_kn('비활성','Inactive')+'</span>' : '') + '</div>' +
+        '<div style="font-size:12px;color:var(--text-muted);margin-top:3px;font-family:var(--mono)">@'+_esc(a.username)+(a.email && a.email !== a.username ? ' · '+_esc(a.email) : '')+'</div>' +
+        '<div style="font-size:11px;color:var(--text-muted);margin-top:3px">'+_kn('마지막 로그인','Last login')+': '+lastLogin+'</div>' +
+        '</div>' +
+      '</div>' +
+      '<div style="display:flex;gap:6px;margin-top:10px;flex-wrap:wrap">' +
+        '<button onclick="staffResetPassword(\''+a.id+'\',\''+_esc(a.username).replace(/\'/g,"\\\\\'")+'\')" style="background:#fff;border:1px solid var(--border);color:var(--text);padding:5px 10px;border-radius:6px;font-size:11.5px;cursor:pointer;font-weight:500">🔑 '+_kn('비밀번호 재설정','Reset password')+'</button>' +
+        '<button onclick="staffToggleActive(\''+a.id+'\','+(a.active?'false':'true')+')" style="background:#fff;border:1px solid var(--border);color:var(--text);padding:5px 10px;border-radius:6px;font-size:11.5px;cursor:pointer;font-weight:500">'+(a.active?'⏸ '+_kn('비활성화','Deactivate'):'▶ '+_kn('활성화','Activate'))+'</button>' +
+        '<button onclick="staffDelete(\''+a.id+'\',\''+_esc(a.username).replace(/\'/g,"\\\\\'")+'\')" style="background:#fff;border:1px solid #ef4444;color:#ef4444;padding:5px 10px;border-radius:6px;font-size:11.5px;cursor:pointer;font-weight:500">🗑 '+_kn('삭제','Delete')+'</button>' +
+      '</div>' +
+    '</div>';
+  }).join('') + '</div>';
+}
+
+function showStaffAddModal() {
+  _showFormModal({
+    title: _kn('스태프 계정 추가','Add Staff Account'),
+    subtitle: _kn('관리자 또는 Walmart 측 새 로그인 계정을 추가합니다.','Create a new login account for admin or Walmart-side staff.'),
+    submitLabel: _kn('계정 생성','Create account'),
+    fields: [
+      { name: 'username', label: _kn('사용자명 (로그인 ID)','Username (login ID)'), type: 'text', required: true, placeholder: _kn('예: louis, john, sarah','e.g., louis, john, sarah') },
+      { name: 'password', label: _kn('초기 비밀번호','Initial password'), type: 'text', required: true, placeholder: _kn('최소 6자 권장','At least 6 chars recommended') },
+      { name: 'role', label: _kn('역할','Role'), type: 'radio-pills', value: 'admin', options: [
+        { value: 'admin',   label: _kn('관리자 (3SVS)','3SVS Admin'),               color: '#f59e0b' },
+        { value: 'walmart', label: _kn('Walmart (Startup Junkie)','Walmart (SJ)'), color: '#10b981' }
+      ] },
+      { name: 'name',  label: _kn('이름 (표시용)','Display name'), type: 'text', placeholder: _kn('예: Louis Diesel','e.g., Louis Diesel') },
+      { name: 'email', label: _kn('이메일 (선택)','Email (optional)'), type: 'text', placeholder: 'someone@example.com' }
+    ],
+    onSubmit: async function(data) {
+      if (!data.username || !data.password) throw new Error('Username and password required');
+      var res = await supabase.from('wm_staff_accounts').insert({
+        username: data.username.trim().toLowerCase(),
+        password: data.password.trim(),
+        role: data.role || 'admin',
+        name: data.name || null,
+        email: data.email || null,
+        active: true
+      });
+      if (res.error) {
+        if (res.error.message && res.error.message.indexOf('duplicate') >= 0) {
+          alert(_kn('이미 사용 중인 사용자명입니다.','Username already in use.'));
+        } else {
+          alert(_kn('생성 실패','Create failed') + ': ' + res.error.message);
+        }
+        throw res.error;
+      }
+      loadStaffAccounts();
+    }
+  });
+}
+
+async function staffResetPassword(id, username) {
+  var newPw = prompt(_kn('새 비밀번호를 입력하세요 (' + username + ')','New password for ' + username));
+  if (!newPw) return;
+  if (newPw.length < 4) { alert(_kn('비밀번호는 최소 4자','Password must be at least 4 chars')); return; }
+  var res = await supabase.from('wm_staff_accounts').update({ password: newPw }).eq('id', id);
+  if (res.error) { alert('Error: ' + res.error.message); return; }
+  alert(_kn('비밀번호가 변경되었습니다.','Password updated.'));
+  loadStaffAccounts();
+}
+
+async function staffToggleActive(id, makeActive) {
+  await supabase.from('wm_staff_accounts').update({ active: makeActive }).eq('id', id);
+  loadStaffAccounts();
+}
+
+async function staffDelete(id, username) {
+  if (!confirm(_kn(username + ' 계정을 정말 삭제하시겠습니까?\n(되돌릴 수 없습니다)','Permanently delete account ' + username + '?\n(Cannot be undone)'))) return;
+  await supabase.from('wm_staff_accounts').delete().eq('id', id);
+  loadStaffAccounts();
 }
 // Init admin nav
 document.addEventListener('DOMContentLoaded', () => {
