@@ -2296,48 +2296,73 @@ button{cursor:pointer;font-family:var(--font)}
 
           <!-- 계약 조건 입력 -->
           <div style="background:#fff;border:1px solid var(--border);border-radius:10px;padding:16px 18px;margin-bottom:14px">
-            <label style="display:block;font-size:13px;color:var(--accent);margin-bottom:14px;font-weight:700">💰 계약 조건 — 표준: Phase별 USD 8,000 (총 USD 24,000) · Phase 3 첫 P.O 10% / 이후 8%</label>
+            <label style="display:block;font-size:13px;color:var(--accent);margin-bottom:14px;font-weight:700">💰 계약 조건 — 표준: 착수금 KRW · Phase별 USD 8,000 (총 USD 24,000) · Phase 3 첫 P.O 10% / 이후 8%</label>
+
+            <!-- 착수금 블록 -->
+            <div style="background:var(--surface-alt);border-radius:8px;padding:12px 14px;margin-bottom:12px">
+              <div style="font-size:11.5px;color:var(--accent);font-weight:700;margin-bottom:8px;letter-spacing:0.2px">착수금 (1회, 선택) · Initial Fee</div>
+              <div style="display:grid;grid-template-columns:160px 1fr;gap:10px 14px;align-items:end">
+                <div>
+                  <label style="display:block;font-size:11.5px;color:var(--text-muted);margin-bottom:4px;font-weight:600">통화 / Currency</label>
+                  <select id="ct-initial-currency" style="background:#fff;border:1px solid var(--border);border-radius:8px;padding:9px 12px;font-size:14px;width:100%;margin:0">
+                    <option value="KRW" selected>KRW (원)</option>
+                    <option value="USD">USD ($)</option>
+                  </select>
+                </div>
+                <div>
+                  <label style="display:block;font-size:11.5px;color:var(--text-muted);margin-bottom:4px;font-weight:600">금액 (숫자만) / Amount</label>
+                  <input id="ct-initial" type="text" inputmode="numeric" placeholder="예: 10000000 (1천만원). 없으면 비워두기" style="background:#fff;border:1px solid var(--border);border-radius:8px;padding:9px 12px;font-size:14px;width:100%;margin:0;font-family:var(--mono)">
+                </div>
+              </div>
+            </div>
+
+            <!-- Phase 운영비 블록 -->
+            <div style="background:var(--surface-alt);border-radius:8px;padding:12px 14px;margin-bottom:12px">
+              <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">
+                <div style="font-size:11.5px;color:var(--accent);font-weight:700;letter-spacing:0.2px">Phase 운영비 · Phase Service Fees</div>
+                <div style="display:flex;align-items:center;gap:8px">
+                  <span style="font-size:11.5px;color:var(--text-muted);font-weight:600">통화</span>
+                  <select id="ct-phase-currency" style="background:#fff;border:1px solid var(--border);border-radius:8px;padding:6px 10px;font-size:13px;margin:0">
+                    <option value="USD" selected>USD ($)</option>
+                    <option value="KRW">KRW (원)</option>
+                  </select>
+                </div>
+              </div>
+              <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px 14px;align-items:end">
+                <div>
+                  <label style="display:block;font-size:11.5px;color:var(--text-muted);margin-bottom:4px;font-weight:600">Phase 1 (숫자만)</label>
+                  <input id="ct-phase1" type="text" inputmode="numeric" value="8000" style="background:#fff;border:1px solid var(--border);border-radius:8px;padding:9px 12px;font-size:14px;width:100%;margin:0;font-family:var(--mono)">
+                </div>
+                <div>
+                  <label style="display:block;font-size:11.5px;color:var(--text-muted);margin-bottom:4px;font-weight:600">Phase 2 (숫자만)</label>
+                  <input id="ct-phase2" type="text" inputmode="numeric" value="8000" style="background:#fff;border:1px solid var(--border);border-radius:8px;padding:9px 12px;font-size:14px;width:100%;margin:0;font-family:var(--mono)">
+                </div>
+                <div>
+                  <label style="display:block;font-size:11.5px;color:var(--text-muted);margin-bottom:4px;font-weight:600">Phase 3 (숫자만)</label>
+                  <input id="ct-phase3" type="text" inputmode="numeric" value="8000" style="background:#fff;border:1px solid var(--border);border-radius:8px;padding:9px 12px;font-size:14px;width:100%;margin:0;font-family:var(--mono)">
+                </div>
+              </div>
+            </div>
+
+            <!-- 커미션 + 비고 블록 -->
             <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px 14px;align-items:end">
               <div>
-                <label style="display:block;font-size:11.5px;color:var(--text-muted);margin-bottom:4px;font-weight:600">통화</label>
-                <select id="ct-currency" style="background:#fff;border:1px solid var(--border);border-radius:8px;padding:9px 12px;font-size:14px;width:100%;margin:0">
-                  <option value="USD" selected>USD ($)</option>
-                  <option value="KRW">KRW (원)</option>
-                </select>
-              </div>
-              <div>
-                <label style="display:block;font-size:11.5px;color:var(--text-muted);margin-bottom:4px;font-weight:600">착수금 (1회, 선택)</label>
-                <input id="ct-initial" type="text" inputmode="numeric" placeholder="없으면 비워두기" style="background:#fff;border:1px solid var(--border);border-radius:8px;padding:9px 12px;font-size:14px;width:100%;margin:0">
-              </div>
-              <div></div>
-              <div>
-                <label style="display:block;font-size:11.5px;color:var(--text-muted);margin-bottom:4px;font-weight:600">Phase 1 운영비</label>
-                <input id="ct-phase1" type="text" inputmode="numeric" value="8000" style="background:#fff;border:1px solid var(--border);border-radius:8px;padding:9px 12px;font-size:14px;width:100%;margin:0">
-              </div>
-              <div>
-                <label style="display:block;font-size:11.5px;color:var(--text-muted);margin-bottom:4px;font-weight:600">Phase 2 운영비</label>
-                <input id="ct-phase2" type="text" inputmode="numeric" value="8000" style="background:#fff;border:1px solid var(--border);border-radius:8px;padding:9px 12px;font-size:14px;width:100%;margin:0">
-              </div>
-              <div>
-                <label style="display:block;font-size:11.5px;color:var(--text-muted);margin-bottom:4px;font-weight:600">Phase 3 운영비</label>
-                <input id="ct-phase3" type="text" inputmode="numeric" value="8000" style="background:#fff;border:1px solid var(--border);border-radius:8px;padding:9px 12px;font-size:14px;width:100%;margin:0">
-              </div>
-              <div>
                 <label style="display:block;font-size:11.5px;color:var(--text-muted);margin-bottom:4px;font-weight:600">커미션 — Phase 3 첫 P.O (%)</label>
-                <input id="ct-commission-first" type="number" min="0" max="50" step="0.5" value="10" style="background:#fff;border:1px solid var(--border);border-radius:8px;padding:9px 12px;font-size:14px;width:100%;margin:0">
+                <input id="ct-commission-first" type="number" min="0" max="50" step="0.5" value="10" style="background:#fff;border:1px solid var(--border);border-radius:8px;padding:9px 12px;font-size:14px;width:100%;margin:0;font-family:var(--mono)">
               </div>
               <div>
                 <label style="display:block;font-size:11.5px;color:var(--text-muted);margin-bottom:4px;font-weight:600">커미션 — 이후 P.O (%)</label>
-                <input id="ct-commission" type="number" min="0" max="50" step="0.5" value="8" style="background:#fff;border:1px solid var(--border);border-radius:8px;padding:9px 12px;font-size:14px;width:100%;margin:0">
+                <input id="ct-commission" type="number" min="0" max="50" step="0.5" value="8" style="background:#fff;border:1px solid var(--border);border-radius:8px;padding:9px 12px;font-size:14px;width:100%;margin:0;font-family:var(--mono)">
               </div>
-              <div style="font-size:12px;color:var(--text-muted);padding-bottom:11px;line-height:1.4">Gross Supply Price 기준 (세금·배송 제외)</div>
+              <div style="font-size:12px;color:var(--text-muted);padding-bottom:11px;line-height:1.4">Gross Supply Price 기준<br>(세금·배송 제외)</div>
               <div style="grid-column:1/-1">
                 <label style="display:block;font-size:11.5px;color:var(--text-muted);margin-bottom:4px;font-weight:600">기타 조건 / 비고 (선택)</label>
                 <textarea id="ct-notes" rows="2" placeholder="예: 특약 사항, 추가 합의 내용 등" style="background:#fff;border:1px solid var(--border);border-radius:8px;padding:9px 12px;font-size:14px;width:100%;margin:0;font-family:var(--font);resize:vertical"></textarea>
               </div>
             </div>
+
             <div style="margin-top:10px;padding:8px 12px;background:var(--surface-alt);border-radius:6px;font-size:11.5px;color:var(--text-muted);line-height:1.5">
-              💡 지급: 세금계산서 발행일로부터 <strong>5영업일 이내</strong>. 환율: 지급일 기준 <strong>하나은행 최초 고시 매매기준율</strong>로 KRW 환산. 위 표준값에서 변경이 필요한 경우만 덮어쓰기. 빈 칸은 "별도 합의된 계약금액"으로 표기.
+              💡 입력란에는 <strong>숫자만</strong> 입력하세요 (통화 단위는 자동 표시). 지급: 세금계산서 발행일로부터 <strong>5영업일 이내</strong>. 환율: 지급일 기준 <strong>하나은행 최초 고시 매매기준율</strong>로 KRW 환산. 빈 칸은 "별도 합의된 계약금액"으로 표기.
             </div>
           </div>
 
@@ -4383,19 +4408,21 @@ function renderContractPage(contractId) {
 
   // 계약 조건 — 비용/커미션 placeholder 준비
   var ct = c.contractTerms || {};
-  var curr = ct.currency || 'KRW';
-  function _fmtMoney(v) {
+  // 분리 통화 지원: initialCurrency / phaseCurrency (구 데이터는 currency 단일값 fallback)
+  var initialCurr = ct.initialCurrency || ct.currency || 'KRW';
+  var phaseCurr   = ct.phaseCurrency   || ct.currency || 'USD';
+  function _fmtMoneyIn(v, cur) {
     if (v == null || v === '') return '<em>별도 합의된 계약금액</em>';
     var n = Number(v);
     if (isNaN(n)) return _esc(String(v));
-    var sym = curr === 'USD' ? '$' : '₩';
+    var sym = cur === 'USD' ? '$' : '₩';
     return sym + n.toLocaleString('en-US');
   }
   var costSummary = {
-    initial:    _fmtMoney(ct.initial),
-    phase1:     _fmtMoney(ct.phase1),
-    phase2:     _fmtMoney(ct.phase2),
-    phase3:     _fmtMoney(ct.phase3),
+    initial:    _fmtMoneyIn(ct.initial, initialCurr),
+    phase1:     _fmtMoneyIn(ct.phase1, phaseCurr),
+    phase2:     _fmtMoneyIn(ct.phase2, phaseCurr),
+    phase3:     _fmtMoneyIn(ct.phase3, phaseCurr),
     commission_first: (ct.commission_first != null ? ct.commission_first + '%' : '10%'),
     commission: (ct.commission != null ? ct.commission + '%' : '8%'),
     notes:      ct.notes || ''
@@ -4405,9 +4432,8 @@ function renderContractPage(contractId) {
   bodyHtml += '<div class="contract-cost-box" style="background:rgba(0,113,220,0.05);border:1px solid rgba(0,113,220,0.2);border-radius:10px;padding:18px 22px;margin:18px 0 24px">' +
     '<div style="font-size:13px;font-weight:700;color:var(--accent);margin-bottom:12px;letter-spacing:0.3px">계약 조건 요약 · Contract Terms</div>' +
     '<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px 24px">' +
-      '<div><div style="font-size:11.5px;color:var(--text-muted);font-weight:600;margin-bottom:3px">착수금 (1회) · Initial Fee</div><div style="font-size:15px;color:var(--text);font-weight:700">' + costSummary.initial + '</div></div>' +
-      '<div><div style="font-size:11.5px;color:var(--text-muted);font-weight:600;margin-bottom:3px">통화 · Currency</div><div style="font-size:15px;color:var(--text);font-weight:700">' + curr + '</div></div>' +
-      '<div></div>' +
+      '<div><div style="font-size:11.5px;color:var(--text-muted);font-weight:600;margin-bottom:3px">착수금 (1회) · Initial Fee <span style="font-weight:500;color:var(--accent);font-size:10.5px">[' + initialCurr + ']</span></div><div style="font-size:15px;color:var(--text);font-weight:700">' + costSummary.initial + '</div></div>' +
+      '<div style="grid-column:span 2"><div style="font-size:11.5px;color:var(--text-muted);font-weight:600;margin-bottom:3px">Phase 운영비 통화 · Phase Currency</div><div style="font-size:15px;color:var(--text);font-weight:700">' + phaseCurr + '</div></div>' +
       '<div><div style="font-size:11.5px;color:var(--text-muted);font-weight:600;margin-bottom:3px">Phase 1 운영비</div><div style="font-size:15px;color:var(--text);font-weight:700">' + costSummary.phase1 + '</div></div>' +
       '<div><div style="font-size:11.5px;color:var(--text-muted);font-weight:600;margin-bottom:3px">Phase 2 운영비</div><div style="font-size:15px;color:var(--text);font-weight:700">' + costSummary.phase2 + '</div></div>' +
       '<div><div style="font-size:11.5px;color:var(--text-muted);font-weight:600;margin-bottom:3px">Phase 3 운영비</div><div style="font-size:15px;color:var(--text);font-weight:700">' + costSummary.phase3 + '</div></div>' +
@@ -4435,7 +4461,9 @@ function renderContractPage(contractId) {
       .replace(/\{\{COMMISSION_FIRST_PO\}\}/g, costSummary.commission_first)
       .replace(/\{\{COMMISSION_REST\}\}/g, costSummary.commission)
       .replace(/\{\{COMMISSION\}\}/g, costSummary.commission)
-      .replace(/\{\{CURRENCY\}\}/g, curr);
+      .replace(/\{\{INITIAL_CURRENCY\}\}/g, initialCurr)
+      .replace(/\{\{PHASE_CURRENCY\}\}/g, phaseCurr)
+      .replace(/\{\{CURRENCY\}\}/g, phaseCurr);
   }
   tpl.clauses.forEach(function(cl) {
     var clauseText = _applyAllReplacements(cl.text).replace(/\n/g, '<br>');
@@ -4685,8 +4713,13 @@ async function createContract() {
     v = String(v).replace(/[^\d.]/g, '');
     return v === '' ? null : Number(v);
   }
+  var initialCurrency = (document.getElementById('ct-initial-currency') || {}).value || 'KRW';
+  var phaseCurrency   = (document.getElementById('ct-phase-currency') || {}).value || 'USD';
   var ct = {
-    currency:    (document.getElementById('ct-currency') || {}).value || 'USD',
+    // 신/구 호환: currency 는 phase 통화로 유지 (이전 계약서 호환), 분리 통화도 함께 저장
+    currency:        phaseCurrency,
+    initialCurrency: initialCurrency,
+    phaseCurrency:   phaseCurrency,
     initial:     _readNum('ct-initial'),
     phase1:      _readNum('ct-phase1'),
     phase2:      _readNum('ct-phase2'),
@@ -4721,7 +4754,8 @@ async function createContract() {
   });
   var cm = document.getElementById('ct-commission'); if (cm) cm.value = '8';
   var cmf = document.getElementById('ct-commission-first'); if (cmf) cmf.value = '10';
-  var curEl = document.getElementById('ct-currency'); if (curEl) curEl.value = 'USD';
+  var initCurEl  = document.getElementById('ct-initial-currency'); if (initCurEl) initCurEl.value = 'KRW';
+  var phaseCurEl = document.getElementById('ct-phase-currency');   if (phaseCurEl) phaseCurEl.value = 'USD';
 
   renderAdminContracts();
   var link = window.location.origin + window.location.pathname + '?c=' + newId + '&brand=' + encodeURIComponent(brandValue);
