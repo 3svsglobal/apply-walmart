@@ -5,9 +5,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Walmart Entry Program — 3Stripe Venture Studio</title>
 <style>
-/* walmart.com과 동일한 폰트 체인 — EverydaySans는 라이선스 폰트라 시스템에 없으므로
-   자동으로 Helvetica Neue → Helvetica → Arial로 폴백 (walmart.com 실제 렌더링과 동일).
-   한글은 Apple SD Gothic Neo / Malgun Gothic / Pretendard 순서로 매칭. */
+/* 폰트 체인 — 영문은 walmart.com EverydaySans → Helvetica Neue → Helvetica로 폴백.
+   한글은 항상 Pretendard로 통일 (시스템 폰트 우선순위 위에 배치). */
+@import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css');
 @import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css');
 @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&display=swap');
 
@@ -32,7 +32,7 @@
   --surface-alt: #f6f7f9;
   --surface-hover: #eef0f3;
   --mono: 'JetBrains Mono', ui-monospace, Menlo, monospace;
-  --font: 'EverydaySans', 'Helvetica Neue', Helvetica, 'Apple SD Gothic Neo', 'Malgun Gothic', '맑은 고딕', 'Pretendard', Arial, sans-serif;
+  --font: 'EverydaySans', 'Helvetica Neue', Helvetica, 'Pretendard Variable', Pretendard, 'Apple SD Gothic Neo', 'Malgun Gothic', '맑은 고딕', Arial, sans-serif;
   --sec-py: 120px;
   --sec-px: 48px;
   --radius: 8px;
