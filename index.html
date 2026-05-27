@@ -3970,15 +3970,256 @@ function handleSigUpload(input, role, type) {
   reader.readAsDataURL(file);
 }
 
-function confirmSign(role) {
+// ─── L1: 동의 체크 / OTP / Audit log / PDF 통합 서명 흐름 ───
+var _otpVerified = { brand: false, admin: false, walmart: false };
+var _sessionId = (function(){
+  try {
+    var s = sessionStorage.getItem('wm_sig_session');
+    if (!s) {
+      s = (crypto && crypto.randomUUID) ? crypto.randomUUID() : ('sess-' + Date.now() + '-' + Math.random().toString(36).slice(2));
+      sessionStorage.setItem('wm_sig_session', s);
+    }
+    return s;
+  } catch(e) { return 'sess-' + Date.now(); }
+})();
+
+function _updateSignButton(role) {
+  var c1 = document.getElementById('sig-consent1-' + role);
+  var c2 = document.getElementById('sig-consent2-' + role);
+  var btn = document.getElementById('sig-confirm-' + role);
+  if (!c1 || !c2 || !btn) return;
+  var ready = c1.checked && c2.checked && _otpVerified[role];
+  btn.disabled = !ready;
+  btn.style.opacity = ready ? '1' : '0.5';
+  btn.style.cursor = ready ? 'pointer' : 'not-allowed';
+}
+
+async function _sha256Hex(input) {
+  try {
+    var data = (typeof input === 'string') ? new TextEncoder().encode(input) : input;
+    var buf = await crypto.subtle.digest('SHA-256', data);
+    return Array.from(new Uint8Array(buf)).map(function(b){ return b.toString(16).padStart(2,'0'); }).join('');
+  } catch(e) { return ''; }
+}
+
+async function _getClientIp() {
+  try {
+    var r = await fetch('https://api.ipify.org?format=json');
+    if (!r.ok) return '';
+    var j = await r.json();
+    return j.ip || '';
+  } catch(e) { return ''; }
+}
+
+function _signerEmailFor(role, c) {
+  if (role === 'brand') {
+    var b = wmBrandData[c.brandId];
+    return (b && b.info && b.info.email) ? b.info.email : '';
+  }
+  if (role === 'admin') return 'jw@3svs.com';
+  if (role === 'walmart') return 'startupjunkie@example.com';
+  return '';
+}
+
+async function _sendSigningOtp(role) {
+  var contractId = _currentContractPageId;
+  var c = contracts.find(function(x){ return x.id === contractId; });
+  if (!c) { alert('Contract not found.'); return; }
+  var email = _signerEmailFor(role, c);
+  if (!email) { alert('서명자 이메일을 찾을 수 없습니다.\nSigner email not found.'); return; }
+
+  var code = String(Math.floor(100000 + Math.random() * 900000));
+  var codeHash = await _sha256Hex(code);
+  var expiresAt = new Date(Date.now() + 5 * 60 * 1000).toISOString();
+
+  try {
+    var resp = await fetch(SUPABASE_URL + '/rest/v1/wm_otp_codes', {
+      method: 'POST',
+      headers: {
+        'apikey': SUPABASE_ANON_KEY,
+        'Authorization': 'Bearer ' + SUPABASE_ANON_KEY,
+        'Content-Type': 'application/json',
+        'Prefer': 'return=minimal'
+      },
+      body: JSON.stringify({
+        contract_id: contractId,
+        role: role,
+        email: email,
+        code_hash: codeHash,
+        purpose: 'signature',
+        expires_at: expiresAt,
+        attempts: 0
+      })
+    });
+    if (!resp.ok) throw new Error('OTP DB insert failed: ' + resp.status);
+
+    await sendNotification('signing_otp', {
+      message: '서명 인증 코드: ' + code,
+      contractId: contractId,
+      role: role,
+      to: email,
+      code: code,
+      expiresInMin: 5
+    });
+
+    var block = document.getElementById('sig-otp-block-' + role);
+    if (block) block.style.display = 'block';
+    var sendBtn = document.getElementById('sig-send-otp-' + role);
+    if (sendBtn) {
+      sendBtn.textContent = '인증코드 재전송 / Resend OTP';
+      sendBtn.onclick = function(){ _resendOtp(role); };
+    }
+    _otpFeedback(role, true, '인증코드를 ' + email + '로 발송했습니다 (5분간 유효). / OTP sent (valid 5 min).');
+
+    var inp = document.getElementById('sig-otp-input-' + role);
+    if (inp) {
+      inp.oninput = function() {
+        if (inp.value.length === 6) _verifyEnteredOtp(role);
+      };
+      inp.focus();
+    }
+  } catch(e) {
+    console.error('OTP send error:', e);
+    alert('인증코드 발송 실패 / OTP send failed: ' + e.message);
+  }
+}
+
+async function _resendOtp(role) { return _sendSigningOtp(role); }
+
+async function _verifyEnteredOtp(role) {
+  var inp = document.getElementById('sig-otp-input-' + role);
+  if (!inp) return;
+  var code = (inp.value || '').trim();
+  if (!/^\d{6}$/.test(code)) return;
+  var contractId = _currentContractPageId;
+  var enteredHash = await _sha256Hex(code);
+
+  try {
+    var url = SUPABASE_URL + '/rest/v1/wm_otp_codes?contract_id=eq.' + encodeURIComponent(contractId) + '&role=eq.' + role + '&purpose=eq.signature&consumed_at=is.null&order=created_at.desc&limit=1';
+    var resp = await fetch(url, {
+      headers: { 'apikey': SUPABASE_ANON_KEY, 'Authorization': 'Bearer ' + SUPABASE_ANON_KEY }
+    });
+    var rows = await resp.json();
+    if (!rows || !rows.length) { _otpFeedback(role, false, '인증코드를 먼저 발송하세요. / Send OTP first.'); return; }
+    var row = rows[0];
+
+    if (new Date(row.expires_at) < new Date()) {
+      _otpFeedback(role, false, '인증코드가 만료되었습니다. 재전송하세요. / OTP expired. Please resend.');
+      return;
+    }
+    if ((row.attempts || 0) >= 5) {
+      _otpFeedback(role, false, '시도 횟수를 초과했습니다. 재전송하세요. / Too many attempts. Please resend.');
+      return;
+    }
+
+    if (row.code_hash !== enteredHash) {
+      await fetch(SUPABASE_URL + '/rest/v1/wm_otp_codes?id=eq.' + row.id, {
+        method: 'PATCH',
+        headers: {
+          'apikey': SUPABASE_ANON_KEY,
+          'Authorization': 'Bearer ' + SUPABASE_ANON_KEY,
+          'Content-Type': 'application/json',
+          'Prefer': 'return=minimal'
+        },
+        body: JSON.stringify({ attempts: (row.attempts || 0) + 1 })
+      });
+      _otpFeedback(role, false, '인증코드가 일치하지 않습니다 (남은 시도 ' + (5 - (row.attempts || 0) - 1) + '회). / OTP mismatch.');
+      return;
+    }
+
+    await fetch(SUPABASE_URL + '/rest/v1/wm_otp_codes?id=eq.' + row.id, {
+      method: 'PATCH',
+      headers: {
+        'apikey': SUPABASE_ANON_KEY,
+        'Authorization': 'Bearer ' + SUPABASE_ANON_KEY,
+        'Content-Type': 'application/json',
+        'Prefer': 'return=minimal'
+      },
+      body: JSON.stringify({ consumed_at: new Date().toISOString() })
+    });
+
+    _otpVerified[role] = true;
+    inp.disabled = true;
+    _otpFeedback(role, true, '✓ 인증되었습니다. / Verified.');
+    _updateSignButton(role);
+  } catch(e) {
+    console.error('OTP verify error:', e);
+    _otpFeedback(role, false, '인증 처리 실패: ' + e.message);
+  }
+}
+
+function _otpFeedback(role, ok, msg) {
+  var el = document.getElementById('sig-otp-msg-' + role);
+  if (!el) return;
+  el.textContent = msg;
+  el.style.color = ok ? '#0a8a3a' : '#c0392b';
+  el.style.fontWeight = '600';
+}
+
+async function _logSignatureAudit(contractId, role, c, sigUrl, sealUrl) {
+  try {
+    var ip = await _getClientIp();
+    var ua = navigator.userAgent || '';
+    var sigHash = sigUrl ? await _sha256Hex(sigUrl) : '';
+    var sealHash = sealUrl ? await _sha256Hex(sealUrl) : '';
+    var consentText = '본인은 본 계약 내용을 확인하였으며 이 전자서명이 자필 서명과 동일한 법적 효력을 가짐에 동의합니다. / I have reviewed the contract and agree that this electronic signature has the same legal effect as a handwritten signature.';
+    var payload = {
+      contract_id: contractId,
+      event_type: 'sign',
+      role: role,
+      signer_name: c.signatures[role].name,
+      signer_email: _signerEmailFor(role, c),
+      ip_address: ip,
+      user_agent: ua,
+      session_id: _sessionId,
+      signature_url: sigUrl,
+      signature_hash: sigHash,
+      seal_url: sealUrl,
+      seal_hash: sealHash,
+      consent_text: consentText,
+      meta: {
+        consent_terms: true,
+        consent_intent: true,
+        otp_verified: true,
+        signed_at: new Date().toISOString(),
+        legal_basis: 'Republic of Korea Electronic Signature Act (2020) + US ESIGN Act (15 USC §7001)'
+      }
+    };
+    await fetch(SUPABASE_URL + '/rest/v1/wm_contract_audit', {
+      method: 'POST',
+      headers: {
+        'apikey': SUPABASE_ANON_KEY,
+        'Authorization': 'Bearer ' + SUPABASE_ANON_KEY,
+        'Content-Type': 'application/json',
+        'Prefer': 'return=minimal'
+      },
+      body: JSON.stringify(payload)
+    });
+  } catch(e) {
+    console.error('Audit log error:', e);
+  }
+}
+
+async function confirmSign(role) {
   if (!_pendingSigs[role].sig && !_pendingSigs[role].seal) {
     alert('Please upload at least a signature or seal image before signing.');
+    return;
+  }
+  var c1 = document.getElementById('sig-consent1-' + role);
+  var c2 = document.getElementById('sig-consent2-' + role);
+  if (!c1 || !c1.checked || !c2 || !c2.checked) {
+    alert('전자서명 동의 항목 2가지를 모두 체크해야 서명할 수 있습니다.\nYou must agree to both consent items to sign.');
+    return;
+  }
+  if (!_otpVerified[role]) {
+    alert('이메일 OTP 인증을 먼저 완료하세요.\nPlease complete email OTP verification first.');
     return;
   }
   var contractId = _currentContractPageId;
   var c = contracts.find(function(x){ return x.id === contractId; });
   if (!c) { alert('Contract not found.'); return; }
   if (c.signatures[role].signed) { alert('Already signed.'); return; }
+
   var now = new Date().toISOString().slice(0, 10);
   var nameMap = { brand: (wmBrandData[c.brandId] ? wmBrandData[c.brandId].info.ceo : 'Brand'), admin: '배종원 (3SVS)', walmart: 'Startup Junkie' };
   c.signatures[role] = {
@@ -3997,16 +4238,123 @@ function confirmSign(role) {
     seal: _pendingSigs[role].seal
   });
 
+  // L1: Audit log 기록 (IP, UA, 세션, 동의, OTP 결과, 해시)
+  _logSignatureAudit(contractId, role, c, _pendingSigs[role].sig, _pendingSigs[role].seal);
+
   _pendingSigs[role] = { sig: null, seal: null };
+  _otpVerified[role] = false;
   renderContractPage(contractId);
+
   var roleName = { brand: 'Brand', admin: '3SVS', walmart: 'Startup Junkie' }[role] || role;
   sendNotification('contract_signed', { message: roleName + '이(가) ' + contractId + ' 계약서에 서명했습니다.', contractId: contractId, role: role });
+
   if (c.status === 'completed') {
     sendNotification('contract_completed', { message: contractId + ' 계약이 3자 서명 완료되었습니다!', contractId: contractId });
+    // L1-4: 최종 PDF 생성 + SHA-256 해시 + Storage 저장
+    setTimeout(function(){ _generateAndStoreFinalPdf(contractId); }, 800);
   }
+
   var msg = 'Signature submitted successfully!';
-  if (c.status === 'completed') msg += '\n\n✅ All 3 parties have signed. Contract is fully executed!';
+  if (c.status === 'completed') msg += '\n\n✅ All 3 parties have signed. Contract is fully executed!\n📄 Generating final signed PDF...';
   alert(msg);
+}
+
+// L1-4: PDF 변환 + SHA-256 해시 + Storage 저장
+async function _generateAndStoreFinalPdf(contractId) {
+  try {
+    // html2canvas + jsPDF 동적 로드
+    if (typeof html2canvas === 'undefined') {
+      await new Promise(function(res, rej){
+        var s = document.createElement('script');
+        s.src = 'https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js';
+        s.onload = res; s.onerror = rej;
+        document.head.appendChild(s);
+      });
+    }
+    if (typeof window.jspdf === 'undefined') {
+      await new Promise(function(res, rej){
+        var s = document.createElement('script');
+        s.src = 'https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js';
+        s.onload = res; s.onerror = rej;
+        document.head.appendChild(s);
+      });
+    }
+    var target = document.getElementById('contract-page-body');
+    if (!target) { console.warn('contract page body not found'); return; }
+    var canvas = await html2canvas(target, { scale: 2, backgroundColor: '#ffffff', useCORS: true });
+    var imgData = canvas.toDataURL('image/png');
+    var jsPDFCtor = window.jspdf.jsPDF;
+    var pdf = new jsPDFCtor({ orientation: 'portrait', unit: 'pt', format: 'a4' });
+    var pageWidth = pdf.internal.pageSize.getWidth();
+    var pageHeight = pdf.internal.pageSize.getHeight();
+    var imgWidth = pageWidth;
+    var imgHeight = canvas.height * pageWidth / canvas.width;
+    var heightLeft = imgHeight;
+    var position = 0;
+    pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
+    heightLeft -= pageHeight;
+    while (heightLeft > 0) {
+      position = heightLeft - imgHeight;
+      pdf.addPage();
+      pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
+      heightLeft -= pageHeight;
+    }
+    var blob = pdf.output('blob');
+    var arr = await blob.arrayBuffer();
+    var hash = await _sha256Hex(new Uint8Array(arr));
+    var path = 'signed/' + contractId + '_' + Date.now() + '.pdf';
+    var up = await fetch(SUPABASE_URL + '/storage/v1/object/wm-signatures/' + path, {
+      method: 'POST',
+      headers: {
+        'apikey': SUPABASE_ANON_KEY,
+        'Authorization': 'Bearer ' + SUPABASE_ANON_KEY,
+        'Content-Type': 'application/pdf',
+        'x-upsert': 'false'
+      },
+      body: blob
+    });
+    if (!up.ok) { console.error('PDF upload failed:', await up.text()); return; }
+    var publicUrl = SUPABASE_URL + '/storage/v1/object/public/wm-signatures/' + path;
+
+    await fetch(SUPABASE_URL + '/rest/v1/wm_contracts?id=eq.' + encodeURIComponent(contractId), {
+      method: 'PATCH',
+      headers: {
+        'apikey': SUPABASE_ANON_KEY,
+        'Authorization': 'Bearer ' + SUPABASE_ANON_KEY,
+        'Content-Type': 'application/json',
+        'Prefer': 'return=minimal'
+      },
+      body: JSON.stringify({
+        signed_pdf_url: publicUrl,
+        signed_pdf_hash: hash,
+        signed_pdf_at: new Date().toISOString()
+      })
+    });
+
+    // Audit log: PDF 최종 생성 이벤트
+    await fetch(SUPABASE_URL + '/rest/v1/wm_contract_audit', {
+      method: 'POST',
+      headers: {
+        'apikey': SUPABASE_ANON_KEY,
+        'Authorization': 'Bearer ' + SUPABASE_ANON_KEY,
+        'Content-Type': 'application/json',
+        'Prefer': 'return=minimal'
+      },
+      body: JSON.stringify({
+        contract_id: contractId,
+        event_type: 'pdf_finalized',
+        role: 'system',
+        signature_url: publicUrl,
+        signature_hash: hash,
+        session_id: _sessionId,
+        meta: { finalized_at: new Date().toISOString() }
+      })
+    });
+
+    console.log('Final PDF stored:', publicUrl, 'hash:', hash);
+  } catch(e) {
+    console.error('PDF generation/upload error:', e);
+  }
 }
 
 // ── Contract Page Rendering ──
@@ -6468,7 +6816,7 @@ function formatFileSize(bytes) {
           </div>
         </div>
       </div>
-      <div class="sig-role-gate" id="sig-gate-brand" style="display:none"><button onclick="confirmSign('brand')" id="sig-confirm-brand" style="margin-top:16px;width:100%;background:#98fe00;color:#000;border:none;padding:12px;border-radius:8px;font-weight:600;font-size:15px;cursor:pointer">Sign as Brand Representative</button></div>
+      <div class="sig-role-gate" id="sig-gate-brand" style="display:none;margin-top:18px"><div id="sig-otp-block-brand" style="display:none;background:var(--accent-light);border:1px solid rgba(0,113,220,0.25);border-radius:10px;padding:14px 16px;margin-bottom:14px"><div style="font-size:13px;color:var(--accent);font-weight:700;margin-bottom:8px">📧 이메일 인증코드 / Email Verification Code</div><div style="font-size:12px;color:var(--text-muted);margin-bottom:10px" id="sig-otp-msg-brand">서명자 이메일로 발송된 6자리 코드를 입력하세요. 5분 내 유효 / Enter the 6-digit code sent to your email (5 min validity).</div><div style="display:flex;gap:8px"><input type="text" id="sig-otp-input-brand" inputmode="numeric" maxlength="6" placeholder="000000" style="flex:1;font-size:18px;letter-spacing:6px;text-align:center;font-weight:700;padding:10px 14px;border:1px solid var(--border);border-radius:8px;background:#fff;color:var(--text);font-family:var(--mono)"><button onclick="_resendOtp('brand')" type="button" style="background:#fff;border:1px solid var(--border);color:var(--text-muted);padding:0 14px;border-radius:8px;font-size:12px;font-weight:600;cursor:pointer">재전송</button></div></div><div style="background:var(--surface-alt);border:1px solid var(--border);border-radius:10px;padding:14px 16px;margin-bottom:14px"><label style="display:flex;align-items:flex-start;gap:10px;cursor:pointer;margin-bottom:10px"><input type="checkbox" id="sig-consent1-brand" onchange="_updateSignButton('brand')" style="margin-top:3px;width:16px;height:16px;cursor:pointer;accent-color:var(--accent);flex-shrink:0"><span style="font-size:13px;color:var(--text);line-height:1.55"><strong>본 전자서명은 한국 전자서명법 및 미국 ESIGN Act에 따라 자필 서명과 동일한 법적 효력을 가짐</strong>을 이해하며, 본인은 전자거래 방식으로 본 계약을 체결하는 것에 명시적으로 동의합니다. / I understand that this electronic signature has the same legal effect as a handwritten signature under the Korean Electronic Signature Act and the U.S. ESIGN Act, and I expressly consent to entering this Agreement electronically.</span></label><label style="display:flex;align-items:flex-start;gap:10px;cursor:pointer"><input type="checkbox" id="sig-consent2-brand" onchange="_updateSignButton('brand')" style="margin-top:3px;width:16px;height:16px;cursor:pointer;accent-color:var(--accent);flex-shrink:0"><span style="font-size:13px;color:var(--text);line-height:1.55"><strong>본인은 본 계약서 전문을 충분히 읽고 이해</strong>했으며, 본인의 명의·권한으로 서명함을 확인합니다. / I have read and understood this Agreement in full, and I confirm that I am signing in my own name and with proper authority.</span></label></div><div style="display:flex;gap:10px"><button onclick="_sendSigningOtp('brand')" id="sig-send-otp-brand" type="button" style="flex:1;background:var(--accent);color:#fff;border:none;padding:13px;border-radius:8px;font-weight:700;font-size:14px;cursor:pointer">1단계: 인증코드 받기 / Send OTP</button><button onclick="confirmSign('brand')" id="sig-confirm-brand" disabled style="flex:1.4;background:#98fe00;color:#000;border:none;padding:13px;border-radius:8px;font-weight:700;font-size:14px;cursor:pointer;opacity:0.4">2단계: 서명 완료 / Sign as Brand Representative</button></div></div>
     </div>
 
     <!-- Signer: 3SVS -->
@@ -6495,7 +6843,7 @@ function formatFileSize(bytes) {
           </div>
         </div>
       </div>
-      <div class="sig-role-gate" id="sig-gate-admin" style="display:none"><button onclick="confirmSign('admin')" id="sig-confirm-admin" style="margin-top:16px;width:100%;background:#98fe00;color:#000;border:none;padding:12px;border-radius:8px;font-weight:600;font-size:15px;cursor:pointer">Sign as 3SVS Representative</button></div>
+      <div class="sig-role-gate" id="sig-gate-admin" style="display:none;margin-top:18px"><div id="sig-otp-block-admin" style="display:none;background:var(--accent-light);border:1px solid rgba(0,113,220,0.25);border-radius:10px;padding:14px 16px;margin-bottom:14px"><div style="font-size:13px;color:var(--accent);font-weight:700;margin-bottom:8px">📧 이메일 인증코드 / Email Verification Code</div><div style="font-size:12px;color:var(--text-muted);margin-bottom:10px" id="sig-otp-msg-admin">서명자 이메일로 발송된 6자리 코드를 입력하세요. 5분 내 유효 / Enter the 6-digit code sent to your email (5 min validity).</div><div style="display:flex;gap:8px"><input type="text" id="sig-otp-input-admin" inputmode="numeric" maxlength="6" placeholder="000000" style="flex:1;font-size:18px;letter-spacing:6px;text-align:center;font-weight:700;padding:10px 14px;border:1px solid var(--border);border-radius:8px;background:#fff;color:var(--text);font-family:var(--mono)"><button onclick="_resendOtp('admin')" type="button" style="background:#fff;border:1px solid var(--border);color:var(--text-muted);padding:0 14px;border-radius:8px;font-size:12px;font-weight:600;cursor:pointer">재전송</button></div></div><div style="background:var(--surface-alt);border:1px solid var(--border);border-radius:10px;padding:14px 16px;margin-bottom:14px"><label style="display:flex;align-items:flex-start;gap:10px;cursor:pointer;margin-bottom:10px"><input type="checkbox" id="sig-consent1-admin" onchange="_updateSignButton('admin')" style="margin-top:3px;width:16px;height:16px;cursor:pointer;accent-color:var(--accent);flex-shrink:0"><span style="font-size:13px;color:var(--text);line-height:1.55"><strong>본 전자서명은 한국 전자서명법 및 미국 ESIGN Act에 따라 자필 서명과 동일한 법적 효력을 가짐</strong>을 이해하며, 본인은 전자거래 방식으로 본 계약을 체결하는 것에 명시적으로 동의합니다. / I understand that this electronic signature has the same legal effect as a handwritten signature under the Korean Electronic Signature Act and the U.S. ESIGN Act, and I expressly consent to entering this Agreement electronically.</span></label><label style="display:flex;align-items:flex-start;gap:10px;cursor:pointer"><input type="checkbox" id="sig-consent2-admin" onchange="_updateSignButton('admin')" style="margin-top:3px;width:16px;height:16px;cursor:pointer;accent-color:var(--accent);flex-shrink:0"><span style="font-size:13px;color:var(--text);line-height:1.55"><strong>본인은 본 계약서 전문을 충분히 읽고 이해</strong>했으며, 본인의 명의·권한으로 서명함을 확인합니다. / I have read and understood this Agreement in full, and I confirm that I am signing in my own name and with proper authority.</span></label></div><div style="display:flex;gap:10px"><button onclick="_sendSigningOtp('admin')" id="sig-send-otp-admin" type="button" style="flex:1;background:var(--accent);color:#fff;border:none;padding:13px;border-radius:8px;font-weight:700;font-size:14px;cursor:pointer">1단계: 인증코드 받기 / Send OTP</button><button onclick="confirmSign('admin')" id="sig-confirm-admin" disabled style="flex:1.4;background:#98fe00;color:#000;border:none;padding:13px;border-radius:8px;font-weight:700;font-size:14px;cursor:pointer;opacity:0.4">2단계: 서명 완료 / Sign as 3SVS Representative</button></div></div>
     </div>
 
     <!-- Signer: Walmart -->
@@ -6522,7 +6870,7 @@ function formatFileSize(bytes) {
           </div>
         </div>
       </div>
-      <div class="sig-role-gate" id="sig-gate-walmart" style="display:none"><button onclick="confirmSign('walmart')" id="sig-confirm-walmart" style="margin-top:16px;width:100%;background:#8fc5f2;color:#000;border:none;padding:12px;border-radius:8px;font-weight:600;font-size:15px;cursor:pointer">Sign as Startup Junkie</button></div>
+      <div class="sig-role-gate" id="sig-gate-walmart" style="display:none;margin-top:18px"><div id="sig-otp-block-walmart" style="display:none;background:var(--accent-light);border:1px solid rgba(0,113,220,0.25);border-radius:10px;padding:14px 16px;margin-bottom:14px"><div style="font-size:13px;color:var(--accent);font-weight:700;margin-bottom:8px">📧 이메일 인증코드 / Email Verification Code</div><div style="font-size:12px;color:var(--text-muted);margin-bottom:10px" id="sig-otp-msg-walmart">서명자 이메일로 발송된 6자리 코드를 입력하세요. 5분 내 유효 / Enter the 6-digit code sent to your email (5 min validity).</div><div style="display:flex;gap:8px"><input type="text" id="sig-otp-input-walmart" inputmode="numeric" maxlength="6" placeholder="000000" style="flex:1;font-size:18px;letter-spacing:6px;text-align:center;font-weight:700;padding:10px 14px;border:1px solid var(--border);border-radius:8px;background:#fff;color:var(--text);font-family:var(--mono)"><button onclick="_resendOtp('walmart')" type="button" style="background:#fff;border:1px solid var(--border);color:var(--text-muted);padding:0 14px;border-radius:8px;font-size:12px;font-weight:600;cursor:pointer">재전송</button></div></div><div style="background:var(--surface-alt);border:1px solid var(--border);border-radius:10px;padding:14px 16px;margin-bottom:14px"><label style="display:flex;align-items:flex-start;gap:10px;cursor:pointer;margin-bottom:10px"><input type="checkbox" id="sig-consent1-walmart" onchange="_updateSignButton('walmart')" style="margin-top:3px;width:16px;height:16px;cursor:pointer;accent-color:var(--accent);flex-shrink:0"><span style="font-size:13px;color:var(--text);line-height:1.55"><strong>본 전자서명은 한국 전자서명법 및 미국 ESIGN Act에 따라 자필 서명과 동일한 법적 효력을 가짐</strong>을 이해하며, 본인은 전자거래 방식으로 본 계약을 체결하는 것에 명시적으로 동의합니다. / I understand that this electronic signature has the same legal effect as a handwritten signature under the Korean Electronic Signature Act and the U.S. ESIGN Act, and I expressly consent to entering this Agreement electronically.</span></label><label style="display:flex;align-items:flex-start;gap:10px;cursor:pointer"><input type="checkbox" id="sig-consent2-walmart" onchange="_updateSignButton('walmart')" style="margin-top:3px;width:16px;height:16px;cursor:pointer;accent-color:var(--accent);flex-shrink:0"><span style="font-size:13px;color:var(--text);line-height:1.55"><strong>본인은 본 계약서 전문을 충분히 읽고 이해</strong>했으며, 본인의 명의·권한으로 서명함을 확인합니다. / I have read and understood this Agreement in full, and I confirm that I am signing in my own name and with proper authority.</span></label></div><div style="display:flex;gap:10px"><button onclick="_sendSigningOtp('walmart')" id="sig-send-otp-walmart" type="button" style="flex:1;background:var(--accent);color:#fff;border:none;padding:13px;border-radius:8px;font-weight:700;font-size:14px;cursor:pointer">1단계: 인증코드 받기 / Send OTP</button><button onclick="confirmSign('walmart')" id="sig-confirm-walmart" disabled style="flex:1.4;background:#8fc5f2;color:#000;border:none;padding:13px;border-radius:8px;font-weight:700;font-size:14px;cursor:pointer;opacity:0.4">2단계: 서명 완료 / Sign as Startup Junkie</button></div></div>
     </div>
 
     <!-- Completion Banner -->

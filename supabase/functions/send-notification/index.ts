@@ -205,6 +205,40 @@ const emailTemplates: Record<string, (data: any) => { subject: string; html: str
       </div>
     `,
   }),
+
+  signing_otp: (data) => ({
+    subject: `[월마트 입점] 전자서명 인증 코드 — ${data.contractId || ''}`,
+    to: [data.to || ADMIN_EMAIL],
+    html: `
+      <div style="font-family:sans-serif;max-width:600px;margin:0 auto;padding:20px;color:#1a1a1a">
+        <h2 style="color:#0071dc;margin:0 0 8px">전자서명 인증 코드 / E-Signature OTP</h2>
+        <p style="font-size:14px;color:#555;margin:0 0 24px">Walmart Entry Program — 전자서명법 / ESIGN Act 호환</p>
+
+        <p style="font-size:14px;line-height:1.6">
+          계약서 <strong>${data.contractId || ''}</strong>에 대한 전자서명을 진행하기 위한 인증 코드입니다.<br>
+          The following one-time code authorizes your e-signature on contract <strong>${data.contractId || ''}</strong>.
+        </p>
+
+        <div style="background:#f6f7f9;border:2px solid #0071dc;border-radius:10px;padding:24px;margin:24px 0;text-align:center">
+          <div style="font-size:12px;font-weight:700;color:#0071dc;letter-spacing:0.6px;margin-bottom:10px">YOUR VERIFICATION CODE</div>
+          <div style="font-size:38px;letter-spacing:8px;font-weight:800;color:#0a1628;font-family:'Courier New',monospace">${data.code || ''}</div>
+          <div style="font-size:12px;color:#666;margin-top:10px">유효시간 / Valid for ${data.expiresInMin || 5} minutes</div>
+        </div>
+
+        <p style="font-size:13px;color:#555;line-height:1.65">
+          본인이 직접 서명을 진행하지 않은 경우 이 메일을 무시하시고 <a href="mailto:jw@3svs.com" style="color:#0071dc">jw@3svs.com</a>로 즉시 알려주세요.<br>
+          If you did not initiate this signing, please ignore this email and report immediately to <a href="mailto:jw@3svs.com" style="color:#0071dc">jw@3svs.com</a>.
+        </p>
+
+        <hr style="border:none;border-top:1px solid #eee;margin:24px 0">
+        <p style="color:#999;font-size:11px;line-height:1.5">
+          이 인증 절차는 대한민국 전자서명법(2020년 개정)과 미국 ESIGN Act(15 U.S.C. §7001)에 따른 서명자 인증을 위해 수행됩니다.<br>
+          This verification step is conducted in accordance with the Republic of Korea Electronic Signature Act (2020 revision) and the United States ESIGN Act (15 U.S.C. §7001) for signer identification.
+        </p>
+        <p style="color:#999;font-size:12px">Walmart Entry Program by 3Stripe Venture Studio</p>
+      </div>
+    `,
+  }),
 };
 
 serve(async (req) => {
