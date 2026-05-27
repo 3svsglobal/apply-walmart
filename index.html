@@ -4,6 +4,28 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Walmart Entry Program — 3Stripe Venture Studio</title>
+<meta name="description" content="Walmart Marketplace 입점·실행 통합 프로그램. 3Stripe Venture Studio × Startup Junkie Consulting이 운영하는 한국 브랜드 미국 진출 지원 서비스.">
+
+<!-- Open Graph / Facebook / KakaoTalk -->
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Walmart Entry Program">
+<meta property="og:url" content="https://www.applywalmart.info/">
+<meta property="og:title" content="Walmart Entry Program — 한국 브랜드 미국 진출">
+<meta property="og:description" content="3Stripe Venture Studio × Startup Junkie Consulting이 운영하는 Walmart 입점 통합 지원 프로그램. 온라인 런칭부터 오프라인 매장 입점까지.">
+<meta property="og:image" content="https://images.unsplash.com/photo-1604719312566-8912e9227c6a?w=1200&q=80">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:locale" content="ko_KR">
+<meta property="og:locale:alternate" content="en_US">
+
+<!-- Twitter / X -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Walmart Entry Program — 한국 브랜드 미국 진출">
+<meta name="twitter:description" content="3Stripe Venture Studio × Startup Junkie Consulting의 Walmart 입점 통합 지원 프로그램.">
+<meta name="twitter:image" content="https://images.unsplash.com/photo-1604719312566-8912e9227c6a?w=1200&q=80">
+
+<!-- Favicon -->
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%230071dc'/%3E%3Ctext x='32' y='44' font-family='Helvetica,Arial,sans-serif' font-size='32' font-weight='900' fill='white' text-anchor='middle'%3EW%3C/text%3E%3C/svg%3E">
 <style>
 /* 폰트 체인 — 영문은 walmart.com EverydaySans → Helvetica Neue → Helvetica로 폴백.
    한글은 항상 Pretendard로 통일 (시스템 폰트 우선순위 위에 배치). */
@@ -123,8 +145,8 @@ button{cursor:pointer;font-family:var(--font)}
 .partners-strip-cap::before{content:'';display:inline-block;width:24px;height:1px;background:var(--accent);vertical-align:middle;margin-right:10px;opacity:0.6}
 .partners-strip-cap::after{content:'';display:inline-block;width:24px;height:1px;background:var(--accent);vertical-align:middle;margin-left:10px;opacity:0.6}
 .partners-strip-grid{display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:48px 64px;padding:8px 0}
-.partner-logo{display:flex;align-items:center;justify-content:center;height:64px;max-width:200px;filter:grayscale(0.15);transition:filter .2s ease, transform .2s ease;flex-shrink:0}
-.partner-logo:hover{filter:grayscale(0) saturate(1.05);transform:translateY(-2px)}
+.partner-logo{display:flex;align-items:center;justify-content:center;height:64px;max-width:200px;filter:grayscale(0.15);transition:filter .2s ease;flex-shrink:0;cursor:default;text-decoration:none}
+.partner-logo:hover{filter:grayscale(0) saturate(1.05)}
 .partner-logo img{max-height:100%;max-width:100%;width:auto;object-fit:contain;display:block}
 @media(max-width:768px){.partners-strip{padding:36px 20px}.partners-strip-grid{gap:24px 32px}.partner-logo{height:48px;max-width:140px}}
 
@@ -861,12 +883,12 @@ button{cursor:pointer;font-family:var(--font)}
     <div class="partners-strip-inner">
       <div class="partners-strip-cap"><span class="ko">현재 진행 중인 파트너사</span><span class="en">Current Active Partners</span></div>
       <div class="partners-strip-grid" id="cms-active-partners">
-        <a class="partner-logo" href="https://www.celltrionskincure.com" target="_blank" rel="noopener" aria-label="Celltrion Skincure">
+        <div class="partner-logo" aria-label="Celltrion Skincure">
           <img src="assets/partners/celltrion-skincure.png" alt="Celltrion Skincure" loading="lazy">
-        </a>
-        <a class="partner-logo" href="#" target="_blank" rel="noopener" aria-label="Haepulip">
+        </div>
+        <div class="partner-logo" aria-label="Haepulip">
           <img src="assets/partners/haepulip.png" alt="Haepulip 해풀잎" loading="lazy">
-        </a>
+        </div>
       </div>
     </div>
   </section>
