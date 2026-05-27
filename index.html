@@ -4635,6 +4635,11 @@ function renderContractPage(contractId) {
         else sigContainer.appendChild(banner);
       }
     }
+    // 모든 서명 게이트 강제 숨김 (이전 렌더링 잔재 방지)
+    ['brand','admin','walmart'].forEach(function(r) {
+      var gate = document.getElementById('sig-gate-' + r);
+      if (gate) gate.style.display = 'none';
+    });
   } else {
     if (existingBanner) existingBanner.remove();
     selectContractRole(contextRole);
@@ -4647,29 +4652,63 @@ function renderContractPage(contractId) {
     var btn = document.getElementById('sig-confirm-' + role);
     var sigZone = document.getElementById('sig-zone-' + role + '-sig');
     var sealZone = document.getElementById('sig-zone-' + role + '-seal');
+    var section = document.getElementById('sig-section-' + (role === 'admin' ? '3svs' : role));
+    var gate = document.getElementById('sig-gate-' + role);
 
     if (sig.signed) {
       badge.className = 'contract-badge completed';
-      badge.textContent = 'Signed · ' + sig.date;
+      badge.textContent = '🔒 Signed · ' + sig.date;
       if (btn) btn.style.display = 'none';
-      // Show uploaded images or "Signed" indicator
+      // 서명된 섹션 자체를 시각적으로 잠금 표시
+      if (section) {
+        section.style.background = 'linear-gradient(135deg,rgba(0,135,90,0.04) 0%,rgba(0,135,90,0.01) 100%)';
+        section.style.borderColor = 'rgba(0,135,90,0.25)';
+        section.style.position = 'relative';
+        // 기존 잠금 배지 제거 후 재추가
+        var oldLock = section.querySelector('.sig-locked-overlay');
+        if (oldLock) oldLock.remove();
+        var lockBadge = document.createElement('div');
+        lockBadge.className = 'sig-locked-overlay';
+        lockBadge.style.cssText = 'display:inline-flex;align-items:center;gap:6px;background:rgba(0,135,90,0.12);color:#00875a;padding:5px 12px;border-radius:999px;font-size:11.5px;font-weight:700;margin-top:8px;letter-spacing:0.2px';
+        lockBadge.innerHTML = '<span style="font-size:13px">🔒</span><span class="ko">서명 완료 · 수정 불가</span><span class="en">Signed · Locked</span>';
+        var headerEl = section.querySelector('.sig-section-header');
+        if (headerEl && !headerEl.querySelector('.sig-locked-overlay')) {
+          headerEl.appendChild(lockBadge);
+        }
+      }
+      // OTP/동의 게이트 강제 숨김 (재서명 차단)
+      if (gate) gate.style.display = 'none';
+      // Show uploaded images or "Signed" indicator (file input 제거)
       if (sigZone) {
         sigZone.classList.add('has-file');
-        sigZone.innerHTML = sig.sig ? '<img src="' + sig.sig + '">' : '<div style="font-style:italic;color:#98fe00;padding:20px">✓ ' + sig.name + '</div>';
+        sigZone.style.cursor = 'default';
+        sigZone.innerHTML = sig.sig ? '<img src="' + sig.sig + '">' : '<div style="font-style:italic;color:#00875a;padding:20px">✓ ' + sig.name + '</div>';
+        sigZone.onclick = null;
       }
       if (sealZone) {
         sealZone.classList.add('has-file');
-        sealZone.innerHTML = sig.seal ? '<img src="' + sig.seal + '">' : '<div style="font-style:italic;opacity:.75;padding:20px">No seal uploaded</div>';
+        sealZone.style.cursor = 'default';
+        sealZone.innerHTML = sig.seal ? '<img src="' + sig.seal + '">' : '<div style="font-style:italic;opacity:.75;padding:20px;color:var(--text-muted)">No seal uploaded</div>';
+        sealZone.onclick = null;
       }
     } else {
       badge.className = 'contract-badge pending';
       badge.textContent = 'Pending';
       if (btn) btn.style.display = '';
+      // 미서명 섹션 — 잠금 배지/배경 제거
+      if (section) {
+        section.style.background = '';
+        section.style.borderColor = '';
+        var oldLock = section.querySelector('.sig-locked-overlay');
+        if (oldLock) oldLock.remove();
+      }
       // Reset upload zones
       if (sigZone && !sigZone.classList.contains('has-file')) {
+        sigZone.style.cursor = '';
         sigZone.innerHTML = '<div class="sig-upload-icon">✍️</div><div class="sig-upload-label">Click or drag to upload signature image</div><input type="file" accept="image/*" onchange="handleSigUpload(this,\'' + role + '\',\'sig\')">';
       }
       if (sealZone && !sealZone.classList.contains('has-file')) {
+        sealZone.style.cursor = '';
         sealZone.innerHTML = '<div class="sig-upload-icon">🔴</div><div class="sig-upload-label">Click or drag to upload seal image</div><input type="file" accept="image/*" onchange="handleSigUpload(this,\'' + role + '\',\'seal\')">';
       }
     }
@@ -7061,9 +7100,14 @@ function selectContractRole(role) {
   } else {
     allowed = []; // 비로그인: 모두 비활성 (read-only)
   }
+  // 이미 서명된 역할은 무조건 잠금 (재서명 차단)
+  var currentContract = contracts.find(function(x){ return x.id === _currentContractPageId; });
   ['brand','admin','walmart'].forEach(function(r) {
     var gate = document.getElementById('sig-gate-' + r);
-    if (gate) gate.style.display = (allowed.indexOf(r) >= 0) ? '' : 'none';
+    if (!gate) return;
+    var alreadySigned = currentContract && currentContract.signatures && currentContract.signatures[r] && currentContract.signatures[r].signed;
+    var canShow = (allowed.indexOf(r) >= 0) && !alreadySigned;
+    gate.style.display = canShow ? '' : 'none';
   });
   // Update role selector buttons (있다면)
   document.querySelectorAll('.contract-role-btn').forEach(function(btn) {
