@@ -70,6 +70,27 @@ html[lang="en"] .ko{display:none}
 
 *{margin:0;padding:0;box-sizing:border-box}
 body{font-family:var(--font);background:var(--bg);color:var(--text);-webkit-font-smoothing:antialiased;overflow-x:hidden;letter-spacing:-0.3px}
+/* 폼 컨트롤 한글 폰트 통일 — input/textarea/select/button 모두 페이지 폰트 상속 */
+input,textarea,select,button{font-family:var(--font)}
+/* 브라우저 기본 date/time picker placeholder("연도-월-일") 폰트 강제 */
+input[type="date"],input[type="datetime-local"],input[type="time"],input[type="month"],input[type="week"]{font-family:var(--font) !important}
+input[type="date"]::-webkit-datetime-edit,
+input[type="date"]::-webkit-datetime-edit-fields-wrapper,
+input[type="date"]::-webkit-datetime-edit-text,
+input[type="date"]::-webkit-datetime-edit-year-field,
+input[type="date"]::-webkit-datetime-edit-month-field,
+input[type="date"]::-webkit-datetime-edit-day-field,
+input[type="datetime-local"]::-webkit-datetime-edit,
+input[type="datetime-local"]::-webkit-datetime-edit-fields-wrapper,
+input[type="datetime-local"]::-webkit-datetime-edit-text,
+input[type="datetime-local"]::-webkit-datetime-edit-year-field,
+input[type="datetime-local"]::-webkit-datetime-edit-month-field,
+input[type="datetime-local"]::-webkit-datetime-edit-day-field,
+input[type="datetime-local"]::-webkit-datetime-edit-hour-field,
+input[type="datetime-local"]::-webkit-datetime-edit-minute-field,
+input[type="datetime-local"]::-webkit-datetime-edit-ampm-field,
+input[type="time"]::-webkit-datetime-edit,
+input[type="time"]::-webkit-datetime-edit-fields-wrapper{font-family:var(--font) !important}
 h1,h2,h3,h4{font-stretch:95%;letter-spacing:-0.04em}
 p,blockquote{letter-spacing:-0.02em}
 a{color:inherit;text-decoration:none}
@@ -6552,19 +6573,19 @@ function _showFormModal(opts) {
         return '<label style="cursor:pointer;display:inline-flex;align-items:center"><input type="radio" name="' + _esc(f.name) + '" value="' + _esc(v) + '"' + (checked ? ' checked' : '') + ' style="display:none" id="' + id + '-' + oi + '" onchange="this.parentNode.parentNode.querySelectorAll(\'span\').forEach(function(s){s.style.background=\'#fff\';s.style.color=\'var(--text)\';s.style.borderColor=\'var(--border)\'});this.nextElementSibling.style.background=\'' + c + '\';this.nextElementSibling.style.color=\'#fff\';this.nextElementSibling.style.borderColor=\'' + c + '\'"><span style="display:inline-block;padding:7px 14px;border:1px solid ' + (checked ? c : 'var(--border)') + ';border-radius:999px;background:' + (checked ? c : '#fff') + ';color:' + (checked ? '#fff' : 'var(--text)') + ';font-size:12.5px;font-weight:600;transition:all .15s">' + _esc(l) + '</span></label>';
       }).join('') + '</div>';
     } else if (f.type === 'date') {
-      inp = '<input id="' + id + '" name="' + _esc(f.name) + '" type="date" value="' + _esc(val) + '" style="' + inputStyle + ';font-family:var(--mono)">';
+      inp = '<input id="' + id + '" name="' + _esc(f.name) + '" type="date" value="' + _esc(val) + '" style="' + inputStyle + '">';
     } else if (f.type === 'datetime-local') {
-      inp = '<input id="' + id + '" name="' + _esc(f.name) + '" type="datetime-local" value="' + _esc(val) + '" step="1800" style="' + inputStyle + ';font-family:var(--mono)">';
+      inp = '<input id="' + id + '" name="' + _esc(f.name) + '" type="datetime-local" value="' + _esc(val) + '" step="1800" style="' + inputStyle + '">';
     } else if (f.type === 'datetime-local-30min') {
       // KST 기준 datetime-local, 30분 단위로 강제 (step=1800초)
-      inp = '<input id="' + id + '" name="' + _esc(f.name) + '" type="datetime-local" value="' + _esc(val) + '" step="1800" style="' + inputStyle + ';font-family:var(--mono)">';
+      inp = '<input id="' + id + '" name="' + _esc(f.name) + '" type="datetime-local" value="' + _esc(val) + '" step="1800" style="' + inputStyle + '">';
     } else if (f.type === 'datetime-slots') {
       // 1~3개 후보 시간 + 분 단위 duration (KST 기준, 30분 단위)
       inp = '<div id="' + id + '-slots">' +
         '<div style="font-size:11px;color:var(--text-muted);margin-bottom:6px">시각은 한국 표준시(KST, UTC+9) 기준, 30분 단위로만 선택 가능합니다.</div>' +
-        '<div style="display:grid;grid-template-columns:1fr 90px;gap:8px;margin-bottom:6px"><input type="datetime-local" id="' + id + '-s0" step="1800" style="' + inputStyle + ';font-family:var(--mono)" placeholder="1번 후보"><select id="' + id + '-d0" style="' + inputStyle + ';font-family:var(--mono)"><option value="30">30분</option><option value="60">60분</option><option value="90">90분</option><option value="120">120분</option></select></div>' +
-        '<div style="display:grid;grid-template-columns:1fr 90px;gap:8px;margin-bottom:6px"><input type="datetime-local" id="' + id + '-s1" step="1800" style="' + inputStyle + ';font-family:var(--mono)" placeholder="2번 후보"><select id="' + id + '-d1" style="' + inputStyle + ';font-family:var(--mono)"><option value="30">30분</option><option value="60">60분</option><option value="90">90분</option><option value="120">120분</option></select></div>' +
-        '<div style="display:grid;grid-template-columns:1fr 90px;gap:8px"><input type="datetime-local" id="' + id + '-s2" step="1800" style="' + inputStyle + ';font-family:var(--mono)" placeholder="3번 후보"><select id="' + id + '-d2" style="' + inputStyle + ';font-family:var(--mono)"><option value="30">30분</option><option value="60">60분</option><option value="90">90분</option><option value="120">120분</option></select></div>' +
+        '<div style="display:grid;grid-template-columns:1fr 90px;gap:8px;margin-bottom:6px"><input type="datetime-local" id="' + id + '-s0" step="1800" style="' + inputStyle + '" placeholder="1번 후보"><select id="' + id + '-d0" style="' + inputStyle + '"><option value="30">30분</option><option value="60">60분</option><option value="90">90분</option><option value="120">120분</option></select></div>' +
+        '<div style="display:grid;grid-template-columns:1fr 90px;gap:8px;margin-bottom:6px"><input type="datetime-local" id="' + id + '-s1" step="1800" style="' + inputStyle + '" placeholder="2번 후보"><select id="' + id + '-d1" style="' + inputStyle + '"><option value="30">30분</option><option value="60">60분</option><option value="90">90분</option><option value="120">120분</option></select></div>' +
+        '<div style="display:grid;grid-template-columns:1fr 90px;gap:8px"><input type="datetime-local" id="' + id + '-s2" step="1800" style="' + inputStyle + '" placeholder="3번 후보"><select id="' + id + '-d2" style="' + inputStyle + '"><option value="30">30분</option><option value="60">60분</option><option value="90">90분</option><option value="120">120분</option></select></div>' +
         '</div>';
     } else {
       inp = '<input id="' + id + '" name="' + _esc(f.name) + '" type="' + (f.type || 'text') + '" value="' + _esc(val) + '" placeholder="' + _esc(f.placeholder || '') + '" style="' + inputStyle + '">';
