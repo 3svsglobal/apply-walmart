@@ -2296,46 +2296,48 @@ button{cursor:pointer;font-family:var(--font)}
 
           <!-- 계약 조건 입력 -->
           <div style="background:#fff;border:1px solid var(--border);border-radius:10px;padding:16px 18px;margin-bottom:14px">
-            <label style="display:block;font-size:13px;color:var(--accent);margin-bottom:14px;font-weight:700">💰 계약 조건 — 아래 항목이 계약서에 자동 삽입됩니다</label>
-            <div style="display:grid;grid-template-columns:1fr 110px;gap:8px 12px;align-items:end">
-              <div>
-                <label style="display:block;font-size:11.5px;color:var(--text-muted);margin-bottom:4px;font-weight:600">착수금 (1회, 계약 체결 시)</label>
-                <input id="ct-initial" type="text" inputmode="numeric" placeholder="예: 5,000,000" style="background:#fff;border:1px solid var(--border);border-radius:8px;padding:9px 12px;font-size:14px;width:100%;margin:0">
-              </div>
+            <label style="display:block;font-size:13px;color:var(--accent);margin-bottom:14px;font-weight:700">💰 계약 조건 — 표준: Phase별 USD 8,000 (총 USD 24,000) · Phase 3 첫 P.O 10% / 이후 8%</label>
+            <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px 14px;align-items:end">
               <div>
                 <label style="display:block;font-size:11.5px;color:var(--text-muted);margin-bottom:4px;font-weight:600">통화</label>
                 <select id="ct-currency" style="background:#fff;border:1px solid var(--border);border-radius:8px;padding:9px 12px;font-size:14px;width:100%;margin:0">
+                  <option value="USD" selected>USD ($)</option>
                   <option value="KRW">KRW (원)</option>
-                  <option value="USD">USD ($)</option>
                 </select>
               </div>
               <div>
-                <label style="display:block;font-size:11.5px;color:var(--text-muted);margin-bottom:4px;font-weight:600">Phase 1 운영비</label>
-                <input id="ct-phase1" type="text" inputmode="numeric" placeholder="예: 10,000,000" style="background:#fff;border:1px solid var(--border);border-radius:8px;padding:9px 12px;font-size:14px;width:100%;margin:0">
+                <label style="display:block;font-size:11.5px;color:var(--text-muted);margin-bottom:4px;font-weight:600">착수금 (1회, 선택)</label>
+                <input id="ct-initial" type="text" inputmode="numeric" placeholder="없으면 비워두기" style="background:#fff;border:1px solid var(--border);border-radius:8px;padding:9px 12px;font-size:14px;width:100%;margin:0">
               </div>
               <div></div>
+              <div>
+                <label style="display:block;font-size:11.5px;color:var(--text-muted);margin-bottom:4px;font-weight:600">Phase 1 운영비</label>
+                <input id="ct-phase1" type="text" inputmode="numeric" value="8000" style="background:#fff;border:1px solid var(--border);border-radius:8px;padding:9px 12px;font-size:14px;width:100%;margin:0">
+              </div>
               <div>
                 <label style="display:block;font-size:11.5px;color:var(--text-muted);margin-bottom:4px;font-weight:600">Phase 2 운영비</label>
-                <input id="ct-phase2" type="text" inputmode="numeric" placeholder="예: 10,000,000" style="background:#fff;border:1px solid var(--border);border-radius:8px;padding:9px 12px;font-size:14px;width:100%;margin:0">
+                <input id="ct-phase2" type="text" inputmode="numeric" value="8000" style="background:#fff;border:1px solid var(--border);border-radius:8px;padding:9px 12px;font-size:14px;width:100%;margin:0">
               </div>
-              <div></div>
               <div>
                 <label style="display:block;font-size:11.5px;color:var(--text-muted);margin-bottom:4px;font-weight:600">Phase 3 운영비</label>
-                <input id="ct-phase3" type="text" inputmode="numeric" placeholder="예: 10,000,000" style="background:#fff;border:1px solid var(--border);border-radius:8px;padding:9px 12px;font-size:14px;width:100%;margin:0">
+                <input id="ct-phase3" type="text" inputmode="numeric" value="8000" style="background:#fff;border:1px solid var(--border);border-radius:8px;padding:9px 12px;font-size:14px;width:100%;margin:0">
               </div>
-              <div></div>
               <div>
-                <label style="display:block;font-size:11.5px;color:var(--text-muted);margin-bottom:4px;font-weight:600">커미션 (성과 연동, %)</label>
+                <label style="display:block;font-size:11.5px;color:var(--text-muted);margin-bottom:4px;font-weight:600">커미션 — Phase 3 첫 P.O (%)</label>
+                <input id="ct-commission-first" type="number" min="0" max="50" step="0.5" value="10" style="background:#fff;border:1px solid var(--border);border-radius:8px;padding:9px 12px;font-size:14px;width:100%;margin:0">
+              </div>
+              <div>
+                <label style="display:block;font-size:11.5px;color:var(--text-muted);margin-bottom:4px;font-weight:600">커미션 — 이후 P.O (%)</label>
                 <input id="ct-commission" type="number" min="0" max="50" step="0.5" value="8" style="background:#fff;border:1px solid var(--border);border-radius:8px;padding:9px 12px;font-size:14px;width:100%;margin:0">
               </div>
-              <div style="font-size:12px;color:var(--text-muted);padding-bottom:9px">PO 기준</div>
+              <div style="font-size:12px;color:var(--text-muted);padding-bottom:11px;line-height:1.4">Gross Supply Price 기준 (세금·배송 제외)</div>
               <div style="grid-column:1/-1">
                 <label style="display:block;font-size:11.5px;color:var(--text-muted);margin-bottom:4px;font-weight:600">기타 조건 / 비고 (선택)</label>
-                <textarea id="ct-notes" rows="2" placeholder="예: 수출바우처 예산 집행 가능, 결제 조건 등" style="background:#fff;border:1px solid var(--border);border-radius:8px;padding:9px 12px;font-size:14px;width:100%;margin:0;font-family:var(--font);resize:vertical"></textarea>
+                <textarea id="ct-notes" rows="2" placeholder="예: 특약 사항, 추가 합의 내용 등" style="background:#fff;border:1px solid var(--border);border-radius:8px;padding:9px 12px;font-size:14px;width:100%;margin:0;font-family:var(--font);resize:vertical"></textarea>
               </div>
             </div>
             <div style="margin-top:10px;padding:8px 12px;background:var(--surface-alt);border-radius:6px;font-size:11.5px;color:var(--text-muted);line-height:1.5">
-              💡 입력한 금액은 계약서 본문의 <code style="background:rgba(0,0,0,0.06);padding:1px 6px;border-radius:4px">제3조 (대금)</code> 등에 자동 삽입됩니다. 빈 칸은 "별도 합의된 계약금액으로 한다"로 표기됩니다.
+              💡 지급: 세금계산서 발행일로부터 <strong>5영업일 이내</strong>. 환율: 지급일 기준 <strong>하나은행 최초 고시 매매기준율</strong>로 KRW 환산. 위 표준값에서 변경이 필요한 경우만 덮어쓰기. 빈 칸은 "별도 합의된 계약금액"으로 표기.
             </div>
           </div>
 
@@ -3859,11 +3861,11 @@ var contractTemplates = {
       },
       {
         title: '\uc81c5\uc870 (\ub2e8\uacc4\ubcc4 \uc6b4\uc601\ube44) / Article 5 (Performance-Based Operational Fees)',
-        text: '\uac01 Phase\ubcc4 \uc6b4\uc601\ube44\ub294 \ubcc4\ub3c4 \ud569\uc758\ub41c \uacc4\uc57d\uae08\uc561\uc73c\ub85c \ud55c\ub2e4.\nThe operational fee for each Phase shall be as specified in the contract.\n\n\uac01 \ube44\uc6a9\uc740 \uc81c4\uc870\uc5d0 \uba85\uc2dc\ub41c \ud574\ub2f9 Phase\uc758 \uc644\ub8cc \uc870\uac74\uc774 \ucda9\uc871\ub418\uace0 {{BRAND_SHORT}}\uac00 \uc774\ub97c \uac80\ud1a0\ud558\uc5ec \uc11c\uba74\uc73c\ub85c \uc2b9\uc778\ud55c \ub0a0(\uc138\uae08\uacc4\uc0b0\uc11c \ubc1c\ud589\uc77c)\ub85c\ubd80\ud130 \uac00\uc7a5 \uac00\uae4c\uc6b4 \uadf8\ub8f9\uc0ac \uc815\uae30 \uc790\uae08 \uc9d1\ud589\uc77c(\ub9e4\uc6d4 10\uc77c, 20\uc77c, 30\uc77c)\uc5d0 \uc9c0\uae09\ud55c\ub2e4.\n\n\uc9c0\uae09\uc740 \uc6d0\uce59\uc801\uc73c\ub85c KRW\ub85c \ud558\uba70, \ud658\uc728\uc740 {{BRAND_SHORT}}\uc758 \uc11c\uba74 \uc2b9\uc778\uc77c \uae30\uc900 KB\uad6d\ubbfc\uc740\ud589 \ucd5c\ucd08 \uace0\uc2dc \ub9e4\ub9e4\uae30\uc900\uc728\uc744 \uc801\uc6a9\ud558\uc5ec \ud655\uc815\ud55c\ub2e4.\n\uc1a1\uae08 \uc218\uc218\ub8cc, \ud658\uc804 \uc218\uc218\ub8cc \ubc0f \uad00\ub828 \uc138\uae08\uc740 {{BRAND_SHORT}}\uc758 \ubd80\ub2f4\uc73c\ub85c \ud55c\ub2e4.'
+        text: '각 Phase(Phase 1·2·3)별 운영비는 1회당 미화 8,000달러(USD 8,000)로 하며, 총 운영비는 미화 24,000달러(USD 24,000)로 한다. (단, 본 금액은 {{COST_PHASE1}} / {{COST_PHASE2}} / {{COST_PHASE3}}와 같이 계약 조건 요약에 명시된 금액으로 갈음할 수 있다.)\nThe operational fee for each Phase (Phase 1·2·3) shall be USD 8,000 per Phase, totaling USD 24,000 across three Phases. (Amounts specified in the Contract Terms Summary shall prevail if different.)\n\n각 비용은 제4조에 명시된 해당 Phase의 완료 조건이 충족되고 {{BRAND_SHORT}}가 이를 검토하여 서면(전자서명 포함)으로 승인하면, 3Stripe가 세금계산서를 발행한 날로부터 5영업일 이내에 지급한다.\nEach fee shall be paid by {{BRAND_SHORT}} within five (5) business days from the date of tax invoice issuance by 3Stripe, following written or electronic approval of Phase completion.\n\n지급은 원칙적으로 대한민국 원화(KRW)로 하며, 환율은 "지급일" 기준 하나은행이 당일 최초로 고시한 매매기준율(또는 대고객 전신환 매도율)을 적용하여 확정한다.\nPayment shall be made in KRW, with the applicable USD/KRW exchange rate determined based on Hana Bank\'s first daily quotation (or its corresponding telegraphic transfer selling rate) on the actual payment date.\n\n송금 수수료, 환전 수수료 및 관련 세금(부가가치세 등)은 별도로 {{BRAND_SHORT}}의 부담으로 한다.\nWire transfer fees, foreign-exchange fees, and related taxes (including VAT) shall be borne separately by {{BRAND_SHORT}}.'
       },
       {
         title: '\uc81c6\uc870 (Purchase Order \uc218\uc218\ub8cc) / Article 6 (Purchase Order Commission)',
-        text: '\ubcf8 \uacc4\uc57d\uc5d0 \ub530\ub978 \ubaa8\ub4e0 Purchase Order\uc5d0 \ub300\ud558\uc5ec \uacf5\uae09\uac00 \uae30\uc900 8%\ub97c 3Stripe\uc5d0\uac8c \uc9c0\uae09\ud55c\ub2e4.\nFor all Purchase Orders under this Agreement, eight percent (8%) of the Gross Supply Price shall be paid to 3Stripe.\n\n"P.O \uae08\uc561" \ub610\ub294 "Gross Supply Price"\ub780 P.O \ubb38\uc11c\uc5d0 \uae30\uc7ac\ub41c \uacf5\uae09\uac00\ub97c \uc758\ubbf8\ud558\uba70, \uc138\uae08, \ubc30\uc1a1\ube44, \ub9ac\ubca0\uc774\ud2b8, \ud310\ucd09\ube44, \ud50c\ub7ab\ud3fc \uc218\uc218\ub8cc, \ud658\uc728 \ubcc0\ub3d9, \ubc18\ud488, \ud074\ub808\uc784 \ub4f1\uc740 \uacf5\uc81c\ud558\uc9c0 \uc544\ub2c8\ud55c\ub2e4.\n\n\uac01 \uc218\uc218\ub8cc\ub294 \ud574\ub2f9 PO\uc5d0 \ub300\ud55c \ub300\uae08\uc774 \uc6d4\ub9c8\ud2b8\ub85c\ubd80\ud130 {{BRAND_SHORT}}\uc5d0 \uc785\uae08 \uc644\ub8cc\ub41c \ub0a0\ub85c\ubd80\ud130 \uac00\uc7a5 \uac00\uae4c\uc6b4 \uadf8\ub8f9\uc0ac \uc815\uae30 \uc790\uae08 \uc9d1\ud589\uc77c(\ub9e4\uc6d4 10\uc77c, 20\uc77c, 30\uc77c)\uc5d0 \uc9c0\uae09\ud55c\ub2e4.\n\n\ubcf8 \uc218\uc218\ub8cc \uc870\ud56d\uc740 {{BRAND_SHORT}} \uc81c\ud488\uc774 \uc6d4\ub9c8\ud2b8(Walmart) \ubc0f \uc0d8\uc2a4\ud074\ub7fd(Sam\'s Club)\uc758 \uc624\ud504\ub77c\uc778 \ub9e4\uc7a5 \ubc0f \uc9c1\ub9e4\uc785(1P) \ucc44\ub110\uc5d0 \ub0a9\ud488\ub418\uc5b4 \ud310\ub9e4\uac00 \uc2e4\uc9c8\uc801\uc73c\ub85c \uc720\uc9c0\ub418\ub294 \uae30\uac04 \ub3d9\uc548\uc5d0 \ud55c\ud558\uc5ec \uc720\ud6a8\ud558\ub2e4.'
+        text: '본 계약에 따른 Purchase Order(P.O) 수수료는 다음과 같이 차등 적용한다.\nThe Purchase Order (P.O) commission under this Agreement shall be applied on a tiered basis as follows.\n\n1. Phase 3에서 발생하는 최초 P.O 1건에 대해서는 공급가(Gross Supply Price)의 {{COMMISSION_FIRST_PO}}를 3Stripe에 지급한다.\n1. For the first P.O issued during Phase 3, ten percent (10%) of the Gross Supply Price (or the rate specified in the Contract Terms Summary) shall be paid to 3Stripe.\n\n2. 위 최초 P.O 이후 본 계약 기간 중 발생하는 모든 후속 P.O에 대해서는 공급가의 {{COMMISSION_REST}}를 3Stripe에 지급한다.\n2. For all subsequent P.O(s) issued thereafter during the term of this Agreement, eight percent (8%) of the Gross Supply Price (or the rate specified in the Contract Terms Summary) shall be paid to 3Stripe.\n\n"P.O 금액" 또는 "Gross Supply Price"란 P.O 문서에 기재된 공급가를 의미하며, 세금, 배송비, 리베이트, 판촉비, 플랫폼 수수료, 환율 변동, 반품, 클레임 등은 공제하지 아니한다.\n"Gross Supply Price" means the supply price recorded on the P.O document, exclusive of taxes, shipping, rebates, promotion expenses, platform fees, FX fluctuations, returns, and claims.\n\n각 수수료는 해당 P.O에 대한 대금이 Walmart로부터 {{BRAND_SHORT}}에 입금 완료되고 3Stripe가 세금계산서를 발행한 날로부터 5영업일 이내에 지급한다.\nEach commission shall be paid within five (5) business days from the date of tax invoice issuance by 3Stripe, following Walmart\'s payment of the P.O proceeds to {{BRAND_SHORT}}.\n\n지급 통화 및 환율 적용은 제5조의 기준(KRW 환산, 지급일 하나은행 최초 고시 매매기준율)을 동일하게 적용한다.\nPayment currency and FX conversion shall follow the same standards as set forth in Article 5 (KRW settlement at Hana Bank\'s first daily quotation on the payment date).\n\n본 수수료 조항은 {{BRAND_SHORT}} 제품이 월마트(Walmart) 및 샘스클럽(Sam\\\'s Club)의 오프라인 매장 및 직매입(1P) 채널에 납품되어 판매가 실질적으로 유지되는 기간 동안에 한하여 유효하다.\nThis commission clause shall remain effective only during the period in which {{BRAND_SHORT}} products are actually supplied to and sold through Walmart and Sam\\\'s Club offline stores and direct-purchase (1P) channels.'
       },
       {
         title: '\uc81c7\uc870 (\ube44\ubcf4\uc7a5 \ubc0f \ucc45\uc784 \uc81c\ud55c) / Article 7 (No Guarantee and Limitation of Liability)',
@@ -4046,6 +4048,7 @@ function renderContractPage(contractId) {
     phase1:     _fmtMoney(ct.phase1),
     phase2:     _fmtMoney(ct.phase2),
     phase3:     _fmtMoney(ct.phase3),
+    commission_first: (ct.commission_first != null ? ct.commission_first + '%' : '10%'),
     commission: (ct.commission != null ? ct.commission + '%' : '8%'),
     notes:      ct.notes || ''
   };
@@ -4054,14 +4057,21 @@ function renderContractPage(contractId) {
   bodyHtml += '<div class="contract-cost-box" style="background:rgba(0,113,220,0.05);border:1px solid rgba(0,113,220,0.2);border-radius:10px;padding:18px 22px;margin:18px 0 24px">' +
     '<div style="font-size:13px;font-weight:700;color:var(--accent);margin-bottom:12px;letter-spacing:0.3px">계약 조건 요약 · Contract Terms</div>' +
     '<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px 24px">' +
-      '<div><div style="font-size:11.5px;color:var(--text-muted);font-weight:600;margin-bottom:3px">착수금 (1회)</div><div style="font-size:15px;color:var(--text);font-weight:700">' + costSummary.initial + '</div></div>' +
+      '<div><div style="font-size:11.5px;color:var(--text-muted);font-weight:600;margin-bottom:3px">착수금 (1회) · Initial Fee</div><div style="font-size:15px;color:var(--text);font-weight:700">' + costSummary.initial + '</div></div>' +
+      '<div><div style="font-size:11.5px;color:var(--text-muted);font-weight:600;margin-bottom:3px">통화 · Currency</div><div style="font-size:15px;color:var(--text);font-weight:700">' + curr + '</div></div>' +
+      '<div></div>' +
       '<div><div style="font-size:11.5px;color:var(--text-muted);font-weight:600;margin-bottom:3px">Phase 1 운영비</div><div style="font-size:15px;color:var(--text);font-weight:700">' + costSummary.phase1 + '</div></div>' +
       '<div><div style="font-size:11.5px;color:var(--text-muted);font-weight:600;margin-bottom:3px">Phase 2 운영비</div><div style="font-size:15px;color:var(--text);font-weight:700">' + costSummary.phase2 + '</div></div>' +
       '<div><div style="font-size:11.5px;color:var(--text-muted);font-weight:600;margin-bottom:3px">Phase 3 운영비</div><div style="font-size:15px;color:var(--text);font-weight:700">' + costSummary.phase3 + '</div></div>' +
-      '<div><div style="font-size:11.5px;color:var(--text-muted);font-weight:600;margin-bottom:3px">커미션 (성과 연동)</div><div style="font-size:15px;color:var(--text);font-weight:700">' + costSummary.commission + '</div></div>' +
-      '<div><div style="font-size:11.5px;color:var(--text-muted);font-weight:600;margin-bottom:3px">통화</div><div style="font-size:15px;color:var(--text);font-weight:700">' + curr + '</div></div>' +
+      '<div><div style="font-size:11.5px;color:var(--text-muted);font-weight:600;margin-bottom:3px">커미션 — Phase 3 첫 P.O</div><div style="font-size:15px;color:var(--text);font-weight:700">' + costSummary.commission_first + '</div></div>' +
+      '<div><div style="font-size:11.5px;color:var(--text-muted);font-weight:600;margin-bottom:3px">커미션 — 이후 P.O</div><div style="font-size:15px;color:var(--text);font-weight:700">' + costSummary.commission + '</div></div>' +
+      '<div></div>' +
     '</div>' +
-    (costSummary.notes ? '<div style="margin-top:12px;padding-top:12px;border-top:1px dashed rgba(0,113,220,0.18);font-size:13px;color:var(--text);line-height:1.6;white-space:pre-wrap"><strong style="color:var(--text-muted);font-weight:600">비고:</strong> ' + _esc(costSummary.notes) + '</div>' : '') +
+    '<div style="margin-top:10px;padding-top:10px;border-top:1px dashed rgba(0,113,220,0.18);font-size:12px;color:var(--text-muted);line-height:1.5">' +
+      '지급: 세금계산서 발행일로부터 5영업일 이내 · 환율: 지급일 하나은행 최초 고시 매매기준율로 KRW 환산<br>' +
+      'Payment within 5 business days from tax invoice date · USD/KRW conversion at Hana Bank\'s first daily quotation on payment date' +
+    '</div>' +
+    (costSummary.notes ? '<div style="margin-top:12px;padding-top:12px;border-top:1px dashed rgba(0,113,220,0.18);font-size:13px;color:var(--text);line-height:1.6;white-space:pre-wrap"><strong style="color:var(--text-muted);font-weight:600">비고 · Notes:</strong> ' + _esc(costSummary.notes) + '</div>' : '') +
   '</div>';
 
   // 조항 본문 — placeholder 치환
@@ -4074,6 +4084,8 @@ function renderContractPage(contractId) {
       .replace(/\{\{COST_PHASE1\}\}/g, costSummary.phase1)
       .replace(/\{\{COST_PHASE2\}\}/g, costSummary.phase2)
       .replace(/\{\{COST_PHASE3\}\}/g, costSummary.phase3)
+      .replace(/\{\{COMMISSION_FIRST_PO\}\}/g, costSummary.commission_first)
+      .replace(/\{\{COMMISSION_REST\}\}/g, costSummary.commission)
       .replace(/\{\{COMMISSION\}\}/g, costSummary.commission)
       .replace(/\{\{CURRENCY\}\}/g, curr);
   }
@@ -4326,11 +4338,12 @@ async function createContract() {
     return v === '' ? null : Number(v);
   }
   var ct = {
-    currency:    (document.getElementById('ct-currency') || {}).value || 'KRW',
+    currency:    (document.getElementById('ct-currency') || {}).value || 'USD',
     initial:     _readNum('ct-initial'),
     phase1:      _readNum('ct-phase1'),
     phase2:      _readNum('ct-phase2'),
     phase3:      _readNum('ct-phase3'),
+    commission_first: (function(){ var v=_readNum('ct-commission-first'); return v==null ? 10 : v; })(),
     commission:  (function(){ var v=_readNum('ct-commission'); return v==null ? 8 : v; })(),
     notes:       ((document.getElementById('ct-notes') || {}).value || '').trim()
   };
@@ -4350,12 +4363,17 @@ async function createContract() {
     contract_terms: ct
   });
 
-  // 입력 폼 리셋
+  // 입력 폼 리셋 (USD 8,000 표준 다시 채움)
   brandSel.value = '';
-  ['ct-initial','ct-phase1','ct-phase2','ct-phase3','ct-notes'].forEach(function(id){
+  ['ct-initial','ct-notes'].forEach(function(id){
     var el = document.getElementById(id); if (el) el.value = '';
   });
+  ['ct-phase1','ct-phase2','ct-phase3'].forEach(function(id){
+    var el = document.getElementById(id); if (el) el.value = '8000';
+  });
   var cm = document.getElementById('ct-commission'); if (cm) cm.value = '8';
+  var cmf = document.getElementById('ct-commission-first'); if (cmf) cmf.value = '10';
+  var curEl = document.getElementById('ct-currency'); if (curEl) curEl.value = 'USD';
 
   renderAdminContracts();
   var link = window.location.origin + window.location.pathname + '?c=' + newId + '&brand=' + encodeURIComponent(brandValue);
