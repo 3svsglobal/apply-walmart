@@ -2473,11 +2473,11 @@ button{cursor:pointer;font-family:var(--font)}
             </div>
             <div style="display:flex;gap:8px;align-items:center">
               <select id="brand-tasks-filter" onchange="renderBrandTasks()" style="background:#fff;border:1px solid var(--border);border-radius:8px;padding:6px 10px;font-size:12px;cursor:pointer">
-                <option value="open">진행 중</option>
-                <option value="all">전체</option>
-                <option value="completed">완료됨</option>
+                <option value="open" data-ko="진행 중" data-en="Open">진행 중</option>
+                <option value="all" data-ko="전체" data-en="All">전체</option>
+                <option value="completed" data-ko="완료됨" data-en="Completed">완료됨</option>
               </select>
-              <button onclick="showBrandTaskAddModal()" style="background:var(--accent);color:#fff;border:none;padding:8px 14px;border-radius:8px;font-size:12px;font-weight:600;cursor:pointer">+ 직접 추가</button>
+              <button onclick="showBrandTaskAddModal()" style="background:var(--accent);color:#fff;border:none;padding:8px 14px;border-radius:8px;font-size:12px;font-weight:600;cursor:pointer"><span class="ko">+ 직접 추가</span><span class="en">+ Add task</span></button>
             </div>
           </div>
           <div id="brand-tasks-list"><div style="text-align:center;padding:32px 0;color:var(--text-muted);font-size:13px"><span class="ko">할 일이 없습니다.</span><span class="en">No tasks yet.</span></div></div>
@@ -2491,7 +2491,7 @@ button{cursor:pointer;font-family:var(--font)}
               <span class="ko">미팅 일정</span><span class="en">Meetings</span>
               <span style="font-family:var(--mono);font-size:10px;padding:3px 8px;border-radius:999px;background:rgba(0,113,220,0.15);color:var(--accent);font-weight:400" id="brand-meetings-count">0 items</span>
             </div>
-            <button onclick="showBrandMeetingRequestModal()" style="background:var(--accent);color:#fff;border:none;padding:8px 14px;border-radius:8px;font-size:12px;font-weight:600;cursor:pointer">+ 미팅 요청</button>
+            <button onclick="showBrandMeetingRequestModal()" style="background:var(--accent);color:#fff;border:none;padding:8px 14px;border-radius:8px;font-size:12px;font-weight:600;cursor:pointer"><span class="ko">+ 미팅 요청</span><span class="en">+ Request meeting</span></button>
           </div>
           <div id="brand-meetings-list"><div style="text-align:center;padding:32px 0;color:var(--text-muted);font-size:13px"><span class="ko">예정된 미팅이 없습니다.</span><span class="en">No meetings scheduled.</span></div></div>
         </div>
@@ -2519,35 +2519,35 @@ button{cursor:pointer;font-family:var(--font)}
             </div>
             <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px">
               <div>
-                <label style="display:block;font-size:11.5px;color:var(--text-muted);margin-bottom:4px;font-weight:600">카테고리 / Category</label>
+                <label style="display:block;font-size:11.5px;color:var(--text-muted);margin-bottom:4px;font-weight:600"><span class="ko">카테고리</span><span class="en">Category</span></label>
                 <select id="doc-upload-category" style="background:#fff;border:1px solid var(--border);border-radius:8px;padding:9px 12px;font-size:13px;width:100%">
-                  <option value="walmart_request">월마트 요청 자료 / Walmart Request</option>
-                  <option value="3svs_request">3SVS 요청 자료 / 3SVS Request</option>
-                  <option value="compliance">컴플라이언스 / Compliance</option>
-                  <option value="product_spec">제품 사양서 / Product Specs</option>
-                  <option value="general" selected>일반 자료 / General</option>
+                  <option value="walmart_request" data-ko="월마트 요청 자료" data-en="Walmart Request">월마트 요청 자료</option>
+                  <option value="3svs_request" data-ko="3SVS 요청 자료" data-en="3SVS Request">3SVS 요청 자료</option>
+                  <option value="compliance" data-ko="컴플라이언스" data-en="Compliance">컴플라이언스</option>
+                  <option value="product_spec" data-ko="제품 사양서" data-en="Product Specs">제품 사양서</option>
+                  <option value="general" data-ko="일반 자료" data-en="General" selected>일반 자료</option>
                 </select>
               </div>
               <div>
-                <label style="display:block;font-size:11.5px;color:var(--text-muted);margin-bottom:4px;font-weight:600">자료 유형 / Type</label>
+                <label style="display:block;font-size:11.5px;color:var(--text-muted);margin-bottom:4px;font-weight:600"><span class="ko">자료 유형</span><span class="en">Type</span></label>
                 <select id="doc-upload-type" style="background:#fff;border:1px solid var(--border);border-radius:8px;padding:9px 12px;font-size:13px;width:100%">
-                  <option value="sku_list">SKU 리스트</option>
-                  <option value="certificate">인증서 (FDA/CPSC 등)</option>
-                  <option value="spec_sheet">사양서/Spec Sheet</option>
-                  <option value="image_pack">이미지 패키지</option>
-                  <option value="pricing">가격 자료</option>
-                  <option value="other" selected>기타</option>
+                  <option value="sku_list" data-ko="SKU 리스트" data-en="SKU List">SKU 리스트</option>
+                  <option value="certificate" data-ko="인증서 (FDA/CPSC 등)" data-en="Certificate (FDA/CPSC, etc.)">인증서 (FDA/CPSC 등)</option>
+                  <option value="spec_sheet" data-ko="사양서/Spec Sheet" data-en="Spec Sheet">사양서/Spec Sheet</option>
+                  <option value="image_pack" data-ko="이미지 패키지" data-en="Image Pack">이미지 패키지</option>
+                  <option value="pricing" data-ko="가격 자료" data-en="Pricing">가격 자료</option>
+                  <option value="other" data-ko="기타" data-en="Other" selected>기타</option>
                 </select>
               </div>
               <div style="grid-column:1/-1">
-                <label style="display:block;font-size:11.5px;color:var(--text-muted);margin-bottom:4px;font-weight:600">메모 (선택) / Description</label>
-                <input type="text" id="doc-upload-desc" placeholder="예: 2026Q3 신규 라인 8 SKU" style="background:#fff;border:1px solid var(--border);border-radius:8px;padding:9px 12px;font-size:13px;width:100%">
+                <label style="display:block;font-size:11.5px;color:var(--text-muted);margin-bottom:4px;font-weight:600"><span class="ko">메모 (선택)</span><span class="en">Description (optional)</span></label>
+                <input type="text" id="doc-upload-desc" data-ph-ko="예: 2026Q3 신규 라인 8 SKU" data-ph-en="e.g. 2026Q3 new line 8 SKUs" placeholder="예: 2026Q3 신규 라인 8 SKU" style="background:#fff;border:1px solid var(--border);border-radius:8px;padding:9px 12px;font-size:13px;width:100%">
               </div>
             </div>
             <div id="doc-upload-area" style="border:2px dashed var(--border-dark);border-radius:12px;padding:32px;text-align:center;cursor:pointer;transition:all .2s;background:#fff" onclick="document.getElementById('doc-file-input').click()" ondragover="event.preventDefault();this.style.borderColor='var(--accent)';this.style.background='rgba(0,113,220,0.05)'" ondragleave="this.style.borderColor='var(--border-dark)';this.style.background='#fff'" ondrop="event.preventDefault();this.style.borderColor='var(--border-dark)';this.style.background='#fff';handleDocFileDrop(event)">
               <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="var(--text-muted)" stroke-width="1.5" style="margin-bottom:8px"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
               <div style="font-size:14px;color:var(--text);margin-bottom:4px;font-weight:500"><span class="ko">파일을 끌어다 놓거나 클릭하여 선택</span><span class="en">Drag files here or click to select</span></div>
-              <div style="font-size:12px;color:var(--text-muted)">PDF · Excel · 이미지 · ZIP 지원 (최대 25MB)</div>
+              <div style="font-size:12px;color:var(--text-muted)"><span class="ko">PDF · Excel · 이미지 · ZIP 지원 (최대 25MB)</span><span class="en">PDF, Excel, images, ZIP supported (up to 25MB)</span></div>
               <input type="file" id="doc-file-input" accept=".pdf,.xlsx,.xls,.csv,.png,.jpg,.jpeg,.zip,.docx,.pptx" style="display:none" onchange="uploadCategorizedDoc(this.files[0])">
             </div>
           </div>
@@ -2564,8 +2564,8 @@ button{cursor:pointer;font-family:var(--font)}
             <div style="text-align:center;padding:32px 0;color:var(--text-muted);font-size:13px"><span class="ko">아직 메시지가 없습니다. 첫 메시지를 보내보세요.</span><span class="en">No messages yet. Start the conversation.</span></div>
           </div>
           <div class="msg-input-row">
-            <textarea class="msg-input" id="msg-input" placeholder="메시지를 입력하세요... (Enter로 전송, Shift+Enter로 줄바꿈)" rows="1"></textarea>
-            <button class="msg-send-btn" onclick="sendPortalMessage()">전송</button>
+            <textarea class="msg-input" id="msg-input" data-ph-ko="메시지를 입력하세요... (Enter로 전송, Shift+Enter로 줄바꿈)" data-ph-en="Type a message... (Enter to send, Shift+Enter for new line)" placeholder="메시지를 입력하세요... (Enter로 전송, Shift+Enter로 줄바꿈)" rows="1"></textarea>
+            <button class="msg-send-btn" onclick="sendPortalMessage()"><span class="ko">전송</span><span class="en">Send</span></button>
           </div>
         </div>
 
@@ -3505,6 +3505,14 @@ function setLang(lang) {
   if (typeof renderAdminReview === 'function' && document.getElementById('admin-review') && document.getElementById('admin-review').style.display !== 'none') {
     try { renderAdminReview(); } catch(e){}
   }
+  // data-ko/data-en 속성이 있는 <option> 요소 텍스트 동기화
+  document.querySelectorAll('option[data-ko][data-en]').forEach(function(o) {
+    o.textContent = lang === 'ko' ? o.getAttribute('data-ko') : o.getAttribute('data-en');
+  });
+  // data-ph-ko/data-ph-en 속성이 있는 input/textarea placeholder 동기화
+  document.querySelectorAll('[data-ph-ko][data-ph-en]').forEach(function(el) {
+    el.setAttribute('placeholder', lang === 'ko' ? el.getAttribute('data-ph-ko') : el.getAttribute('data-ph-en'));
+  });
   // 브랜드 포탈이 활성화되어 있다면 동적 데이터 재렌더 (tasks/meetings/docs/messages)
   var portalView = document.getElementById('view-portal');
   if (portalView && portalView.classList.contains('active') && _currentBrandId) {
@@ -3514,6 +3522,7 @@ function setLang(lang) {
       if (typeof renderBrandDocsTabs === 'function') renderBrandDocsTabs();
       if (typeof renderBrandDocsList === 'function') renderBrandDocsList();
       if (typeof loadBrandDashboardSummary === 'function') loadBrandDashboardSummary(_currentBrandId);
+      if (typeof loadBrandMessages === 'function') loadBrandMessages(_currentBrandId);
     } catch(e){ console.warn('brand portal re-render error', e); }
   }
   // Walmart 포탈 brand-detail이 활성화되어 있다면 재렌더
@@ -3626,6 +3635,14 @@ document.addEventListener('DOMContentLoaded', () => {
     b.style.background = isActive ? 'var(--accent)' : '#fff';
     b.style.color = isActive ? '#fff' : 'var(--text)';
     b.style.borderColor = isActive ? 'var(--accent)' : 'var(--border)';
+  });
+  // 초기 option[data-ko/data-en] 텍스트 동기화
+  document.querySelectorAll('option[data-ko][data-en]').forEach(function(o) {
+    o.textContent = initialLang === 'ko' ? o.getAttribute('data-ko') : o.getAttribute('data-en');
+  });
+  // 초기 placeholder 동기화
+  document.querySelectorAll('[data-ph-ko][data-ph-en]').forEach(function(el) {
+    el.setAttribute('placeholder', initialLang === 'ko' ? el.getAttribute('data-ph-ko') : el.getAttribute('data-ph-en'));
   });
 });
 
@@ -6337,12 +6354,13 @@ async function loadBrandDashboardSummary(brandId) {
       dashT.innerHTML = '<div style="text-align:center;padding:24px 0;color:var(--text-muted);font-size:13px"><span class="ko">긴급 처리할 일이 없습니다.</span><span class="en">No urgent tasks.</span></div>';
     } else {
       dashT.innerHTML = urgent.map(function(t){
-        var due = t.due_date ? _fmtDate(t.due_date) : '<em style="color:var(--text-muted)">기한 미정</em>';
+        var due = t.due_date ? _fmtDate(t.due_date) : '<em style="color:var(--text-muted)">'+_kn('기한 미정','No due date')+'</em>';
         var prColor = t.priority === 'urgent' ? '#ef4444' : '#f59e0b';
+        var creatorMap = { admin: _kn('관리자','Admin'), walmart: 'SJ', brand: _kn('직접','Self') };
         return '<div style="display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid var(--border)">' +
           '<span style="display:inline-block;width:6px;height:6px;border-radius:50%;background:'+prColor+';flex-shrink:0"></span>' +
           '<div style="flex:1;min-width:0"><div style="font-size:13px;font-weight:600;color:var(--text);text-overflow:ellipsis;overflow:hidden;white-space:nowrap">'+_esc(t.title)+'</div>' +
-          '<div style="font-size:11px;color:var(--text-muted);margin-top:2px">'+due+' · '+_esc({admin:'관리자',walmart:'SJ',brand:'직접'}[t.created_by] || '시스템')+'</div></div></div>';
+          '<div style="font-size:11px;color:var(--text-muted);margin-top:2px">'+due+' · '+_esc(creatorMap[t.created_by] || _kn('시스템','System'))+'</div></div></div>';
       }).join('');
     }
   }
@@ -6360,9 +6378,9 @@ async function loadBrandDashboardSummary(brandId) {
       dashM.innerHTML = '<div style="text-align:center;padding:24px 0;color:var(--text-muted);font-size:13px"><span class="ko">예정된 미팅이 없습니다.</span><span class="en">No upcoming meetings.</span></div>';
     } else {
       dashM.innerHTML = upcoming.map(function(m){
-        var when = m.scheduled_at ? _fmtKST(m.scheduled_at) : '<em style="color:var(--text-muted)">시간 협의 중</em>';
+        var when = m.scheduled_at ? _fmtKST(m.scheduled_at) : '<em style="color:var(--text-muted)">'+_kn('시간 협의 중','TBD')+'</em>';
         var stColor = m.status === 'confirmed' ? '#10b981' : (m.status === 'proposed' ? '#f59e0b' : '#6b7280');
-        var stLabel = m.status === 'confirmed' ? '확정' : (m.status === 'proposed' ? '제안됨' : m.status);
+        var stLabel = m.status === 'confirmed' ? _kn('확정','Confirmed') : (m.status === 'proposed' ? _kn('제안됨','Proposed') : m.status);
         return '<div style="padding:10px 0;border-bottom:1px solid var(--border)">' +
           '<div style="display:flex;align-items:center;gap:8px;margin-bottom:3px"><span style="font-size:13px;font-weight:600;color:var(--text)">'+_esc(m.title)+'</span>' +
           '<span style="font-size:10px;padding:2px 7px;border-radius:999px;background:'+stColor+'22;color:'+stColor+';font-weight:600">'+stLabel+'</span></div>' +
@@ -6396,12 +6414,12 @@ async function loadBrandRecentMessages(brandId) {
     return;
   }
   el.innerHTML = msgs.map(function(m){
-    var roleLabel = m.sender_role === 'admin' ? '3SVS 관리자' : (m.sender_role === 'walmart' ? 'Startup Junkie' : '나');
+    var roleLabel = m.sender_role === 'admin' ? _kn('3SVS 관리자','3SVS Admin') : (m.sender_role === 'walmart' ? 'Startup Junkie' : _kn('나','Me'));
     var roleColor = m.sender_role === 'brand' ? 'var(--accent)' : '#10b981';
     var preview = (m.content || '').slice(0, 120);
     return '<div style="padding:10px 0;border-bottom:1px solid var(--border)">' +
       '<div style="display:flex;align-items:center;gap:8px;margin-bottom:4px"><span style="font-size:12px;font-weight:600;color:'+roleColor+'">'+roleLabel+'</span>' +
-      '<span style="font-size:11px;color:var(--text-muted)">'+_fmtDateTime(m.created_at)+'</span></div>' +
+      '<span style="font-size:11px;color:var(--text-muted)">'+_fmtKST(m.created_at)+'</span></div>' +
       '<div style="font-size:13px;color:var(--text);line-height:1.5">'+_esc(preview)+(m.content && m.content.length > 120 ? '…' : '')+'</div></div>';
   }).join('');
 }
@@ -6425,29 +6443,35 @@ function renderBrandTasks() {
     if (filter === 'completed') return t.status === 'completed';
     return true;
   });
-  if (countEl) countEl.textContent = filtered.length + ' items';
+  if (countEl) countEl.textContent = filtered.length + ' ' + _kn('개','items');
   if (!filtered.length) {
-    listEl.innerHTML = '<div style="text-align:center;padding:32px 0;color:var(--text-muted);font-size:13px"><span class="ko">'+(filter==='completed'?'완료된':'진행 중인')+' 할 일이 없습니다.</span><span class="en">No '+(filter==='completed'?'completed':'open')+' tasks.</span></div>';
+    var noneMsg = filter === 'completed' ? _kn('완료된 할 일이 없습니다.','No completed tasks.') : (filter === 'all' ? _kn('할 일이 없습니다.','No tasks yet.') : _kn('진행 중인 할 일이 없습니다.','No open tasks.'));
+    listEl.innerHTML = '<div style="text-align:center;padding:32px 0;color:var(--text-muted);font-size:13px">'+noneMsg+'</div>';
     return;
   }
   listEl.innerHTML = filtered.map(function(t){
     var isDone = t.status === 'completed';
-    var prMap = {urgent:{l:'긴급',c:'#ef4444'}, high:{l:'높음',c:'#f59e0b'}, normal:{l:'보통',c:'#0071dc'}, low:{l:'낮음',c:'#6b7280'}};
+    var prMap = {
+      urgent: { l: _kn('긴급','Urgent'), c:'#ef4444' },
+      high:   { l: _kn('높음','High'),   c:'#f59e0b' },
+      normal: { l: _kn('보통','Normal'), c:'#0071dc' },
+      low:    { l: _kn('낮음','Low'),    c:'#6b7280' }
+    };
     var pr = prMap[t.priority] || prMap.normal;
-    var creatorMap = { admin: '3SVS 관리자', walmart: 'Startup Junkie', brand: '직접 추가' };
-    var creator = creatorMap[t.created_by] || '시스템';
+    var creatorMap = { admin: _kn('3SVS 관리자','3SVS Admin'), walmart: _kn('Startup Junkie','Startup Junkie'), brand: _kn('직접 추가','Self') };
+    var creator = creatorMap[t.created_by] || _kn('시스템','System');
     var creatorColor = t.created_by === 'admin' ? '#f59e0b' : (t.created_by === 'walmart' ? '#10b981' : (t.created_by === 'brand' ? '#6b7280' : '#6b7280'));
-    var due = t.due_date ? _fmtDate(t.due_date) : '기한 미정';
+    var due = t.due_date ? _fmtDate(t.due_date) : _kn('기한 미정','No due date');
     var daysLeft = _daysUntil(t.due_date);
     var dueColor = (daysLeft != null && daysLeft < 0 && !isDone) ? '#ef4444' : 'var(--text-muted)';
-    var overdueBadge = (daysLeft != null && daysLeft < 0 && !isDone) ? ' · <strong style="color:#ef4444">'+Math.abs(daysLeft)+'일 지남</strong>' : (daysLeft != null && daysLeft >= 0 && daysLeft <= 3 && !isDone ? ' · <strong style="color:#f59e0b">D-'+daysLeft+'</strong>' : '');
+    var overdueBadge = (daysLeft != null && daysLeft < 0 && !isDone) ? ' · <strong style="color:#ef4444">'+_kn(Math.abs(daysLeft)+'일 지남', Math.abs(daysLeft)+' days overdue')+'</strong>' : (daysLeft != null && daysLeft >= 0 && daysLeft <= 3 && !isDone ? ' · <strong style="color:#f59e0b">D-'+daysLeft+'</strong>' : '');
     return '<div style="display:flex;gap:12px;padding:14px;background:#fff;border:1px solid var(--border);border-radius:10px;margin-bottom:10px;'+(isDone?'opacity:0.55;':'')+'">' +
       '<div><input type="checkbox" '+(isDone?'checked':'')+' onchange="toggleBrandTaskComplete(\''+t.id+'\', this.checked)" style="width:18px;height:18px;margin-top:2px;cursor:pointer;accent-color:var(--accent)"></div>' +
       '<div style="flex:1;min-width:0">' +
         '<div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;flex-wrap:wrap">' +
           '<span style="font-size:14px;font-weight:600;color:var(--text);'+(isDone?'text-decoration:line-through;':'')+'">'+_esc(t.title)+'</span>' +
           '<span style="font-size:10px;padding:2px 8px;border-radius:999px;background:'+pr.c+'22;color:'+pr.c+';font-weight:600">'+pr.l+'</span>' +
-          (t.category ? '<span style="font-size:10px;padding:2px 8px;border-radius:999px;background:var(--surface-alt);color:var(--text-muted);font-weight:500">'+_esc(t.category)+'</span>' : '') +
+          (t.category ? '<span style="font-size:10px;padding:2px 8px;border-radius:999px;background:var(--surface-alt);color:var(--text-muted);font-weight:500">'+_esc(_taskCatLabel(t.category))+'</span>' : '') +
         '</div>' +
         (t.description ? '<div style="font-size:13px;color:var(--text-muted);line-height:1.5;margin-bottom:6px;white-space:pre-wrap">'+_esc(t.description)+'</div>' : '') +
         '<div style="font-size:11.5px;color:'+dueColor+';display:flex;align-items:center;gap:6px;flex-wrap:wrap">📅 '+due+overdueBadge+' · <span style="display:inline-block;padding:1px 7px;border-radius:999px;background:'+creatorColor+'22;color:'+creatorColor+';font-weight:600;font-size:10.5px">'+creator+'</span>'+(isDone ? ' · ✓ '+_fmtDate(t.completed_at) : '')+'</div>' +
@@ -6529,8 +6553,8 @@ function _showFormModal(opts) {
       (opts.subtitle ? '<p style="color:var(--text-muted);font-size:13px;margin:0 0 20px;line-height:1.5">' + _esc(opts.subtitle) + '</p>' : '<div style="height:18px"></div>') +
       '<form id="wm-fm-form">' + fieldHtml +
         '<div style="display:flex;gap:8px;justify-content:flex-end;margin-top:8px;padding-top:16px;border-top:1px solid var(--border)">' +
-          '<button type="button" id="wm-fm-cancel" style="background:#fff;color:var(--text-muted);border:1px solid var(--border);padding:10px 20px;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer">취소</button>' +
-          '<button type="submit" style="background:var(--accent);color:#fff;border:none;padding:10px 24px;border-radius:8px;font-size:13px;font-weight:700;cursor:pointer">' + _esc(opts.submitLabel || '저장') + '</button>' +
+          '<button type="button" id="wm-fm-cancel" style="background:#fff;color:var(--text-muted);border:1px solid var(--border);padding:10px 20px;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer">' + _kn('취소','Cancel') + '</button>' +
+          '<button type="submit" style="background:var(--accent);color:#fff;border:none;padding:10px 24px;border-radius:8px;font-size:13px;font-weight:700;cursor:pointer">' + _esc(opts.submitLabel || _kn('저장','Save')) + '</button>' +
         '</div>' +
       '</form>' +
     '</div>';
@@ -6573,7 +6597,7 @@ function _showFormModal(opts) {
       }
       if (f.required && (!data[f.name] || (Array.isArray(data[f.name]) && !data[f.name].length))) {
         if (typeof opts.onValidationError === 'function') opts.onValidationError(f);
-        else alert(f.label + '은(는) 필수 항목입니다.');
+        else alert(_kn(f.label + ' 항목은 필수입니다.', f.label + ' is required.'));
         throw new Error('validation-stop');
       }
     });
@@ -6593,26 +6617,26 @@ function _showFormModal(opts) {
 // ─── 브랜드: 할 일 직접 추가 ───
 function showBrandTaskAddModal() {
   _showFormModal({
-    title: '할 일 추가',
-    subtitle: '본인이 직접 추가하는 할 일입니다. 관리자에게도 표시됩니다.',
-    submitLabel: '할 일 등록',
+    title: _kn('할 일 추가','Add Task'),
+    subtitle: _kn('본인이 직접 추가하는 할 일입니다. 관리자에게도 표시됩니다.','Add a task for yourself. Also visible to your admin.'),
+    submitLabel: _kn('할 일 등록','Create Task'),
     fields: [
-      { name: 'title', label: '제목', type: 'text', required: true, placeholder: '예: 월마트 마켓플레이스 계정 등록' },
-      { name: 'description', label: '상세 내용 (선택)', type: 'textarea', rows: 3, placeholder: '구체적으로 무엇을 해야 하나요?' },
-      { name: 'priority', label: '우선순위', type: 'radio-pills', value: 'normal', options: [
-        { value: 'urgent', label: '긴급', color: '#ef4444' },
-        { value: 'high',   label: '높음', color: '#f59e0b' },
-        { value: 'normal', label: '보통', color: '#0071dc' },
-        { value: 'low',    label: '낮음', color: '#6b7280' }
+      { name: 'title', label: _kn('제목','Title'), type: 'text', required: true, placeholder: _kn('예: 월마트 마켓플레이스 계정 등록','e.g., Register Walmart Marketplace account') },
+      { name: 'description', label: _kn('상세 내용 (선택)','Description (optional)'), type: 'textarea', rows: 3, placeholder: _kn('구체적으로 무엇을 해야 하나요?','What specifically needs to be done?') },
+      { name: 'priority', label: _kn('우선순위','Priority'), type: 'radio-pills', value: 'normal', options: [
+        { value: 'urgent', label: _kn('긴급','Urgent'), color: '#ef4444' },
+        { value: 'high',   label: _kn('높음','High'),   color: '#f59e0b' },
+        { value: 'normal', label: _kn('보통','Normal'), color: '#0071dc' },
+        { value: 'low',    label: _kn('낮음','Low'),    color: '#6b7280' }
       ] },
-      { name: 'category', label: '카테고리', type: 'select', value: 'general', options: [
-        { value: 'general', label: '일반' },
-        { value: 'walmart', label: '월마트 관련' },
-        { value: '3svs', label: '3SVS 관련' },
-        { value: 'compliance', label: '컴플라이언스' },
-        { value: 'internal', label: '내부 업무' }
+      { name: 'category', label: _kn('카테고리','Category'), type: 'select', value: 'general', options: [
+        { value: 'general',    label: _kn('일반','General') },
+        { value: 'walmart',    label: _kn('월마트 관련','Walmart-related') },
+        { value: '3svs',       label: _kn('3SVS 관련','3SVS-related') },
+        { value: 'compliance', label: _kn('컴플라이언스','Compliance') },
+        { value: 'internal',   label: _kn('내부 업무','Internal') }
       ] },
-      { name: 'due_date', label: '마감일 (선택)', type: 'date' }
+      { name: 'due_date', label: _kn('마감일 (선택)','Due date (optional)'), type: 'date' }
     ],
     onSubmit: async function(data) {
       var res = await supabase.from('wm_tasks').insert({
@@ -6643,43 +6667,45 @@ function renderBrandMeetings() {
   var listEl = document.getElementById('brand-meetings-list');
   var countEl = document.getElementById('brand-meetings-count');
   if (!listEl) return;
-  if (countEl) countEl.textContent = _brandMeetings.length + ' items';
+  if (countEl) countEl.textContent = _brandMeetings.length + ' ' + _kn('개','items');
   if (!_brandMeetings.length) {
-    listEl.innerHTML = '<div style="text-align:center;padding:32px 0;color:var(--text-muted);font-size:13px"><span class="ko">예정된 미팅이 없습니다.</span><span class="en">No meetings scheduled.</span></div>';
+    listEl.innerHTML = '<div style="text-align:center;padding:32px 0;color:var(--text-muted);font-size:13px">'+_kn('예정된 미팅이 없습니다.','No meetings scheduled.')+'</div>';
     return;
   }
   listEl.innerHTML = _brandMeetings.map(function(m){
     var stMap = {
-      proposed:    { l:'제안됨', c:'#f59e0b' },
-      confirmed:   { l:'확정됨', c:'#10b981' },
-      declined:    { l:'거절됨', c:'#ef4444' },
-      rescheduled: { l:'재조정', c:'#6b7280' },
-      completed:   { l:'완료',   c:'#0071dc' },
-      cancelled:   { l:'취소',   c:'#6b7280' }
+      proposed:    { l: _kn('제안됨','Proposed'),     c:'#f59e0b' },
+      confirmed:   { l: _kn('확정됨','Confirmed'),    c:'#10b981' },
+      declined:    { l: _kn('거절됨','Declined'),     c:'#ef4444' },
+      rescheduled: { l: _kn('재조정','Rescheduled'),  c:'#6b7280' },
+      completed:   { l: _kn('완료','Completed'),      c:'#0071dc' },
+      cancelled:   { l: _kn('취소','Cancelled'),      c:'#6b7280' }
     };
     var st = stMap[m.status] || stMap.proposed;
-    var when = m.scheduled_at ? _fmtKST(m.scheduled_at) : '<em style="color:var(--text-muted)">시간 협의 중</em>';
+    var when = m.scheduled_at ? _fmtKST(m.scheduled_at) : '<em style="color:var(--text-muted)">'+_kn('시간 협의 중','To be determined')+'</em>';
+    var minLabel = _kn('분','min');
     var proposedHtml = '';
     if (m.status === 'proposed' && m.proposed_slots && Array.isArray(m.proposed_slots) && m.proposed_slots.length) {
-      proposedHtml = '<div style="margin-top:10px;padding:10px;background:var(--surface-alt);border-radius:8px"><div style="font-size:11px;color:var(--text-muted);font-weight:600;margin-bottom:6px">제안된 시간 (택1, KST 기준):</div>' +
+      proposedHtml = '<div style="margin-top:10px;padding:10px;background:var(--surface-alt);border-radius:8px"><div style="font-size:11px;color:var(--text-muted);font-weight:600;margin-bottom:6px">'+_kn('제안된 시간 (택1, KST 기준)','Proposed times — pick one (KST):')+':</div>' +
         m.proposed_slots.map(function(s, i){
-          return '<button onclick="confirmMeetingSlot(\''+m.id+'\','+i+')" style="display:block;width:100%;text-align:left;background:#fff;border:1px solid var(--border);border-radius:6px;padding:8px 12px;margin-bottom:4px;cursor:pointer;font-size:12.5px;color:var(--text)">📅 '+_fmtKST(s.at)+' · '+(s.duration_min || m.duration_min || 30)+'분</button>';
+          return '<button onclick="confirmMeetingSlot(\''+m.id+'\','+i+')" style="display:block;width:100%;text-align:left;background:#fff;border:1px solid var(--border);border-radius:6px;padding:8px 12px;margin-bottom:4px;cursor:pointer;font-size:12.5px;color:var(--text)">📅 '+_fmtKST(s.at)+' · '+(s.duration_min || m.duration_min || 30)+' '+minLabel+'</button>';
         }).join('') +
         '</div>';
     }
     var actions = '';
     if (m.status === 'proposed' && (m.proposed_by === 'admin' || m.proposed_by === 'walmart')) {
-      actions = '<div style="margin-top:10px;display:flex;gap:8px"><button onclick="declineMeeting(\''+m.id+'\')" style="background:#fff;color:#ef4444;border:1px solid #ef4444;padding:6px 14px;border-radius:6px;font-size:12px;cursor:pointer">거절</button></div>';
+      actions = '<div style="margin-top:10px;display:flex;gap:8px"><button onclick="declineMeeting(\''+m.id+'\')" style="background:#fff;color:#ef4444;border:1px solid #ef4444;padding:6px 14px;border-radius:6px;font-size:12px;cursor:pointer">'+_kn('거절','Decline')+'</button></div>';
     }
+    var proposerMap = { admin: _kn('3SVS 관리자 제안','Proposed by 3SVS'), walmart: _kn('Startup Junkie 제안','Proposed by Startup Junkie'), brand: _kn('내가 요청','Requested by me') };
     return '<div style="padding:14px;background:#fff;border:1px solid var(--border);border-radius:10px;margin-bottom:10px">' +
       '<div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;flex-wrap:wrap">' +
         '<span style="font-size:14px;font-weight:600;color:var(--text)">'+_esc(m.title)+'</span>' +
         '<span style="font-size:10px;padding:2px 8px;border-radius:999px;background:'+st.c+'22;color:'+st.c+';font-weight:600">'+st.l+'</span>' +
-        '<span style="font-size:11px;color:var(--text-muted);margin-left:auto">'+_esc({admin:'3SVS 관리자',walmart:'Startup Junkie',brand:'내가 요청'}[m.proposed_by] || m.proposed_by || '')+'</span>' +
+        '<span style="font-size:11px;color:var(--text-muted);margin-left:auto">'+_esc(proposerMap[m.proposed_by] || m.proposed_by || '')+'</span>' +
       '</div>' +
-      '<div style="font-size:12.5px;color:var(--text);margin-bottom:4px">🕐 '+when+(m.duration_min ? ' · '+m.duration_min+'분' : '')+'</div>' +
+      '<div style="font-size:12.5px;color:var(--text);margin-bottom:4px">🕐 '+when+(m.duration_min ? ' · '+m.duration_min+' '+minLabel : '')+'</div>' +
       (m.agenda ? '<div style="font-size:12.5px;color:var(--text-muted);line-height:1.5;margin-top:6px;white-space:pre-wrap">'+_esc(m.agenda)+'</div>' : '') +
-      (m.meeting_url ? '<div style="margin-top:8px"><a href="'+_esc(m.meeting_url)+'" target="_blank" rel="noopener" style="font-size:12px;color:var(--accent);text-decoration:underline">🔗 미팅 링크 열기</a></div>' : '') +
+      (m.meeting_url ? '<div style="margin-top:8px"><a href="'+_esc(m.meeting_url)+'" target="_blank" rel="noopener" style="font-size:12px;color:var(--accent);text-decoration:underline">🔗 '+_kn('미팅 링크 열기','Open meeting link')+'</a></div>' : '') +
       (m.location ? '<div style="font-size:12px;color:var(--text-muted);margin-top:4px">📍 '+_esc(m.location)+'</div>' : '') +
       proposedHtml + actions +
     '</div>';
@@ -6688,18 +6714,18 @@ function renderBrandMeetings() {
 
 function showBrandMeetingRequestModal() {
   _showFormModal({
-    title: '미팅 요청 / Meeting Request',
-    subtitle: '관리자(3SVS) 및 Startup Junkie 측에 미팅을 요청합니다. 양쪽에서 일정을 확인 후 확정합니다.',
-    submitLabel: '미팅 요청',
+    title: _kn('미팅 요청','Request a Meeting'),
+    subtitle: _kn('관리자(3SVS) 및 Startup Junkie 측에 미팅을 요청합니다. 양쪽에서 일정을 확인 후 확정합니다.','Request a meeting with 3SVS Admin and Startup Junkie. Both sides will review and confirm.'),
+    submitLabel: _kn('미팅 요청','Send Request'),
     fields: [
-      { name: 'title', label: '미팅 주제 / Title', type: 'text', required: true, placeholder: '예: Phase 1 준비 사항 협의' },
-      { name: 'agenda', label: '논의 안건 / Agenda (선택)', type: 'textarea', rows: 3, placeholder: '다루고 싶은 주제를 적어주세요.' },
-      { name: 'scheduled_at_kst', label: '희망 일시 — KST 기준 / Korea Standard Time (UTC+9)', type: 'datetime-local-30min', required: true, help: '30분 단위로만 선택할 수 있습니다. 한국 시각으로 입력해주세요. Time is in Korea Standard Time (UTC+9), 30-minute slots only.' },
-      { name: 'duration_min', label: '예상 소요 시간 / Duration', type: 'select', value: '30', options: [
-        { value: '30', label: '30분 / 30 min' },
-        { value: '60', label: '60분 / 60 min' },
-        { value: '90', label: '90분 / 90 min' },
-        { value: '120', label: '120분 / 120 min' }
+      { name: 'title', label: _kn('미팅 주제','Title'), type: 'text', required: true, placeholder: _kn('예: Phase 1 준비 사항 협의','e.g., Phase 1 preparation discussion') },
+      { name: 'agenda', label: _kn('논의 안건 (선택)','Agenda (optional)'), type: 'textarea', rows: 3, placeholder: _kn('다루고 싶은 주제를 적어주세요.','What topics would you like to discuss?') },
+      { name: 'scheduled_at_kst', label: _kn('희망 일시 — KST 기준 (UTC+9)','Preferred date/time — Korea Standard Time (UTC+9)'), type: 'datetime-local-30min', required: true, help: _kn('30분 단위로만 선택할 수 있습니다. 한국 시각으로 입력해주세요.','30-minute slots only. Enter in Korea Standard Time.') },
+      { name: 'duration_min', label: _kn('예상 소요 시간','Duration'), type: 'select', value: '30', options: [
+        { value: '30',  label: _kn('30분','30 min') },
+        { value: '60',  label: _kn('60분','60 min') },
+        { value: '90',  label: _kn('90분','90 min') },
+        { value: '120', label: _kn('120분','120 min') }
       ] }
     ],
     onSubmit: async function(data) {
@@ -6761,13 +6787,26 @@ function renderBrandDocsTabs() {
   var el = document.getElementById('brand-docs-tabs');
   if (!el) return;
   var totalEl = document.getElementById('brand-docs-total-count');
-  if (totalEl) totalEl.textContent = _brandDocs.length + ' files';
+  if (totalEl) totalEl.textContent = _brandDocs.length + ' ' + _kn('개','files');
   el.innerHTML = _docCategoryDef.map(function(c){
     var count = c.id === 'all' ? _brandDocs.length : _brandDocs.filter(function(d){ return d.category === c.id; }).length;
     var active = c.id === _brandDocsActiveCategory;
-    return '<button onclick="setBrandDocsCategory(\''+c.id+'\')" style="background:'+(active?c.color:'#fff')+';color:'+(active?'#fff':'var(--text)')+';border:1px solid '+(active?c.color:'var(--border)')+';padding:6px 12px;border-radius:999px;font-size:12px;font-weight:600;cursor:pointer">'+
-      '<span class="ko">'+c.label_ko+'</span><span class="en">'+c.label_en+'</span> <span style="opacity:0.7;font-weight:500;margin-left:2px">'+count+'</span></button>';
+    var label = _kn(c.label_ko, c.label_en);
+    return '<button onclick="setBrandDocsCategory(\''+c.id+'\')" style="background:'+(active?c.color:'#fff')+';color:'+(active?'#fff':'var(--text)')+';border:1px solid '+(active?c.color:'var(--border)')+';padding:6px 12px;border-radius:999px;font-size:12px;font-weight:600;cursor:pointer">'+label+' <span style="opacity:0.7;font-weight:500;margin-left:2px">'+count+'</span></button>';
   }).join('');
+}
+
+function _taskCatLabel(cat) {
+  var map = {
+    walmart:    { ko:'월마트',           en:'Walmart' },
+    '3svs':     { ko:'3SVS',              en:'3SVS' },
+    compliance: { ko:'컴플라이언스',     en:'Compliance' },
+    internal:   { ko:'내부 업무',         en:'Internal' },
+    general:    { ko:'일반',              en:'General' }
+  };
+  var m = map[cat];
+  if (!m) return cat;
+  return _kn(m.ko, m.en);
 }
 
 function setBrandDocsCategory(cat) {
@@ -6787,27 +6826,28 @@ function renderBrandDocsList() {
   el.innerHTML = docs.map(function(d){
     var cat = _docCategoryDef.find(function(c){ return c.id === d.category; }) || _docCategoryDef[0];
     var stMap = {
-      requested: { l:'요청됨', c:'#f59e0b' },
-      uploaded:  { l:'업로드됨', c:'#0071dc' },
-      reviewed:  { l:'검토 중', c:'#8b5cf6' },
-      approved:  { l:'승인됨', c:'#10b981' },
-      rejected:  { l:'반려', c:'#ef4444' }
+      requested: { l: _kn('요청됨','Requested'),    c:'#f59e0b' },
+      uploaded:  { l: _kn('업로드됨','Uploaded'),   c:'#0071dc' },
+      reviewed:  { l: _kn('검토 중','Reviewing'),   c:'#8b5cf6' },
+      approved:  { l: _kn('승인됨','Approved'),     c:'#10b981' },
+      rejected:  { l: _kn('반려','Rejected'),       c:'#ef4444' }
     };
     var st = stMap[d.status] || stMap.uploaded;
     var sizeKb = d.file_size ? (Math.round(d.file_size / 102.4) / 10) + ' KB' : '';
+    var catLabel = _kn(cat.label_ko, cat.label_en);
     return '<div style="display:flex;gap:12px;padding:14px;background:#fff;border:1px solid var(--border);border-radius:10px;margin-bottom:10px">' +
       '<div style="flex-shrink:0;width:38px;height:38px;border-radius:8px;background:'+cat.color+'22;display:flex;align-items:center;justify-content:center"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="'+cat.color+'" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div>' +
       '<div style="flex:1;min-width:0">' +
         '<div style="display:flex;align-items:center;gap:8px;margin-bottom:4px;flex-wrap:wrap">' +
           '<span style="font-size:13.5px;font-weight:600;color:var(--text);overflow:hidden;text-overflow:ellipsis">'+_esc(d.name)+'</span>' +
-          '<span style="font-size:10px;padding:2px 7px;border-radius:999px;background:'+cat.color+'22;color:'+cat.color+';font-weight:600"><span class="ko">'+cat.label_ko+'</span><span class="en">'+cat.label_en+'</span></span>' +
+          '<span style="font-size:10px;padding:2px 7px;border-radius:999px;background:'+cat.color+'22;color:'+cat.color+';font-weight:600">'+catLabel+'</span>' +
           '<span style="font-size:10px;padding:2px 7px;border-radius:999px;background:'+st.c+'22;color:'+st.c+';font-weight:600">'+st.l+'</span>' +
         '</div>' +
         (d.description ? '<div style="font-size:12px;color:var(--text-muted);margin-bottom:4px">'+_esc(d.description)+'</div>' : '') +
-        '<div style="font-size:11.5px;color:var(--text-muted)">'+(d.requested_by ? '요청자: <strong>'+_esc(d.requested_by)+'</strong> · ' : '')+(d.uploaded_by_name ? '제출: '+_esc(d.uploaded_by_name)+' · ' : '')+ _fmtDateTime(d.created_at)+(sizeKb ? ' · '+sizeKb : '')+'</div>' +
+        '<div style="font-size:11.5px;color:var(--text-muted)">'+(d.requested_by ? _kn('요청자','Requested by')+': <strong>'+_esc(d.requested_by)+'</strong> · ' : '')+(d.uploaded_by_name ? _kn('제출','Submitted by')+': '+_esc(d.uploaded_by_name)+' · ' : '')+ _fmtKST(d.created_at)+(sizeKb ? ' · '+sizeKb : '')+'</div>' +
       '</div>' +
       '<div style="display:flex;flex-direction:column;gap:6px;align-items:flex-end">' +
-        (d.file_url ? '<a href="'+_esc(d.file_url)+'" target="_blank" rel="noopener" style="font-size:12px;color:var(--accent);text-decoration:underline">다운로드</a>' : '<span style="font-size:12px;color:var(--text-muted)">파일 대기</span>') +
+        (d.file_url ? '<a href="'+_esc(d.file_url)+'" target="_blank" rel="noopener" style="font-size:12px;color:var(--accent);text-decoration:underline">'+_kn('다운로드','Download')+'</a>' : '<span style="font-size:12px;color:var(--text-muted)">'+_kn('파일 대기','Awaiting file')+'</span>') +
       '</div>' +
     '</div>';
   }).join('');
@@ -7029,13 +7069,17 @@ function renderMessages(messages, viewerRole) {
   var thread = document.getElementById('msg-thread');
   if (!thread) return;
   if (messages.length === 0) {
-    thread.innerHTML = '<div style="text-align:center;padding:32px 0;color:rgba(0,0,0,0.6);font-size:13px">아직 메시지가 없습니다.</div>';
+    thread.innerHTML = '<div style="text-align:center;padding:32px 0;color:var(--text-muted);font-size:13px">' + _kn('아직 메시지가 없습니다.','No messages yet.') + '</div>';
   } else {
     var html = '';
     messages.forEach(function(m) {
       var isMine = m.sender_role === viewerRole;
-      var senderLabel = m.sender_role === 'brand' ? (m.sender_name || 'Brand') : (m.sender_role === 'admin' ? '3SVS 관리자' : m.sender_name || 'Unknown');
-      var time = m.created_at ? new Date(m.created_at).toLocaleString('ko-KR', {month:'short',day:'numeric',hour:'numeric',minute:'2-digit'}) : '';
+      var senderLabel;
+      if (m.sender_role === 'brand') senderLabel = m.sender_name || _kn('브랜드','Brand');
+      else if (m.sender_role === 'admin') senderLabel = _kn('3SVS 관리자','3SVS Admin');
+      else if (m.sender_role === 'walmart') senderLabel = 'Startup Junkie';
+      else senderLabel = m.sender_name || _kn('알 수 없음','Unknown');
+      var time = m.created_at ? _fmtKST(m.created_at) : '';
       html += '<div class="msg-bubble ' + (isMine ? 'brand' : 'admin') + '">' +
         '<div>' + m.content.replace(/</g,'&lt;').replace(/>/g,'&gt;') + '</div>' +
         '<div class="msg-meta">' + senderLabel + ' · ' + time + '</div></div>';
@@ -7044,7 +7088,7 @@ function renderMessages(messages, viewerRole) {
   }
   thread.scrollTop = thread.scrollHeight;
   var countEl = document.getElementById('portal-msg-count');
-  if (countEl) countEl.textContent = messages.length + ' messages';
+  if (countEl) countEl.textContent = messages.length + ' ' + _kn('개','messages');
 }
 
 // Override sendPortalMessage to use DB
