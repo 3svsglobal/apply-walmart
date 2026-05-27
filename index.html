@@ -2281,7 +2281,7 @@ button{cursor:pointer;font-family:var(--font)}
       <div class="dash-content" id="admin-brand-detail" style="display:none">
         <button onclick="showAdminView('dashboard')" style="display:flex;align-items:center;gap:8px;padding:8px 14px;border:1px solid var(--border);border-radius:999px;background:#fff;color:var(--text-muted);font-size:12px;font-family:var(--font);cursor:pointer;margin-bottom:20px"><span class="ko">← 대시보드로</span><span class="en">← Back to Dashboard</span></button>
         <div id="admin-brand-detail-body">
-          <div style="text-align:center;padding:60px 0;color:var(--text-muted)">불러오는 중...</div>
+          <div style="text-align:center;padding:60px 0;color:var(--text-muted)"><span class="ko">불러오는 중...</span><span class="en">Loading...</span></div>
         </div>
       </div>
 
@@ -2608,7 +2608,7 @@ button{cursor:pointer;font-family:var(--font)}
             <span class="ko">계약서</span><span class="en">Contracts</span>
           </div>
           <div id="brand-contracts-list" style="margin-top:12px">
-            <div style="text-align:center;padding:32px 0;color:var(--text-muted);font-size:13px">불러오는 중...</div>
+            <div style="text-align:center;padding:32px 0;color:var(--text-muted);font-size:13px"><span class="ko">불러오는 중...</span><span class="en">Loading...</span></div>
           </div>
         </div>
 
@@ -7141,7 +7141,7 @@ async function loadBrandContracts(brandId) {
     listEl.innerHTML = '<div style="text-align:center;padding:32px 0;color:rgba(0,0,0,0.6);font-size:13px">불러올 수 없습니다.</div>';
     return;
   }
-  listEl.innerHTML = '<div style="text-align:center;padding:32px 0;color:rgba(0,0,0,0.6);font-size:13px">불러오는 중...</div>';
+  listEl.innerHTML = '<div style="text-align:center;padding:32px 0;color:rgba(0,0,0,0.6);font-size:13px"><span class="ko">불러오는 중...</span><span class="en">Loading...</span></div>';
   var res = await supabase.from('wm_contracts').select('*').eq('brand_id', brandId).order('created_at', {ascending: false});
   if (!res.data || res.data.length === 0) {
     listEl.innerHTML =
@@ -7688,11 +7688,11 @@ async function showAdminBrandDetail(brandId) {
     '<div class="wm-section"><div class="wm-section-title"><span class="ko">Phase 관리</span><span class="en">Phase Management</span></div><div style="display:flex;gap:8px;flex-wrap:wrap">' + phaseBtns + '</div></div>' +
     '<div class="wm-section"><div class="wm-section-title"><span class="ko">기업 정보</span><span class="en">Company Information</span></div><div class="wm-info-grid">' + (infoHtml || '<div style="opacity:.7">정보 없음</div>') + '</div></div>' +
     '<div class="wm-section"><div class="wm-section-title" style="display:flex;justify-content:space-between;align-items:center"><span>🗒 <span class="ko">내부 메모</span><span class="en">Internal Notes</span></span><span id="admin-notes-status" style="font-size:11px;color:var(--text-muted)"></span></div><div style="margin-top:10px;font-size:11.5px;color:var(--text-muted);margin-bottom:8px"><span class="ko">관리자·Startup Junkie 만 접근. 브랜드에는 노출되지 않습니다.</span><span class="en">Visible to admin and Startup Junkie only. Not shown to brand.</span></div><div id="phase-tabs-notes" style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px"></div><div style="font-size:11.5px;color:var(--text-muted);margin-bottom:6px"><span id="admin-notes-phase-hint">Notes</span></div><textarea id="admin-brand-notes" rows="6" data-ph-ko="이 기업에 대한 메모: 연락 이력, 협상 포인트, 주의사항 등" data-ph-en="Notes about this brand: contact history, negotiation points, things to watch..." placeholder="이 기업에 대한 메모: 연락 이력, 협상 포인트, 주의사항 등" style="width:100%;background:#fff;border:1px solid var(--border);border-radius:8px;padding:12px 14px;font-size:13.5px;color:var(--text);font-family:var(--font);resize:vertical;line-height:1.55"></textarea><div style="margin-top:8px;display:flex;justify-content:flex-end"><button onclick="adminSaveBrandNotes(\x27' + brandId + '\x27)" style="background:var(--accent);color:#fff;border:none;padding:8px 18px;border-radius:6px;font-size:12.5px;font-weight:600;cursor:pointer"><span class="ko">저장</span><span class="en">Save</span></button></div></div>' +
-    '<div class="wm-section"><div class="wm-section-title" style="display:flex;justify-content:space-between;align-items:center"><span class="ko">할 일 / Tasks</span><span class="en">Tasks</span><button onclick="showAdminTaskAddModal(\x27' + brandId + '\x27)" style="background:var(--accent);color:#fff;border:none;padding:6px 12px;border-radius:6px;font-size:12px;font-weight:600;cursor:pointer"><span class="ko">+ 할 일 등록</span><span class="en">+ Add task</span></button></div><div id="phase-tabs-tasks" style="display:flex;gap:6px;flex-wrap:wrap;margin:10px 0 8px"></div><div id="admin-brand-tasks-list" style="margin-top:10px"><div style="color:var(--text-muted);font-size:12px">불러오는 중...</div></div></div>' +
-    '<div class="wm-section"><div class="wm-section-title" style="display:flex;justify-content:space-between;align-items:center"><span class="ko">미팅 / Meetings</span><span class="en">Meetings</span><button onclick="showAdminMeetingAddModal(\x27' + brandId + '\x27)" style="background:var(--accent);color:#fff;border:none;padding:6px 12px;border-radius:6px;font-size:12px;font-weight:600;cursor:pointer"><span class="ko">+ 미팅 제안</span><span class="en">+ Propose meeting</span></button></div><div id="admin-brand-meetings-list" style="margin-top:10px"><div style="color:var(--text-muted);font-size:12px">불러오는 중...</div></div></div>' +
-    '<div class="wm-section"><div class="wm-section-title" style="display:flex;justify-content:space-between;align-items:center"><span class="ko">자료 요청 / Documents</span><span class="en">Documents</span><button onclick="showAdminDocRequestModal(\x27' + brandId + '\x27)" style="background:var(--accent);color:#fff;border:none;padding:6px 12px;border-radius:6px;font-size:12px;font-weight:600;cursor:pointer"><span class="ko">+ 자료 요청</span><span class="en">+ Request document</span></button></div><div id="admin-brand-docs-list" style="margin-top:10px"><div style="color:var(--text-muted);font-size:12px">불러오는 중...</div></div></div>' +
-    '<div class="wm-section"><div class="wm-section-title" style="display:flex;justify-content:space-between;align-items:center"><span><span class="ko">신청서 정보 · 첨부 파일</span><span class="en">Application Info & Attachments</span></span></div><div id="admin-brand-application" style="margin-top:10px"><div style="color:var(--text-muted);font-size:12px">불러오는 중...</div></div></div>' +
-    '<div class="wm-section"><div class="wm-section-title" style="display:flex;justify-content:space-between;align-items:center"><span><span class="ko">최근 메시지</span><span class="en">Recent Messages</span></span><button onclick="showAdminBrandMessages(\x27' + brandId + '\x27, \x27' + brandNameEsc + '\x27)" style="background:var(--accent);color:#fff;border:none;padding:7px 16px;border-radius:7px;cursor:pointer;font-size:12.5px;font-weight:600"><span class="ko">전체 보기 / 답변</span><span class="en">Open / Reply</span></button></div><div id="admin-brand-messages-preview" style="margin-top:10px"><div style="color:var(--text-muted);font-size:12px">불러오는 중...</div></div></div>' +
+    '<div class="wm-section"><div class="wm-section-title" style="display:flex;justify-content:space-between;align-items:center"><span class="ko">할 일 / Tasks</span><span class="en">Tasks</span><button onclick="showAdminTaskAddModal(\x27' + brandId + '\x27)" style="background:var(--accent);color:#fff;border:none;padding:6px 12px;border-radius:6px;font-size:12px;font-weight:600;cursor:pointer"><span class="ko">+ 할 일 등록</span><span class="en">+ Add task</span></button></div><div id="phase-tabs-tasks" style="display:flex;gap:6px;flex-wrap:wrap;margin:10px 0 8px"></div><div id="admin-brand-tasks-list" style="margin-top:10px"><div style="color:var(--text-muted);font-size:12px"><span class="ko">불러오는 중...</span><span class="en">Loading...</span></div></div></div>' +
+    '<div class="wm-section"><div class="wm-section-title" style="display:flex;justify-content:space-between;align-items:center"><span class="ko">미팅 / Meetings</span><span class="en">Meetings</span><button onclick="showAdminMeetingAddModal(\x27' + brandId + '\x27)" style="background:var(--accent);color:#fff;border:none;padding:6px 12px;border-radius:6px;font-size:12px;font-weight:600;cursor:pointer"><span class="ko">+ 미팅 제안</span><span class="en">+ Propose meeting</span></button></div><div id="admin-brand-meetings-list" style="margin-top:10px"><div style="color:var(--text-muted);font-size:12px"><span class="ko">불러오는 중...</span><span class="en">Loading...</span></div></div></div>' +
+    '<div class="wm-section"><div class="wm-section-title" style="display:flex;justify-content:space-between;align-items:center"><span class="ko">자료 요청 / Documents</span><span class="en">Documents</span><button onclick="showAdminDocRequestModal(\x27' + brandId + '\x27)" style="background:var(--accent);color:#fff;border:none;padding:6px 12px;border-radius:6px;font-size:12px;font-weight:600;cursor:pointer"><span class="ko">+ 자료 요청</span><span class="en">+ Request document</span></button></div><div id="admin-brand-docs-list" style="margin-top:10px"><div style="color:var(--text-muted);font-size:12px"><span class="ko">불러오는 중...</span><span class="en">Loading...</span></div></div></div>' +
+    '<div class="wm-section"><div class="wm-section-title" style="display:flex;justify-content:space-between;align-items:center"><span><span class="ko">신청서 정보 · 첨부 파일</span><span class="en">Application Info & Attachments</span></span></div><div id="admin-brand-application" style="margin-top:10px"><div style="color:var(--text-muted);font-size:12px"><span class="ko">불러오는 중...</span><span class="en">Loading...</span></div></div></div>' +
+    '<div class="wm-section"><div class="wm-section-title" style="display:flex;justify-content:space-between;align-items:center"><span><span class="ko">최근 메시지</span><span class="en">Recent Messages</span></span><button onclick="showAdminBrandMessages(\x27' + brandId + '\x27, \x27' + brandNameEsc + '\x27)" style="background:var(--accent);color:#fff;border:none;padding:7px 16px;border-radius:7px;cursor:pointer;font-size:12.5px;font-weight:600"><span class="ko">전체 보기 / 답변</span><span class="en">Open / Reply</span></button></div><div id="admin-brand-messages-preview" style="margin-top:10px"><div style="color:var(--text-muted);font-size:12px"><span class="ko">불러오는 중...</span><span class="en">Loading...</span></div></div></div>' +
     '<div class="wm-section"><div class="wm-section-title"><span class="ko">계약서</span><span class="en">Contracts</span></div>' + getWmContractsHtml(brandId) + '</div>';
 
   // 비동기 로드
@@ -7727,7 +7727,7 @@ async function loadAdminBrandApplication(brandId) {
   var bRes = await supabase.from('wm_brands').select('portal_email, contact_email').eq('id', brandId).single();
   var email = (bRes.data && (bRes.data.portal_email || bRes.data.contact_email)) || '';
   if (!email) {
-    el.innerHTML = '<div style="color:var(--text-muted);font-size:12.5px">신청서를 찾을 수 없습니다 (이메일 매칭 불가).</div>';
+    el.innerHTML = '<div style="color:var(--text-muted);font-size:12.5px">' + _kn('신청서를 찾을 수 없습니다 (이메일 매칭 불가).','Application not found (no email match).') + '</div>';
     return;
   }
   var aRes = await supabase.from('wm_applications')
@@ -7737,7 +7737,7 @@ async function loadAdminBrandApplication(brandId) {
     .limit(1);
   var app = aRes.data && aRes.data[0];
   if (!app) {
-    el.innerHTML = '<div style="color:var(--text-muted);font-size:12.5px">' + _esc(email) + ' 로 매칭된 신청서가 없습니다.</div>';
+    el.innerHTML = '<div style="color:var(--text-muted);font-size:12.5px">' + _kn('이메일로 매칭된 신청서가 없습니다','No application matched for') + ': ' + _esc(email) + '</div>';
     return;
   }
 
@@ -7881,11 +7881,11 @@ async function loadAdminBrandTasks(brandId) {
   }
   var el = document.getElementById('admin-brand-tasks-list');
   if (!el) return;
-  if (!rows.length) { el.innerHTML = '<div style="color:var(--text-muted);font-size:12px;padding:8px 0">등록된 할 일이 없습니다.</div>'; return; }
+  if (!rows.length) { el.innerHTML = '<div style="color:var(--text-muted);font-size:12px;padding:8px 0">' + _kn('등록된 할 일이 없습니다.','No tasks yet.') + '</div>'; return; }
   el.innerHTML = rows.map(function(t){
     var stColor = t.status==='completed' ? '#10b981' : (t.status==='cancelled' ? '#6b7280' : (t.priority==='urgent' ? '#ef4444' : '#0071dc'));
-    var stLabel = t.status==='completed' ? '✓ 완료' : (t.status==='cancelled' ? '취소' : (t.priority==='urgent' ? '긴급' : (t.priority==='high' ? '높음' : '진행 중')));
-    var due = t.due_date ? _fmtDate(t.due_date) : '기한 미정';
+    var stLabel = t.status==='completed' ? _kn('✓ 완료','✓ Done') : (t.status==='cancelled' ? _kn('취소','Cancelled') : (t.priority==='urgent' ? _kn('긴급','Urgent') : (t.priority==='high' ? _kn('높음','High') : _kn('진행 중','Open'))));
+    var due = t.due_date ? _fmtDate(t.due_date) : _kn('기한 미정','No due date');
     var phaseChip = '';
     if (t.phase && t.phase !== 'general') {
       var phaseLblMap = { contract:'Contract', phase1:'Phase 1', phase2:'Phase 2', phase3:'Phase 3', completed:'Completed' };
@@ -7894,9 +7894,9 @@ async function loadAdminBrandTasks(brandId) {
     return '<div style="padding:10px 12px;background:#fff;border:1px solid var(--border);border-radius:8px;margin-bottom:6px;display:flex;justify-content:space-between;align-items:flex-start;gap:10px">' +
       '<div style="flex:1;min-width:0"><div style="font-size:13px;font-weight:600;color:var(--text);'+(t.status==='completed'?'text-decoration:line-through;opacity:0.6':'')+'">'+_esc(t.title)+'</div>' +
       (t.description ? '<div style="font-size:12px;color:var(--text-muted);margin-top:3px">'+_esc(t.description)+'</div>' : '') +
-      '<div style="font-size:11px;color:var(--text-muted);margin-top:4px;display:flex;align-items:center;gap:6px;flex-wrap:wrap">📅 '+due+' · <span style="display:inline-block;padding:1px 7px;border-radius:999px;background:'+(t.created_by==='admin'?'#f59e0b22':(t.created_by==='walmart'?'#10b98122':'#6b728022'))+';color:'+(t.created_by==='admin'?'#f59e0b':(t.created_by==='walmart'?'#10b981':'#6b7280'))+';font-weight:600;font-size:10px">'+({admin:'3SVS 관리자',walmart:'Startup Junkie',brand:'브랜드'}[t.created_by] || '시스템')+'</span>' + phaseChip + '</div></div>' +
+      '<div style="font-size:11px;color:var(--text-muted);margin-top:4px;display:flex;align-items:center;gap:6px;flex-wrap:wrap">📅 '+due+' · <span style="display:inline-block;padding:1px 7px;border-radius:999px;background:'+(t.created_by==='admin'?'#f59e0b22':(t.created_by==='walmart'?'#10b98122':'#6b728022'))+';color:'+(t.created_by==='admin'?'#f59e0b':(t.created_by==='walmart'?'#10b981':'#6b7280'))+';font-weight:600;font-size:10px">'+({admin:_kn('3SVS 관리자','3SVS Admin'),walmart:'Startup Junkie',brand:_kn('브랜드','Brand')}[t.created_by] || _kn('시스템','System'))+'</span>' + phaseChip + '</div></div>' +
       '<div style="display:flex;flex-direction:column;align-items:flex-end;gap:6px"><span style="font-size:10px;padding:2px 8px;border-radius:999px;background:'+stColor+'22;color:'+stColor+';font-weight:600">'+stLabel+'</span>' +
-      '<button onclick="adminDeleteTask(\''+t.id+'\',\''+brandId+'\')" style="background:none;border:none;color:#ef4444;font-size:11px;cursor:pointer;padding:2px 4px">삭제</button></div>' +
+      '<button onclick="adminDeleteTask(\''+t.id+'\',\''+brandId+'\')" style="background:none;border:none;color:#ef4444;font-size:11px;cursor:pointer;padding:2px 4px">'+_kn('삭제','Delete')+'</button></div>' +
     '</div>';
   }).join('');
 }
@@ -7907,24 +7907,33 @@ async function loadAdminBrandMeetings(brandId) {
   var rows = (res && res.data) || [];
   var el = document.getElementById('admin-brand-meetings-list');
   if (!el) return;
-  if (!rows.length) { el.innerHTML = '<div style="color:var(--text-muted);font-size:12px;padding:8px 0">등록된 미팅이 없습니다.</div>'; return; }
-  var stMap = { proposed:{l:'제안됨',c:'#f59e0b'}, confirmed:{l:'확정',c:'#10b981'}, declined:{l:'거절',c:'#ef4444'}, completed:{l:'완료',c:'#0071dc'}, cancelled:{l:'취소',c:'#6b7280'}, rescheduled:{l:'재조정',c:'#6b7280'} };
+  if (!rows.length) { el.innerHTML = '<div style="color:var(--text-muted);font-size:12px;padding:8px 0">' + _kn('등록된 미팅이 없습니다.','No meetings yet.') + '</div>'; return; }
+  var stMap = {
+    proposed:    { l: _kn('제안됨','Proposed'),    c:'#f59e0b' },
+    confirmed:   { l: _kn('확정','Confirmed'),     c:'#10b981' },
+    declined:    { l: _kn('거절','Declined'),      c:'#ef4444' },
+    completed:   { l: _kn('완료','Completed'),     c:'#0071dc' },
+    cancelled:   { l: _kn('취소','Cancelled'),     c:'#6b7280' },
+    rescheduled: { l: _kn('재조정','Rescheduled'), c:'#6b7280' }
+  };
+  var minLabel = _kn('분','min');
   el.innerHTML = rows.map(function(m){
     var st = stMap[m.status] || stMap.proposed;
-    var when = m.scheduled_at ? _fmtKST(m.scheduled_at) : '시간 미정';
+    var when = m.scheduled_at ? _fmtKST(m.scheduled_at) : _kn('시간 미정','Time TBD');
     var slotsHtml = '';
     if (m.status === 'proposed' && m.proposed_slots && Array.isArray(m.proposed_slots) && m.proposed_slots.length > 0) {
-      slotsHtml = '<div style="margin-top:6px;padding:6px 8px;background:var(--surface-alt);border-radius:6px;font-size:11px"><strong style="color:var(--text-muted)">제안 시간 (KST):</strong> ' +
-        m.proposed_slots.map(function(s){ return _fmtKST(s.at) + ' (' + (s.duration_min || 30) + '분)'; }).join(' · ') + '</div>';
+      slotsHtml = '<div style="margin-top:6px;padding:6px 8px;background:var(--surface-alt);border-radius:6px;font-size:11px"><strong style="color:var(--text-muted)">'+_kn('제안 시간 (KST)','Proposed times (KST)')+':</strong> ' +
+        m.proposed_slots.map(function(s){ return _fmtKST(s.at) + ' (' + (s.duration_min || 30) + ' ' + minLabel + ')'; }).join(' · ') + '</div>';
     }
+    var proposerMap = { admin: _kn('3SVS 관리자 제안','Proposed by 3SVS'), walmart: _kn('Startup Junkie 제안','Proposed by Startup Junkie'), brand: _kn('브랜드 요청','Brand request') };
     return '<div style="padding:10px 12px;background:#fff;border:1px solid var(--border);border-radius:8px;margin-bottom:6px">' +
       '<div style="display:flex;justify-content:space-between;align-items:flex-start;gap:10px"><div style="flex:1;min-width:0">' +
       '<div style="font-size:13px;font-weight:600;color:var(--text)">'+_esc(m.title)+'</div>' +
-      '<div style="font-size:11.5px;color:var(--text-muted);margin-top:3px">🕐 '+when+(m.duration_min?' · '+m.duration_min+'분':'')+' · '+({admin:'3SVS 관리자 제안',walmart:'Startup Junkie 제안',brand:'브랜드 요청'}[m.proposed_by] || '')+'</div>' +
+      '<div style="font-size:11.5px;color:var(--text-muted);margin-top:3px">🕐 '+when+(m.duration_min?' · '+m.duration_min+' '+minLabel:'')+' · '+(proposerMap[m.proposed_by] || '')+'</div>' +
       (m.agenda ? '<div style="font-size:12px;color:var(--text-muted);margin-top:4px;white-space:pre-wrap">'+_esc(m.agenda)+'</div>' : '') + slotsHtml +
       '</div><div style="display:flex;flex-direction:column;align-items:flex-end;gap:6px"><span style="font-size:10px;padding:2px 8px;border-radius:999px;background:'+st.c+'22;color:'+st.c+';font-weight:600">'+st.l+'</span>' +
-      (m.status === 'proposed' && m.proposed_by === 'brand' ? '<button onclick="adminConfirmMeeting(\''+m.id+'\',\''+brandId+'\')" style="background:#10b981;color:#fff;border:none;padding:4px 10px;border-radius:6px;font-size:11px;cursor:pointer">확정</button>' : '') +
-      '<button onclick="adminDeleteMeeting(\''+m.id+'\',\''+brandId+'\')" style="background:none;border:none;color:#ef4444;font-size:11px;cursor:pointer;padding:2px 4px">삭제</button></div></div>' +
+      (m.status === 'proposed' && m.proposed_by === 'brand' ? '<button onclick="adminConfirmMeeting(\''+m.id+'\',\''+brandId+'\')" style="background:#10b981;color:#fff;border:none;padding:4px 10px;border-radius:6px;font-size:11px;cursor:pointer">'+_kn('확정','Confirm')+'</button>' : '') +
+      '<button onclick="adminDeleteMeeting(\''+m.id+'\',\''+brandId+'\')" style="background:none;border:none;color:#ef4444;font-size:11px;cursor:pointer;padding:2px 4px">'+_kn('삭제','Delete')+'</button></div></div>' +
     '</div>';
   }).join('');
 }
@@ -7935,9 +7944,21 @@ async function loadAdminBrandDocs(brandId) {
   var rows = (res && res.data) || [];
   var el = document.getElementById('admin-brand-docs-list');
   if (!el) return;
-  if (!rows.length) { el.innerHTML = '<div style="color:var(--text-muted);font-size:12px;padding:8px 0">등록된 자료가 없습니다.</div>'; return; }
-  var catMap = { walmart_request:{l:'월마트 요청',c:'#0071dc'}, '3svs_request':{l:'3SVS 요청',c:'#f59e0b'}, compliance:{l:'컴플라이언스',c:'#10b981'}, product_spec:{l:'제품 사양',c:'#8b5cf6'}, general:{l:'일반',c:'#6b7280'} };
-  var stMap = { requested:{l:'요청',c:'#f59e0b'}, uploaded:{l:'업로드됨',c:'#0071dc'}, reviewed:{l:'검토 중',c:'#8b5cf6'}, approved:{l:'승인',c:'#10b981'}, rejected:{l:'반려',c:'#ef4444'} };
+  if (!rows.length) { el.innerHTML = '<div style="color:var(--text-muted);font-size:12px;padding:8px 0">' + _kn('등록된 자료가 없습니다.','No documents yet.') + '</div>'; return; }
+  var catMap = {
+    walmart_request: { l: _kn('월마트 요청','Walmart Req'),      c:'#0071dc' },
+    '3svs_request':  { l: _kn('3SVS 요청','3SVS Req'),            c:'#f59e0b' },
+    compliance:      { l: _kn('컴플라이언스','Compliance'),       c:'#10b981' },
+    product_spec:    { l: _kn('제품 사양','Product Spec'),        c:'#8b5cf6' },
+    general:         { l: _kn('일반','General'),                  c:'#6b7280' }
+  };
+  var stMap = {
+    requested: { l: _kn('요청','Requested'),    c:'#f59e0b' },
+    uploaded:  { l: _kn('업로드됨','Uploaded'), c:'#0071dc' },
+    reviewed:  { l: _kn('검토 중','Reviewing'), c:'#8b5cf6' },
+    approved:  { l: _kn('승인','Approved'),     c:'#10b981' },
+    rejected:  { l: _kn('반려','Rejected'),     c:'#ef4444' }
+  };
   el.innerHTML = rows.map(function(d){
     var cat = catMap[d.category] || catMap.general;
     var st = stMap[d.status] || stMap.uploaded;
@@ -7946,12 +7967,12 @@ async function loadAdminBrandDocs(brandId) {
       (d.description ? '<div style="font-size:12px;color:var(--text-muted);margin-top:3px">'+_esc(d.description)+'</div>' : '') +
       '<div style="display:flex;gap:6px;margin-top:5px;align-items:center"><span style="font-size:10px;padding:2px 8px;border-radius:999px;background:'+cat.c+'22;color:'+cat.c+';font-weight:600">'+cat.l+'</span>' +
       '<span style="font-size:10px;padding:2px 8px;border-radius:999px;background:'+st.c+'22;color:'+st.c+';font-weight:600">'+st.l+'</span>' +
-      (d.uploaded_by_name ? '<span style="font-size:10.5px;color:var(--text-muted)">제출: '+_esc(d.uploaded_by_name)+'</span>' : '') +
+      (d.uploaded_by_name ? '<span style="font-size:10.5px;color:var(--text-muted)">'+_kn('제출','Submitted')+': '+_esc(d.uploaded_by_name)+'</span>' : '') +
       '</div></div>' +
       '<div style="display:flex;flex-direction:column;align-items:flex-end;gap:6px">' +
-      (d.file_url ? '<a href="'+_esc(d.file_url)+'" target="_blank" rel="noopener" style="font-size:11.5px;color:var(--accent);text-decoration:underline">다운로드</a>' : '<span style="font-size:11px;color:var(--text-muted)">대기 중</span>') +
-      (d.status === 'uploaded' ? '<button onclick="adminApproveDoc(\''+d.id+'\',\''+brandId+'\')" style="background:#10b981;color:#fff;border:none;padding:3px 8px;border-radius:5px;font-size:10.5px;cursor:pointer">승인</button>' : '') +
-      '<button onclick="adminDeleteDoc(\''+d.id+'\',\''+brandId+'\')" style="background:none;border:none;color:#ef4444;font-size:11px;cursor:pointer;padding:2px 4px">삭제</button></div>' +
+      (d.file_url ? '<a href="'+_esc(d.file_url)+'" target="_blank" rel="noopener" style="font-size:11.5px;color:var(--accent);text-decoration:underline">'+_kn('다운로드','Download')+'</a>' : '<span style="font-size:11px;color:var(--text-muted)">'+_kn('대기 중','Pending')+'</span>') +
+      (d.status === 'uploaded' ? '<button onclick="adminApproveDoc(\''+d.id+'\',\''+brandId+'\')" style="background:#10b981;color:#fff;border:none;padding:3px 8px;border-radius:5px;font-size:10.5px;cursor:pointer">'+_kn('승인','Approve')+'</button>' : '') +
+      '<button onclick="adminDeleteDoc(\''+d.id+'\',\''+brandId+'\')" style="background:none;border:none;color:#ef4444;font-size:11px;cursor:pointer;padding:2px 4px">'+_kn('삭제','Delete')+'</button></div>' +
     '</div>';
   }).join('');
 }
