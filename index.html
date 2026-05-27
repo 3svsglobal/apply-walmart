@@ -5883,7 +5883,25 @@ async function renderAdminDashboard() {
       var statusDot = b.portal_active ? '<div style="width:6px;height:6px;border-radius:50%;background:#00d68f"></div>' : '<div style="width:6px;height:6px;border-radius:50%;background:rgba(0,0,0,0.15)"></div>';
       var brandIdEsc = (b.id || '').replace(/'/g, "\\'");
       var brandNameEsc = (b.name_ko || b.name_en || '').replace(/'/g, "\\'");
-      pHtml += '<div class="brand-card admin-brand-clickable" data-brand-id="' + (b.id || '') + '" data-brand-name="' + (b.name_ko || b.name_en || '') + '" style="margin-bottom:8px;cursor:pointer;transition:all .15s" onclick="showAdminBrandDetail(\'' + brandIdEsc + '\')" onmouseenter="this.style.borderColor=\'rgba(0,113,220,0.3)\';this.style.background=\'rgba(0,113,220,0.04)\'" onmouseleave="this.style.borderColor=\'\';this.style.background=\'\'"><div class="brand-header" style="margin-bottom:0"><div class="brand-info"><div class="brand-icon">' + initial + '</div><div><div class="brand-name">' + (b.name_ko || b.name_en) + typeBadge + ' <span class="admin-unread-badge" data-brand-id="' + (b.id || '') + '" style="display:none;font-size:10px;padding:2px 7px;border-radius:999px;background:var(--red);color:var(--text);margin-left:6px;font-weight:700;font-family:var(--mono)">0</span></div><div class="brand-sub">' + phaseLbl + ' \u00b7 ' + (b.portal_email || '') + '</div></div></div><div style="display:flex;gap:8px;align-items:center"><button onclick="event.stopPropagation();showAdminBrandMessages(\'' + brandIdEsc + '\',\'' + brandNameEsc + '\')" title="' + _kn('\uba54\uc2dc\uc9c0','Messages') + '" style="background:rgba(0,113,220,0.08);border:1px solid rgba(0,113,220,0.18);color:var(--accent);width:30px;height:30px;border-radius:8px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:14px">\ud83d\udcac</button>' + statusDot + '</div></div></div>';
+      pHtml += '<div class="brand-card admin-brand-clickable" data-brand-id="' + (b.id || '') + '" data-brand-name="' + (b.name_ko || b.name_en || '') + '" style="margin-bottom:8px;cursor:pointer;transition:all .15s;padding:14px 16px;border:1px solid var(--border);border-radius:10px;background:#fff" onclick="showAdminBrandDetail(\'' + brandIdEsc + '\')" onmouseenter="this.style.borderColor=\'rgba(0,113,220,0.45)\';this.style.background=\'rgba(0,113,220,0.04)\';this.style.transform=\'translateY(-1px)\';this.style.boxShadow=\'0 4px 12px rgba(0,113,220,0.08)\'" onmouseleave="this.style.borderColor=\'\';this.style.background=\'#fff\';this.style.transform=\'\';this.style.boxShadow=\'\'">' +
+        '<div style="display:flex;justify-content:space-between;align-items:center;gap:14px">' +
+          '<div style="display:flex;align-items:center;gap:12px;flex:1;min-width:0">' +
+            '<div class="brand-icon">' + initial + '</div>' +
+            '<div style="min-width:0;flex:1">' +
+              '<div class="brand-name" style="display:flex;align-items:center;gap:6px;flex-wrap:wrap">' + (b.name_ko || b.name_en) + typeBadge + statusDot + '</div>' +
+              '<div class="brand-sub">' + phaseLbl + ' \u00b7 ' + (b.portal_email || '') + '</div>' +
+            '</div>' +
+          '</div>' +
+          '<div style="display:flex;gap:6px;align-items:center;flex-shrink:0">' +
+            '<button onclick="event.stopPropagation();showAdminBrandMessages(\'' + brandIdEsc + '\',\'' + brandNameEsc + '\')" title="' + _kn('\uba54\uc2dc\uc9c0 \uc5f4\uae30','Open messages') + '" style="display:inline-flex;align-items:center;gap:6px;background:rgba(0,113,220,0.08);border:1px solid rgba(0,113,220,0.2);color:var(--accent);height:36px;padding:0 14px;border-radius:8px;cursor:pointer;font-size:13px;font-weight:600;font-family:var(--font);position:relative">' +
+              '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>' +
+              '<span class="ko">\uba54\uc2dc\uc9c0</span><span class="en">Messages</span>' +
+              '<span class="admin-unread-badge" data-brand-id="' + (b.id || '') + '" style="display:none;font-size:10.5px;padding:1px 7px;border-radius:999px;background:#ef4444;color:#fff;font-weight:700;font-family:var(--mono);margin-left:2px;line-height:1.5">0</span>' +
+            '</button>' +
+            '<div style="font-size:18px;color:var(--text-muted);padding:0 4px;line-height:1">\u203a</div>' +
+          '</div>' +
+        '</div>' +
+      '</div>';
     });
     pipelineEl.innerHTML = pHtml;
   }
@@ -7118,6 +7136,20 @@ function selectContractRole(role) {
 // ─── ADMIN: BRAND MESSAGES VIEW (단순화 — 체크리스트 제거됨) ───
 async function showAdminBrandMessages(brandId, brandName) {
   var messages = await loadAdminMessages(brandId);
+
+  // 자동 읽음 처리: 브랜드가 보낸 모든 미확인 메시지를 read_by_admin=true 로 업데이트
+  if (supabase && brandId) {
+    try {
+      await supabase.from('wm_messages')
+        .update({ read_by_admin: true })
+        .eq('brand_id', brandId)
+        .eq('sender_role', 'brand')
+        .eq('read_by_admin', false);
+      // 배지 + 카운트 갱신
+      if (typeof loadAdminUnreadCounts === 'function') loadAdminUnreadCounts();
+    } catch(e) { console.warn('mark-read failed', e); }
+  }
+
   var existing = document.getElementById('admin-msg-modal');
   if (existing) existing.remove();
 
@@ -7372,7 +7404,8 @@ async function showAdminBrandDetail(brandId) {
     '<div class="wm-section"><div class="wm-section-title" style="display:flex;justify-content:space-between;align-items:center"><span class="ko">할 일 / Tasks</span><span class="en">Tasks</span><button onclick="showAdminTaskAddModal(\x27' + brandId + '\x27)" style="background:var(--accent);color:#fff;border:none;padding:6px 12px;border-radius:6px;font-size:12px;font-weight:600;cursor:pointer"><span class="ko">+ 할 일 등록</span><span class="en">+ Add task</span></button></div><div id="admin-brand-tasks-list" style="margin-top:10px"><div style="color:var(--text-muted);font-size:12px">불러오는 중...</div></div></div>' +
     '<div class="wm-section"><div class="wm-section-title" style="display:flex;justify-content:space-between;align-items:center"><span class="ko">미팅 / Meetings</span><span class="en">Meetings</span><button onclick="showAdminMeetingAddModal(\x27' + brandId + '\x27)" style="background:var(--accent);color:#fff;border:none;padding:6px 12px;border-radius:6px;font-size:12px;font-weight:600;cursor:pointer"><span class="ko">+ 미팅 제안</span><span class="en">+ Propose meeting</span></button></div><div id="admin-brand-meetings-list" style="margin-top:10px"><div style="color:var(--text-muted);font-size:12px">불러오는 중...</div></div></div>' +
     '<div class="wm-section"><div class="wm-section-title" style="display:flex;justify-content:space-between;align-items:center"><span class="ko">자료 요청 / Documents</span><span class="en">Documents</span><button onclick="showAdminDocRequestModal(\x27' + brandId + '\x27)" style="background:var(--accent);color:#fff;border:none;padding:6px 12px;border-radius:6px;font-size:12px;font-weight:600;cursor:pointer"><span class="ko">+ 자료 요청</span><span class="en">+ Request document</span></button></div><div id="admin-brand-docs-list" style="margin-top:10px"><div style="color:var(--text-muted);font-size:12px">불러오는 중...</div></div></div>' +
-    '<div class="wm-section"><div class="wm-section-title"><span class="ko">메시지</span><span class="en">Messages</span></div><button onclick="showAdminBrandMessages(\x27' + brandId + '\x27, \x27' + brandNameEsc + '\x27)" style="background:rgba(0,113,220,0.1);color:var(--accent);border:1px solid rgba(0,113,220,0.2);padding:8px 16px;border-radius:8px;cursor:pointer;font-size:13px"><span class="ko">메시지 확인 / 답변</span><span class="en">View / Reply Messages</span></button></div>' +
+    '<div class="wm-section"><div class="wm-section-title" style="display:flex;justify-content:space-between;align-items:center"><span><span class="ko">신청서 정보 · 첨부 파일</span><span class="en">Application Info & Attachments</span></span></div><div id="admin-brand-application" style="margin-top:10px"><div style="color:var(--text-muted);font-size:12px">불러오는 중...</div></div></div>' +
+    '<div class="wm-section"><div class="wm-section-title" style="display:flex;justify-content:space-between;align-items:center"><span><span class="ko">최근 메시지</span><span class="en">Recent Messages</span></span><button onclick="showAdminBrandMessages(\x27' + brandId + '\x27, \x27' + brandNameEsc + '\x27)" style="background:var(--accent);color:#fff;border:none;padding:7px 16px;border-radius:7px;cursor:pointer;font-size:12.5px;font-weight:600"><span class="ko">전체 보기 / 답변</span><span class="en">Open / Reply</span></button></div><div id="admin-brand-messages-preview" style="margin-top:10px"><div style="color:var(--text-muted);font-size:12px">불러오는 중...</div></div></div>' +
     '<div class="wm-section"><div class="wm-section-title"><span class="ko">계약서</span><span class="en">Contracts</span></div>' + getWmContractsHtml(brandId) + '</div>';
 
   // 비동기 로드
@@ -7380,11 +7413,124 @@ async function showAdminBrandDetail(brandId) {
   if (typeof loadAdminBrandTasks === 'function') loadAdminBrandTasks(brandId);
   if (typeof loadAdminBrandMeetings === 'function') loadAdminBrandMeetings(brandId);
   if (typeof loadAdminBrandDocs === 'function') loadAdminBrandDocs(brandId);
+  if (typeof loadAdminBrandApplication === 'function') loadAdminBrandApplication(brandId);
+  if (typeof loadAdminBrandMessagesPreview === 'function') loadAdminBrandMessagesPreview(brandId);
+  // 진입 시 자동 읽음 처리
+  if (supabase) {
+    supabase.from('wm_messages')
+      .update({ read_by_admin: true })
+      .eq('brand_id', brandId)
+      .eq('sender_role', 'brand')
+      .eq('read_by_admin', false)
+      .then(function(){ if (typeof loadAdminUnreadCounts === 'function') loadAdminUnreadCounts(); });
+  }
   // placeholder 동기화
   var lang = document.documentElement.lang || 'en';
   document.querySelectorAll('#admin-brand-detail [data-ph-ko][data-ph-en]').forEach(function(el) {
     el.setAttribute('placeholder', lang === 'ko' ? el.getAttribute('data-ph-ko') : el.getAttribute('data-ph-en'));
   });
+}
+
+// ─── ADMIN: 신청서 + 첨부 파일 + walmart_interest ───
+async function loadAdminBrandApplication(brandId) {
+  if (!supabase) return;
+  var el = document.getElementById('admin-brand-application');
+  if (!el) return;
+  // 브랜드 → 신청 매칭: portal_email 로 찾기
+  var bRes = await supabase.from('wm_brands').select('portal_email, contact_email').eq('id', brandId).single();
+  var email = (bRes.data && (bRes.data.portal_email || bRes.data.contact_email)) || '';
+  if (!email) {
+    el.innerHTML = '<div style="color:var(--text-muted);font-size:12.5px">신청서를 찾을 수 없습니다 (이메일 매칭 불가).</div>';
+    return;
+  }
+  var aRes = await supabase.from('wm_applications')
+    .select('*')
+    .eq('contact_email', email)
+    .order('created_at', { ascending: false })
+    .limit(1);
+  var app = aRes.data && aRes.data[0];
+  if (!app) {
+    el.innerHTML = '<div style="color:var(--text-muted);font-size:12.5px">' + _esc(email) + ' 로 매칭된 신청서가 없습니다.</div>';
+    return;
+  }
+
+  // 첨부 파일 렌더링
+  var attachedHtml = '';
+  if (app.attached_files && Array.isArray(app.attached_files) && app.attached_files.length) {
+    attachedHtml = '<div style="margin-bottom:14px"><div style="font-size:12px;font-weight:700;color:var(--text-muted);margin-bottom:8px;letter-spacing:0.2px">📎 ' + _kn('첨부 파일','Attached Files') + ' (' + app.attached_files.length + ')</div>' +
+      app.attached_files.map(function(f) {
+        var name = f.name || f.original_name || _kn('파일','File');
+        var url = f.url || f.public_url || '';
+        var sizeKb = f.size ? (Math.round(f.size/102.4)/10) + ' KB' : '';
+        return '<div style="display:flex;align-items:center;gap:10px;padding:10px 12px;background:#fff;border:1px solid var(--border);border-radius:8px;margin-bottom:6px">' +
+          '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>' +
+          '<div style="flex:1;min-width:0"><div style="font-size:13px;font-weight:600;color:var(--text);overflow:hidden;text-overflow:ellipsis;white-space:nowrap">' + _esc(name) + '</div>' +
+          (sizeKb ? '<div style="font-size:11px;color:var(--text-muted)">' + sizeKb + '</div>' : '') + '</div>' +
+          (url ? '<a href="' + _esc(url) + '" target="_blank" rel="noopener" style="font-size:12px;color:var(--accent);text-decoration:underline;font-weight:600">' + _kn('다운로드','Download') + '</a>' : '<span style="font-size:11px;color:var(--text-muted)">' + _kn('링크 없음','No link') + '</span>') +
+        '</div>';
+      }).join('') + '</div>';
+  } else {
+    attachedHtml = '<div style="margin-bottom:14px;padding:12px;background:var(--surface-alt);border-radius:8px;font-size:12.5px;color:var(--text-muted)">📎 ' + _kn('첨부된 파일이 없습니다.','No attached files.') + '</div>';
+  }
+
+  // walmart_interest JSON 파싱
+  var interestHtml = '';
+  if (app.walmart_interest) {
+    var interest = app.walmart_interest;
+    if (typeof interest === 'string') {
+      try { interest = JSON.parse(interest); } catch(e) { interest = null; }
+    }
+    if (interest && typeof interest === 'object') {
+      var pairs = Object.keys(interest).map(function(k){
+        var v = interest[k];
+        if (Array.isArray(v)) v = v.join(', ');
+        if (v == null || v === '') return '';
+        return '<div style="padding:8px 0;border-bottom:1px solid var(--border)"><div style="font-size:11.5px;color:var(--text-muted);font-weight:600;margin-bottom:3px">' + _esc(k) + '</div><div style="font-size:13px;color:var(--text);line-height:1.5">' + _esc(String(v)) + '</div></div>';
+      }).filter(Boolean).join('');
+      if (pairs) interestHtml = '<div style="margin-bottom:14px"><div style="font-size:12px;font-weight:700;color:var(--text-muted);margin-bottom:8px">🏪 ' + _kn('Walmart 입점 관련 정보','Walmart Interest Details') + '</div><div style="background:#fff;border:1px solid var(--border);border-radius:8px;padding:6px 14px">' + pairs + '</div></div>';
+    }
+  }
+
+  // 기본 신청 정보
+  var basicHtml = '<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:8px 16px;margin-bottom:14px;padding:12px 14px;background:#fff;border:1px solid var(--border);border-radius:8px">' +
+    _adminAppField(_kn('신청 유형','Apply Type'), app.apply_type === 'voucher' ? _kn('수출바우처','Voucher') : _kn('직접참여','Direct')) +
+    _adminAppField(_kn('상태','Status'), app.status || '-') +
+    _adminAppField(_kn('담당자','Contact'), app.contact_name || '-') +
+    _adminAppField(_kn('이메일','Email'), app.contact_email || '-') +
+    _adminAppField(_kn('전화','Phone'), app.contact_phone || '-') +
+    _adminAppField(_kn('사업자번호','Business No.'), app.business_number || '-') +
+    _adminAppField(_kn('신청일','Submitted'), app.created_at ? _fmtDate(app.created_at) : '-') +
+    '</div>';
+
+  el.innerHTML = basicHtml + attachedHtml + interestHtml;
+}
+
+function _adminAppField(label, value) {
+  return '<div><div style="font-size:11px;color:var(--text-muted);font-weight:600;margin-bottom:2px">' + _esc(label) + '</div><div style="font-size:13px;color:var(--text);font-weight:500">' + _esc(value) + '</div></div>';
+}
+
+// ─── ADMIN: 최근 메시지 미리보기 (브랜드 상세 페이지용) ───
+async function loadAdminBrandMessagesPreview(brandId) {
+  var el = document.getElementById('admin-brand-messages-preview');
+  if (!el || !supabase) return;
+  var res = await supabase.from('wm_messages').select('*').eq('brand_id', brandId).order('created_at', { ascending: false }).limit(4);
+  var msgs = (res.data || []).slice().reverse();
+  if (!msgs.length) {
+    el.innerHTML = '<div style="text-align:center;padding:20px 0;color:var(--text-muted);font-size:12.5px">' + _kn('아직 메시지가 없습니다.','No messages yet.') + '</div>';
+    return;
+  }
+  el.innerHTML = msgs.map(function(m) {
+    var senderLabel;
+    if (m.sender_role === 'admin') senderLabel = _kn('3SVS 관리자','3SVS Admin');
+    else if (m.sender_role === 'walmart') senderLabel = 'Startup Junkie';
+    else senderLabel = m.sender_name || _kn('브랜드','Brand');
+    var color = m.sender_role === 'brand' ? 'var(--accent)' : '#10b981';
+    var preview = (m.content || '').slice(0, 200);
+    return '<div style="padding:10px 12px;margin-bottom:6px;background:#fff;border:1px solid var(--border);border-left:3px solid '+color+';border-radius:8px">' +
+      '<div style="display:flex;justify-content:space-between;margin-bottom:4px;font-size:11.5px"><strong style="color:'+color+'">'+senderLabel+'</strong><span style="color:var(--text-muted)">'+ _fmtKST(m.created_at) +'</span></div>' +
+      '<div style="font-size:13px;color:var(--text);line-height:1.5;white-space:pre-wrap">'+_esc(preview)+(m.content && m.content.length > 200 ? '…' : '')+'</div>' +
+    '</div>';
+  }).join('');
 }
 
 // ─── ADMIN: 기업 내부 메모 ───
@@ -7875,15 +8021,6 @@ async function loadAdminUnreadCounts() {
     }
   }
 }
-
-// ─── ADMIN: BRAND DETAIL (from admin dashboard) ───
-async function showAdminBrandDetail(brandId) {
-  // Reuse the walmart brand detail approach
-  if (!wmBrandData[brandId]) await loadWmBrands();
-  showWmBrandDetailDB(brandId);
-}
-
-
 
 // ─── SKU FILE UPLOAD ───
 async function uploadSkuFile(file) {
