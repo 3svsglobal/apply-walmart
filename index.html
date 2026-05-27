@@ -4134,11 +4134,38 @@ async function _getClientIp() {
 
 function _signerEmailFor(role, c) {
   if (role === 'brand') {
+    // 1) 브랜드 포털 세션에서 직접 (가장 신뢰 가능)
+    if (typeof _currentBrandData !== 'undefined' && _currentBrandData) {
+      var d = _currentBrandData;
+      if (c && c.brandId && d.id === c.brandId) {
+        return d.portal_email || d.contact_email || d.email || '';
+      }
+    }
+    if (typeof _currentBrandEmail !== 'undefined' && _currentBrandEmail) return _currentBrandEmail;
+    // 2) Walmart/관리자 포털에서 로딩한 wmBrandData
     var b = wmBrandData[c.brandId];
-    return (b && b.info && b.info.email) ? b.info.email : '';
+    if (b) {
+      if (b.info && b.info.email) return b.info.email;
+      if (b.portal_email) return b.portal_email;
+      if (b.contact_email) return b.contact_email;
+    }
+    return '';
   }
   if (role === 'admin') return 'jw@3svs.com';
   if (role === 'walmart') return 'startupjunkie@example.com';
+  return '';
+}
+
+// 동기 lookup 실패 시 DB에서 직접 조회 (Promise 반환)
+async function _signerEmailForAsync(role, c) {
+  var email = _signerEmailFor(role, c);
+  if (email) return email;
+  if (role === 'brand' && c && c.brandId && supabase) {
+    try {
+      var res = await supabase.from('wm_brands').select('portal_email, contact_email').eq('id', c.brandId).single();
+      if (res.data) return res.data.portal_email || res.data.contact_email || '';
+    } catch(e){ console.warn('signer email DB lookup failed', e); }
+  }
   return '';
 }
 
@@ -4146,8 +4173,14 @@ async function _sendSigningOtp(role) {
   var contractId = _currentContractPageId;
   var c = contracts.find(function(x){ return x.id === contractId; });
   if (!c) { alert('Contract not found.'); return; }
-  var email = _signerEmailFor(role, c);
-  if (!email) { alert('서명자 이메일을 찾을 수 없습니다.\nSigner email not found.'); return; }
+  var email = await _signerEmailForAsync(role, c);
+  if (!email) {
+    var msg = role === 'brand'
+      ? '브랜드 포털에 등록된 이메일이 없습니다.\n관리자에게 문의하여 portal_email을 설정해 주세요.\n\nNo registered email for this brand. Please contact admin to set portal_email.'
+      : '서명자 이메일을 찾을 수 없습니다.\nSigner email not found.';
+    alert(msg);
+    return;
+  }
 
   var code = String(Math.floor(100000 + Math.random() * 900000));
   var codeHash = await _sha256Hex(code);
@@ -4284,12 +4317,13 @@ async function _logSignatureAudit(contractId, role, c, sigUrl, sealUrl) {
     var sigHash = sigUrl ? await _sha256Hex(sigUrl) : '';
     var sealHash = sealUrl ? await _sha256Hex(sealUrl) : '';
     var consentText = '본인은 본 계약 내용을 확인하였으며 이 전자서명이 자필 서명과 동일한 법적 효력을 가짐에 동의합니다. / I have reviewed the contract and agree that this electronic signature has the same legal effect as a handwritten signature.';
+    var signerEmail = await _signerEmailForAsync(role, c);
     var payload = {
       contract_id: contractId,
       event_type: 'sign',
       role: role,
       signer_name: c.signatures[role].name,
-      signer_email: _signerEmailFor(role, c),
+      signer_email: signerEmail,
       ip_address: ip,
       user_agent: ua,
       session_id: _sessionId,
