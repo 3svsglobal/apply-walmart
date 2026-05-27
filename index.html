@@ -2691,8 +2691,8 @@ button{cursor:pointer;font-family:var(--font)}
     <div class="sidebar">
       <div class="sidebar-logo"><div class="sidebar-logo-icon" style="background:#0071dc">W</div><div class="sidebar-logo-text">Walmart <span>Buyer Portal</span></div></div>
       <div class="sidebar-nav">
-        <div class="sidebar-item active" onclick="showWmView(\x27pipeline\x27)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>Pipeline</div>
-        <div class="sidebar-item" onclick="showWmView('meetings')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>Meetings</div>
+        <div class="sidebar-item active" data-wm-view="pipeline" onclick="showWmView('pipeline')" style="cursor:pointer"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>Pipeline</div>
+        <div class="sidebar-item" data-wm-view="meetings" onclick="showWmView('meetings')" style="cursor:pointer"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>Meetings</div>
       </div>
       <div class="sidebar-bottom"><div style="cursor:pointer;color:rgba(0,0,0,0.6);margin-bottom:8px" onclick="switchTab('landing')">← Log out</div>Walmart Marketplace<br>Entry Program</div>
     </div>
@@ -2729,7 +2729,7 @@ button{cursor:pointer;font-family:var(--font)}
 
       <!-- BRAND DETAIL VIEW -->
       <div class="dash-content" id="wm-brand-detail" style="display:none">
-        <button class="wm-detail-back" onclick="showWmView(\x27pipeline\x27)">← Back to Pipeline</button>
+        <button class="wm-detail-back" onclick="showWmView('pipeline')">← Back to Pipeline</button>
 
         <div class="wm-brand-header" id="wm-detail-header">
           <!-- dynamically filled -->
@@ -3899,29 +3899,90 @@ var wmBrandData = {}; // DB에서 로딩
 // Phase 체크리스트 기능은 2026-05-28 제거됨 (Tasks 시스템으로 대체)
 
 function showWmView(view) {
-  var views = ['pipeline','meetings','brand-detail'];
-  views.forEach(function(v) {
-    var el = document.getElementById('wm-' + v);
-    if (el) el.style.display = 'none';
-  });
-  var target = document.getElementById('wm-' + view);
-  if (target) target.style.display = '';
-  document.querySelectorAll('#view-walmart .sidebar-item').forEach(function(item) { item.classList.remove('active'); });
-  if (view === 'pipeline') {
-    document.querySelectorAll('#view-walmart .sidebar-item')[0].classList.add('active');
-    // 재진입 시 항상 데이터 새로고침 (브랜드 목록 + 미팅 요청)
-    if (typeof loadWmBrands === 'function') loadWmBrands();
-    if (typeof loadAdminMeetingRequests === 'function') loadAdminMeetingRequests();
-  } else if (view === 'meetings') {
-    document.querySelectorAll('#view-walmart .sidebar-item')[1].classList.add('active');
+  try {
+    // 1) 모든 dash-content 숨김
+    var views = ['pipeline','meetings','brand-detail'];
+    views.forEach(function(v) {
+      var el = document.getElementById('wm-' + v);
+      if (el) el.style.display = 'none';
+    });
+    // 2) 대상 뷰 표시
+    var target = document.getElementById('wm-' + view);
+    if (!target) { console.warn('[showWmView] target not found:', view); return; }
+    target.style.display = 'block';
+    // 3) 사이드바 active 갱신 (data-wm-view 기준)
+    document.querySelectorAll('#view-walmart .sidebar-item').forEach(function(item) {
+      item.classList.toggle('active', item.getAttribute('data-wm-view') === view);
+    });
+    // 4) 영어 강제
+    if (document.documentElement.lang !== 'en') {
+      document.documentElement.lang = 'en';
+      if (typeof setLang === 'function') setLang('en');
+    }
+    // 5) 뷰별 데이터 로드
+    if (view === 'pipeline') {
+      if (typeof loadWmBrands === 'function') loadWmBrands();
+      if (typeof loadAdminMeetingRequests === 'function') loadAdminMeetingRequests();
+    } else if (view === 'meetings') {
+      if (typeof loadWmAllMeetings === 'function') loadWmAllMeetings();
+    }
+    // 6) 스크롤 최상단
+    var dashMain = document.querySelector('#view-walmart .dash-main');
+    if (dashMain) dashMain.scrollTop = 0;
+    window.scrollTo(0, 0);
+  } catch(e) {
+    console.error('[showWmView] error:', e);
   }
-  // Walmart 포털은 항상 영어 모드
-  if (document.documentElement.lang !== 'en') {
-    document.documentElement.lang = 'en';
+}
+
+// Walmart 'Meetings' 탭 — 전 브랜드의 예정 미팅 통합 표시
+async function loadWmAllMeetings() {
+  var listEl = document.getElementById('wm-meetings-list');
+  if (!listEl) return;
+  listEl.style.padding = '0';
+  listEl.style.textAlign = 'left';
+  if (!supabase) { listEl.innerHTML = '<div style="text-align:center;padding:48px 0;color:var(--text-muted)">DB not connected.</div>'; return; }
+  listEl.innerHTML = '<div style="text-align:center;padding:24px 0;color:var(--text-muted)">Loading...</div>';
+  var mRes = await supabase.from('wm_meetings').select('*').in('status', ['proposed','confirmed','rescheduled']).order('scheduled_at', { ascending: true, nullsFirst: false });
+  var meetings = (mRes.data || []);
+  if (!meetings.length) {
+    listEl.innerHTML = '<div style="text-align:center;padding:48px 0;color:var(--text-muted);font-size:14px">No upcoming meetings.<br><span style="font-size:12px">Meetings will appear here when scheduled with brands.</span></div>';
+    return;
   }
-  // 페이지 상단으로 스크롤 (브랜드 상세 → Pipeline 클릭 시 시각 피드백)
-  var dashMain = document.querySelector('#view-walmart .dash-main');
-  if (dashMain) dashMain.scrollTop = 0;
+  var brandIds = Array.from(new Set(meetings.map(function(m){ return m.brand_id; }).filter(Boolean)));
+  var brandMap = {};
+  if (brandIds.length) {
+    var bRes = await supabase.from('wm_brands').select('id, name_ko, name_en').in('id', brandIds);
+    (bRes.data || []).forEach(function(b){ brandMap[b.id] = b.name_ko || b.name_en || b.id; });
+  }
+  var stMap = {
+    proposed:    { l: 'Proposed', c: '#f59e0b' },
+    confirmed:   { l: 'Confirmed', c: '#10b981' },
+    rescheduled: { l: 'Rescheduled', c: '#6b7280' }
+  };
+  listEl.innerHTML = meetings.map(function(m) {
+    var st = stMap[m.status] || stMap.proposed;
+    var when = m.scheduled_at ? _fmtKST(m.scheduled_at) : 'TBD';
+    var brandName = brandMap[m.brand_id] || m.brand_id || 'Unknown';
+    var brandEsc = String(m.brand_id || '').replace(/'/g, "\\'");
+    var slotsHtml = '';
+    if (m.status === 'proposed' && m.proposed_slots && Array.isArray(m.proposed_slots) && m.proposed_slots.length) {
+      slotsHtml = '<div style="margin-top:6px;padding:6px 8px;background:var(--surface-alt);border-radius:6px;font-size:11px;color:var(--text-muted)"><strong>Proposed slots:</strong> ' +
+        m.proposed_slots.map(function(s){ return _fmtKST(s.at) + ' (' + (s.duration_min || 30) + ' min)'; }).join(' · ') + '</div>';
+    }
+    return '<div style="display:flex;justify-content:space-between;align-items:flex-start;gap:10px;padding:14px 16px;background:#fff;border:1px solid var(--border);border-radius:10px;margin-bottom:8px">' +
+      '<div style="flex:1;min-width:0">' +
+        '<div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:4px">' +
+          '<strong style="font-size:14px;color:var(--text)">' + _esc(m.title) + '</strong>' +
+          '<span style="font-size:10px;padding:2px 8px;border-radius:999px;background:'+st.c+'22;color:'+st.c+';font-weight:600">'+st.l+'</span>' +
+        '</div>' +
+        '<div style="font-size:12.5px;color:var(--text-muted);margin-bottom:2px">🏢 ' + _esc(brandName) + ' · 🕐 ' + when + (m.duration_min ? ' · '+m.duration_min+' min' : '') + '</div>' +
+        (m.agenda ? '<div style="font-size:12px;color:var(--text-muted);margin-top:4px;white-space:pre-wrap">' + _esc(m.agenda) + '</div>' : '') +
+        slotsHtml +
+      '</div>' +
+      '<button onclick="showWmBrandDetailDB(\'' + brandEsc + '\')" style="background:rgba(0,113,220,0.08);border:1px solid rgba(0,113,220,0.2);color:var(--accent);padding:6px 12px;border-radius:6px;font-size:11.5px;font-weight:600;cursor:pointer;white-space:nowrap;flex-shrink:0">View Brand</button>' +
+    '</div>';
+  }).join('');
 }
 
 function showWmBrandDetail(brandId) {
