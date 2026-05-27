@@ -6866,6 +6866,14 @@ function showBrandTaskAddModal() {
         { value: 'compliance', label: _kn('컴플라이언스','Compliance') },
         { value: 'internal',   label: _kn('내부 업무','Internal') }
       ] },
+      { name: 'phase', label: _kn('Phase (선택)','Phase (optional)'), type: 'select', value: 'general', options: [
+        { value: 'general',   label: _kn('전체','General (no phase)') },
+        { value: 'contract',  label: 'Contract' },
+        { value: 'phase1',    label: 'Phase 1' },
+        { value: 'phase2',    label: 'Phase 2' },
+        { value: 'phase3',    label: 'Phase 3' },
+        { value: 'completed', label: 'Completed' }
+      ] },
       { name: 'due_date', label: _kn('마감일 (선택)','Due date (optional)'), type: 'date' }
     ],
     onSubmit: async function(data) {
@@ -6876,6 +6884,7 @@ function showBrandTaskAddModal() {
         description: data.description || null,
         priority: data.priority || 'normal',
         category: data.category || 'general',
+        phase: (data.phase && data.phase !== 'general') ? data.phase : null,
         due_date: data.due_date || null,
         status: 'open'
       });
@@ -7563,7 +7572,7 @@ async function showWmBrandDetailDB(brandId) {
   var phaseBtns = '';
   phaseOptions.forEach(function(p) {
     var sel = p === brand.phase ? 'background:var(--accent);color:#fff' : 'background:rgba(0,0,0,0.06);color:var(--text-muted)';
-    phaseBtns += '<button onclick="updateBrandPhase(\x27' + brandId + '\x27,\x27' + p + '\x27);showWmBrandDetailDB(\x27' + brandId + '\x27)" style="border:none;padding:6px 14px;border-radius:6px;font-size:12px;font-weight:600;cursor:pointer;' + sel + '">' + phaseLabels[p] + '</button>';
+    phaseBtns += '<button data-phase-btn="' + p + '" onclick="updateBrandPhase(\'' + brandId + '\',\'' + p + '\')" style="border:none;padding:6px 14px;border-radius:6px;font-size:12px;font-weight:600;cursor:pointer;transition:background .15s,color .15s;' + sel + '">' + phaseLabels[p] + '</button>';
   });
 
   var infoHtml = '';
@@ -7578,13 +7587,17 @@ async function showWmBrandDetailDB(brandId) {
     '<div class="wm-brand-header"><div class="brand-icon" style="width:48px;height:48px;font-size:20px;border-radius:12px">' + (brand.nameEn || brand.name || '?')[0].toUpperCase() + '</div><div><h2 style="margin:0;font-size:22px">' + _esc(brand.name) + '</h2><p style="margin:4px 0 0;opacity:.6">' + phaseLabel + ' · ' + (brand.info.category || '-') + '</p></div></div>' +
     '<div class="wm-section"><div class="wm-section-title">Phase Management</div><div style="display:flex;gap:8px;flex-wrap:wrap">' + phaseBtns + '</div></div>' +
     '<div class="wm-section"><div class="wm-section-title">Company Information</div><div class="wm-info-grid">' + (infoHtml || '<div style="opacity:.7">No information</div>') + '</div></div>' +
-    '<div class="wm-section"><div class="wm-section-title" style="display:flex;justify-content:space-between;align-items:center"><span>🗒 Internal Notes</span><span id="admin-notes-status" style="font-size:11px;color:var(--text-muted)"></span></div><div style="margin-top:10px;font-size:11.5px;color:var(--text-muted);margin-bottom:8px">Visible to admin and Startup Junkie only. Not shown to brand.</div><textarea id="admin-brand-notes" rows="6" placeholder="Notes about this brand: contact history, negotiation points, things to watch..." style="width:100%;background:#fff;border:1px solid var(--border);border-radius:8px;padding:12px 14px;font-size:13.5px;color:var(--text);font-family:var(--font);resize:vertical;line-height:1.55"></textarea><div style="margin-top:8px;display:flex;justify-content:flex-end"><button onclick="adminSaveBrandNotes(\x27' + brandId + '\x27)" style="background:var(--accent);color:#fff;border:none;padding:8px 18px;border-radius:6px;font-size:12.5px;font-weight:600;cursor:pointer">Save</button></div></div>' +
-    '<div class="wm-section"><div class="wm-section-title" style="display:flex;justify-content:space-between;align-items:center"><span>Tasks</span><button onclick="showAdminTaskAddModal(\x27' + brandId + '\x27)" style="background:var(--accent);color:#fff;border:none;padding:6px 12px;border-radius:6px;font-size:12px;font-weight:600;cursor:pointer">+ Add task</button></div><div id="admin-brand-tasks-list" style="margin-top:10px"><div style="color:var(--text-muted);font-size:12px">Loading...</div></div></div>' +
+    '<div class="wm-section"><div class="wm-section-title" style="display:flex;justify-content:space-between;align-items:center"><span>🗒 Internal Notes</span><span id="admin-notes-status" style="font-size:11px;color:var(--text-muted)"></span></div><div style="margin-top:10px;font-size:11.5px;color:var(--text-muted);margin-bottom:8px">Visible to admin and Startup Junkie only. Not shown to brand.</div><div id="phase-tabs-notes" style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px"></div><div style="font-size:11.5px;color:var(--text-muted);margin-bottom:6px"><span id="admin-notes-phase-hint">Notes</span></div><textarea id="admin-brand-notes" rows="6" placeholder="Notes about this brand: contact history, negotiation points, things to watch..." style="width:100%;background:#fff;border:1px solid var(--border);border-radius:8px;padding:12px 14px;font-size:13.5px;color:var(--text);font-family:var(--font);resize:vertical;line-height:1.55"></textarea><div style="margin-top:8px;display:flex;justify-content:flex-end"><button onclick="adminSaveBrandNotes(\x27' + brandId + '\x27)" style="background:var(--accent);color:#fff;border:none;padding:8px 18px;border-radius:6px;font-size:12.5px;font-weight:600;cursor:pointer">Save</button></div></div>' +
+    '<div class="wm-section"><div class="wm-section-title" style="display:flex;justify-content:space-between;align-items:center"><span>Tasks</span><button onclick="showAdminTaskAddModal(\x27' + brandId + '\x27)" style="background:var(--accent);color:#fff;border:none;padding:6px 12px;border-radius:6px;font-size:12px;font-weight:600;cursor:pointer">+ Add task</button></div><div id="phase-tabs-tasks" style="display:flex;gap:6px;flex-wrap:wrap;margin:10px 0 8px"></div><div id="admin-brand-tasks-list" style="margin-top:10px"><div style="color:var(--text-muted);font-size:12px">Loading...</div></div></div>' +
     '<div class="wm-section"><div class="wm-section-title" style="display:flex;justify-content:space-between;align-items:center"><span>Meetings</span><button onclick="showAdminMeetingAddModal(\x27' + brandId + '\x27)" style="background:var(--accent);color:#fff;border:none;padding:6px 12px;border-radius:6px;font-size:12px;font-weight:600;cursor:pointer">+ Propose meeting</button></div><div id="admin-brand-meetings-list" style="margin-top:10px"><div style="color:var(--text-muted);font-size:12px">Loading...</div></div></div>' +
     '<div class="wm-section"><div class="wm-section-title" style="display:flex;justify-content:space-between;align-items:center"><span>Documents</span><button onclick="showAdminDocRequestModal(\x27' + brandId + '\x27)" style="background:var(--accent);color:#fff;border:none;padding:6px 12px;border-radius:6px;font-size:12px;font-weight:600;cursor:pointer">+ Request document</button></div><div id="admin-brand-docs-list" style="margin-top:10px"><div style="color:var(--text-muted);font-size:12px">Loading...</div></div></div>' +
     '<div class="wm-section"><div class="wm-section-title">Application & Attachments</div><div id="admin-brand-application" style="margin-top:10px"><div style="color:var(--text-muted);font-size:12px">Loading...</div></div></div>' +
     '<div class="wm-section"><div class="wm-section-title" style="display:flex;justify-content:space-between;align-items:center"><span>Recent Messages</span><button onclick="showAdminBrandMessages(\x27' + brandId + '\x27, \x27' + brandNameEsc + '\x27)" style="background:var(--accent);color:#fff;border:none;padding:7px 16px;border-radius:7px;cursor:pointer;font-size:12.5px;font-weight:600">Open / Reply</button></div><div id="admin-brand-messages-preview" style="margin-top:10px"><div style="color:var(--text-muted);font-size:12px">Loading...</div></div></div>' +
     '<div class="wm-section"><div class="wm-section-title">Contracts</div>' + getWmContractsHtml(brandId) + '</div>';
+
+  // Phase 탭 초기화 (브랜드 진입 시 현재 phase 로 시작)
+  _selectedPhaseView = (brand && brand.phase) || 'general';
+  if (typeof renderPhaseTabs === 'function') renderPhaseTabs(brandId);
 
   // 비동기 로드 — 모든 admin 함수 그대로 재사용 (DB는 동일)
   if (typeof loadAdminBrandNotes === 'function') loadAdminBrandNotes(brandId);
@@ -7660,7 +7673,7 @@ async function showAdminBrandDetail(brandId) {
   var phaseBtns = '';
   phaseOptions.forEach(function(p) {
     var sel = p === brand.phase ? 'background:var(--accent);color:#fff' : 'background:rgba(0,0,0,0.06);color:var(--text-muted)';
-    phaseBtns += '<button onclick="updateBrandPhase(\x27' + brandId + '\x27,\x27' + p + '\x27);showAdminBrandDetail(\x27' + brandId + '\x27)" style="border:none;padding:6px 14px;border-radius:6px;font-size:12px;font-weight:600;cursor:pointer;' + sel + '">' + phaseLabels[p] + '</button>';
+    phaseBtns += '<button data-phase-btn="' + p + '" onclick="updateBrandPhase(\'' + brandId + '\',\'' + p + '\')" style="border:none;padding:6px 14px;border-radius:6px;font-size:12px;font-weight:600;cursor:pointer;transition:background .15s,color .15s;' + sel + '">' + phaseLabels[p] + '</button>';
   });
 
   var infoHtml = '';
@@ -7674,8 +7687,8 @@ async function showAdminBrandDetail(brandId) {
     '<div class="wm-brand-header"><div class="brand-icon" style="width:48px;height:48px;font-size:20px;border-radius:12px">' + (brand.nameEn || brand.name || '?')[0].toUpperCase() + '</div><div><h2 style="margin:0;font-size:22px">' + _esc(brand.name) + '</h2><p style="margin:4px 0 0;opacity:.6">' + phaseLabel + ' · ' + (brand.info.category || '-') + '</p></div></div>' +
     '<div class="wm-section"><div class="wm-section-title"><span class="ko">Phase 관리</span><span class="en">Phase Management</span></div><div style="display:flex;gap:8px;flex-wrap:wrap">' + phaseBtns + '</div></div>' +
     '<div class="wm-section"><div class="wm-section-title"><span class="ko">기업 정보</span><span class="en">Company Information</span></div><div class="wm-info-grid">' + (infoHtml || '<div style="opacity:.7">정보 없음</div>') + '</div></div>' +
-    '<div class="wm-section"><div class="wm-section-title" style="display:flex;justify-content:space-between;align-items:center"><span>🗒 <span class="ko">내부 메모</span><span class="en">Internal Notes</span></span><span id="admin-notes-status" style="font-size:11px;color:var(--text-muted)"></span></div><div style="margin-top:10px;font-size:11.5px;color:var(--text-muted);margin-bottom:8px"><span class="ko">관리자·Startup Junkie 만 접근. 브랜드에는 노출되지 않습니다.</span><span class="en">Visible to admin and Startup Junkie only. Not shown to brand.</span></div><textarea id="admin-brand-notes" rows="6" data-ph-ko="이 기업에 대한 메모: 연락 이력, 협상 포인트, 주의사항 등" data-ph-en="Notes about this brand: contact history, negotiation points, things to watch..." placeholder="이 기업에 대한 메모: 연락 이력, 협상 포인트, 주의사항 등" style="width:100%;background:#fff;border:1px solid var(--border);border-radius:8px;padding:12px 14px;font-size:13.5px;color:var(--text);font-family:var(--font);resize:vertical;line-height:1.55"></textarea><div style="margin-top:8px;display:flex;justify-content:flex-end"><button onclick="adminSaveBrandNotes(\x27' + brandId + '\x27)" style="background:var(--accent);color:#fff;border:none;padding:8px 18px;border-radius:6px;font-size:12.5px;font-weight:600;cursor:pointer"><span class="ko">저장</span><span class="en">Save</span></button></div></div>' +
-    '<div class="wm-section"><div class="wm-section-title" style="display:flex;justify-content:space-between;align-items:center"><span class="ko">할 일 / Tasks</span><span class="en">Tasks</span><button onclick="showAdminTaskAddModal(\x27' + brandId + '\x27)" style="background:var(--accent);color:#fff;border:none;padding:6px 12px;border-radius:6px;font-size:12px;font-weight:600;cursor:pointer"><span class="ko">+ 할 일 등록</span><span class="en">+ Add task</span></button></div><div id="admin-brand-tasks-list" style="margin-top:10px"><div style="color:var(--text-muted);font-size:12px">불러오는 중...</div></div></div>' +
+    '<div class="wm-section"><div class="wm-section-title" style="display:flex;justify-content:space-between;align-items:center"><span>🗒 <span class="ko">내부 메모</span><span class="en">Internal Notes</span></span><span id="admin-notes-status" style="font-size:11px;color:var(--text-muted)"></span></div><div style="margin-top:10px;font-size:11.5px;color:var(--text-muted);margin-bottom:8px"><span class="ko">관리자·Startup Junkie 만 접근. 브랜드에는 노출되지 않습니다.</span><span class="en">Visible to admin and Startup Junkie only. Not shown to brand.</span></div><div id="phase-tabs-notes" style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px"></div><div style="font-size:11.5px;color:var(--text-muted);margin-bottom:6px"><span id="admin-notes-phase-hint">Notes</span></div><textarea id="admin-brand-notes" rows="6" data-ph-ko="이 기업에 대한 메모: 연락 이력, 협상 포인트, 주의사항 등" data-ph-en="Notes about this brand: contact history, negotiation points, things to watch..." placeholder="이 기업에 대한 메모: 연락 이력, 협상 포인트, 주의사항 등" style="width:100%;background:#fff;border:1px solid var(--border);border-radius:8px;padding:12px 14px;font-size:13.5px;color:var(--text);font-family:var(--font);resize:vertical;line-height:1.55"></textarea><div style="margin-top:8px;display:flex;justify-content:flex-end"><button onclick="adminSaveBrandNotes(\x27' + brandId + '\x27)" style="background:var(--accent);color:#fff;border:none;padding:8px 18px;border-radius:6px;font-size:12.5px;font-weight:600;cursor:pointer"><span class="ko">저장</span><span class="en">Save</span></button></div></div>' +
+    '<div class="wm-section"><div class="wm-section-title" style="display:flex;justify-content:space-between;align-items:center"><span class="ko">할 일 / Tasks</span><span class="en">Tasks</span><button onclick="showAdminTaskAddModal(\x27' + brandId + '\x27)" style="background:var(--accent);color:#fff;border:none;padding:6px 12px;border-radius:6px;font-size:12px;font-weight:600;cursor:pointer"><span class="ko">+ 할 일 등록</span><span class="en">+ Add task</span></button></div><div id="phase-tabs-tasks" style="display:flex;gap:6px;flex-wrap:wrap;margin:10px 0 8px"></div><div id="admin-brand-tasks-list" style="margin-top:10px"><div style="color:var(--text-muted);font-size:12px">불러오는 중...</div></div></div>' +
     '<div class="wm-section"><div class="wm-section-title" style="display:flex;justify-content:space-between;align-items:center"><span class="ko">미팅 / Meetings</span><span class="en">Meetings</span><button onclick="showAdminMeetingAddModal(\x27' + brandId + '\x27)" style="background:var(--accent);color:#fff;border:none;padding:6px 12px;border-radius:6px;font-size:12px;font-weight:600;cursor:pointer"><span class="ko">+ 미팅 제안</span><span class="en">+ Propose meeting</span></button></div><div id="admin-brand-meetings-list" style="margin-top:10px"><div style="color:var(--text-muted);font-size:12px">불러오는 중...</div></div></div>' +
     '<div class="wm-section"><div class="wm-section-title" style="display:flex;justify-content:space-between;align-items:center"><span class="ko">자료 요청 / Documents</span><span class="en">Documents</span><button onclick="showAdminDocRequestModal(\x27' + brandId + '\x27)" style="background:var(--accent);color:#fff;border:none;padding:6px 12px;border-radius:6px;font-size:12px;font-weight:600;cursor:pointer"><span class="ko">+ 자료 요청</span><span class="en">+ Request document</span></button></div><div id="admin-brand-docs-list" style="margin-top:10px"><div style="color:var(--text-muted);font-size:12px">불러오는 중...</div></div></div>' +
     '<div class="wm-section"><div class="wm-section-title" style="display:flex;justify-content:space-between;align-items:center"><span><span class="ko">신청서 정보 · 첨부 파일</span><span class="en">Application Info & Attachments</span></span></div><div id="admin-brand-application" style="margin-top:10px"><div style="color:var(--text-muted);font-size:12px">불러오는 중...</div></div></div>' +
@@ -7807,12 +7820,25 @@ async function loadAdminBrandMessagesPreview(brandId) {
   }).join('');
 }
 
-// ─── ADMIN: 기업 내부 메모 ───
+// ─── ADMIN: 기업 내부 메모 (phase별 JSONB) ───
 async function loadAdminBrandNotes(brandId) {
   if (!supabase) return;
-  var res = await supabase.from('wm_brands').select('admin_notes').eq('id', brandId).single();
+  var res = await supabase.from('wm_brands').select('admin_notes, admin_notes_by_phase').eq('id', brandId).single();
   var ta = document.getElementById('admin-brand-notes');
-  if (ta) ta.value = (res.data && res.data.admin_notes) || '';
+  if (!ta) return;
+  var phase = _selectedPhaseView || 'general';
+  var notesMap = (res.data && res.data.admin_notes_by_phase) || {};
+  // 첫 마이그레이션 보조: admin_notes_by_phase 비어있고 admin_notes 있으면 general에 fallback
+  if (Object.keys(notesMap).length === 0 && res.data && res.data.admin_notes) {
+    notesMap = { general: res.data.admin_notes };
+  }
+  ta.value = notesMap[phase] || '';
+  // 현재 phase 라벨 표시
+  var hint = document.getElementById('admin-notes-phase-hint');
+  if (hint) {
+    var lbl = _PHASE_DEFS.find(function(p){ return p.id === phase; });
+    hint.textContent = lbl ? lbl.label + ' notes' : 'Notes';
+  }
 }
 
 async function adminSaveBrandNotes(brandId) {
@@ -7820,16 +7846,22 @@ async function adminSaveBrandNotes(brandId) {
   var ta = document.getElementById('admin-brand-notes');
   var statusEl = document.getElementById('admin-notes-status');
   if (!ta) return;
-  if (statusEl) statusEl.textContent = '저장 중...';
-  var res = await supabase.from('wm_brands').update({ admin_notes: ta.value || null }).eq('id', brandId);
+  if (statusEl) statusEl.textContent = 'Saving...';
+  // 1) 현재 phase의 메모만 머지 업데이트 (다른 phase 보존)
+  var phase = _selectedPhaseView || 'general';
+  var cur = await supabase.from('wm_brands').select('admin_notes_by_phase').eq('id', brandId).single();
+  var notesMap = (cur.data && cur.data.admin_notes_by_phase) || {};
+  notesMap[phase] = ta.value || '';
+  var res = await supabase.from('wm_brands').update({ admin_notes_by_phase: notesMap }).eq('id', brandId);
   if (res.error) {
-    if (statusEl) { statusEl.textContent = '저장 실패: ' + res.error.message; statusEl.style.color = '#ef4444'; }
+    if (statusEl) { statusEl.textContent = 'Save failed: ' + res.error.message; statusEl.style.color = '#ef4444'; }
     return;
   }
   if (statusEl) {
-    statusEl.textContent = '✓ 저장됨 · ' + new Date().toLocaleTimeString('ko-KR');
+    var t = new Date().toLocaleTimeString('en-US');
+    statusEl.textContent = '✓ Saved · ' + t;
     statusEl.style.color = '#10b981';
-    setTimeout(function(){ if (statusEl.textContent.startsWith('✓')) statusEl.textContent = ''; }, 4000);
+    setTimeout(function(){ if (statusEl.textContent.indexOf('✓') === 0) statusEl.textContent = ''; }, 4000);
   }
 }
 
@@ -7838,6 +7870,15 @@ async function loadAdminBrandTasks(brandId) {
   if (!supabase) return;
   var res = await supabase.from('wm_tasks').select('*').eq('brand_id', brandId).order('created_at', { ascending: false });
   var rows = (res && res.data) || [];
+  // Phase 탭 필터링 — _selectedPhaseView 가 설정되어 있으면 해당 phase 만
+  var phase = _selectedPhaseView;
+  if (phase) {
+    if (phase === 'general') {
+      rows = rows.filter(function(t){ return !t.phase || t.phase === 'general' || t.phase === ''; });
+    } else {
+      rows = rows.filter(function(t){ return t.phase === phase; });
+    }
+  }
   var el = document.getElementById('admin-brand-tasks-list');
   if (!el) return;
   if (!rows.length) { el.innerHTML = '<div style="color:var(--text-muted);font-size:12px;padding:8px 0">등록된 할 일이 없습니다.</div>'; return; }
@@ -7845,10 +7886,15 @@ async function loadAdminBrandTasks(brandId) {
     var stColor = t.status==='completed' ? '#10b981' : (t.status==='cancelled' ? '#6b7280' : (t.priority==='urgent' ? '#ef4444' : '#0071dc'));
     var stLabel = t.status==='completed' ? '✓ 완료' : (t.status==='cancelled' ? '취소' : (t.priority==='urgent' ? '긴급' : (t.priority==='high' ? '높음' : '진행 중')));
     var due = t.due_date ? _fmtDate(t.due_date) : '기한 미정';
+    var phaseChip = '';
+    if (t.phase && t.phase !== 'general') {
+      var phaseLblMap = { contract:'Contract', phase1:'Phase 1', phase2:'Phase 2', phase3:'Phase 3', completed:'Completed' };
+      phaseChip = '<span style="display:inline-block;padding:1px 7px;border-radius:999px;background:#0071dc22;color:#0071dc;font-weight:600;font-size:10px">'+(phaseLblMap[t.phase] || t.phase)+'</span>';
+    }
     return '<div style="padding:10px 12px;background:#fff;border:1px solid var(--border);border-radius:8px;margin-bottom:6px;display:flex;justify-content:space-between;align-items:flex-start;gap:10px">' +
       '<div style="flex:1;min-width:0"><div style="font-size:13px;font-weight:600;color:var(--text);'+(t.status==='completed'?'text-decoration:line-through;opacity:0.6':'')+'">'+_esc(t.title)+'</div>' +
       (t.description ? '<div style="font-size:12px;color:var(--text-muted);margin-top:3px">'+_esc(t.description)+'</div>' : '') +
-      '<div style="font-size:11px;color:var(--text-muted);margin-top:4px;display:flex;align-items:center;gap:6px;flex-wrap:wrap">📅 '+due+' · <span style="display:inline-block;padding:1px 7px;border-radius:999px;background:'+(t.created_by==='admin'?'#f59e0b22':(t.created_by==='walmart'?'#10b98122':'#6b728022'))+';color:'+(t.created_by==='admin'?'#f59e0b':(t.created_by==='walmart'?'#10b981':'#6b7280'))+';font-weight:600;font-size:10px">'+({admin:'3SVS 관리자',walmart:'Startup Junkie',brand:'브랜드'}[t.created_by] || '시스템')+'</span></div></div>' +
+      '<div style="font-size:11px;color:var(--text-muted);margin-top:4px;display:flex;align-items:center;gap:6px;flex-wrap:wrap">📅 '+due+' · <span style="display:inline-block;padding:1px 7px;border-radius:999px;background:'+(t.created_by==='admin'?'#f59e0b22':(t.created_by==='walmart'?'#10b98122':'#6b728022'))+';color:'+(t.created_by==='admin'?'#f59e0b':(t.created_by==='walmart'?'#10b981':'#6b7280'))+';font-weight:600;font-size:10px">'+({admin:'3SVS 관리자',walmart:'Startup Junkie',brand:'브랜드'}[t.created_by] || '시스템')+'</span>' + phaseChip + '</div></div>' +
       '<div style="display:flex;flex-direction:column;align-items:flex-end;gap:6px"><span style="font-size:10px;padding:2px 8px;border-radius:999px;background:'+stColor+'22;color:'+stColor+';font-weight:600">'+stLabel+'</span>' +
       '<button onclick="adminDeleteTask(\''+t.id+'\',\''+brandId+'\')" style="background:none;border:none;color:#ef4444;font-size:11px;cursor:pointer;padding:2px 4px">삭제</button></div>' +
     '</div>';
@@ -7931,6 +7977,14 @@ function showAdminTaskAddModal(brandId) {
         { value: 'internal',   label: '내부 업무' },
         { value: 'general',    label: '일반' }
       ] },
+      { name: 'phase', label: 'Phase', type: 'select', value: (_selectedPhaseView && _selectedPhaseView !== 'general') ? _selectedPhaseView : 'general', options: [
+        { value: 'general',   label: 'General (no phase)' },
+        { value: 'contract',  label: 'Contract' },
+        { value: 'phase1',    label: 'Phase 1' },
+        { value: 'phase2',    label: 'Phase 2' },
+        { value: 'phase3',    label: 'Phase 3' },
+        { value: 'completed', label: 'Completed' }
+      ] },
       { name: 'due_date', label: '마감일 (선택)', type: 'date' }
     ],
     onSubmit: async function(data) {
@@ -7942,6 +7996,7 @@ function showAdminTaskAddModal(brandId) {
         description: data.description || null,
         category: data.category || 'general',
         priority: data.priority || 'normal',
+        phase: (data.phase && data.phase !== 'general') ? data.phase : null,
         due_date: data.due_date || null,
         status: 'open'
       });
@@ -8157,11 +8212,72 @@ async function adminDeclineMeetingRequest(meetingId) {
   loadAdminMeetingRequests();
 }
 
+// 현재 선택된 Phase (Notes/Tasks 탭 필터링용) — current_phase 와는 별개
+var _selectedPhaseView = null;
+
 async function updateBrandPhase(brandId, newPhase) {
   if (!supabase) return;
+  // 1) DB 업데이트
   await supabase.from('wm_brands').update({ current_phase: newPhase, updated_at: new Date().toISOString() }).eq('id', brandId);
+  // 2) 메모리 동기화
   if (wmBrandData[brandId]) wmBrandData[brandId].phase = newPhase;
-  showWmBrandDetailDB(brandId);
+  // 3) 헤더의 phase 라벨 갱신
+  var phaseLabels = {'contract':'Contract','phase1':'Phase 1','phase2':'Phase 2','phase3':'Phase 3','completed':'Completed'};
+  document.querySelectorAll('.wm-brand-header p, #admin-brand-detail-body .wm-brand-header p').forEach(function(p){
+    if (p && p.textContent.indexOf('Phase') >= 0 || p.textContent.indexOf('Contract') >= 0 || p.textContent.indexOf('Completed') >= 0) {
+      var parts = p.textContent.split(' · ');
+      if (parts.length >= 2) p.textContent = phaseLabels[newPhase] + ' · ' + parts.slice(1).join(' · ');
+    }
+  });
+  // 4) Phase 버튼 active 상태만 in-place 업데이트
+  document.querySelectorAll('button[data-phase-btn]').forEach(function(btn){
+    var p = btn.getAttribute('data-phase-btn');
+    var isActive = p === newPhase;
+    btn.style.background = isActive ? 'var(--accent)' : 'rgba(0,0,0,0.06)';
+    btn.style.color = isActive ? '#fff' : 'var(--text-muted)';
+  });
+  // 5) current_phase 변경 시 Notes/Tasks Phase 탭도 새 phase로 자동 이동
+  _selectedPhaseView = newPhase;
+  if (typeof renderPhaseTabs === 'function') renderPhaseTabs(brandId);
+  if (typeof loadAdminBrandNotes === 'function') loadAdminBrandNotes(brandId);
+  if (typeof loadAdminBrandTasks === 'function') loadAdminBrandTasks(brandId);
+}
+
+// ─── Phase 탭 렌더링 ───
+var _PHASE_DEFS = [
+  { id: 'general',   label: 'General' },
+  { id: 'contract',  label: 'Contract' },
+  { id: 'phase1',    label: 'Phase 1' },
+  { id: 'phase2',    label: 'Phase 2' },
+  { id: 'phase3',    label: 'Phase 3' },
+  { id: 'completed', label: 'Completed' }
+];
+
+function renderPhaseTabs(brandId) {
+  var notesTabsEl = document.getElementById('phase-tabs-notes');
+  var tasksTabsEl = document.getElementById('phase-tabs-tasks');
+  var brand = wmBrandData[brandId];
+  var currentPhase = brand ? brand.phase : null;
+  if (!_selectedPhaseView) _selectedPhaseView = currentPhase || 'general';
+
+  function _buildTabs(target, kind) {
+    if (!target) return;
+    target.innerHTML = _PHASE_DEFS.map(function(p){
+      var isActive = p.id === _selectedPhaseView;
+      var isCurrent = p.id === currentPhase;
+      var dot = isCurrent ? '<span style="display:inline-block;width:6px;height:6px;border-radius:50%;background:#10b981;margin-right:5px;vertical-align:middle" title="Current phase"></span>' : '';
+      return '<button type="button" onclick="selectPhaseView(\'' + brandId + '\',\'' + p.id + '\')" style="padding:6px 12px;border:1px solid '+(isActive?'var(--accent)':'var(--border)')+';background:'+(isActive?'var(--accent)':'#fff')+';color:'+(isActive?'#fff':'var(--text-muted)')+';border-radius:8px;font-size:12px;font-weight:600;cursor:pointer">'+dot+p.label+'</button>';
+    }).join('');
+  }
+  _buildTabs(notesTabsEl, 'notes');
+  _buildTabs(tasksTabsEl, 'tasks');
+}
+
+function selectPhaseView(brandId, phase) {
+  _selectedPhaseView = phase;
+  renderPhaseTabs(brandId);
+  if (typeof loadAdminBrandNotes === 'function') loadAdminBrandNotes(brandId);
+  if (typeof loadAdminBrandTasks === 'function') loadAdminBrandTasks(brandId);
 }
 
 // ─── ADMIN: INBOX (전체 브랜드 신규 메시지) ───
