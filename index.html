@@ -5569,16 +5569,46 @@ var _currentBrandEmail = null;
 
 // ─── BRAND PORTAL: topbar 종 + 아바타 핸들러 ───
 function scrollToBrandMessages() {
-  // 우선 메시지 섹션을 찾아 스크롤
-  var target = document.getElementById('msg-input') || document.getElementById('portal-messages-section');
-  if (!target) {
-    // 다른 view에 있을 수 있으니 brand-view 'messages'로 전환
-    if (typeof showBrandView === 'function') showBrandView('messages');
-    setTimeout(function(){ var t = document.getElementById('msg-input'); if (t) t.scrollIntoView({behavior:'smooth', block:'center'}); }, 200);
-    return;
+  // 항상 messages 뷰로 전환 (재구성 후 기본은 display:none 상태)
+  if (typeof showBrandView === 'function') showBrandView('messages');
+  setTimeout(function(){
+    var t = document.getElementById('portal-messages-section');
+    if (t) t.scrollIntoView({behavior:'smooth', block:'start'});
+    var inp = document.getElementById('msg-input');
+    if (inp) inp.focus();
+    // 안 읽은 메시지를 읽음 처리
+    if (_currentBrandId && supabase) {
+      supabase.from('wm_messages').update({ read_by_brand: true }).eq('brand_id', _currentBrandId).eq('read_by_brand', false);
+    }
+    // 배지 초기화
+    updateBrandUnreadBadge(0);
+  }, 250);
+}
+
+// 브랜드 측 안 읽은 메시지 배지 갱신
+async function updateBrandUnreadBadge(forceCount) {
+  var dot = document.querySelector('#view-portal .noti-dot');
+  if (!dot) return;
+  var count = (typeof forceCount === 'number') ? forceCount : 0;
+  if (typeof forceCount !== 'number') {
+    if (!supabase || !_currentBrandId) return;
+    var res = await supabase.from('wm_messages').select('id').eq('brand_id', _currentBrandId).eq('read_by_brand', false).in('sender_role', ['admin','walmart']);
+    count = (res && res.data && res.data.length) || 0;
   }
-  target.scrollIntoView({behavior:'smooth', block:'center'});
-  setTimeout(function(){ var inp = document.getElementById('msg-input'); if (inp) inp.focus(); }, 400);
+  var existing = dot.querySelector('.brand-unread-badge');
+  if (count > 0) {
+    if (!existing) {
+      var badge = document.createElement('span');
+      badge.className = 'brand-unread-badge';
+      badge.style.cssText = 'position:absolute;top:-6px;right:-6px;min-width:18px;height:18px;border-radius:999px;background:#ef4444;color:#fff;font-size:10px;font-weight:700;display:flex;align-items:center;justify-content:center;padding:0 5px;box-shadow:0 0 0 2px #fff;font-family:var(--mono);line-height:1';
+      dot.style.position = 'relative';
+      dot.appendChild(badge);
+      existing = badge;
+    }
+    existing.textContent = count > 9 ? '9+' : String(count);
+  } else if (existing) {
+    existing.remove();
+  }
 }
 
 function toggleBrandProfileMenu(e) {
@@ -6301,6 +6331,8 @@ async function loadBrandDashboardSummary(brandId) {
   var tBadge = document.getElementById('brand-task-badge'); if (tBadge) { tBadge.textContent = openTasks.length; tBadge.style.display = openTasks.length ? '' : 'none'; }
   var mBadge = document.getElementById('brand-meeting-badge'); if (mBadge) { mBadge.textContent = upcoming.length; mBadge.style.display = upcoming.length ? '' : 'none'; }
   var dBadge = document.getElementById('brand-doc-badge'); if (dBadge) { dBadge.textContent = pendingDocs.length; dBadge.style.display = pendingDocs.length ? '' : 'none'; }
+  // 우측 상단 벨 배지 (안 읽은 admin/walmart 메시지 수)
+  if (typeof updateBrandUnreadBadge === 'function') updateBrandUnreadBadge();
 }
 
 async function loadBrandRecentMessages(brandId) {
