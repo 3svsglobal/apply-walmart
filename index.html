@@ -4107,7 +4107,7 @@ function getContractStatusLabel(s) {
   return { draft:'Draft', pending:'Awaiting Signatures', partial:'Partially Signed', completed:'Fully Executed' }[s] || s;
 }
 
-// ── Image Upload Handler ──
+// ── Image Upload Handler (서명 이미지 업로드) ──
 function handleSigUpload(input, role, type) {
   var file = input.files[0];
   if (!file) return;
@@ -4117,11 +4117,116 @@ function handleSigUpload(input, role, type) {
     var zone = document.getElementById('sig-zone-' + role + '-' + type);
     if (zone) {
       zone.classList.add('has-file');
-      var icon = type === 'sig' ? '✍️' : '🔴';
-      zone.innerHTML = '<div style="font-size:12px;font-weight:600;color:#98fe00;margin-bottom:4px">Uploaded ✓</div><img src="' + e.target.result + '"><input type="file" accept="image/*" onchange="handleSigUpload(this,\'' + role + '\',\'' + type + '\')">';
+      zone.innerHTML = '<div style="font-size:12px;font-weight:600;color:#00875a;margin-bottom:4px">Uploaded ✓</div><img src="' + e.target.result + '" style="max-height:140px;max-width:100%;object-fit:contain"><input type="file" accept="image/*" onchange="handleSigUpload(this,\'' + role + '\',\'' + type + '\')">';
     }
   };
   reader.readAsDataURL(file);
+}
+
+// ── 서명 모드 토글 (그리기 / 업로드) ──
+function setSigMode(role, mode) {
+  var btns = document.querySelectorAll('#sig-mode-' + role + ' .sig-mode-btn');
+  btns.forEach(function(b) {
+    var isActive = b.getAttribute('data-mode') === mode;
+    b.style.background = isActive ? 'var(--accent)' : '#fff';
+    b.style.color = isActive ? '#fff' : 'var(--text-muted)';
+    b.style.borderColor = isActive ? 'var(--accent)' : 'var(--border)';
+    b.classList.toggle('active', isActive);
+  });
+  var drawPane = document.getElementById('sig-draw-' + role);
+  var uploadPane = document.getElementById('sig-zone-' + role + '-sig');
+  if (drawPane) drawPane.style.display = mode === 'draw' ? '' : 'none';
+  if (uploadPane) uploadPane.style.display = mode === 'upload' ? '' : 'none';
+  if (mode === 'draw') _initSigCanvas(role);
+}
+
+// ── 마우스/터치 서명 캔버스 ──
+var _sigCanvasState = {};
+function _initSigCanvas(role) {
+  var canvas = document.getElementById('sig-canvas-' + role);
+  if (!canvas || _sigCanvasState[role]) return;
+  _sigCanvasState[role] = true;
+  // 고해상도 렌더링 — devicePixelRatio 적용
+  var dpr = window.devicePixelRatio || 1;
+  var rect = canvas.getBoundingClientRect();
+  canvas.width = Math.max(rect.width, 600) * dpr;
+  canvas.height = 180 * dpr;
+  var ctx = canvas.getContext('2d');
+  ctx.scale(dpr, dpr);
+  ctx.strokeStyle = '#0a1628';
+  ctx.lineWidth = 2.2;
+  ctx.lineCap = 'round';
+  ctx.lineJoin = 'round';
+
+  var drawing = false;
+  var hasDrawn = false;
+  var last = null;
+
+  function getPos(e) {
+    var r = canvas.getBoundingClientRect();
+    var cx, cy;
+    if (e.touches && e.touches.length) {
+      cx = e.touches[0].clientX; cy = e.touches[0].clientY;
+    } else {
+      cx = e.clientX; cy = e.clientY;
+    }
+    return { x: cx - r.left, y: cy - r.top };
+  }
+  function start(e) {
+    e.preventDefault();
+    drawing = true;
+    last = getPos(e);
+  }
+  function move(e) {
+    if (!drawing) return;
+    e.preventDefault();
+    var p = getPos(e);
+    ctx.beginPath();
+    ctx.moveTo(last.x, last.y);
+    ctx.lineTo(p.x, p.y);
+    ctx.stroke();
+    last = p;
+    hasDrawn = true;
+    _commitSigDraw(role);
+  }
+  function end(e) {
+    if (drawing) {
+      drawing = false;
+      if (hasDrawn) _commitSigDraw(role);
+    }
+  }
+  canvas.addEventListener('mousedown', start);
+  canvas.addEventListener('mousemove', move);
+  window.addEventListener('mouseup', end);
+  canvas.addEventListener('mouseleave', end);
+  canvas.addEventListener('touchstart', start, { passive: false });
+  canvas.addEventListener('touchmove', move, { passive: false });
+  canvas.addEventListener('touchend', end);
+}
+
+function _commitSigDraw(role) {
+  var canvas = document.getElementById('sig-canvas-' + role);
+  if (!canvas) return;
+  // 빈 캔버스인지 체크 (모든 픽셀이 흰색이면 빈 상태)
+  var ctx = canvas.getContext('2d');
+  var img = ctx.getImageData(0, 0, canvas.width, canvas.height);
+  var hasInk = false;
+  for (var i = 3; i < img.data.length; i += 4) {
+    if (img.data[i] > 0) { hasInk = true; break; }
+  }
+  if (hasInk) {
+    _pendingSigs[role].sig = canvas.toDataURL('image/png');
+  } else {
+    _pendingSigs[role].sig = null;
+  }
+}
+
+function clearSigCanvas(role) {
+  var canvas = document.getElementById('sig-canvas-' + role);
+  if (!canvas) return;
+  var ctx = canvas.getContext('2d');
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  _pendingSigs[role].sig = null;
 }
 
 // ─── L1: 동의 체크 / OTP / Audit log / PDF 통합 서명 흐름 ───
@@ -4389,8 +4494,10 @@ async function _logSignatureAudit(contractId, role, c, sigUrl, sealUrl) {
 }
 
 async function confirmSign(role) {
-  if (!_pendingSigs[role].sig && !_pendingSigs[role].seal) {
-    alert('Please upload at least a signature or seal image before signing.');
+  // 그리기 모드에서는 마지막 stroke가 캔버스에만 있고 _pendingSigs.sig 가 아직 안 찍혔을 수 있어 한 번 더 commit
+  if (typeof _commitSigDraw === 'function') _commitSigDraw(role);
+  if (!_pendingSigs[role].sig) {
+    alert('서명을 먼저 작성하거나 업로드해 주세요.\nPlease draw or upload your signature first.');
     return;
   }
   var c1 = document.getElementById('sig-consent1-' + role);
@@ -4672,7 +4779,8 @@ function renderContractPage(contractId) {
     var badge = document.getElementById('sig-status-' + role);
     var btn = document.getElementById('sig-confirm-' + role);
     var sigZone = document.getElementById('sig-zone-' + role + '-sig');
-    var sealZone = document.getElementById('sig-zone-' + role + '-seal');
+    var drawPane = document.getElementById('sig-draw-' + role);
+    var modeBar = document.getElementById('sig-mode-' + role);
     var section = document.getElementById('sig-section-' + (role === 'admin' ? '3svs' : role));
     var gate = document.getElementById('sig-gate-' + role);
 
@@ -4685,7 +4793,6 @@ function renderContractPage(contractId) {
         section.style.background = 'linear-gradient(135deg,rgba(0,135,90,0.04) 0%,rgba(0,135,90,0.01) 100%)';
         section.style.borderColor = 'rgba(0,135,90,0.25)';
         section.style.position = 'relative';
-        // 기존 잠금 배지 제거 후 재추가
         var oldLock = section.querySelector('.sig-locked-overlay');
         if (oldLock) oldLock.remove();
         var lockBadge = document.createElement('div');
@@ -4697,41 +4804,42 @@ function renderContractPage(contractId) {
           headerEl.appendChild(lockBadge);
         }
       }
-      // OTP/동의 게이트 강제 숨김 (재서명 차단)
+      // 게이트 + 모드 토글 + 그리기 패널 모두 숨김
       if (gate) gate.style.display = 'none';
-      // Show uploaded images or "Signed" indicator (file input 제거)
+      if (modeBar) modeBar.style.display = 'none';
+      if (drawPane) drawPane.style.display = 'none';
+      // 업로드 zone은 서명 이미지로 교체
       if (sigZone) {
+        sigZone.style.display = '';
         sigZone.classList.add('has-file');
         sigZone.style.cursor = 'default';
-        sigZone.innerHTML = sig.sig ? '<img src="' + sig.sig + '">' : '<div style="font-style:italic;color:#00875a;padding:20px">✓ ' + sig.name + '</div>';
+        sigZone.style.border = '1px solid rgba(0,135,90,0.25)';
+        sigZone.style.background = 'rgba(0,135,90,0.03)';
+        sigZone.innerHTML = sig.sig ? '<img src="' + sig.sig + '" style="max-height:140px;max-width:100%;object-fit:contain">' : '<div style="font-style:italic;color:#00875a;padding:20px">✓ ' + sig.name + '</div>';
         sigZone.onclick = null;
-      }
-      if (sealZone) {
-        sealZone.classList.add('has-file');
-        sealZone.style.cursor = 'default';
-        sealZone.innerHTML = sig.seal ? '<img src="' + sig.seal + '">' : '<div style="font-style:italic;opacity:.75;padding:20px;color:var(--text-muted)">No seal uploaded</div>';
-        sealZone.onclick = null;
       }
     } else {
       badge.className = 'contract-badge pending';
       badge.textContent = 'Pending';
       if (btn) btn.style.display = '';
-      // 미서명 섹션 — 잠금 배지/배경 제거
       if (section) {
         section.style.background = '';
         section.style.borderColor = '';
         var oldLock = section.querySelector('.sig-locked-overlay');
         if (oldLock) oldLock.remove();
       }
-      // Reset upload zones
-      if (sigZone && !sigZone.classList.contains('has-file')) {
+      if (modeBar) modeBar.style.display = '';
+      // 기본 모드: 그리기 (캔버스 초기화 — _initSigCanvas 는 1회만 실행)
+      if (drawPane) drawPane.style.display = '';
+      if (sigZone) {
+        sigZone.classList.remove('has-file');
+        sigZone.style.display = 'none';
         sigZone.style.cursor = '';
-        sigZone.innerHTML = '<div class="sig-upload-icon">✍️</div><div class="sig-upload-label">Click or drag to upload signature image</div><input type="file" accept="image/*" onchange="handleSigUpload(this,\'' + role + '\',\'sig\')">';
+        sigZone.style.border = '';
+        sigZone.style.background = '';
+        sigZone.innerHTML = '<div class="sig-upload-icon">✍️</div><div class="sig-upload-label"><span class="ko">클릭 또는 드래그하여 서명 이미지 업로드</span><span class="en">Click or drag to upload signature image</span></div><input type="file" accept="image/*" onchange="handleSigUpload(this,\'' + role + '\',\'sig\')">';
       }
-      if (sealZone && !sealZone.classList.contains('has-file')) {
-        sealZone.style.cursor = '';
-        sealZone.innerHTML = '<div class="sig-upload-icon">🔴</div><div class="sig-upload-label">Click or drag to upload seal image</div><input type="file" accept="image/*" onchange="handleSigUpload(this,\'' + role + '\',\'seal\')">';
-      }
+      if (typeof _initSigCanvas === 'function') _initSigCanvas(role);
     }
   });
 
@@ -8173,21 +8281,26 @@ function formatFileSize(bytes) {
         <span class="contract-badge pending" id="sig-status-brand">Pending</span>
       </div>
       <div id="sig-brand-name-display" style="font-size:14px;margin-bottom:12px"></div>
-      <div class="sig-row">
+      <div class="sig-row" style="flex-direction:column">
         <div class="sig-slot">
-          <div class="sig-slot-label">Signature (서명)</div>
-          <div class="sig-upload-zone" id="sig-zone-brand-sig">
-            <div class="sig-upload-icon">✍️</div>
-            <div class="sig-upload-label">Click or drag to upload signature image</div>
-            <input type="file" accept="image/*" onchange="handleSigUpload(this,'brand','sig')">
+          <div class="sig-slot-label" style="display:flex;justify-content:space-between;align-items:center">
+            <span><span class="ko">서명</span><span class="en">Signature</span></span>
+            <div style="display:flex;gap:4px" id="sig-mode-brand">
+              <button type="button" data-mode="draw" class="sig-mode-btn active" onclick="setSigMode('brand','draw')" style="padding:5px 12px;font-size:11.5px;font-weight:600;border:1px solid var(--accent);background:var(--accent);color:#fff;border-radius:6px;cursor:pointer"><span class="ko">✍️ 그리기</span><span class="en">✍️ Draw</span></button>
+              <button type="button" data-mode="upload" class="sig-mode-btn" onclick="setSigMode('brand','upload')" style="padding:5px 12px;font-size:11.5px;font-weight:600;border:1px solid var(--border);background:#fff;color:var(--text-muted);border-radius:6px;cursor:pointer"><span class="ko">🖼 이미지 업로드</span><span class="en">🖼 Upload</span></button>
+            </div>
           </div>
-        </div>
-        <div class="sig-slot">
-          <div class="sig-slot-label">Company Seal (법인 도장)</div>
-          <div class="sig-upload-zone" id="sig-zone-brand-seal">
-            <div class="sig-upload-icon">🔴</div>
-            <div class="sig-upload-label">Click or drag to upload seal image</div>
-            <input type="file" accept="image/*" onchange="handleSigUpload(this,'brand','seal')">
+          <div class="sig-draw-pane" id="sig-draw-brand" style="border:2px dashed rgba(0,0,0,0.18);border-radius:12px;background:#fff;padding:8px">
+            <canvas id="sig-canvas-brand" width="600" height="180" style="width:100%;height:180px;background:#fff;border-radius:8px;cursor:crosshair;touch-action:none;display:block"></canvas>
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-top:6px;padding:0 4px">
+              <div style="font-size:11.5px;color:var(--text-muted)"><span class="ko">아래 흰 영역에 마우스/터치로 서명하세요</span><span class="en">Draw your signature in the box with mouse or touch</span></div>
+              <button type="button" onclick="clearSigCanvas('brand')" style="background:#fff;border:1px solid var(--border);color:var(--text-muted);padding:4px 12px;border-radius:6px;font-size:11.5px;font-weight:600;cursor:pointer"><span class="ko">지우기</span><span class="en">Clear</span></button>
+            </div>
+          </div>
+          <div class="sig-upload-zone" id="sig-zone-brand-sig" style="display:none">
+            <div class="sig-upload-icon">✍️</div>
+            <div class="sig-upload-label"><span class="ko">클릭 또는 드래그하여 서명 이미지 업로드</span><span class="en">Click or drag to upload signature image</span></div>
+            <input type="file" accept="image/*" onchange="handleSigUpload(this,'brand','sig')">
           </div>
         </div>
       </div>
@@ -8200,21 +8313,26 @@ function formatFileSize(bytes) {
         <h4>3SVS Representative (3SVS 대표)</h4>
         <span class="contract-badge pending" id="sig-status-admin">Pending</span>
       </div>
-      <div class="sig-row">
+      <div class="sig-row" style="flex-direction:column">
         <div class="sig-slot">
-          <div class="sig-slot-label">Signature (서명)</div>
-          <div class="sig-upload-zone" id="sig-zone-admin-sig">
-            <div class="sig-upload-icon">✍️</div>
-            <div class="sig-upload-label">Click or drag to upload signature image</div>
-            <input type="file" accept="image/*" onchange="handleSigUpload(this,'admin','sig')">
+          <div class="sig-slot-label" style="display:flex;justify-content:space-between;align-items:center">
+            <span><span class="ko">서명</span><span class="en">Signature</span></span>
+            <div style="display:flex;gap:4px" id="sig-mode-admin">
+              <button type="button" data-mode="draw" class="sig-mode-btn active" onclick="setSigMode('admin','draw')" style="padding:5px 12px;font-size:11.5px;font-weight:600;border:1px solid var(--accent);background:var(--accent);color:#fff;border-radius:6px;cursor:pointer"><span class="ko">✍️ 그리기</span><span class="en">✍️ Draw</span></button>
+              <button type="button" data-mode="upload" class="sig-mode-btn" onclick="setSigMode('admin','upload')" style="padding:5px 12px;font-size:11.5px;font-weight:600;border:1px solid var(--border);background:#fff;color:var(--text-muted);border-radius:6px;cursor:pointer"><span class="ko">🖼 이미지 업로드</span><span class="en">🖼 Upload</span></button>
+            </div>
           </div>
-        </div>
-        <div class="sig-slot">
-          <div class="sig-slot-label">Company Seal (법인 도장)</div>
-          <div class="sig-upload-zone" id="sig-zone-admin-seal">
-            <div class="sig-upload-icon">🔴</div>
-            <div class="sig-upload-label">Click or drag to upload seal image</div>
-            <input type="file" accept="image/*" onchange="handleSigUpload(this,'admin','seal')">
+          <div class="sig-draw-pane" id="sig-draw-admin" style="border:2px dashed rgba(0,0,0,0.18);border-radius:12px;background:#fff;padding:8px">
+            <canvas id="sig-canvas-admin" width="600" height="180" style="width:100%;height:180px;background:#fff;border-radius:8px;cursor:crosshair;touch-action:none;display:block"></canvas>
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-top:6px;padding:0 4px">
+              <div style="font-size:11.5px;color:var(--text-muted)"><span class="ko">아래 흰 영역에 마우스/터치로 서명하세요</span><span class="en">Draw your signature in the box with mouse or touch</span></div>
+              <button type="button" onclick="clearSigCanvas('admin')" style="background:#fff;border:1px solid var(--border);color:var(--text-muted);padding:4px 12px;border-radius:6px;font-size:11.5px;font-weight:600;cursor:pointer"><span class="ko">지우기</span><span class="en">Clear</span></button>
+            </div>
+          </div>
+          <div class="sig-upload-zone" id="sig-zone-admin-sig" style="display:none">
+            <div class="sig-upload-icon">✍️</div>
+            <div class="sig-upload-label"><span class="ko">클릭 또는 드래그하여 서명 이미지 업로드</span><span class="en">Click or drag to upload signature image</span></div>
+            <input type="file" accept="image/*" onchange="handleSigUpload(this,'admin','sig')">
           </div>
         </div>
       </div>
@@ -8227,21 +8345,26 @@ function formatFileSize(bytes) {
         <h4>Startup Junkie Consulting, LLC</h4>
         <span class="contract-badge pending" id="sig-status-walmart">Pending</span>
       </div>
-      <div class="sig-row">
+      <div class="sig-row" style="flex-direction:column">
         <div class="sig-slot">
-          <div class="sig-slot-label">Signature (서명)</div>
-          <div class="sig-upload-zone" id="sig-zone-walmart-sig">
-            <div class="sig-upload-icon">✍️</div>
-            <div class="sig-upload-label">Click or drag to upload signature image</div>
-            <input type="file" accept="image/*" onchange="handleSigUpload(this,'walmart','sig')">
+          <div class="sig-slot-label" style="display:flex;justify-content:space-between;align-items:center">
+            <span><span class="ko">서명</span><span class="en">Signature</span></span>
+            <div style="display:flex;gap:4px" id="sig-mode-walmart">
+              <button type="button" data-mode="draw" class="sig-mode-btn active" onclick="setSigMode('walmart','draw')" style="padding:5px 12px;font-size:11.5px;font-weight:600;border:1px solid var(--accent);background:var(--accent);color:#fff;border-radius:6px;cursor:pointer"><span class="ko">✍️ 그리기</span><span class="en">✍️ Draw</span></button>
+              <button type="button" data-mode="upload" class="sig-mode-btn" onclick="setSigMode('walmart','upload')" style="padding:5px 12px;font-size:11.5px;font-weight:600;border:1px solid var(--border);background:#fff;color:var(--text-muted);border-radius:6px;cursor:pointer"><span class="ko">🖼 이미지 업로드</span><span class="en">🖼 Upload</span></button>
+            </div>
           </div>
-        </div>
-        <div class="sig-slot">
-          <div class="sig-slot-label">Company Seal (법인 도장)</div>
-          <div class="sig-upload-zone" id="sig-zone-walmart-seal">
-            <div class="sig-upload-icon">🔴</div>
-            <div class="sig-upload-label">Click or drag to upload seal image</div>
-            <input type="file" accept="image/*" onchange="handleSigUpload(this,'walmart','seal')">
+          <div class="sig-draw-pane" id="sig-draw-walmart" style="border:2px dashed rgba(0,0,0,0.18);border-radius:12px;background:#fff;padding:8px">
+            <canvas id="sig-canvas-walmart" width="600" height="180" style="width:100%;height:180px;background:#fff;border-radius:8px;cursor:crosshair;touch-action:none;display:block"></canvas>
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-top:6px;padding:0 4px">
+              <div style="font-size:11.5px;color:var(--text-muted)"><span class="ko">아래 흰 영역에 마우스/터치로 서명하세요</span><span class="en">Draw your signature in the box with mouse or touch</span></div>
+              <button type="button" onclick="clearSigCanvas('walmart')" style="background:#fff;border:1px solid var(--border);color:var(--text-muted);padding:4px 12px;border-radius:6px;font-size:11.5px;font-weight:600;cursor:pointer"><span class="ko">지우기</span><span class="en">Clear</span></button>
+            </div>
+          </div>
+          <div class="sig-upload-zone" id="sig-zone-walmart-sig" style="display:none">
+            <div class="sig-upload-icon">✍️</div>
+            <div class="sig-upload-label"><span class="ko">클릭 또는 드래그하여 서명 이미지 업로드</span><span class="en">Click or drag to upload signature image</span></div>
+            <input type="file" accept="image/*" onchange="handleSigUpload(this,'walmart','sig')">
           </div>
         </div>
       </div>
