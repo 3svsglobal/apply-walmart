@@ -709,7 +709,6 @@ button{cursor:pointer;font-family:var(--font)}
 .msg-send-btn:hover{background:#005bb5;transform:translateY(-1px)}
 
 /* ─── PORTAL PHASE CHECKLIST ─── */
-.phase-checklist{display:flex;flex-direction:column;gap:6px}
 .phase-cl-group{margin-bottom:16px}
 .phase-cl-group-title{font-size:13px;font-weight:700;color:rgba(255,255,255,0.5);letter-spacing:0.5px;margin-bottom:10px;font-family:var(--font);display:flex;align-items:center;gap:8px}
 .phase-cl-group-title .cl-phase-badge{font-size:12px;padding:3px 10px;border-radius:999px;font-weight:500;letter-spacing:0}
@@ -2644,7 +2643,7 @@ button{cursor:pointer;font-family:var(--font)}
         <div class="locked-overlay">
           <div class="locked-icon">🔒</div>
           <div class="locked-title">Phase 현황 & 할 일 목록</div>
-          <div class="locked-desc">승인 후 프로그램이 시작되면 Phase 진행 상황과 체크리스트를 여기서 관리할 수 있습니다.</div>
+          <div class="locked-desc"><span class="ko">승인 후 프로그램이 시작되면 할 일·미팅·자료 요청을 여기서 관리할 수 있습니다.</span><span class="en">Once approved, you can manage tasks, meetings, and document requests here.</span></div>
         </div>
       </div>
     </div>
@@ -3860,81 +3859,7 @@ document.querySelectorAll('input[name="apply-type"]').forEach(function(radio) {
 
 var wmBrandData = {}; // DB에서 로딩
 
-// ─── PHASE STANDARD CHECKLIST (시스템 정의) ───
-// 관리자만 체크 가능, 브랜드는 진행률만 봄
-var PHASE_CHECKLIST = {
-  phase1: {
-    title: 'Phase 1 — Online Launch',
-    titleEn: 'Phase 1 — Online Launch',
-    items: [
-      { key: 'p1_marketplace_app',  ko: 'Marketplace Application 제출 완료',  en: 'Marketplace Application submitted' },
-      { key: 'p1_item_360',         ko: 'Item 360 셋업 완료',                  en: 'Item 360 setup completed' },
-      { key: 'p1_listings_seo',     ko: '제품 등록 및 SEO 최적화',             en: 'Listings & SEO optimization' },
-      { key: 'p1_sponsored',        ko: 'Sponsored Products 캠페인 시작',      en: 'Sponsored Products campaign launched' },
-      { key: 'p1_otif_sqep',        ko: 'OTIF/SQEP 준비 완료',                en: 'OTIF/SQEP readiness' },
-      { key: 'p1_compliance',       ko: '미국 시장 규정(FDA/FSMA 등) 컴플라이언스 완료', en: 'US market compliance (FDA/FSMA etc.)' },
-      { key: 'p1_first_sale',       ko: '첫 온라인 판매 발생',                 en: 'First online sale recorded' }
-    ]
-  },
-  phase2: {
-    title: 'Phase 2 — Performance Review',
-    titleEn: 'Phase 2 — Performance Review',
-    items: [
-      { key: 'p2_consumer_insights', ko: 'Consumer Insights 데이터 분석',      en: 'Consumer Insights analysis' },
-      { key: 'p2_advanced_ads',      ko: 'Advanced Ads 캠페인 운영',           en: 'Advanced Ads campaign' },
-      { key: 'p2_dynamic_pricing',   ko: 'Dynamic Pricing 적용',               en: 'Dynamic Pricing applied' },
-      { key: 'p2_demand_forecast',   ko: '수요 예측 모델 구축',                en: 'Demand Forecast model' },
-      { key: 'p2_buyer_portal',     ko: 'Buyer Portal 리뷰 자료 등록',         en: 'Buyer Portal review materials' },
-      { key: 'p2_buyer_meeting',     ko: 'Walmart Buyer 미팅 진행',            en: 'Walmart Buyer meeting completed' }
-    ]
-  },
-  phase3: {
-    title: 'Phase 3 — Store Entry',
-    titleEn: 'Phase 3 — Store Entry',
-    items: [
-      { key: 'p3_line_review',       ko: 'Line Review 통과',                   en: 'Line Review passed' },
-      { key: 'p3_ship_stress',       ko: 'Ship-Point Stress Test 완료',         en: 'Ship-Point Stress Test completed' },
-      { key: 'p3_po_forecast',       ko: 'PO Forecast 확정',                   en: 'PO Forecast confirmed' },
-      { key: 'p3_test_po',           ko: 'Test P.O. 발행',                     en: 'Test P.O. issued' },
-      { key: 'p3_store_allocation',  ko: 'Store Allocation 완료',              en: 'Store Allocation completed' },
-      { key: 'p3_post_launch',       ko: 'Post-Launch Review',                 en: 'Post-Launch Review' }
-    ]
-  }
-};
-
-function _emptyChecklist() {
-  // 모든 Phase 항목 키를 false로 초기화
-  var c = {};
-  ['phase1','phase2','phase3'].forEach(function(p){
-    PHASE_CHECKLIST[p].items.forEach(function(it){ c[it.key] = false; });
-  });
-  return c;
-}
-
-function _checklistStats(checklist) {
-  // 각 phase별 진행률 계산
-  if (!checklist) checklist = {};
-  var stats = {};
-  ['phase1','phase2','phase3'].forEach(function(p){
-    var items = PHASE_CHECKLIST[p].items;
-    var done = items.filter(function(it){ return !!checklist[it.key]; }).length;
-    stats[p] = { done: done, total: items.length, pct: items.length ? Math.round(done/items.length*100) : 0 };
-  });
-  var total = stats.phase1.total + stats.phase2.total + stats.phase3.total;
-  var done = stats.phase1.done + stats.phase2.done + stats.phase3.done;
-  stats.overall = { done: done, total: total, pct: total ? Math.round(done/total*100) : 0 };
-  return stats;
-}
-
-async function toggleChecklistItem(brandId, key, checked) {
-  if (!supabase || !brandId) return;
-  // DB에서 현재 checklist 가져와 머지 후 저장
-  var res = await supabase.from('wm_brands').select('checklist').eq('id', brandId).single();
-  var cur = (res.data && res.data.checklist) || _emptyChecklist();
-  cur[key] = !!checked;
-  await supabase.from('wm_brands').update({ checklist: cur }).eq('id', brandId);
-  return cur;
-}
+// Phase 체크리스트 기능은 2026-05-28 제거됨 (Tasks 시스템으로 대체)
 
 function showWmView(view) {
   var views = ['pipeline','meetings','brand-detail'];
@@ -5525,8 +5450,7 @@ async function approveApplication(appId) {
     portal_active: true,
     portal_email: loginEmail,
     portal_password: tempPw,
-    current_phase: 'phase1',
-    checklist: _emptyChecklist()
+    current_phase: 'phase1'
   }]);
 
   // Update application status
@@ -7013,44 +6937,6 @@ async function loadBrandPortalData(brand) {
   if (typeof loadBrandDocs === 'function') loadBrandDocs(brand.id);
 }
 
-function renderBrandChecklist(checklist) {
-  var el = document.getElementById('portal-checklist');
-  if (!el) return;
-  var stats = _checklistStats(checklist);
-  var html =
-    '<div style="margin-bottom:20px;padding:16px 18px;background:linear-gradient(135deg,var(--accent-light) 0%,transparent 100%);border:1px solid rgba(0,113,220,0.15);border-radius:10px">' +
-      '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">' +
-        '<div style="font-size:13px;font-weight:700;color:var(--text)">전체 진행률</div>' +
-        '<div style="font-size:16px;font-weight:800;color:var(--accent)">' + stats.overall.pct + '%</div>' +
-      '</div>' +
-      '<div style="height:8px;background:rgba(0,0,0,0.06);border-radius:4px;overflow:hidden">' +
-        '<div style="height:100%;width:' + stats.overall.pct + '%;background:linear-gradient(90deg,var(--accent),var(--lime));transition:width .5s"></div>' +
-      '</div>' +
-      '<div style="margin-top:8px;font-size:12px;color:var(--text-muted)">' + stats.overall.done + ' / ' + stats.overall.total + ' 항목 완료</div>' +
-    '</div>';
-  ['phase1','phase2','phase3'].forEach(function(pkey) {
-    var phase = PHASE_CHECKLIST[pkey];
-    var st = stats[pkey];
-    html += '<div style="margin-bottom:14px;background:var(--surface-alt);border:1px solid var(--border);border-radius:10px;padding:16px 18px">' +
-      '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">' +
-        '<div style="font-size:14px;font-weight:700;color:var(--text)">' + phase.title + '</div>' +
-        '<div style="font-size:12.5px;color:var(--accent);font-weight:700">' + st.done + ' / ' + st.total + '</div>' +
-      '</div>' +
-      '<div style="height:5px;background:rgba(0,0,0,0.06);border-radius:3px;overflow:hidden;margin-bottom:10px">' +
-        '<div style="height:100%;width:' + st.pct + '%;background:var(--accent);transition:width .3s"></div>' +
-      '</div>';
-    phase.items.forEach(function(it) {
-      var ck = !!checklist[it.key];
-      html += '<div style="display:flex;align-items:center;gap:10px;padding:6px 0;font-size:13.5px;color:' + (ck ? 'var(--lime)' : 'var(--text-muted)') + ';' + (ck ? 'font-weight:600' : 'font-weight:500') + '">' +
-        '<span style="width:18px;height:18px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;background:' + (ck ? 'var(--lime)' : '#fff') + ';border:1.5px solid ' + (ck ? 'var(--lime)' : 'var(--border)') + ';color:#fff;font-size:11px;font-weight:700;flex-shrink:0">' + (ck ? '✓' : '') + '</span>' +
-        '<span style="' + (ck ? 'text-decoration:line-through;text-decoration-color:rgba(0,135,90,0.4)' : '') + '">' + it.ko + '</span>' +
-      '</div>';
-    });
-    html += '</div>';
-  });
-  el.innerHTML = html;
-}
-
 // ─── MESSAGE SYSTEM (DB-backed) ───
 async function loadBrandMessages(brandId) {
   if (!supabase || !brandId) return;
@@ -7139,179 +7025,82 @@ function selectContractRole(role) {
   });
 }
 
-// ─── ADMIN: BRAND MESSAGES VIEW ───
+// ─── ADMIN: BRAND MESSAGES VIEW (단순화 — 체크리스트 제거됨) ───
 async function showAdminBrandMessages(brandId, brandName) {
   var messages = await loadAdminMessages(brandId);
   var existing = document.getElementById('admin-msg-modal');
   if (existing) existing.remove();
-  
+
   var modal = document.createElement('div');
   modal.id = 'admin-msg-modal';
-  modal.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,0.7);z-index:9999;display:flex;align-items:center;justify-content:center;backdrop-filter:blur(8px)';
-  
-  // Store brand info for reply handler
+  modal.style.cssText = 'position:fixed;inset:0;background:rgba(10,22,40,0.55);z-index:9999;display:flex;align-items:center;justify-content:center;backdrop-filter:blur(6px);padding:20px;font-family:var(--font)';
+
   window._adminMsgBrandId = brandId;
   window._adminMsgBrandName = brandName;
-  
+
   var msgsHtml = '';
   if (messages.length === 0) {
-    msgsHtml = '<div style="text-align:center;padding:40px;color:rgba(0,0,0,0.62)">메시지 없음</div>';
+    msgsHtml = '<div style="text-align:center;padding:40px;color:var(--text-muted)">' + _kn('아직 메시지가 없습니다.','No messages yet.') + '</div>';
   } else {
     messages.forEach(function(m) {
-      var isAdmin = m.sender_role === 'admin';
-      var senderLabel = isAdmin ? '3SVS 관리자' : (m.sender_name || 'Brand');
-      var time = m.created_at ? new Date(m.created_at).toLocaleString('ko-KR') : '';
-      msgsHtml += '<div class="msg-bubble ' + (isAdmin ? 'brand' : 'admin') + '" style="margin-bottom:8px"><div>' + m.content.replace(/</g,'&lt;').replace(/>/g,'&gt;') + '</div><div class="msg-meta">' + senderLabel + ' \u00b7 ' + time + '</div></div>';
+      var isStaff = m.sender_role === 'admin' || m.sender_role === 'walmart';
+      var senderLabel;
+      if (m.sender_role === 'admin') senderLabel = _kn('3SVS 관리자','3SVS Admin');
+      else if (m.sender_role === 'walmart') senderLabel = 'Startup Junkie';
+      else senderLabel = m.sender_name || _kn('브랜드','Brand');
+      var time = m.created_at ? _fmtKST(m.created_at) : '';
+      msgsHtml += '<div class="msg-bubble ' + (isStaff ? 'brand' : 'admin') + '" style="margin-bottom:8px"><div>' + m.content.replace(/</g,'&lt;').replace(/>/g,'&gt;') + '</div><div class="msg-meta">' + senderLabel + ' · ' + time + '</div></div>';
     });
   }
-  
-  var box = document.createElement('div');
-  box.style.cssText = 'background:var(--surface);border:1px solid var(--border);border-radius:16px;width:92%;max-width:760px;max-height:88vh;display:flex;flex-direction:column;box-shadow:0 24px 64px rgba(0,0,0,0.2)';
 
-  // 체크리스트 데이터 미리 로딩
-  var checklistData = {};
-  try {
-    var brandRes = await supabase.from('wm_brands').select('checklist').eq('id', brandId).single();
-    checklistData = (brandRes.data && brandRes.data.checklist) || _emptyChecklist();
-  } catch(e) { checklistData = _emptyChecklist(); }
-  var stats = _checklistStats(checklistData);
+  var box = document.createElement('div');
+  box.style.cssText = 'background:var(--surface);border:1px solid var(--border);border-radius:16px;width:100%;max-width:680px;max-height:88vh;display:flex;flex-direction:column;box-shadow:0 24px 64px rgba(10,22,40,0.2)';
 
   var header = document.createElement('div');
-  header.style.cssText = 'padding:20px 26px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;flex-shrink:0';
+  header.style.cssText = 'padding:18px 24px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;flex-shrink:0';
   header.innerHTML =
     '<div>' +
-      '<div style="font-weight:800;font-size:18px;color:var(--text)">' + (brandName || 'Brand') + '</div>' +
-      '<div style="font-size:12.5px;color:var(--text-muted);margin-top:2px">전체 진행률 <strong style="color:var(--accent)">' + stats.overall.pct + '%</strong> (' + stats.overall.done + '/' + stats.overall.total + ')</div>' +
+      '<div style="font-weight:800;font-size:17px;color:var(--text);letter-spacing:-0.3px">💬 ' + (brandName || 'Brand') + '</div>' +
+      '<div style="font-size:12px;color:var(--text-muted);margin-top:3px">' + messages.length + ' ' + _kn('개 메시지','messages') + '</div>' +
     '</div>';
   var closeBtn = document.createElement('button');
   closeBtn.textContent = '✕';
-  closeBtn.style.cssText = 'background:none;border:none;color:var(--text-muted);font-size:22px;cursor:pointer;padding:4px 8px';
+  closeBtn.style.cssText = 'background:none;border:none;color:var(--text-muted);font-size:22px;cursor:pointer;padding:0;border-radius:50%;width:34px;height:34px;display:flex;align-items:center;justify-content:center';
+  closeBtn.onmouseenter = function(){ this.style.background='var(--surface-alt)'; };
+  closeBtn.onmouseleave = function(){ this.style.background='none'; };
   closeBtn.onclick = function() { modal.remove(); };
   header.appendChild(closeBtn);
 
-  // Tab nav
-  var tabNav = document.createElement('div');
-  tabNav.style.cssText = 'display:flex;border-bottom:1px solid var(--border);padding:0 26px;gap:4px;flex-shrink:0';
-  tabNav.innerHTML =
-    '<button data-tab="checklist" class="abm-tab abm-tab-active" style="padding:14px 18px;background:none;border:none;border-bottom:2px solid var(--accent);color:var(--accent);font-size:14px;font-weight:700;cursor:pointer;font-family:var(--font)">📋 진행 체크리스트</button>' +
-    '<button data-tab="messages" class="abm-tab" style="padding:14px 18px;background:none;border:none;border-bottom:2px solid transparent;color:var(--text-muted);font-size:14px;font-weight:600;cursor:pointer;font-family:var(--font)">💬 메시지 (' + messages.length + ')</button>';
-
-  // Checklist tab content
-  var checklistTab = document.createElement('div');
-  checklistTab.id = 'abm-tab-checklist';
-  checklistTab.style.cssText = 'flex:1;overflow-y:auto;padding:20px 26px';
-
-  function _buildChecklistHtml() {
-    var html = '';
-    ['phase1','phase2','phase3'].forEach(function(pkey) {
-      var phase = PHASE_CHECKLIST[pkey];
-      var st = stats[pkey];
-      html += '<div style="margin-bottom:24px;background:var(--surface-alt);border:1px solid var(--border);border-radius:12px;padding:18px 20px">' +
-        '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">' +
-          '<div style="font-size:15px;font-weight:700;color:var(--text)">' + phase.title + '</div>' +
-          '<div style="font-size:13px;color:var(--accent);font-weight:700">' + st.done + ' / ' + st.total + ' · ' + st.pct + '%</div>' +
-        '</div>' +
-        '<div style="height:6px;background:rgba(0,0,0,0.06);border-radius:3px;overflow:hidden;margin-bottom:14px">' +
-          '<div style="height:100%;width:' + st.pct + '%;background:linear-gradient(90deg,var(--accent),var(--lime));transition:width .3s"></div>' +
-        '</div>';
-      phase.items.forEach(function(it) {
-        var ck = !!checklistData[it.key];
-        html += '<label style="display:flex;align-items:center;gap:12px;padding:10px 0;cursor:pointer;border-bottom:1px solid rgba(0,0,0,0.04)" data-key="' + it.key + '">' +
-          '<input type="checkbox" ' + (ck ? 'checked' : '') + ' onchange="_adminToggleChecklist(\'' + brandId + '\',\'' + it.key + '\',this.checked)" style="width:18px;height:18px;cursor:pointer;accent-color:var(--accent)">' +
-          '<span style="font-size:14px;color:' + (ck ? 'var(--lime)' : 'var(--text)') + ';' + (ck ? 'font-weight:600;text-decoration:line-through;text-decoration-color:rgba(0,135,90,0.4)' : 'font-weight:500') + '">' + it.ko + '</span>' +
-        '</label>';
-      });
-      html += '</div>';
-    });
-    return html;
-  }
-  checklistTab.innerHTML = _buildChecklistHtml();
-
-  // Messages tab content
   var thread = document.createElement('div');
   thread.id = 'admin-msg-thread';
-  thread.style.cssText = 'flex:1;overflow-y:auto;padding:20px 26px;display:none';
-  thread.innerHTML = msgsHtml || '<div style="text-align:center;padding:32px;color:var(--text-muted)">메시지 없음</div>';
+  thread.style.cssText = 'flex:1;overflow-y:auto;padding:18px 24px;min-height:240px';
+  thread.innerHTML = msgsHtml;
 
   var inputRow = document.createElement('div');
   inputRow.id = 'admin-msg-input-row';
-  inputRow.style.cssText = 'padding:16px 26px;border-top:1px solid var(--border);display:none;gap:8px;flex-shrink:0';
+  inputRow.style.cssText = 'padding:14px 24px;border-top:1px solid var(--border);display:flex;gap:8px;flex-shrink:0';
   var input = document.createElement('input');
   input.type = 'text';
   input.id = 'admin-msg-input';
-  input.placeholder = '답변을 입력하세요...';
+  input.placeholder = _kn('답변을 입력하세요... (Enter로 전송)','Type a reply... (Enter to send)');
   input.style.cssText = 'flex:1;background:#fff;border:1px solid var(--border);border-radius:8px;padding:11px 14px;color:var(--text);font-size:14px;font-family:var(--font)';
   input.addEventListener('keydown', function(e) { if (e.key === 'Enter') sendAdminReplyFromModal(); });
   var sendBtn = document.createElement('button');
-  sendBtn.textContent = '전송';
+  sendBtn.textContent = _kn('전송','Send');
   sendBtn.style.cssText = 'background:var(--accent);color:#fff;border:none;border-radius:8px;padding:11px 22px;font-weight:700;cursor:pointer;font-size:14px;font-family:var(--font)';
   sendBtn.onclick = function() { sendAdminReplyFromModal(); };
   inputRow.appendChild(input);
   inputRow.appendChild(sendBtn);
 
   box.appendChild(header);
-  box.appendChild(tabNav);
-  box.appendChild(checklistTab);
   box.appendChild(thread);
   box.appendChild(inputRow);
   modal.appendChild(box);
 
-  // Tab switching
-  tabNav.querySelectorAll('.abm-tab').forEach(function(t){
-    t.onclick = function() {
-      tabNav.querySelectorAll('.abm-tab').forEach(function(x){
-        x.classList.remove('abm-tab-active');
-        x.style.borderBottomColor = 'transparent';
-        x.style.color = 'var(--text-muted)';
-        x.style.fontWeight = '600';
-      });
-      this.classList.add('abm-tab-active');
-      this.style.borderBottomColor = 'var(--accent)';
-      this.style.color = 'var(--accent)';
-      this.style.fontWeight = '700';
-      var tab = this.dataset.tab;
-      if (tab === 'checklist') {
-        checklistTab.style.display = '';
-        thread.style.display = 'none';
-        inputRow.style.display = 'none';
-      } else {
-        checklistTab.style.display = 'none';
-        thread.style.display = '';
-        inputRow.style.display = 'flex';
-        thread.scrollTop = thread.scrollHeight;
-      }
-    };
-  });
-
   document.body.appendChild(modal);
   modal.addEventListener('click', function(e) { if (e.target === modal) modal.remove(); });
-}
-
-// 체크리스트 항목 toggle (관리자 모달에서 사용)
-async function _adminToggleChecklist(brandId, key, checked) {
-  var updated = await toggleChecklistItem(brandId, key, checked);
-  // 모달 안 진행률 + 라벨 UI 갱신
-  var modal = document.getElementById('admin-msg-modal');
-  if (!modal) return;
-  // 전체 통계 + 각 phase 진행 바 다시 그리기
-  var stats = _checklistStats(updated);
-  var header = modal.querySelector('div > div > div + div'); // 헤더 안 진행률
-  if (header) header.innerHTML = '전체 진행률 <strong style="color:var(--accent)">' + stats.overall.pct + '%</strong> (' + stats.overall.done + '/' + stats.overall.total + ')';
-  // 해당 라벨만 즉시 갱신
-  var label = modal.querySelector('label[data-key="' + key + '"] span');
-  if (label) {
-    if (checked) { label.style.color='var(--lime)'; label.style.fontWeight='600'; label.style.textDecoration='line-through'; label.style.textDecorationColor='rgba(0,135,90,0.4)'; }
-    else { label.style.color='var(--text)'; label.style.fontWeight='500'; label.style.textDecoration=''; }
-  }
-  // 각 phase 진행률 텍스트/바 갱신
-  modal.querySelectorAll('#abm-tab-checklist > div').forEach(function(box, idx) {
-    var pkey = ['phase1','phase2','phase3'][idx];
-    var st = stats[pkey];
-    var head = box.querySelector('div > div + div');
-    if (head) head.textContent = st.done + ' / ' + st.total + ' · ' + st.pct + '%';
-    var bar = box.querySelector('div[style*="background:linear-gradient"]');
-    if (bar) bar.style.width = st.pct + '%';
-  });
+  thread.scrollTop = thread.scrollHeight;
+  setTimeout(function(){ input.focus(); }, 50);
 }
 
 async function sendAdminReplyFromModal() {
@@ -7424,6 +7213,7 @@ function showWmBrandDetailDB(brandId) {
     '<div class="wm-brand-header"><div class="brand-icon" style="width:48px;height:48px;font-size:20px;border-radius:12px">' + (brand.nameEn || brand.name || '?')[0].toUpperCase() + '</div><div><h2 style="margin:0;font-size:22px">' + brand.name + '</h2><p style="margin:4px 0 0;opacity:.6">' + phaseLabel + ' · ' + (brand.info.category || '-') + '</p></div></div>' +
     '<div class="wm-section"><div class="wm-section-title">Phase 관리</div><div style="display:flex;gap:8px;flex-wrap:wrap">' + phaseBtns + '</div></div>' +
     '<div class="wm-section"><div class="wm-section-title">Company Information</div><div class="wm-info-grid">' + (infoHtml || '<div style="opacity:.7">정보 없음</div>') + '</div></div>' +
+    '<div class="wm-section"><div class="wm-section-title" style="display:flex;justify-content:space-between;align-items:center"><span>🗒 내부 메모 / Internal Notes</span><span id="admin-notes-status" style="font-size:11px;color:var(--text-muted)"></span></div><div style="margin-top:10px;font-size:11.5px;color:var(--text-muted);margin-bottom:8px">관리자·Startup Junkie 만 접근. 브랜드에는 노출되지 않습니다. / Visible to admin and Startup Junkie only. Not shown to brand.</div><textarea id="admin-brand-notes" rows="5" placeholder="이 기업에 대한 메모: 연락 이력, 협상 포인트, 주의사항 등 / Notes about this brand: contact history, negotiation points, things to watch..." style="width:100%;background:#fff;border:1px solid var(--border);border-radius:8px;padding:10px 12px;font-size:13.5px;color:var(--text);font-family:var(--font);resize:vertical;line-height:1.5"></textarea><div style="margin-top:8px;display:flex;justify-content:flex-end"><button onclick="adminSaveBrandNotes(\x27' + brandId + '\x27)" style="background:var(--accent);color:#fff;border:none;padding:7px 16px;border-radius:6px;font-size:12px;font-weight:600;cursor:pointer">저장 / Save</button></div></div>' +
     '<div class="wm-section"><div class="wm-section-title" style="display:flex;justify-content:space-between;align-items:center"><span>할 일 / Tasks</span><button onclick="showAdminTaskAddModal(\x27' + brandId + '\x27)" style="background:var(--accent);color:#fff;border:none;padding:6px 12px;border-radius:6px;font-size:12px;font-weight:600;cursor:pointer">+ 할 일 등록</button></div><div id="admin-brand-tasks-list" style="margin-top:10px"><div style="color:var(--text-muted);font-size:12px">불러오는 중...</div></div></div>' +
     '<div class="wm-section"><div class="wm-section-title" style="display:flex;justify-content:space-between;align-items:center"><span>미팅 / Meetings</span><button onclick="showAdminMeetingAddModal(\x27' + brandId + '\x27)" style="background:var(--accent);color:#fff;border:none;padding:6px 12px;border-radius:6px;font-size:12px;font-weight:600;cursor:pointer">+ 미팅 제안</button></div><div id="admin-brand-meetings-list" style="margin-top:10px"><div style="color:var(--text-muted);font-size:12px">불러오는 중...</div></div></div>' +
     '<div class="wm-section"><div class="wm-section-title" style="display:flex;justify-content:space-between;align-items:center"><span>자료 요청 / Documents</span><button onclick="showAdminDocRequestModal(\x27' + brandId + '\x27)" style="background:var(--accent);color:#fff;border:none;padding:6px 12px;border-radius:6px;font-size:12px;font-weight:600;cursor:pointer">+ 자료 요청</button></div><div id="admin-brand-docs-list" style="margin-top:10px"><div style="color:var(--text-muted);font-size:12px">불러오는 중...</div></div></div>' +
@@ -7431,9 +7221,36 @@ function showWmBrandDetailDB(brandId) {
     '<div class="wm-section"><div class="wm-section-title">Contracts</div>' + getWmContractsHtml(brandId) + '</div>';
 
   // 비동기 로드
+  if (typeof loadAdminBrandNotes === 'function') loadAdminBrandNotes(brandId);
   if (typeof loadAdminBrandTasks === 'function') loadAdminBrandTasks(brandId);
   if (typeof loadAdminBrandMeetings === 'function') loadAdminBrandMeetings(brandId);
   if (typeof loadAdminBrandDocs === 'function') loadAdminBrandDocs(brandId);
+}
+
+// ─── ADMIN: 기업 내부 메모 ───
+async function loadAdminBrandNotes(brandId) {
+  if (!supabase) return;
+  var res = await supabase.from('wm_brands').select('admin_notes').eq('id', brandId).single();
+  var ta = document.getElementById('admin-brand-notes');
+  if (ta) ta.value = (res.data && res.data.admin_notes) || '';
+}
+
+async function adminSaveBrandNotes(brandId) {
+  if (!supabase) return;
+  var ta = document.getElementById('admin-brand-notes');
+  var statusEl = document.getElementById('admin-notes-status');
+  if (!ta) return;
+  if (statusEl) statusEl.textContent = '저장 중...';
+  var res = await supabase.from('wm_brands').update({ admin_notes: ta.value || null }).eq('id', brandId);
+  if (res.error) {
+    if (statusEl) { statusEl.textContent = '저장 실패: ' + res.error.message; statusEl.style.color = '#ef4444'; }
+    return;
+  }
+  if (statusEl) {
+    statusEl.textContent = '✓ 저장됨 · ' + new Date().toLocaleTimeString('ko-KR');
+    statusEl.style.color = '#10b981';
+    setTimeout(function(){ if (statusEl.textContent.startsWith('✓')) statusEl.textContent = ''; }, 4000);
+  }
 }
 
 // ─── ADMIN: Brand 별 Tasks / Meetings / Documents ───
