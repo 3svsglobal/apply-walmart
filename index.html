@@ -2394,9 +2394,10 @@ button{cursor:pointer;font-family:var(--font)}
       <div class="sidebar-logo"><div class="sidebar-logo-icon" id="portal-brand-icon">-</div><div class="sidebar-logo-text"><span id="portal-brand-name">-</span> <span>Brand Portal</span></div></div>
       <div class="sidebar-nav" id="brand-sidebar-nav">
         <div class="sidebar-item active" onclick="showBrandView('dashboard')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg><span class="ko">대시보드</span><span class="en">Dashboard</span></div>
-        <div class="sidebar-item" onclick="showBrandView('phase')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg><span class="ko">Phase 현황</span><span class="en">Phase Status</span></div>
-        <div class="sidebar-item" onclick="showBrandView('docs')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg><span class="ko">서류 관리</span><span class="en">Documents</span></div>
-        <div class="sidebar-item" onclick="showBrandView('messages')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg><span class="ko">문의 / 메시지</span><span class="en">Messages</span> <span class="sidebar-badge" id="brand-msg-badge" style="display:none">0</span></div>
+        <div class="sidebar-item" onclick="showBrandView('tasks')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg><span class="ko">할 일</span><span class="en">To-do</span> <span class="sidebar-badge" id="brand-task-badge" style="display:none">0</span></div>
+        <div class="sidebar-item" onclick="showBrandView('meetings')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg><span class="ko">미팅</span><span class="en">Meetings</span> <span class="sidebar-badge" id="brand-meeting-badge" style="display:none">0</span></div>
+        <div class="sidebar-item" onclick="showBrandView('docs')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg><span class="ko">서류함</span><span class="en">Documents</span> <span class="sidebar-badge" id="brand-doc-badge" style="display:none">0</span></div>
+        <div class="sidebar-item" onclick="showBrandView('messages')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg><span class="ko">메시지</span><span class="en">Messages</span> <span class="sidebar-badge" id="brand-msg-badge" style="display:none">0</span></div>
         <div class="sidebar-item" onclick="showBrandView('contracts')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg><span class="ko">계약서</span><span class="en">Contracts</span></div>
       </div>
       <div class="sidebar-bottom"><div style="cursor:pointer;color:rgba(0,0,0,0.6);margin-bottom:8px" onclick="showBrandPwChange()"><span class="ko">비밀번호 변경</span><span class="en">Change Password</span></div><div style="cursor:pointer;color:rgba(0,0,0,0.6);margin-bottom:8px" onclick="sessionStorage.removeItem('wm_session');switchTab('landing')"><span class="ko">← 로그아웃</span><span class="en">← Log Out</span></div>Walmart Entry Program<br>by 3Stripe Venture Studio</div>
@@ -2404,86 +2405,153 @@ button{cursor:pointer;font-family:var(--font)}
     <div class="dash-main">
       <div class="dash-topbar"><div class="dash-title"><h2 id="portal-topbar-title">브랜드 대시보드</h2><p id="portal-topbar-sub">Walmart 입점 프로그램 진행 현황</p></div><div class="dash-actions"><div class="noti-dot" onclick="scrollToBrandMessages()" title="메시지로 이동" style="cursor:pointer"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="rgba(0,0,0,0.6)" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg></div><div class="dash-avatar" id="portal-avatar" onclick="toggleBrandProfileMenu(event)" title="계정 메뉴" style="cursor:pointer">--</div></div></div>
       <div class="dash-content">
-        <!-- Phase Progress -->
-        <div class="portal-phase" id="portal-phase-bar" data-brand-view="dashboard phase"><div class="portal-phase-title"><span class="ko">진행 현황</span><span class="en">Progress</span> <span class="portal-phase-badge" id="portal-phase-badge">대기</span></div><div class="timeline" style="padding:12px 0" id="portal-phase-timeline"></div></div>
 
-        <!-- Phase Detail (승인 후에만 보이는 상세 정보) -->
-        <div class="portal-info-section">
-          <div class="portal-info-title">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>
-            <span class="ko">Phase별 상세</span><span class="en">Phase Details</span>
+        <!-- ────────── 대시보드 요약 ────────── -->
+        <div data-brand-view="dashboard">
+          <!-- KPI cards -->
+          <div class="stat-grid" style="grid-template-columns:repeat(3,1fr);margin-bottom:16px">
+            <div class="stat-card"><div class="val" id="portal-kpi-tasks">0</div><div class="lbl"><span class="ko">진행 중인 할 일</span><span class="en">Open Tasks</span></div></div>
+            <div class="stat-card"><div class="val" id="portal-kpi-meetings">0</div><div class="lbl"><span class="ko">예정 미팅</span><span class="en">Upcoming Meetings</span></div></div>
+            <div class="stat-card"><div class="val" id="portal-kpi-docs">0</div><div class="lbl"><span class="ko">요청 받은 자료</span><span class="en">Pending Docs</span></div></div>
           </div>
-          <div class="portal-phase-detail">
-            <div class="portal-phase-item"><div class="portal-phase-num">01</div><div class="portal-phase-body"><h4>Phase 1 — Online Launch</h4><p>Walmart.com 마켓플레이스에 제품을 등록하고 온라인 판매를 시작합니다. 30일간 실제 판매 데이터를 수집하여 시장 반응을 검증합니다.</p><div class="phase-tags"><span>Marketplace Application</span><span>Item 360</span><span>Listings & SEO</span><span>Sponsored Products</span><span>OTIF & SQEP</span><span>Product Compliance</span></div></div></div>
-            <div class="portal-phase-item"><div class="portal-phase-num">02</div><div class="portal-phase-body"><h4>Phase 2 — Performance Review</h4><p>판매 데이터를 분석하고 브랜드 포지셔닝 자료를 작성합니다. Walmart Buyer에게 리뷰 자료를 제출하고 미팅을 주선합니다.</p><div class="phase-tags"><span>Consumer Insights</span><span>Advanced Ads</span><span>Dynamic Pricing</span><span>Demand Forecast</span><span>Buyer Portal</span></div></div></div>
-            <div class="portal-phase-item"><div class="portal-phase-num">03</div><div class="portal-phase-body"><h4>Phase 3 — Store Entry</h4><p>Walmart 오프라인 매장 입점 여부가 최종 결정됩니다. 500~1,000개 테스트 매장에서 시작하여 전국 배치를 목표로 합니다.</p><div class="phase-tags"><span>Line Review</span><span>Ship-Point Stress Test</span><span>PO Forecast</span><span>Store Allocation</span><span>Post-Launch Review</span></div></div></div>
+
+          <div class="dash-grid" style="grid-template-columns:1fr 1fr;gap:16px">
+            <div class="panel">
+              <div class="panel-title"><span class="ko">긴급 할 일</span><span class="en">Urgent To-do</span> <span class="count" id="portal-dash-tasks-count">0</span></div>
+              <div id="portal-dash-tasks"><div style="text-align:center;padding:24px 0;color:var(--text-muted);font-size:13px"><span class="ko">처리할 할 일이 없습니다.</span><span class="en">No open tasks.</span></div></div>
+              <div style="margin-top:10px;text-align:right"><a onclick="showBrandView('tasks')" style="font-size:12px;color:var(--accent);cursor:pointer;font-weight:600"><span class="ko">전체 보기 →</span><span class="en">View all →</span></a></div>
+            </div>
+            <div class="panel">
+              <div class="panel-title"><span class="ko">다가오는 미팅</span><span class="en">Upcoming Meetings</span></div>
+              <div id="portal-dash-meetings"><div style="text-align:center;padding:24px 0;color:var(--text-muted);font-size:13px"><span class="ko">예정된 미팅이 없습니다.</span><span class="en">No upcoming meetings.</span></div></div>
+              <div style="margin-top:10px;text-align:right"><a onclick="showBrandView('meetings')" style="font-size:12px;color:var(--accent);cursor:pointer;font-weight:600"><span class="ko">전체 보기 →</span><span class="en">View all →</span></a></div>
+            </div>
+          </div>
+
+          <div class="panel" style="margin-top:16px">
+            <div class="panel-title"><span class="ko">최근 메시지</span><span class="en">Recent Messages</span></div>
+            <div id="portal-dash-messages"><div style="text-align:center;padding:24px 0;color:var(--text-muted);font-size:13px"><span class="ko">아직 메시지가 없습니다.</span><span class="en">No messages yet.</span></div></div>
+            <div style="margin-top:10px;text-align:right"><a onclick="showBrandView('messages')" style="font-size:12px;color:var(--accent);cursor:pointer;font-weight:600"><span class="ko">대화 열기 →</span><span class="en">Open chat →</span></a></div>
           </div>
         </div>
 
-        <!-- SKU Document Upload -->
-        <div class="portal-info-section" id="portal-sku-section" data-brand-view="dashboard phase docs">
-          <div class="portal-info-title">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>
-            <span class="ko">SKU / 제품 자료</span><span class="en">SKU / Product Files</span>
-            <span style="font-family:var(--mono);font-size:10px;padding:3px 8px;border-radius:999px;background:rgba(0,135,90,0.15);color:var(--lime);font-weight:400;margin-left:4px" id="portal-sku-count">0 files</span>
+        <!-- ────────── 할 일 목록 ────────── -->
+        <div class="portal-info-section" data-brand-view="tasks" style="display:none">
+          <div class="portal-info-title" style="justify-content:space-between">
+            <div style="display:flex;align-items:center;gap:8px">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+              <span class="ko">할 일 목록</span><span class="en">To-do List</span>
+              <span style="font-family:var(--mono);font-size:10px;padding:3px 8px;border-radius:999px;background:rgba(0,113,220,0.15);color:var(--accent);font-weight:400" id="brand-tasks-count">0 items</span>
+            </div>
+            <div style="display:flex;gap:8px;align-items:center">
+              <select id="brand-tasks-filter" onchange="renderBrandTasks()" style="background:#fff;border:1px solid var(--border);border-radius:8px;padding:6px 10px;font-size:12px;cursor:pointer">
+                <option value="open">진행 중</option>
+                <option value="all">전체</option>
+                <option value="completed">완료됨</option>
+              </select>
+              <button onclick="showBrandTaskAddModal()" style="background:var(--accent);color:#fff;border:none;padding:8px 14px;border-radius:8px;font-size:12px;font-weight:600;cursor:pointer">+ 직접 추가</button>
+            </div>
           </div>
-          <!-- Upload area -->
-          <div id="sku-upload-area" style="border:2px dashed rgba(0,0,0,0.6);border-radius:12px;padding:32px;text-align:center;cursor:pointer;transition:all .2s;margin-bottom:16px" onclick="document.getElementById('sku-file-input').click()" ondragover="event.preventDefault();this.style.borderColor='var(--accent)';this.style.background='rgba(0,113,220,0.05)'" ondragleave="this.style.borderColor='rgba(0,0,0,0.6)';this.style.background=''" ondrop="event.preventDefault();this.style.borderColor='rgba(0,0,0,0.6)';this.style.background='';handleSkuFileDrop(event)">
-            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="rgba(0,0,0,0.6)" stroke-width="1.5" style="margin-bottom:8px"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
-            <div style="font-size:14px;color:rgba(0,0,0,0.6);margin-bottom:4px">SKU 리스트 또는 제품 자료를 업로드하세요</div>
-            <div style="font-size:12px;color:rgba(0,0,0,0.6)">PDF, Excel, 이미지 파일 지원 (최대 10MB)</div>
-            <input type="file" id="sku-file-input" accept=".pdf,.xlsx,.xls,.csv,.png,.jpg,.jpeg" style="display:none" onchange="uploadSkuFile(this.files[0])" multiple>
+          <div id="brand-tasks-list"><div style="text-align:center;padding:32px 0;color:var(--text-muted);font-size:13px"><span class="ko">할 일이 없습니다.</span><span class="en">No tasks yet.</span></div></div>
+        </div>
+
+        <!-- ────────── 미팅 ────────── -->
+        <div class="portal-info-section" data-brand-view="meetings" style="display:none">
+          <div class="portal-info-title" style="justify-content:space-between">
+            <div style="display:flex;align-items:center;gap:8px">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+              <span class="ko">미팅 일정</span><span class="en">Meetings</span>
+              <span style="font-family:var(--mono);font-size:10px;padding:3px 8px;border-radius:999px;background:rgba(0,113,220,0.15);color:var(--accent);font-weight:400" id="brand-meetings-count">0 items</span>
+            </div>
+            <button onclick="showBrandMeetingRequestModal()" style="background:var(--accent);color:#fff;border:none;padding:8px 14px;border-radius:8px;font-size:12px;font-weight:600;cursor:pointer">+ 미팅 요청</button>
           </div>
-          <!-- File list -->
-          <div id="sku-file-list">
-            <div style="text-align:center;padding:20px 0;color:rgba(0,0,0,0.6);font-size:13px">업로드된 파일이 없습니다.</div>
+          <div id="brand-meetings-list"><div style="text-align:center;padding:32px 0;color:var(--text-muted);font-size:13px"><span class="ko">예정된 미팅이 없습니다.</span><span class="en">No meetings scheduled.</span></div></div>
+        </div>
+
+        <!-- ────────── 서류함 (카테고리별) ────────── -->
+        <div data-brand-view="docs" style="display:none">
+          <!-- 카테고리 탭 -->
+          <div class="portal-info-section">
+            <div class="portal-info-title">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+              <span class="ko">서류함</span><span class="en">Documents</span>
+              <span style="font-family:var(--mono);font-size:10px;padding:3px 8px;border-radius:999px;background:rgba(0,135,90,0.15);color:#00875a;font-weight:400;margin-left:4px" id="brand-docs-total-count">0 files</span>
+            </div>
+            <div style="font-size:12.5px;color:var(--text-muted);margin-bottom:14px;line-height:1.6"><span class="ko">월마트·3SVS가 요청한 자료, 자체 제출 자료, 컴플라이언스 서류를 카테고리별로 관리합니다. 요청자가 명시되어 있는 파일은 우선 처리하세요.</span><span class="en">Manage documents by category: items requested by Walmart/3SVS, your submissions, and compliance papers. Files marked with a requester should be prioritized.</span></div>
+
+            <div id="brand-docs-tabs" style="display:flex;gap:6px;flex-wrap:wrap;border-bottom:1px solid var(--border);padding-bottom:10px;margin-bottom:14px"></div>
+            <div id="brand-docs-list"><div style="text-align:center;padding:32px 0;color:var(--text-muted);font-size:13px"><span class="ko">선택한 카테고리에 자료가 없습니다.</span><span class="en">No documents in this category.</span></div></div>
+          </div>
+
+          <!-- 업로드 -->
+          <div class="portal-info-section">
+            <div class="portal-info-title">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+              <span class="ko">새 자료 업로드</span><span class="en">Upload New Document</span>
+            </div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px">
+              <div>
+                <label style="display:block;font-size:11.5px;color:var(--text-muted);margin-bottom:4px;font-weight:600">카테고리 / Category</label>
+                <select id="doc-upload-category" style="background:#fff;border:1px solid var(--border);border-radius:8px;padding:9px 12px;font-size:13px;width:100%">
+                  <option value="walmart_request">월마트 요청 자료 / Walmart Request</option>
+                  <option value="3svs_request">3SVS 요청 자료 / 3SVS Request</option>
+                  <option value="compliance">컴플라이언스 / Compliance</option>
+                  <option value="product_spec">제품 사양서 / Product Specs</option>
+                  <option value="general" selected>일반 자료 / General</option>
+                </select>
+              </div>
+              <div>
+                <label style="display:block;font-size:11.5px;color:var(--text-muted);margin-bottom:4px;font-weight:600">자료 유형 / Type</label>
+                <select id="doc-upload-type" style="background:#fff;border:1px solid var(--border);border-radius:8px;padding:9px 12px;font-size:13px;width:100%">
+                  <option value="sku_list">SKU 리스트</option>
+                  <option value="certificate">인증서 (FDA/CPSC 등)</option>
+                  <option value="spec_sheet">사양서/Spec Sheet</option>
+                  <option value="image_pack">이미지 패키지</option>
+                  <option value="pricing">가격 자료</option>
+                  <option value="other" selected>기타</option>
+                </select>
+              </div>
+              <div style="grid-column:1/-1">
+                <label style="display:block;font-size:11.5px;color:var(--text-muted);margin-bottom:4px;font-weight:600">메모 (선택) / Description</label>
+                <input type="text" id="doc-upload-desc" placeholder="예: 2026Q3 신규 라인 8 SKU" style="background:#fff;border:1px solid var(--border);border-radius:8px;padding:9px 12px;font-size:13px;width:100%">
+              </div>
+            </div>
+            <div id="doc-upload-area" style="border:2px dashed var(--border-dark);border-radius:12px;padding:32px;text-align:center;cursor:pointer;transition:all .2s;background:#fff" onclick="document.getElementById('doc-file-input').click()" ondragover="event.preventDefault();this.style.borderColor='var(--accent)';this.style.background='rgba(0,113,220,0.05)'" ondragleave="this.style.borderColor='var(--border-dark)';this.style.background='#fff'" ondrop="event.preventDefault();this.style.borderColor='var(--border-dark)';this.style.background='#fff';handleDocFileDrop(event)">
+              <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="var(--text-muted)" stroke-width="1.5" style="margin-bottom:8px"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+              <div style="font-size:14px;color:var(--text);margin-bottom:4px;font-weight:500"><span class="ko">파일을 끌어다 놓거나 클릭하여 선택</span><span class="en">Drag files here or click to select</span></div>
+              <div style="font-size:12px;color:var(--text-muted)">PDF · Excel · 이미지 · ZIP 지원 (최대 25MB)</div>
+              <input type="file" id="doc-file-input" accept=".pdf,.xlsx,.xls,.csv,.png,.jpg,.jpeg,.zip,.docx,.pptx" style="display:none" onchange="uploadCategorizedDoc(this.files[0])">
+            </div>
           </div>
         </div>
 
-        <!-- Phase Checklist (진행상황 트래커) -->
-        <div class="portal-info-section">
-          <div class="portal-info-title">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
-            <span class="ko">진행상황 체크리스트</span><span class="en">Progress Checklist</span>
-          </div>
-          <div class="phase-checklist" id="portal-checklist" data-brand-view="dashboard phase">
-            <div style="text-align:center;padding:32px 0;color:rgba(0,0,0,0.6);font-size:13px">프로그램이 시작되면 Phase별 진행 상황이 여기에 표시됩니다.</div>
-          </div>
-        </div>
-
-        <!-- 메시지 / 문의 -->
-        <div class="portal-info-section" id="portal-messages-section" data-brand-view="dashboard messages">
+        <!-- ────────── 메시지 ────────── -->
+        <div class="portal-info-section" id="portal-messages-section" data-brand-view="messages" style="display:none">
           <div class="portal-info-title">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
             <span class="ko">메시지 / 문의</span><span class="en">Messages</span>
             <span style="font-family:var(--mono);font-size:10px;padding:3px 8px;border-radius:999px;background:rgba(0,113,220,0.15);color:var(--accent);font-weight:400;margin-left:4px" id="portal-msg-count">0 messages</span>
           </div>
-          <div class="msg-thread" id="msg-thread">
-            <div style="text-align:center;padding:32px 0;color:rgba(0,0,0,0.6);font-size:13px">아직 메시지가 없습니다.</div>
+          <div class="msg-thread" id="msg-thread" style="min-height:360px;max-height:500px">
+            <div style="text-align:center;padding:32px 0;color:var(--text-muted);font-size:13px"><span class="ko">아직 메시지가 없습니다. 첫 메시지를 보내보세요.</span><span class="en">No messages yet. Start the conversation.</span></div>
           </div>
           <div class="msg-input-row">
-            <textarea class="msg-input" id="msg-input" placeholder="메시지를 입력하세요..." rows="1"></textarea>
+            <textarea class="msg-input" id="msg-input" placeholder="메시지를 입력하세요... (Enter로 전송, Shift+Enter로 줄바꿈)" rows="1"></textarea>
             <button class="msg-send-btn" onclick="sendPortalMessage()">전송</button>
           </div>
         </div>
 
-        <!-- 계약서 -->
+        <!-- ────────── 계약서 ────────── -->
         <div class="portal-info-section" id="portal-contracts-section" data-brand-view="contracts" style="display:none">
           <div class="portal-info-title">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
             <span class="ko">계약서</span><span class="en">Contracts</span>
           </div>
           <div id="brand-contracts-list" style="margin-top:12px">
-            <div style="text-align:center;padding:32px 0;color:rgba(0,0,0,0.6);font-size:13px">불러오는 중...</div>
+            <div style="text-align:center;padding:32px 0;color:var(--text-muted);font-size:13px">불러오는 중...</div>
           </div>
         </div>
 
-        <!-- Stats + Tasks -->
-        <div class="stat-grid" style="grid-template-columns:repeat(3,1fr)"><div class="stat-card"><div class="val" id="portal-stat-phase">0</div><div class="lbl">완료 Phase</div></div><div class="stat-card"><div class="val" id="portal-stat-paid">-</div><div class="lbl">결제 현황</div></div><div class="stat-card"><div class="val" id="portal-stat-meeting">0</div><div class="lbl">예정 미팅</div></div></div>
-        <div class="dash-grid">
-          <div><div class="panel"><div class="panel-title">할 일 목록 <span class="count">0 items</span></div><div style="text-align:center;padding:24px 0;color:rgba(0,0,0,0.6);font-size:13px">할 일이 없습니다.</div></div></div>
-          <div><div class="panel"><div class="panel-title">다가오는 미팅</div><div style="text-align:center;padding:24px 0;color:rgba(0,0,0,0.6);font-size:13px">예정된 미팅이 없습니다.</div></div><div class="panel" style="margin-top:8px"><div class="panel-title">결제 이력</div><div style="text-align:center;padding:24px 0;color:rgba(0,0,0,0.6);font-size:13px">결제 내역이 없습니다.</div></div></div>
-        </div>
       </div>
     </div>
   </div>
@@ -6000,32 +6068,455 @@ var _currentBrandData = null;
 function showBrandView(view) {
   // Toggle view sections (multi-token data-brand-view 지원)
   document.querySelectorAll('[data-brand-view]').forEach(function(el) { el.style.display = 'none'; });
-  if (view === 'dashboard') {
-    document.querySelectorAll('[data-brand-view]').forEach(function(el) {
-      var attr = el.getAttribute('data-brand-view') || '';
-      var tokens = attr.split(/\s+/);
-      if (tokens.indexOf('dashboard') >= 0 || attr === 'always') el.style.display = '';
-    });
-  } else {
-    document.querySelectorAll('[data-brand-view]').forEach(function(el) {
-      var attr = el.getAttribute('data-brand-view') || '';
-      var tokens = attr.split(/\s+/);
-      if (tokens.indexOf(view) >= 0 || attr === 'always') el.style.display = '';
-    });
-  }
-  // Update sidebar active state
+  document.querySelectorAll('[data-brand-view]').forEach(function(el) {
+    var attr = el.getAttribute('data-brand-view') || '';
+    var tokens = attr.split(/\s+/);
+    if (tokens.indexOf(view) >= 0 || attr === 'always') el.style.display = '';
+  });
+  // Update sidebar active state (사이드바 순서: dashboard, tasks, meetings, docs, messages, contracts)
   var navItems = document.querySelectorAll('#brand-sidebar-nav .sidebar-item');
   navItems.forEach(function(item) { item.classList.remove('active'); });
-  var viewIdx = {'dashboard':0,'phase':1,'docs':2,'messages':3,'contracts':4}[view];
+  var viewIdx = {'dashboard':0,'tasks':1,'meetings':2,'docs':3,'messages':4,'contracts':5}[view];
   if (typeof viewIdx === 'number' && navItems[viewIdx]) navItems[viewIdx].classList.add('active');
-  // Lazy load contracts when entering contracts view
+
+  // Lazy load per view
+  if (view === 'dashboard' && typeof loadBrandDashboardSummary === 'function') {
+    loadBrandDashboardSummary(_currentBrandId);
+  }
+  if (view === 'tasks' && typeof loadBrandTasks === 'function') {
+    loadBrandTasks(_currentBrandId);
+  }
+  if (view === 'meetings' && typeof loadBrandMeetings === 'function') {
+    loadBrandMeetings(_currentBrandId);
+  }
+  if (view === 'docs' && typeof loadBrandDocs === 'function') {
+    loadBrandDocs(_currentBrandId);
+  }
+  if (view === 'messages' && typeof loadBrandMessages === 'function') {
+    loadBrandMessages(_currentBrandId);
+  }
   if (view === 'contracts' && typeof loadBrandContracts === 'function') {
     loadBrandContracts(_currentBrandId);
   }
+
   // 시각적 피드백 — view 전환 시 페이지 상단으로 스크롤
   var dashMain = document.querySelector('#view-portal .dash-main');
   if (dashMain) dashMain.scrollTop = 0;
   window.scrollTo({top:0, behavior:'smooth'});
+}
+
+// ════════════════════════════════════════════════════════════
+// ─── BRAND PORTAL v2: Tasks / Meetings / Documents ───
+// ════════════════════════════════════════════════════════════
+
+// State
+var _brandTasks = [];
+var _brandMeetings = [];
+var _brandDocs = [];
+var _brandDocsActiveCategory = 'all';
+
+var _docCategoryDef = [
+  { id: 'all',             label_ko: '전체',           label_en: 'All',         color: '#6b7280' },
+  { id: 'walmart_request', label_ko: '월마트 요청',    label_en: 'Walmart Req', color: '#0071dc' },
+  { id: '3svs_request',    label_ko: '3SVS 요청',      label_en: '3SVS Req',    color: '#f59e0b' },
+  { id: 'compliance',      label_ko: '컴플라이언스',   label_en: 'Compliance',  color: '#10b981' },
+  { id: 'product_spec',    label_ko: '제품 사양',      label_en: 'Product Spec', color: '#8b5cf6' },
+  { id: 'general',         label_ko: '일반',           label_en: 'General',     color: '#6b7280' }
+];
+
+function _esc(s) {
+  return String(s == null ? '' : s).replace(/[&<>"']/g, function(c){
+    return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];
+  });
+}
+function _fmtDate(iso) {
+  if (!iso) return '-';
+  try {
+    var d = new Date(iso);
+    if (isNaN(d.getTime())) return iso;
+    return d.toLocaleDateString('ko-KR', {year:'numeric',month:'short',day:'numeric'});
+  } catch(e) { return iso; }
+}
+function _fmtDateTime(iso) {
+  if (!iso) return '-';
+  try {
+    var d = new Date(iso);
+    if (isNaN(d.getTime())) return iso;
+    return d.toLocaleString('ko-KR', {year:'numeric',month:'short',day:'numeric',hour:'2-digit',minute:'2-digit'});
+  } catch(e) { return iso; }
+}
+function _daysUntil(iso) {
+  if (!iso) return null;
+  try {
+    var d = new Date(iso);
+    var diff = Math.ceil((d - new Date()) / (1000*60*60*24));
+    return diff;
+  } catch(e) { return null; }
+}
+
+// ─── DASHBOARD SUMMARY ───
+async function loadBrandDashboardSummary(brandId) {
+  if (!brandId || !supabase) return;
+  // Tasks
+  var tRes = await supabase.from('wm_tasks').select('*').eq('brand_id', brandId).order('due_date', {ascending: true, nullsFirst: false});
+  var tasks = (tRes && tRes.data) || [];
+  var openTasks = tasks.filter(function(t){ return t.status !== 'completed' && t.status !== 'cancelled'; });
+  var urgent = openTasks.filter(function(t){ return t.priority === 'urgent' || t.priority === 'high'; }).slice(0, 5);
+  var kpiTasks = document.getElementById('portal-kpi-tasks'); if (kpiTasks) kpiTasks.textContent = openTasks.length;
+  var dashTC = document.getElementById('portal-dash-tasks-count'); if (dashTC) dashTC.textContent = urgent.length + ' items';
+  var dashT = document.getElementById('portal-dash-tasks');
+  if (dashT) {
+    if (!urgent.length) {
+      dashT.innerHTML = '<div style="text-align:center;padding:24px 0;color:var(--text-muted);font-size:13px"><span class="ko">긴급 처리할 일이 없습니다.</span><span class="en">No urgent tasks.</span></div>';
+    } else {
+      dashT.innerHTML = urgent.map(function(t){
+        var due = t.due_date ? _fmtDate(t.due_date) : '<em style="color:var(--text-muted)">기한 미정</em>';
+        var prColor = t.priority === 'urgent' ? '#ef4444' : '#f59e0b';
+        return '<div style="display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid var(--border)">' +
+          '<span style="display:inline-block;width:6px;height:6px;border-radius:50%;background:'+prColor+';flex-shrink:0"></span>' +
+          '<div style="flex:1;min-width:0"><div style="font-size:13px;font-weight:600;color:var(--text);text-overflow:ellipsis;overflow:hidden;white-space:nowrap">'+_esc(t.title)+'</div>' +
+          '<div style="font-size:11px;color:var(--text-muted);margin-top:2px">'+due+' · '+_esc(t.created_by==='admin'?'관리자':'직접')+'</div></div></div>';
+      }).join('');
+    }
+  }
+  // Meetings
+  var mRes = await supabase.from('wm_meetings').select('*').eq('brand_id', brandId).in('status', ['proposed','confirmed','rescheduled']).order('scheduled_at', {ascending: true, nullsFirst: false});
+  var meetings = (mRes && mRes.data) || [];
+  var upcoming = meetings.filter(function(m){
+    if (!m.scheduled_at) return m.status === 'proposed';
+    return new Date(m.scheduled_at) >= new Date(Date.now() - 24*3600*1000);
+  }).slice(0, 5);
+  var kpiM = document.getElementById('portal-kpi-meetings'); if (kpiM) kpiM.textContent = upcoming.length;
+  var dashM = document.getElementById('portal-dash-meetings');
+  if (dashM) {
+    if (!upcoming.length) {
+      dashM.innerHTML = '<div style="text-align:center;padding:24px 0;color:var(--text-muted);font-size:13px"><span class="ko">예정된 미팅이 없습니다.</span><span class="en">No upcoming meetings.</span></div>';
+    } else {
+      dashM.innerHTML = upcoming.map(function(m){
+        var when = m.scheduled_at ? _fmtDateTime(m.scheduled_at) : '<em style="color:var(--text-muted)">시간 협의 중</em>';
+        var stColor = m.status === 'confirmed' ? '#10b981' : (m.status === 'proposed' ? '#f59e0b' : '#6b7280');
+        var stLabel = m.status === 'confirmed' ? '확정' : (m.status === 'proposed' ? '제안됨' : m.status);
+        return '<div style="padding:10px 0;border-bottom:1px solid var(--border)">' +
+          '<div style="display:flex;align-items:center;gap:8px;margin-bottom:3px"><span style="font-size:13px;font-weight:600;color:var(--text)">'+_esc(m.title)+'</span>' +
+          '<span style="font-size:10px;padding:2px 7px;border-radius:999px;background:'+stColor+'22;color:'+stColor+';font-weight:600">'+stLabel+'</span></div>' +
+          '<div style="font-size:11.5px;color:var(--text-muted)">'+when+'</div></div>';
+      }).join('');
+    }
+  }
+  // Docs
+  var dRes = await supabase.from('wm_documents').select('*').eq('brand_id', brandId).in('status', ['requested','uploaded']);
+  var docs = (dRes && dRes.data) || [];
+  var pendingDocs = docs.filter(function(d){ return d.status === 'requested'; });
+  var kpiD = document.getElementById('portal-kpi-docs'); if (kpiD) kpiD.textContent = pendingDocs.length;
+  // Recent messages
+  if (typeof loadBrandRecentMessages === 'function') loadBrandRecentMessages(brandId);
+  // Badges
+  var tBadge = document.getElementById('brand-task-badge'); if (tBadge) { tBadge.textContent = openTasks.length; tBadge.style.display = openTasks.length ? '' : 'none'; }
+  var mBadge = document.getElementById('brand-meeting-badge'); if (mBadge) { mBadge.textContent = upcoming.length; mBadge.style.display = upcoming.length ? '' : 'none'; }
+  var dBadge = document.getElementById('brand-doc-badge'); if (dBadge) { dBadge.textContent = pendingDocs.length; dBadge.style.display = pendingDocs.length ? '' : 'none'; }
+}
+
+async function loadBrandRecentMessages(brandId) {
+  if (!brandId || !supabase) return;
+  var res = await supabase.from('wm_messages').select('*').eq('brand_id', brandId).order('created_at', {ascending: false}).limit(3);
+  var msgs = (res && res.data) || [];
+  var el = document.getElementById('portal-dash-messages');
+  if (!el) return;
+  if (!msgs.length) {
+    el.innerHTML = '<div style="text-align:center;padding:24px 0;color:var(--text-muted);font-size:13px"><span class="ko">아직 메시지가 없습니다.</span><span class="en">No messages yet.</span></div>';
+    return;
+  }
+  el.innerHTML = msgs.map(function(m){
+    var roleLabel = m.sender_role === 'admin' ? '3SVS 관리자' : (m.sender_role === 'walmart' ? 'Startup Junkie' : '나');
+    var roleColor = m.sender_role === 'brand' ? 'var(--accent)' : '#10b981';
+    var preview = (m.content || '').slice(0, 120);
+    return '<div style="padding:10px 0;border-bottom:1px solid var(--border)">' +
+      '<div style="display:flex;align-items:center;gap:8px;margin-bottom:4px"><span style="font-size:12px;font-weight:600;color:'+roleColor+'">'+roleLabel+'</span>' +
+      '<span style="font-size:11px;color:var(--text-muted)">'+_fmtDateTime(m.created_at)+'</span></div>' +
+      '<div style="font-size:13px;color:var(--text);line-height:1.5">'+_esc(preview)+(m.content && m.content.length > 120 ? '…' : '')+'</div></div>';
+  }).join('');
+}
+
+// ─── TASKS ───
+async function loadBrandTasks(brandId) {
+  if (!brandId || !supabase) return;
+  var res = await supabase.from('wm_tasks').select('*').eq('brand_id', brandId).order('created_at', {ascending: false});
+  _brandTasks = (res && res.data) || [];
+  renderBrandTasks();
+}
+
+function renderBrandTasks() {
+  var listEl = document.getElementById('brand-tasks-list');
+  var countEl = document.getElementById('brand-tasks-count');
+  if (!listEl) return;
+  var filter = (document.getElementById('brand-tasks-filter') || {}).value || 'open';
+  var filtered = _brandTasks.filter(function(t){
+    if (filter === 'all') return true;
+    if (filter === 'open') return t.status !== 'completed' && t.status !== 'cancelled';
+    if (filter === 'completed') return t.status === 'completed';
+    return true;
+  });
+  if (countEl) countEl.textContent = filtered.length + ' items';
+  if (!filtered.length) {
+    listEl.innerHTML = '<div style="text-align:center;padding:32px 0;color:var(--text-muted);font-size:13px"><span class="ko">'+(filter==='completed'?'완료된':'진행 중인')+' 할 일이 없습니다.</span><span class="en">No '+(filter==='completed'?'completed':'open')+' tasks.</span></div>';
+    return;
+  }
+  listEl.innerHTML = filtered.map(function(t){
+    var isDone = t.status === 'completed';
+    var prMap = {urgent:{l:'긴급',c:'#ef4444'}, high:{l:'높음',c:'#f59e0b'}, normal:{l:'보통',c:'#0071dc'}, low:{l:'낮음',c:'#6b7280'}};
+    var pr = prMap[t.priority] || prMap.normal;
+    var creator = t.created_by === 'admin' ? '3SVS 관리자' : '직접 추가';
+    var due = t.due_date ? _fmtDate(t.due_date) : '기한 미정';
+    var daysLeft = _daysUntil(t.due_date);
+    var dueColor = (daysLeft != null && daysLeft < 0 && !isDone) ? '#ef4444' : 'var(--text-muted)';
+    var overdueBadge = (daysLeft != null && daysLeft < 0 && !isDone) ? ' · <strong style="color:#ef4444">'+Math.abs(daysLeft)+'일 지남</strong>' : (daysLeft != null && daysLeft >= 0 && daysLeft <= 3 && !isDone ? ' · <strong style="color:#f59e0b">D-'+daysLeft+'</strong>' : '');
+    return '<div style="display:flex;gap:12px;padding:14px;background:#fff;border:1px solid var(--border);border-radius:10px;margin-bottom:10px;'+(isDone?'opacity:0.55;':'')+'">' +
+      '<div><input type="checkbox" '+(isDone?'checked':'')+' onchange="toggleBrandTaskComplete(\''+t.id+'\', this.checked)" style="width:18px;height:18px;margin-top:2px;cursor:pointer;accent-color:var(--accent)"></div>' +
+      '<div style="flex:1;min-width:0">' +
+        '<div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;flex-wrap:wrap">' +
+          '<span style="font-size:14px;font-weight:600;color:var(--text);'+(isDone?'text-decoration:line-through;':'')+'">'+_esc(t.title)+'</span>' +
+          '<span style="font-size:10px;padding:2px 8px;border-radius:999px;background:'+pr.c+'22;color:'+pr.c+';font-weight:600">'+pr.l+'</span>' +
+          (t.category ? '<span style="font-size:10px;padding:2px 8px;border-radius:999px;background:var(--surface-alt);color:var(--text-muted);font-weight:500">'+_esc(t.category)+'</span>' : '') +
+        '</div>' +
+        (t.description ? '<div style="font-size:13px;color:var(--text-muted);line-height:1.5;margin-bottom:6px;white-space:pre-wrap">'+_esc(t.description)+'</div>' : '') +
+        '<div style="font-size:11.5px;color:'+dueColor+'">📅 '+due+overdueBadge+' · 등록: '+creator+(isDone ? ' · ✓ '+_fmtDate(t.completed_at) : '')+'</div>' +
+      '</div>' +
+    '</div>';
+  }).join('');
+}
+
+async function toggleBrandTaskComplete(taskId, checked) {
+  if (!supabase) return;
+  var payload = checked
+    ? { status: 'completed', completed_at: new Date().toISOString(), completed_by: 'brand' }
+    : { status: 'open', completed_at: null, completed_by: null };
+  await supabase.from('wm_tasks').update(payload).eq('id', taskId);
+  await loadBrandTasks(_currentBrandId);
+}
+
+function showBrandTaskAddModal() {
+  var title = prompt('할 일 제목을 입력하세요:');
+  if (!title || !title.trim()) return;
+  var desc = prompt('상세 내용 (선택, Enter로 건너뛰기):') || '';
+  var dueRaw = prompt('마감일 (YYYY-MM-DD, 선택):') || '';
+  var due = /^\d{4}-\d{2}-\d{2}$/.test(dueRaw) ? dueRaw : null;
+  supabase.from('wm_tasks').insert({
+    brand_id: _currentBrandId,
+    created_by: 'brand',
+    title: title.trim(),
+    description: desc.trim() || null,
+    due_date: due,
+    priority: 'normal',
+    category: 'general',
+    status: 'open'
+  }).then(function(){
+    loadBrandTasks(_currentBrandId);
+  });
+}
+
+// ─── MEETINGS ───
+async function loadBrandMeetings(brandId) {
+  if (!brandId || !supabase) return;
+  var res = await supabase.from('wm_meetings').select('*').eq('brand_id', brandId).order('scheduled_at', {ascending: true, nullsFirst: false});
+  _brandMeetings = (res && res.data) || [];
+  renderBrandMeetings();
+}
+
+function renderBrandMeetings() {
+  var listEl = document.getElementById('brand-meetings-list');
+  var countEl = document.getElementById('brand-meetings-count');
+  if (!listEl) return;
+  if (countEl) countEl.textContent = _brandMeetings.length + ' items';
+  if (!_brandMeetings.length) {
+    listEl.innerHTML = '<div style="text-align:center;padding:32px 0;color:var(--text-muted);font-size:13px"><span class="ko">예정된 미팅이 없습니다.</span><span class="en">No meetings scheduled.</span></div>';
+    return;
+  }
+  listEl.innerHTML = _brandMeetings.map(function(m){
+    var stMap = {
+      proposed:    { l:'제안됨', c:'#f59e0b' },
+      confirmed:   { l:'확정됨', c:'#10b981' },
+      declined:    { l:'거절됨', c:'#ef4444' },
+      rescheduled: { l:'재조정', c:'#6b7280' },
+      completed:   { l:'완료',   c:'#0071dc' },
+      cancelled:   { l:'취소',   c:'#6b7280' }
+    };
+    var st = stMap[m.status] || stMap.proposed;
+    var when = m.scheduled_at ? _fmtDateTime(m.scheduled_at) : '<em style="color:var(--text-muted)">시간 협의 중</em>';
+    var proposedHtml = '';
+    if (m.status === 'proposed' && m.proposed_slots && Array.isArray(m.proposed_slots) && m.proposed_slots.length) {
+      proposedHtml = '<div style="margin-top:10px;padding:10px;background:var(--surface-alt);border-radius:8px"><div style="font-size:11px;color:var(--text-muted);font-weight:600;margin-bottom:6px">제안된 시간 (택1):</div>' +
+        m.proposed_slots.map(function(s, i){
+          return '<button onclick="confirmMeetingSlot(\''+m.id+'\','+i+')" style="display:block;width:100%;text-align:left;background:#fff;border:1px solid var(--border);border-radius:6px;padding:8px 12px;margin-bottom:4px;cursor:pointer;font-size:12.5px;color:var(--text)">📅 '+_fmtDateTime(s.at)+' · '+(s.duration_min || m.duration_min || 30)+'분</button>';
+        }).join('') +
+        '</div>';
+    }
+    var actions = '';
+    if (m.status === 'proposed' && m.proposed_by === 'admin') {
+      actions = '<div style="margin-top:10px;display:flex;gap:8px"><button onclick="declineMeeting(\''+m.id+'\')" style="background:#fff;color:#ef4444;border:1px solid #ef4444;padding:6px 14px;border-radius:6px;font-size:12px;cursor:pointer">거절</button></div>';
+    }
+    return '<div style="padding:14px;background:#fff;border:1px solid var(--border);border-radius:10px;margin-bottom:10px">' +
+      '<div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;flex-wrap:wrap">' +
+        '<span style="font-size:14px;font-weight:600;color:var(--text)">'+_esc(m.title)+'</span>' +
+        '<span style="font-size:10px;padding:2px 8px;border-radius:999px;background:'+st.c+'22;color:'+st.c+';font-weight:600">'+st.l+'</span>' +
+        '<span style="font-size:11px;color:var(--text-muted);margin-left:auto">'+_esc(m.proposed_by==='admin'?'관리자 제안':'내가 요청')+'</span>' +
+      '</div>' +
+      '<div style="font-size:12.5px;color:var(--text);margin-bottom:4px">🕐 '+when+(m.duration_min ? ' · '+m.duration_min+'분' : '')+'</div>' +
+      (m.agenda ? '<div style="font-size:12.5px;color:var(--text-muted);line-height:1.5;margin-top:6px;white-space:pre-wrap">'+_esc(m.agenda)+'</div>' : '') +
+      (m.meeting_url ? '<div style="margin-top:8px"><a href="'+_esc(m.meeting_url)+'" target="_blank" rel="noopener" style="font-size:12px;color:var(--accent);text-decoration:underline">🔗 미팅 링크 열기</a></div>' : '') +
+      (m.location ? '<div style="font-size:12px;color:var(--text-muted);margin-top:4px">📍 '+_esc(m.location)+'</div>' : '') +
+      proposedHtml + actions +
+    '</div>';
+  }).join('');
+}
+
+function showBrandMeetingRequestModal() {
+  var title = prompt('미팅 주제를 입력하세요:');
+  if (!title || !title.trim()) return;
+  var agenda = prompt('논의 안건 (선택):') || '';
+  var when = prompt('희망 일시 (예: 2026-06-05 14:00):') || '';
+  var iso = null;
+  if (/^\d{4}-\d{2}-\d{2}\s+\d{2}:\d{2}$/.test(when.trim())) {
+    iso = new Date(when.trim().replace(' ', 'T')).toISOString();
+  }
+  supabase.from('wm_meetings').insert({
+    brand_id: _currentBrandId,
+    proposed_by: 'brand',
+    title: title.trim(),
+    agenda: agenda.trim() || null,
+    proposed_slots: iso ? [{ at: iso, duration_min: 30 }] : null,
+    duration_min: 30,
+    status: 'proposed'
+  }).then(function(){
+    loadBrandMeetings(_currentBrandId);
+    if (typeof sendNotification === 'function') {
+      sendNotification('meeting_requested', { message: '브랜드가 미팅을 요청했습니다: '+title, brandId: _currentBrandId });
+    }
+  });
+}
+
+async function confirmMeetingSlot(meetingId, slotIdx) {
+  if (!supabase) return;
+  var m = _brandMeetings.find(function(x){ return x.id === meetingId; });
+  if (!m || !m.proposed_slots || !m.proposed_slots[slotIdx]) return;
+  var slot = m.proposed_slots[slotIdx];
+  await supabase.from('wm_meetings').update({
+    status: 'confirmed',
+    scheduled_at: slot.at,
+    duration_min: slot.duration_min || m.duration_min || 30
+  }).eq('id', meetingId);
+  await loadBrandMeetings(_currentBrandId);
+}
+
+async function declineMeeting(meetingId) {
+  if (!confirm('미팅 제안을 거절하시겠습니까?')) return;
+  await supabase.from('wm_meetings').update({ status: 'declined' }).eq('id', meetingId);
+  await loadBrandMeetings(_currentBrandId);
+}
+
+// ─── DOCUMENTS (카테고리별) ───
+async function loadBrandDocs(brandId) {
+  if (!brandId || !supabase) return;
+  var res = await supabase.from('wm_documents').select('*').eq('brand_id', brandId).order('created_at', {ascending: false});
+  _brandDocs = (res && res.data) || [];
+  renderBrandDocsTabs();
+  renderBrandDocsList();
+}
+
+function renderBrandDocsTabs() {
+  var el = document.getElementById('brand-docs-tabs');
+  if (!el) return;
+  var totalEl = document.getElementById('brand-docs-total-count');
+  if (totalEl) totalEl.textContent = _brandDocs.length + ' files';
+  el.innerHTML = _docCategoryDef.map(function(c){
+    var count = c.id === 'all' ? _brandDocs.length : _brandDocs.filter(function(d){ return d.category === c.id; }).length;
+    var active = c.id === _brandDocsActiveCategory;
+    return '<button onclick="setBrandDocsCategory(\''+c.id+'\')" style="background:'+(active?c.color:'#fff')+';color:'+(active?'#fff':'var(--text)')+';border:1px solid '+(active?c.color:'var(--border)')+';padding:6px 12px;border-radius:999px;font-size:12px;font-weight:600;cursor:pointer">'+
+      '<span class="ko">'+c.label_ko+'</span><span class="en">'+c.label_en+'</span> <span style="opacity:0.7;font-weight:500;margin-left:2px">'+count+'</span></button>';
+  }).join('');
+}
+
+function setBrandDocsCategory(cat) {
+  _brandDocsActiveCategory = cat;
+  renderBrandDocsTabs();
+  renderBrandDocsList();
+}
+
+function renderBrandDocsList() {
+  var el = document.getElementById('brand-docs-list');
+  if (!el) return;
+  var docs = _brandDocsActiveCategory === 'all' ? _brandDocs : _brandDocs.filter(function(d){ return d.category === _brandDocsActiveCategory; });
+  if (!docs.length) {
+    el.innerHTML = '<div style="text-align:center;padding:32px 0;color:var(--text-muted);font-size:13px"><span class="ko">선택한 카테고리에 자료가 없습니다.</span><span class="en">No documents in this category.</span></div>';
+    return;
+  }
+  el.innerHTML = docs.map(function(d){
+    var cat = _docCategoryDef.find(function(c){ return c.id === d.category; }) || _docCategoryDef[0];
+    var stMap = {
+      requested: { l:'요청됨', c:'#f59e0b' },
+      uploaded:  { l:'업로드됨', c:'#0071dc' },
+      reviewed:  { l:'검토 중', c:'#8b5cf6' },
+      approved:  { l:'승인됨', c:'#10b981' },
+      rejected:  { l:'반려', c:'#ef4444' }
+    };
+    var st = stMap[d.status] || stMap.uploaded;
+    var sizeKb = d.file_size ? (Math.round(d.file_size / 102.4) / 10) + ' KB' : '';
+    return '<div style="display:flex;gap:12px;padding:14px;background:#fff;border:1px solid var(--border);border-radius:10px;margin-bottom:10px">' +
+      '<div style="flex-shrink:0;width:38px;height:38px;border-radius:8px;background:'+cat.color+'22;display:flex;align-items:center;justify-content:center"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="'+cat.color+'" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div>' +
+      '<div style="flex:1;min-width:0">' +
+        '<div style="display:flex;align-items:center;gap:8px;margin-bottom:4px;flex-wrap:wrap">' +
+          '<span style="font-size:13.5px;font-weight:600;color:var(--text);overflow:hidden;text-overflow:ellipsis">'+_esc(d.name)+'</span>' +
+          '<span style="font-size:10px;padding:2px 7px;border-radius:999px;background:'+cat.color+'22;color:'+cat.color+';font-weight:600"><span class="ko">'+cat.label_ko+'</span><span class="en">'+cat.label_en+'</span></span>' +
+          '<span style="font-size:10px;padding:2px 7px;border-radius:999px;background:'+st.c+'22;color:'+st.c+';font-weight:600">'+st.l+'</span>' +
+        '</div>' +
+        (d.description ? '<div style="font-size:12px;color:var(--text-muted);margin-bottom:4px">'+_esc(d.description)+'</div>' : '') +
+        '<div style="font-size:11.5px;color:var(--text-muted)">'+(d.requested_by ? '요청자: <strong>'+_esc(d.requested_by)+'</strong> · ' : '')+(d.uploaded_by_name ? '제출: '+_esc(d.uploaded_by_name)+' · ' : '')+ _fmtDateTime(d.created_at)+(sizeKb ? ' · '+sizeKb : '')+'</div>' +
+      '</div>' +
+      '<div style="display:flex;flex-direction:column;gap:6px;align-items:flex-end">' +
+        (d.file_url ? '<a href="'+_esc(d.file_url)+'" target="_blank" rel="noopener" style="font-size:12px;color:var(--accent);text-decoration:underline">다운로드</a>' : '<span style="font-size:12px;color:var(--text-muted)">파일 대기</span>') +
+      '</div>' +
+    '</div>';
+  }).join('');
+}
+
+async function uploadCategorizedDoc(file) {
+  if (!file || !_currentBrandId || !supabase) return;
+  var maxSize = 25 * 1024 * 1024;
+  if (file.size > maxSize) { alert('파일 크기는 최대 25MB입니다.'); return; }
+  var category = (document.getElementById('doc-upload-category') || {}).value || 'general';
+  var docType = (document.getElementById('doc-upload-type') || {}).value || 'other';
+  var desc = (document.getElementById('doc-upload-desc') || {}).value || '';
+  // ASCII-safe filename for storage path
+  var safeName = file.name.replace(/[^a-zA-Z0-9._-]/g, '_');
+  var path = 'docs/' + _currentBrandId + '/' + category + '/' + Date.now() + '_' + safeName;
+  var up = await supabase.storage.from('wm-signatures').upload(path, file, { upsert: false });
+  if (up.error) { alert('업로드 실패: ' + up.error.message); return; }
+  var publicUrl = supabase.storage.from('wm-signatures').getPublicUrl(path).data.publicUrl;
+  var insertRes = await supabase.from('wm_documents').insert({
+    brand_id: _currentBrandId,
+    category: category,
+    doc_type: docType,
+    name: file.name,
+    description: desc.trim() || null,
+    file_url: publicUrl,
+    file_size: file.size,
+    file_mime: file.type,
+    uploaded_by: 'brand',
+    uploaded_by_name: (_currentBrandData && _currentBrandData.name) || '브랜드',
+    status: 'uploaded'
+  });
+  if (insertRes.error) { alert('DB 저장 실패: ' + insertRes.error.message); return; }
+  // Reset form
+  var descEl = document.getElementById('doc-upload-desc'); if (descEl) descEl.value = '';
+  var inputEl = document.getElementById('doc-file-input'); if (inputEl) inputEl.value = '';
+  await loadBrandDocs(_currentBrandId);
+  if (typeof sendNotification === 'function') {
+    sendNotification('document_uploaded', { message: '브랜드가 자료를 업로드했습니다: '+file.name, brandId: _currentBrandId });
+  }
+}
+
+function handleDocFileDrop(e) {
+  var files = e.dataTransfer && e.dataTransfer.files;
+  if (files && files.length) uploadCategorizedDoc(files[0]);
 }
 
 // ─── BRAND CONTRACTS (포털 내장) ───
@@ -6139,11 +6630,12 @@ async function loadBrandPortalData(brand) {
     timeline.innerHTML = html;
   }
   
-  // Load messages for this brand
+  // Load brand portal v2 data
   loadBrandMessages(brand.id);
-  loadSkuFiles(brand.id);
-  // 체크리스트 렌더링 (read-only)
-  renderBrandChecklist(brand.checklist || {});
+  if (typeof loadBrandDashboardSummary === 'function') loadBrandDashboardSummary(brand.id);
+  if (typeof loadBrandTasks === 'function') loadBrandTasks(brand.id);
+  if (typeof loadBrandMeetings === 'function') loadBrandMeetings(brand.id);
+  if (typeof loadBrandDocs === 'function') loadBrandDocs(brand.id);
 }
 
 function renderBrandChecklist(checklist) {
@@ -6550,8 +7042,203 @@ function showWmBrandDetailDB(brandId) {
     '<div class="wm-brand-header"><div class="brand-icon" style="width:48px;height:48px;font-size:20px;border-radius:12px">' + (brand.nameEn || brand.name || '?')[0].toUpperCase() + '</div><div><h2 style="margin:0;font-size:22px">' + brand.name + '</h2><p style="margin:4px 0 0;opacity:.6">' + phaseLabel + ' · ' + (brand.info.category || '-') + '</p></div></div>' +
     '<div class="wm-section"><div class="wm-section-title">Phase 관리</div><div style="display:flex;gap:8px;flex-wrap:wrap">' + phaseBtns + '</div></div>' +
     '<div class="wm-section"><div class="wm-section-title">Company Information</div><div class="wm-info-grid">' + (infoHtml || '<div style="opacity:.7">정보 없음</div>') + '</div></div>' +
+    '<div class="wm-section"><div class="wm-section-title" style="display:flex;justify-content:space-between;align-items:center"><span>할 일 / Tasks</span><button onclick="showAdminTaskAddModal(\x27' + brandId + '\x27)" style="background:var(--accent);color:#fff;border:none;padding:6px 12px;border-radius:6px;font-size:12px;font-weight:600;cursor:pointer">+ 할 일 등록</button></div><div id="admin-brand-tasks-list" style="margin-top:10px"><div style="color:var(--text-muted);font-size:12px">불러오는 중...</div></div></div>' +
+    '<div class="wm-section"><div class="wm-section-title" style="display:flex;justify-content:space-between;align-items:center"><span>미팅 / Meetings</span><button onclick="showAdminMeetingAddModal(\x27' + brandId + '\x27)" style="background:var(--accent);color:#fff;border:none;padding:6px 12px;border-radius:6px;font-size:12px;font-weight:600;cursor:pointer">+ 미팅 제안</button></div><div id="admin-brand-meetings-list" style="margin-top:10px"><div style="color:var(--text-muted);font-size:12px">불러오는 중...</div></div></div>' +
+    '<div class="wm-section"><div class="wm-section-title" style="display:flex;justify-content:space-between;align-items:center"><span>자료 요청 / Documents</span><button onclick="showAdminDocRequestModal(\x27' + brandId + '\x27)" style="background:var(--accent);color:#fff;border:none;padding:6px 12px;border-radius:6px;font-size:12px;font-weight:600;cursor:pointer">+ 자료 요청</button></div><div id="admin-brand-docs-list" style="margin-top:10px"><div style="color:var(--text-muted);font-size:12px">불러오는 중...</div></div></div>' +
     '<div class="wm-section"><div class="wm-section-title">Messages</div><button id="wm-msg-btn" style="background:rgba(0,113,220,0.1);color:var(--accent);border:1px solid rgba(0,113,220,0.2);padding:8px 16px;border-radius:8px;cursor:pointer;font-size:13px">메시지 확인 / 답변</button></div>' +
     '<div class="wm-section"><div class="wm-section-title">Contracts</div>' + getWmContractsHtml(brandId) + '</div>';
+
+  // 비동기 로드
+  if (typeof loadAdminBrandTasks === 'function') loadAdminBrandTasks(brandId);
+  if (typeof loadAdminBrandMeetings === 'function') loadAdminBrandMeetings(brandId);
+  if (typeof loadAdminBrandDocs === 'function') loadAdminBrandDocs(brandId);
+}
+
+// ─── ADMIN: Brand 별 Tasks / Meetings / Documents ───
+async function loadAdminBrandTasks(brandId) {
+  if (!supabase) return;
+  var res = await supabase.from('wm_tasks').select('*').eq('brand_id', brandId).order('created_at', { ascending: false });
+  var rows = (res && res.data) || [];
+  var el = document.getElementById('admin-brand-tasks-list');
+  if (!el) return;
+  if (!rows.length) { el.innerHTML = '<div style="color:var(--text-muted);font-size:12px;padding:8px 0">등록된 할 일이 없습니다.</div>'; return; }
+  el.innerHTML = rows.map(function(t){
+    var stColor = t.status==='completed' ? '#10b981' : (t.status==='cancelled' ? '#6b7280' : (t.priority==='urgent' ? '#ef4444' : '#0071dc'));
+    var stLabel = t.status==='completed' ? '✓ 완료' : (t.status==='cancelled' ? '취소' : (t.priority==='urgent' ? '긴급' : (t.priority==='high' ? '높음' : '진행 중')));
+    var due = t.due_date ? _fmtDate(t.due_date) : '기한 미정';
+    return '<div style="padding:10px 12px;background:#fff;border:1px solid var(--border);border-radius:8px;margin-bottom:6px;display:flex;justify-content:space-between;align-items:flex-start;gap:10px">' +
+      '<div style="flex:1;min-width:0"><div style="font-size:13px;font-weight:600;color:var(--text);'+(t.status==='completed'?'text-decoration:line-through;opacity:0.6':'')+'">'+_esc(t.title)+'</div>' +
+      (t.description ? '<div style="font-size:12px;color:var(--text-muted);margin-top:3px">'+_esc(t.description)+'</div>' : '') +
+      '<div style="font-size:11px;color:var(--text-muted);margin-top:4px">📅 '+due+' · '+(t.created_by==='admin'?'관리자 등록':'브랜드 등록')+'</div></div>' +
+      '<div style="display:flex;flex-direction:column;align-items:flex-end;gap:6px"><span style="font-size:10px;padding:2px 8px;border-radius:999px;background:'+stColor+'22;color:'+stColor+';font-weight:600">'+stLabel+'</span>' +
+      '<button onclick="adminDeleteTask(\''+t.id+'\',\''+brandId+'\')" style="background:none;border:none;color:#ef4444;font-size:11px;cursor:pointer;padding:2px 4px">삭제</button></div>' +
+    '</div>';
+  }).join('');
+}
+
+async function loadAdminBrandMeetings(brandId) {
+  if (!supabase) return;
+  var res = await supabase.from('wm_meetings').select('*').eq('brand_id', brandId).order('scheduled_at', { ascending: false, nullsFirst: true });
+  var rows = (res && res.data) || [];
+  var el = document.getElementById('admin-brand-meetings-list');
+  if (!el) return;
+  if (!rows.length) { el.innerHTML = '<div style="color:var(--text-muted);font-size:12px;padding:8px 0">등록된 미팅이 없습니다.</div>'; return; }
+  var stMap = { proposed:{l:'제안됨',c:'#f59e0b'}, confirmed:{l:'확정',c:'#10b981'}, declined:{l:'거절',c:'#ef4444'}, completed:{l:'완료',c:'#0071dc'}, cancelled:{l:'취소',c:'#6b7280'}, rescheduled:{l:'재조정',c:'#6b7280'} };
+  el.innerHTML = rows.map(function(m){
+    var st = stMap[m.status] || stMap.proposed;
+    var when = m.scheduled_at ? _fmtDateTime(m.scheduled_at) : '시간 미정';
+    return '<div style="padding:10px 12px;background:#fff;border:1px solid var(--border);border-radius:8px;margin-bottom:6px">' +
+      '<div style="display:flex;justify-content:space-between;align-items:flex-start;gap:10px"><div style="flex:1;min-width:0">' +
+      '<div style="font-size:13px;font-weight:600;color:var(--text)">'+_esc(m.title)+'</div>' +
+      '<div style="font-size:11.5px;color:var(--text-muted);margin-top:3px">🕐 '+when+(m.duration_min?' · '+m.duration_min+'분':'')+' · '+(m.proposed_by==='admin'?'관리자 제안':'브랜드 요청')+'</div>' +
+      (m.agenda ? '<div style="font-size:12px;color:var(--text-muted);margin-top:4px;white-space:pre-wrap">'+_esc(m.agenda)+'</div>' : '') +
+      '</div><div style="display:flex;flex-direction:column;align-items:flex-end;gap:6px"><span style="font-size:10px;padding:2px 8px;border-radius:999px;background:'+st.c+'22;color:'+st.c+';font-weight:600">'+st.l+'</span>' +
+      (m.status === 'proposed' && m.proposed_by === 'brand' ? '<button onclick="adminConfirmMeeting(\''+m.id+'\',\''+brandId+'\')" style="background:#10b981;color:#fff;border:none;padding:4px 10px;border-radius:6px;font-size:11px;cursor:pointer">확정</button>' : '') +
+      '<button onclick="adminDeleteMeeting(\''+m.id+'\',\''+brandId+'\')" style="background:none;border:none;color:#ef4444;font-size:11px;cursor:pointer;padding:2px 4px">삭제</button></div></div>' +
+    '</div>';
+  }).join('');
+}
+
+async function loadAdminBrandDocs(brandId) {
+  if (!supabase) return;
+  var res = await supabase.from('wm_documents').select('*').eq('brand_id', brandId).order('created_at', { ascending: false });
+  var rows = (res && res.data) || [];
+  var el = document.getElementById('admin-brand-docs-list');
+  if (!el) return;
+  if (!rows.length) { el.innerHTML = '<div style="color:var(--text-muted);font-size:12px;padding:8px 0">등록된 자료가 없습니다.</div>'; return; }
+  var catMap = { walmart_request:{l:'월마트 요청',c:'#0071dc'}, '3svs_request':{l:'3SVS 요청',c:'#f59e0b'}, compliance:{l:'컴플라이언스',c:'#10b981'}, product_spec:{l:'제품 사양',c:'#8b5cf6'}, general:{l:'일반',c:'#6b7280'} };
+  var stMap = { requested:{l:'요청',c:'#f59e0b'}, uploaded:{l:'업로드됨',c:'#0071dc'}, reviewed:{l:'검토 중',c:'#8b5cf6'}, approved:{l:'승인',c:'#10b981'}, rejected:{l:'반려',c:'#ef4444'} };
+  el.innerHTML = rows.map(function(d){
+    var cat = catMap[d.category] || catMap.general;
+    var st = stMap[d.status] || stMap.uploaded;
+    return '<div style="padding:10px 12px;background:#fff;border:1px solid var(--border);border-radius:8px;margin-bottom:6px;display:flex;justify-content:space-between;align-items:flex-start;gap:10px">' +
+      '<div style="flex:1;min-width:0"><div style="font-size:13px;font-weight:600;color:var(--text)">'+_esc(d.name)+'</div>' +
+      (d.description ? '<div style="font-size:12px;color:var(--text-muted);margin-top:3px">'+_esc(d.description)+'</div>' : '') +
+      '<div style="display:flex;gap:6px;margin-top:5px;align-items:center"><span style="font-size:10px;padding:2px 8px;border-radius:999px;background:'+cat.c+'22;color:'+cat.c+';font-weight:600">'+cat.l+'</span>' +
+      '<span style="font-size:10px;padding:2px 8px;border-radius:999px;background:'+st.c+'22;color:'+st.c+';font-weight:600">'+st.l+'</span>' +
+      (d.uploaded_by_name ? '<span style="font-size:10.5px;color:var(--text-muted)">제출: '+_esc(d.uploaded_by_name)+'</span>' : '') +
+      '</div></div>' +
+      '<div style="display:flex;flex-direction:column;align-items:flex-end;gap:6px">' +
+      (d.file_url ? '<a href="'+_esc(d.file_url)+'" target="_blank" rel="noopener" style="font-size:11.5px;color:var(--accent);text-decoration:underline">다운로드</a>' : '<span style="font-size:11px;color:var(--text-muted)">대기 중</span>') +
+      (d.status === 'uploaded' ? '<button onclick="adminApproveDoc(\''+d.id+'\',\''+brandId+'\')" style="background:#10b981;color:#fff;border:none;padding:3px 8px;border-radius:5px;font-size:10.5px;cursor:pointer">승인</button>' : '') +
+      '<button onclick="adminDeleteDoc(\''+d.id+'\',\''+brandId+'\')" style="background:none;border:none;color:#ef4444;font-size:11px;cursor:pointer;padding:2px 4px">삭제</button></div>' +
+    '</div>';
+  }).join('');
+}
+
+function showAdminTaskAddModal(brandId) {
+  var title = prompt('할 일 제목:');
+  if (!title || !title.trim()) return;
+  var desc = prompt('상세 내용 (선택):') || '';
+  var priority = (prompt('우선순위 (urgent/high/normal/low):') || 'normal').toLowerCase();
+  if (['urgent','high','normal','low'].indexOf(priority) < 0) priority = 'normal';
+  var category = (prompt('카테고리 (walmart/3svs/compliance/general):') || 'general').toLowerCase();
+  if (['walmart','3svs','compliance','internal','general'].indexOf(category) < 0) category = 'general';
+  var dueRaw = prompt('마감일 (YYYY-MM-DD, 선택):') || '';
+  var due = /^\d{4}-\d{2}-\d{2}$/.test(dueRaw) ? dueRaw : null;
+  supabase.from('wm_tasks').insert({
+    brand_id: brandId,
+    created_by: 'admin',
+    title: title.trim(),
+    description: desc.trim() || null,
+    category: category,
+    priority: priority,
+    due_date: due,
+    status: 'open'
+  }).then(function(){
+    loadAdminBrandTasks(brandId);
+    if (typeof sendNotification === 'function') {
+      sendNotification('task_assigned', { message: '브랜드에 새 할 일이 등록되었습니다: '+title, brandId: brandId });
+    }
+  });
+}
+
+function showAdminMeetingAddModal(brandId) {
+  var title = prompt('미팅 제목:');
+  if (!title || !title.trim()) return;
+  var agenda = prompt('논의 안건 (선택):') || '';
+  var slot1 = prompt('1번 후보 시간 (YYYY-MM-DD HH:MM):');
+  var slot2 = prompt('2번 후보 시간 (선택, YYYY-MM-DD HH:MM):') || '';
+  var slot3 = prompt('3번 후보 시간 (선택, YYYY-MM-DD HH:MM):') || '';
+  var slots = [];
+  [slot1, slot2, slot3].forEach(function(s){
+    if (s && /^\d{4}-\d{2}-\d{2}\s+\d{2}:\d{2}$/.test(s.trim())) {
+      try { slots.push({ at: new Date(s.trim().replace(' ', 'T')).toISOString(), duration_min: 30 }); } catch(e){}
+    }
+  });
+  if (!slots.length) { alert('최소 1개의 유효한 시간이 필요합니다.'); return; }
+  var url = prompt('미팅 링크 (Zoom/Meet, 선택):') || '';
+  supabase.from('wm_meetings').insert({
+    brand_id: brandId,
+    proposed_by: 'admin',
+    title: title.trim(),
+    agenda: agenda.trim() || null,
+    proposed_slots: slots,
+    duration_min: 30,
+    meeting_url: url.trim() || null,
+    status: 'proposed'
+  }).then(function(){
+    loadAdminBrandMeetings(brandId);
+    if (typeof sendNotification === 'function') {
+      sendNotification('meeting_proposed', { message: '미팅이 제안되었습니다: '+title, brandId: brandId });
+    }
+  });
+}
+
+function showAdminDocRequestModal(brandId) {
+  var name = prompt('요청할 자료명 (예: 2026Q3 SKU 마스터 리스트):');
+  if (!name || !name.trim()) return;
+  var desc = prompt('상세 요청 사항 / 메모:') || '';
+  var category = (prompt('카테고리 (walmart_request/3svs_request/compliance/product_spec/general):') || 'walmart_request').toLowerCase();
+  if (['walmart_request','3svs_request','compliance','product_spec','general'].indexOf(category) < 0) category = 'walmart_request';
+  var requester = prompt('요청자 (예: 월마트 / 3SVS / Buyer):') || '3SVS';
+  supabase.from('wm_documents').insert({
+    brand_id: brandId,
+    category: category,
+    doc_type: 'other',
+    name: name.trim(),
+    description: desc.trim() || null,
+    requested_by: requester,
+    requested_at: new Date().toISOString(),
+    uploaded_by: 'admin',
+    status: 'requested'
+  }).then(function(){
+    loadAdminBrandDocs(brandId);
+    if (typeof sendNotification === 'function') {
+      sendNotification('document_requested', { message: '자료가 요청되었습니다: '+name, brandId: brandId });
+    }
+  });
+}
+
+async function adminDeleteTask(taskId, brandId) {
+  if (!confirm('이 할 일을 삭제하시겠습니까?')) return;
+  await supabase.from('wm_tasks').delete().eq('id', taskId);
+  loadAdminBrandTasks(brandId);
+}
+
+async function adminDeleteMeeting(meetingId, brandId) {
+  if (!confirm('이 미팅을 삭제하시겠습니까?')) return;
+  await supabase.from('wm_meetings').delete().eq('id', meetingId);
+  loadAdminBrandMeetings(brandId);
+}
+
+async function adminDeleteDoc(docId, brandId) {
+  if (!confirm('이 자료 항목을 삭제하시겠습니까?')) return;
+  await supabase.from('wm_documents').delete().eq('id', docId);
+  loadAdminBrandDocs(brandId);
+}
+
+async function adminConfirmMeeting(meetingId, brandId) {
+  var when = prompt('확정할 일시 (YYYY-MM-DD HH:MM):');
+  if (!when || !/^\d{4}-\d{2}-\d{2}\s+\d{2}:\d{2}$/.test(when.trim())) { alert('형식이 올바르지 않습니다.'); return; }
+  var iso = new Date(when.trim().replace(' ', 'T')).toISOString();
+  await supabase.from('wm_meetings').update({ status: 'confirmed', scheduled_at: iso }).eq('id', meetingId);
+  loadAdminBrandMeetings(brandId);
+}
+
+async function adminApproveDoc(docId, brandId) {
+  await supabase.from('wm_documents').update({ status: 'approved' }).eq('id', docId);
+  loadAdminBrandDocs(brandId);
 }
 
 async function updateBrandPhase(brandId, newPhase) {
