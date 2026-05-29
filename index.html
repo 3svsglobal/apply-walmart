@@ -1602,12 +1602,40 @@ button{cursor:pointer;font-family:var(--font)}
         <label class="form-radio-pill"><input type="radio" name="pb-open" value="undecided"><span class="ko">미정</span><span class="en">TBD</span></label>
       </div>
 
-      <div class="form-field-label" style="margin-top:12px"><span class="ko">전체 전략 방향</span><span class="en">Overall strategic direction</span></div>
+      <div class="form-field-label" style="margin-top:12px"><span class="ko">향후 미국 시장에서 Walmart 중심 전략인가요, 아니면 멀티 리테일 확장 전략인가요?</span><span class="en">Will your US strategy be Walmart-focused, or a multi-retail expansion?</span></div>
       <div class="form-radio-inline" data-radio-name="strategy">
         <label class="form-radio-pill"><input type="radio" name="strategy" value="walmart-focus"><span class="ko">월마트 집중</span><span class="en">Walmart-focused</span></label>
         <label class="form-radio-pill"><input type="radio" name="strategy" value="multi-retail"><span class="ko">멀티 리테일</span><span class="en">Multi-retail</span></label>
         <label class="form-radio-pill"><input type="radio" name="strategy" value="undecided"><span class="ko">아직 미정</span><span class="en">TBD</span></label>
       </div>
+
+      <!-- ─── 미국 리테일 확장 계획 (Target / Costco / 우선순위) ─── -->
+      <div style="margin-top:24px;margin-bottom:12px;padding-top:18px;border-top:1px dashed var(--border)">
+        <div style="font-size:13px;font-weight:700;color:var(--accent);margin-bottom:4px;font-family:var(--font)"><span class="ko">/ 미국 리테일 확장 계획</span><span class="en">/ US Retail Expansion Plans</span></div>
+        <div style="font-size:12.5px;color:var(--text-muted);line-height:1.6"><span class="ko">Walmart 외 다른 미국 리테일러와의 접촉·미팅 계획을 알려주세요. 확정되지 않았다면 미정으로 표시해 주세요.</span><span class="en">Tell us about your contact/meeting plans with other US retailers beyond Walmart. Mark as TBD if not yet decided.</span></div>
+      </div>
+
+      <div class="form-field-label"><span class="ko">Target과의 미팅 또는 접촉 계획이 있나요?</span><span class="en">Any meeting or contact plans with Target?</span></div>
+      <div class="form-radio-inline" data-radio-name="target-plan">
+        <label class="form-radio-pill"><input type="radio" name="target-plan" value="in-progress"><span class="ko">진행 중</span><span class="en">In progress</span></label>
+        <label class="form-radio-pill"><input type="radio" name="target-plan" value="planned"><span class="ko">계획 있음</span><span class="en">Planned</span></label>
+        <label class="form-radio-pill"><input type="radio" name="target-plan" value="none"><span class="ko">없음</span><span class="en">None</span></label>
+        <label class="form-radio-pill"><input type="radio" name="target-plan" value="undecided"><span class="ko">미정</span><span class="en">TBD</span></label>
+      </div>
+
+      <div class="form-field-label" style="margin-top:12px"><span class="ko">Costco와의 미팅 또는 접촉 계획이 있나요?</span><span class="en">Any meeting or contact plans with Costco?</span></div>
+      <div class="form-radio-inline" data-radio-name="costco-plan">
+        <label class="form-radio-pill"><input type="radio" name="costco-plan" value="in-progress"><span class="ko">진행 중</span><span class="en">In progress</span></label>
+        <label class="form-radio-pill"><input type="radio" name="costco-plan" value="planned"><span class="ko">계획 있음</span><span class="en">Planned</span></label>
+        <label class="form-radio-pill"><input type="radio" name="costco-plan" value="none"><span class="ko">없음</span><span class="en">None</span></label>
+        <label class="form-radio-pill"><input type="radio" name="costco-plan" value="undecided"><span class="ko">미정</span><span class="en">TBD</span></label>
+      </div>
+
+      <div class="form-field-label" style="margin-top:12px"><span class="ko">Walmart·Sam's Club 외에 추가로 논의 중인 리테일 채널이 있나요? (있다면 자유롭게 기재)</span><span class="en">Any additional retail channels in discussion beyond Walmart/Sam's Club? (list freely)</span></div>
+      <div style="margin-bottom:12px"><textarea class="form-input" name="Additional Channels In Discussion" placeholder="e.g., Target (meeting scheduled), Costco (in talks), Kroger, Albertsons, Ulta, etc." rows="2" style="resize:vertical"></textarea></div>
+
+      <div class="form-field-label"><span class="ko">현재 미국 리테일 확장 전략에서 우선순위로 보고 있는 채널은 어디인가요?</span><span class="en">Which channel is your top priority in your US retail expansion strategy?</span></div>
+      <div style="margin-bottom:12px"><input class="form-input" name="US Retail Priority Channel" placeholder="e.g., Walmart first, then Target / Costco within 12 months"></div>
 
       <div class="form-nav"><button class="btn-outline" onclick="goFormStep(0)"><span class="ko">← 이전</span><span class="en">← Previous</span></button><button class="btn-primary" onclick="validateAndGo(1, 2)"><span class="ko">다음: 수출 & 물류 →</span><span class="en">Next: Export & Logistics →</span></button></div>
     </div>
@@ -2901,7 +2929,11 @@ async function dbSaveApplication(formData) {
     'channel-sales-org': 'channel_sales_org',
     'sams-club': 'sams_club_interest',
     'pb-open': 'pb_open',
-    'strategy': 'strategy_direction'
+    'strategy': 'strategy_direction',
+    'target-plan': 'target_plan',
+    'costco-plan': 'costco_plan',
+    'Additional Channels In Discussion': 'additional_channels_discussion',
+    'US Retail Priority Channel': 'us_retail_priority_channel'
   };
   var extraData = {};
   var _firstName = '', _lastName = '', _phoneCode = '', _phone = '';
@@ -3437,7 +3469,8 @@ function submitApply() {
 
   // Radio buttons
   ['export-exp','us-warehouse','packaging','mfg-type','eng-team','mkt-budget',
-   'other-retail','channel-sales-org','sams-club','pb-open','strategy'].forEach(name => {
+   'other-retail','channel-sales-org','sams-club','pb-open','strategy',
+   'target-plan','costco-plan'].forEach(name => {
     const checked = document.querySelector('input[name="' + name + '"]:checked');
     fd.append(name, checked ? checked.value : 'N/A');
   });
@@ -5591,7 +5624,9 @@ function prefillApplicationForm(app) {
     'lead_time': 'Lead Time',
     'annual_units_sold': 'Annual Units Sold',
     'sku_description': 'SKU Description',
-    'other_retail_channels': 'Other Retail Channels'
+    'other_retail_channels': 'Other Retail Channels',
+    'additional_channels_discussion': 'Additional Channels In Discussion',
+    'us_retail_priority_channel': 'US Retail Priority Channel'
   };
   Object.keys(extraInput).forEach(function(k) {
     var name = extraInput[k];
@@ -5611,7 +5646,9 @@ function prefillApplicationForm(app) {
     'channel_sales_org': 'channel-sales-org',
     'sams_club_interest': 'sams-club',
     'pb_open': 'pb-open',
-    'strategy_direction': 'strategy'
+    'strategy_direction': 'strategy',
+    'target_plan': 'target-plan',
+    'costco_plan': 'costco-plan'
   };
   Object.keys(radioMap).forEach(function(k) {
     var val = (app[k] != null && app[k] !== 'N/A') ? app[k] : (extra[k] && extra[k] !== 'N/A' ? extra[k] : null);
@@ -5692,7 +5729,8 @@ async function renderAdminReview() {
       'own':           {label:'\uC790\uCCB4 \uACF5\uC7A5',   color:'green'},
       'outsource':     {label:'OEM',         color:'orange'},
       'both':          {label:'\uC790\uCCB4+OEM',    color:'blue'},
-      'planned':       {label:'\uC9C4\uD589 \uC911',     color:'orange'}
+      'planned':       {label:'\uACC4\uD68D \uC788\uC74C',  color:'orange'},
+      'in-progress':   {label:'\uC9C4\uD589 \uC911',     color:'green'}
     };
     return map[value] || {label:value, color:'gray'};
   }
@@ -5787,12 +5825,18 @@ async function renderAdminReview() {
     strategyChipsHtml += _chip("Sam's Club",        extra.sams_club_interest);
     strategyChipsHtml += _chip('PB \uC0C1\uD488',           extra.pb_open);
     strategyChipsHtml += _chip('\uC804\uB7B5 \uBC29\uD5A5',         extra.strategy_direction);
+    strategyChipsHtml += _chip('Target',            extra.target_plan);
+    strategyChipsHtml += _chip('Costco',            extra.costco_plan);
     var otherRetailDetail = extra.other_retail_channels && String(extra.other_retail_channels).trim();
-    if (strategyChipsHtml || otherRetailDetail) {
+    var addlChannels = extra.additional_channels_discussion && String(extra.additional_channels_discussion).trim();
+    var priorityChannel = extra.us_retail_priority_channel && String(extra.us_retail_priority_channel).trim();
+    if (strategyChipsHtml || otherRetailDetail || addlChannels || priorityChannel) {
       html += '<div class="review-section full">' +
-        '<div class="rs-title">\uB9AC\uD14C\uC77C \uCC44\uB110 & \uC6D4\uB9C8\uD2B8 \uC804\uB7B5</div>' +
-        (strategyChipsHtml ? '<div class="strategy-chips" style="margin-bottom:' + (otherRetailDetail ? '14px' : '0') + '">' + strategyChipsHtml + '</div>' : '') +
-        (otherRetailDetail ? '<div class="review-field"><div class="rf-label">\uD0C0 \uCC44\uB110 \uC0C1\uC138</div><div class="rf-value">' + _esc(otherRetailDetail) + '</div></div>' : '') +
+        '<div class="rs-title">\uB9AC\uD14C\uC77C \uCC44\uB110 & \uBBF8\uAD6D \uD655\uC7A5 \uC804\uB7B5</div>' +
+        (strategyChipsHtml ? '<div class="strategy-chips" style="margin-bottom:14px">' + strategyChipsHtml + '</div>' : '') +
+        (otherRetailDetail ? '<div class="review-field" style="margin-bottom:10px"><div class="rf-label">\uD0C0 \uCC44\uB110 \uC0C1\uC138</div><div class="rf-value">' + _esc(otherRetailDetail) + '</div></div>' : '') +
+        (addlChannels ? '<div class="review-field" style="margin-bottom:10px"><div class="rf-label">\uCD94\uAC00 \uB17C\uC758 \uC911\uC778 \uCC44\uB110</div><div class="rf-value">' + _esc(addlChannels) + '</div></div>' : '') +
+        (priorityChannel ? '<div class="review-field"><div class="rf-label">\uC6B0\uC120\uC21C\uC704 \uCC44\uB110</div><div class="rf-value">' + _esc(priorityChannel) + '</div></div>' : '') +
       '</div>';
     }
 
@@ -7967,11 +8011,25 @@ async function loadAdminBrandApplication(brandId) {
       try { interest = JSON.parse(interest); } catch(e) { interest = null; }
     }
     if (interest && typeof interest === 'object') {
+      var _wiLabels = {
+        brand_story:'Brand Story', amazon_url:'Amazon URL', instagram_url:'Instagram URL',
+        instagram_followers:'Instagram Followers', export_countries:'Export Countries',
+        production_capacity:'Production Capacity', lead_time:'Lead Time', annual_units_sold:'Annual Units Sold',
+        us_warehouse:'US Warehouse', packaging_modify:'Packaging Modify', mfg_type:'Manufacturing Type',
+        english_team:'English Team', marketing_budget:'Marketing Budget', sku_description:'SKU Description',
+        other_retail_channels:'Other Retail Channels', other_retail_status:'Other Retailers (status)',
+        channel_sales_org:'Sales Org per Channel', sams_club_interest:"Sam's Club Interest",
+        pb_open:'Private Label Open', strategy_direction:'Strategy Direction',
+        target_plan:'Target — Meeting/Contact Plan', costco_plan:'Costco — Meeting/Contact Plan',
+        additional_channels_discussion:'Additional Channels in Discussion',
+        us_retail_priority_channel:'US Retail Priority Channel'
+      };
       var pairs = Object.keys(interest).map(function(k){
         var v = interest[k];
         if (Array.isArray(v)) v = v.join(', ');
-        if (v == null || v === '') return '';
-        return '<div style="padding:8px 0;border-bottom:1px solid var(--border)"><div style="font-size:11.5px;color:var(--text-muted);font-weight:600;margin-bottom:3px">' + _esc(k) + '</div><div style="font-size:13px;color:var(--text);line-height:1.5">' + _esc(String(v)) + '</div></div>';
+        if (v == null || v === '' || v === 'N/A') return '';
+        var label = _wiLabels[k] || k;
+        return '<div style="padding:8px 0;border-bottom:1px solid var(--border)"><div style="font-size:11.5px;color:var(--text-muted);font-weight:600;margin-bottom:3px">' + _esc(label) + '</div><div style="font-size:13px;color:var(--text);line-height:1.5">' + _esc(String(v)) + '</div></div>';
       }).filter(Boolean).join('');
       if (pairs) interestHtml = '<div style="margin-bottom:14px"><div style="font-size:12px;font-weight:700;color:var(--text-muted);margin-bottom:8px">🏪 ' + _kn('Walmart 입점 관련 정보','Walmart Interest Details') + '</div><div style="background:#fff;border:1px solid var(--border);border-radius:8px;padding:6px 14px">' + pairs + '</div></div>';
     }
