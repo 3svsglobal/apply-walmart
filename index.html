@@ -3081,6 +3081,9 @@ function dbContractToLocal(row) {
     brandNameKo: row.brand_name_ko,
     brandNameEn: row.brand_name_en,
     contractTerms: row.contract_terms || {},
+    scannedUrl: row.scanned_url || null,
+    scannedName: row.scanned_name || null,
+    scannedAt: row.scanned_at || null,
     signatures: {
       brand: { signed: !!row.sig_brand_signed, name: row.sig_brand_name||'', date: row.sig_brand_date ? row.sig_brand_date.slice(0,10) : '', sig: row.sig_brand_sig_url, seal: row.sig_brand_seal_url },
       admin: { signed: !!row.sig_admin_signed, name: row.sig_admin_name||'', date: row.sig_admin_date ? row.sig_admin_date.slice(0,10) : '', sig: row.sig_admin_sig_url, seal: row.sig_admin_seal_url },
@@ -5305,6 +5308,77 @@ function renderAdminContracts() {
   });
 }
 
+// 수기 서명 스캔본 — 카드 안 표시 행
+function _scannedContractRow(c) {
+  if (c.scannedUrl) {
+    var when = c.scannedAt ? (typeof _fmtKST === 'function' ? _fmtKST(c.scannedAt) : c.scannedAt.slice(0,10)) : '';
+    return '<div style="background:rgba(0,135,90,0.06);border:1px solid rgba(0,135,90,0.2);border-radius:8px;padding:8px 12px;margin:8px 0;display:flex;align-items:center;gap:8px">' +
+      '<span style="font-size:14px">📄</span>' +
+      '<div style="flex:1;min-width:0"><div style="font-size:12.5px;font-weight:600;color:#00875a"><span class="ko">수기 서명 스캔본 첨부됨</span><span class="en">Signed scan attached</span></div>' +
+      '<div style="font-size:11px;color:var(--text-muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap">' + (_esc(c.scannedName || 'scan') ) + (when ? ' · ' + when : '') + '</div></div>' +
+      '<a href="' + _esc(c.scannedUrl) + '" target="_blank" rel="noopener" style="font-size:12px;color:var(--accent);text-decoration:underline;white-space:nowrap">' + (typeof _kn==='function'?_kn('다운로드','Download'):'Download') + '</a>' +
+      '</div>';
+  }
+  return '';
+}
+
+// 스캔본 업로드 트리거 (숨은 file input 생성/재사용)
+function triggerScannedUpload(contractId) {
+  var inp = document.getElementById('_scanned-file-input');
+  if (!inp) {
+    inp = document.createElement('input');
+    inp.type = 'file';
+    inp.id = '_scanned-file-input';
+    inp.style.display = 'none';
+    document.body.appendChild(inp);
+  }
+  inp.value = '';
+  inp.onchange = function() {
+    if (inp.files && inp.files[0]) uploadScannedContract(contractId, inp.files[0]);
+  };
+  inp.click();
+}
+
+async function uploadScannedContract(contractId, file) {
+  if (!file || !supabase) return;
+  var maxSize = 25 * 1024 * 1024;
+  if (file.size > maxSize) { alert('파일 크기는 최대 25MB입니다. / Max 25MB.'); return; }
+  var ctx = (typeof _currentPortalContext === 'function') ? _currentPortalContext() : 'admin';
+  var safeName = file.name.replace(/[^a-zA-Z0-9._-]/g, '_');
+  var path = 'contracts/scanned/' + contractId + '_' + Date.now() + '_' + safeName;
+  var up = await supabase.storage.from('wm-signatures').upload(path, file, { upsert: false });
+  if (up.error) { alert('업로드 실패 / Upload failed: ' + up.error.message); return; }
+  var publicUrl = supabase.storage.from('wm-signatures').getPublicUrl(path).data.publicUrl;
+  var res = await supabase.from('wm_contracts').update({
+    scanned_url: publicUrl,
+    scanned_name: file.name,
+    scanned_at: new Date().toISOString(),
+    scanned_by: ctx
+  }).eq('id', contractId);
+  if (res.error) { alert('저장 실패 / Save failed: ' + res.error.message); return; }
+  // 로컬 contracts 배열 동기화
+  var lc = contracts.find(function(x){ return x.id === contractId; });
+  if (lc) { lc.scannedUrl = publicUrl; lc.scannedName = file.name; lc.scannedAt = new Date().toISOString(); }
+  alert('✅ ' + (typeof _kn==='function'?_kn('수기 서명본이 첨부되었습니다.','Signed scan attached.'):'Signed scan attached.'));
+  // 현재 보이는 화면 새로고침
+  var adminList = document.getElementById('admin-contracts-list');
+  if (adminList && adminList.offsetParent !== null && typeof _renderAdminContractsList === 'function') {
+    _renderAdminContractsList();
+  }
+  // Walmart 브랜드 상세가 열려있으면 contracts 섹션 갱신
+  var wmView = document.getElementById('view-walmart');
+  if (wmView && wmView.classList.contains('active') && typeof _wmCurrentBrandId !== 'undefined' && _wmCurrentBrandId && typeof showWmBrandDetailDB === 'function') {
+    showWmBrandDetailDB(_wmCurrentBrandId);
+  }
+  // 관리자 브랜드 상세가 열려있으면 갱신
+  var adminBrandDetail = document.getElementById('admin-brand-detail');
+  if (adminBrandDetail && adminBrandDetail.style.display !== 'none' && typeof _wmCurrentBrandId !== 'undefined') {
+    // admin brand-detail의 contracts 섹션은 getWmContractsHtml 사용 — showAdminBrandDetail 재호출
+    var bid = (typeof _currentAdminBrandId !== 'undefined' && _currentAdminBrandId) || _wmCurrentBrandId;
+    if (bid && typeof showAdminBrandDetail === 'function') showAdminBrandDetail(bid);
+  }
+}
+
 function _renderAdminContractsList() {
   var el = document.getElementById('admin-contracts-list');
   if (!el) return;
@@ -5328,14 +5402,17 @@ function _renderAdminContractsList() {
       '<span style="font-family:var(--mono);font-size:11px;opacity:.75;flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">' + link + '</span>' +
       '<button onclick="copyContractLink(\'' + c.id + '\')" style="background:rgba(0,0,0,.1);color:var(--text);border:none;padding:4px 12px;border-radius:6px;font-size:12px;cursor:pointer;white-space:nowrap">Copy Link</button>' +
       '</div>' +
-      '<div style="display:flex;gap:8px">';
+      _scannedContractRow(c) +
+      '<div style="display:flex;gap:8px;flex-wrap:wrap">';
     if (!c.signatures.admin.signed) {
       html += '<button onclick="openContractPageAsAdmin(\'' + c.id + '\')" style="background:#98fe00;color:#000;border:none;padding:6px 16px;border-radius:6px;font-size:13px;font-weight:600;cursor:pointer">3SVS 서명하기</button>';
     }
     if (status === 'completed') {
       html += '<button onclick="approvePortalAccess(\'' + c.brandId + '\')" style="background:rgba(152,254,0,.15);color:#98fe00;border:1px solid rgba(152,254,0,.3);padding:6px 16px;border-radius:6px;font-size:13px;font-weight:600;cursor:pointer">포탈 권한 승인</button>';
     }
-    html += '<button onclick="previewContract(\'' + c.id + '\')" style="background:rgba(0,0,0,.08);color:var(--text);border:none;padding:6px 16px;border-radius:6px;font-size:13px;cursor:pointer">계약서 보기</button></div></div>';
+    html += '<button onclick="previewContract(\'' + c.id + '\')" style="background:rgba(0,0,0,.08);color:var(--text);border:none;padding:6px 16px;border-radius:6px;font-size:13px;cursor:pointer">계약서 보기</button>';
+    html += '<button onclick="triggerScannedUpload(\'' + c.id + '\')" style="background:rgba(0,113,220,0.1);color:var(--accent);border:1px solid rgba(0,113,220,0.25);padding:6px 16px;border-radius:6px;font-size:13px;font-weight:600;cursor:pointer">📎 ' + (c.scannedUrl ? '수기 서명본 교체' : '수기 서명본 첨부') + '</button>';
+    html += '</div></div>';
   });
   if (contracts.length === 0) html = '<div style="text-align:center;padding:40px;opacity:.75">생성된 계약이 없습니다.</div>';
   el.innerHTML = html;
@@ -5382,6 +5459,7 @@ function getWmContractsHtml(brandId) {
       '<div><h4 style="margin:0;font-size:15px">' + tpl.title + '</h4><div style="font-size:12px;opacity:.5;margin-top:2px">' + c.id + ' \u00b7 ' + c.createdAt + '</div></div>' +
       '<span class="contract-badge ' + status + '">' + getContractStatusLabel(status) + '</span></div>' +
       '<div class="contract-signers">' + renderSignerPill(c,'brand','Brand') + renderSignerPill(c,'admin','3SVS') + renderSignerPill(c,'walmart','Startup Junkie') + '</div>' +
+      _scannedContractRow(c) +
       '<div style="display:flex;gap:8px;flex-wrap:wrap">';
     // 관리자(admin)는 3SVS 슬롯과 Startup Junkie 슬롯 양쪽 모두 서명 가능 (proxy)
     if (sessionRole === 'admin' && !c.signatures.admin.signed) {
@@ -5393,7 +5471,11 @@ function getWmContractsHtml(brandId) {
     if (sessionRole === 'walmart' && !c.signatures.walmart.signed) {
       html += '<button onclick="openContractAsRole(\'' + c.id + '\',\'walmart\')" style="background:#8fc5f2;color:#000;border:none;padding:6px 16px;border-radius:6px;font-size:13px;font-weight:600;cursor:pointer">Sign as Startup Junkie</button>';
     }
-    html += '<button onclick="previewContract(\'' + c.id + '\')" style="background:rgba(0,0,0,.08);color:var(--text);border:none;padding:6px 16px;border-radius:6px;font-size:13px;cursor:pointer">View Contract</button></div></div>';
+    html += '<button onclick="previewContract(\'' + c.id + '\')" style="background:rgba(0,0,0,.08);color:var(--text);border:none;padding:6px 16px;border-radius:6px;font-size:13px;cursor:pointer">View Contract</button>';
+    if (sessionRole === 'admin' || sessionRole === 'walmart') {
+      html += '<button onclick="triggerScannedUpload(\'' + c.id + '\')" style="background:rgba(0,113,220,0.1);color:var(--accent);border:1px solid rgba(0,113,220,0.25);padding:6px 16px;border-radius:6px;font-size:13px;font-weight:600;cursor:pointer">📎 ' + (c.scannedUrl ? 'Replace Scan' : 'Attach Signed Scan') + '</button>';
+    }
+    html += '</div></div>';
   });
   return html;
 }
