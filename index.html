@@ -504,6 +504,9 @@ button{cursor:pointer;font-family:var(--font)}
 .rs-fields{display:grid;grid-template-columns:repeat(auto-fit, minmax(200px, 1fr));gap:14px 28px}
 .rs-fields.cols-2{grid-template-columns:repeat(auto-fit, minmax(220px, 1fr));gap:14px 28px}
 .review-field{min-width:0;font-family:var(--font)}
+/* 긴 답변(제품 설명/브랜드 스토리/SKU 등)은 행 전체를 가로로 차지 */
+.review-field.rf-full{grid-column:1 / -1}
+.review-field.rf-full .rf-value{background:#fff;border:1px solid var(--border);border-radius:8px;padding:12px 14px;font-size:14px;line-height:1.65;max-height:none}
 .review-field .rf-label{color:var(--text-muted);font-family:var(--font);font-size:13px;font-weight:600;letter-spacing:0;margin-bottom:4px}
 .review-field .rf-value{color:var(--text);font-weight:500;font-size:15.5px;line-height:1.55;word-break:break-word;font-family:var(--font)}
 .review-field .rf-value a{color:var(--accent);text-decoration:none;font-weight:600}
@@ -5701,7 +5704,8 @@ async function renderAdminReview() {
     var val = String(value);
     if (opts.link && /^https?:\/\//.test(val)) val = '<a href="' + _esc(val) + '" target="_blank" rel="noopener">' + _esc(val) + '</a>';
     else val = _esc(val);
-    return '<div class="review-field"><div class="rf-label">' + _esc(label) + '</div><div class="rf-value"' + (opts.pre ? ' style="white-space:pre-wrap"' : '') + '>' + val + '</div></div>';
+    var fieldCls = 'review-field' + (opts.full ? ' rf-full' : '');
+    return '<div class="' + fieldCls + '"><div class="rf-label">' + _esc(label) + '</div><div class="rf-value"' + (opts.pre ? ' style="white-space:pre-wrap"' : '') + '>' + val + '</div></div>';
   }
   function _section(title, fieldsHtml, opts) {
     // fieldsHtml: string of joined _fieldHtml outputs (빈 문자열들 포함 가능). 모두 빈 문자열이면 카드 자체를 안 그림.
@@ -5798,10 +5802,10 @@ async function renderAdminReview() {
       _fieldHtml('\uC5F0 \uB9E4\uCD9C (USD)', app.annual_revenue) +
       _fieldHtml('\uC218\uCD9C \uACBD\uD5D8', app.export_experience) +
       _fieldHtml('Instagram \uD314\uB85C\uC6CC', extra.instagram_followers) +
-      _fieldHtml('\uC81C\uD488 \uC124\uBA85', app.product_description, {pre:true}) +
-      _fieldHtml('\uBE0C\uB79C\uB4DC \uC2A4\uD1A0\uB9AC', extra.brand_story, {pre:true}) +
       _fieldHtml('Amazon URL', extra.amazon_url, {link:true}) +
-      _fieldHtml('Instagram URL', extra.instagram_url, {link:true}),
+      _fieldHtml('Instagram URL', extra.instagram_url, {link:true}) +
+      _fieldHtml('\uC81C\uD488 \uC124\uBA85', app.product_description, {pre:true, full:true}) +
+      _fieldHtml('\uBE0C\uB79C\uB4DC \uC2A4\uD1A0\uB9AC', extra.brand_story, {pre:true, full:true}),
       {full:true, cols2:true}
     );
 
@@ -5815,7 +5819,7 @@ async function renderAdminReview() {
       _fieldHtml('\uC81C\uC870 \uC720\uD615', extra.mfg_type) +
       _fieldHtml('\uC601\uC5B4 \uAC00\uB2A5 \uC778\uB825', extra.english_team) +
       _fieldHtml('\uB9C8\uCF00\uD305 \uC608\uC0B0', extra.marketing_budget) +
-      _fieldHtml('\uC8FC\uC694 SKU / \uC81C\uD488', extra.sku_description, {pre:true}),
+      _fieldHtml('\uC8FC\uC694 SKU / \uC81C\uD488', extra.sku_description, {pre:true, full:true}),
       {full:true, cols2:true}
     );
 
