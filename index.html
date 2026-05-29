@@ -964,27 +964,18 @@ button{cursor:pointer;font-family:var(--font)}
       </div>
     </div>
 
-    <!-- Walmart vs Coupang -->
-    <div class="compare-section">
-      <div style="font-family:var(--font);font-size:12px;color:rgba(0,0,0,0.6);margin-bottom:32px;letter-spacing:0">Monthly Active Users Comparison</div>
-      <div class="compare-grid">
-        <div class="compare-brand">
-          <div class="cb-name" style="color:var(--accent)">Walmart</div>
-          <div class="cb-num" style="color:var(--text)" id="cms-wm-num">120–150<em style="color:var(--accent)">M</em></div>
-          <div class="cb-unit">MAU (App + Web)</div>
-        </div>
-        <div class="compare-vs">VS</div>
-        <div class="compare-brand">
-          <div class="cb-name" style="color:rgba(0,0,0,0.6)">Coupang</div>
-          <div class="cb-num" style="color:rgba(0,0,0,0.6)" id="cms-cp-num">30–33<em style="color:rgba(0,0,0,0.6)">M</em></div>
-          <div class="cb-unit">MAU (Korea Only)</div>
-        </div>
+    <!-- Walmart 연매출 임팩트 -->
+    <div class="compare-section" style="text-align:center;padding:56px 48px">
+      <div style="font-family:var(--font);font-size:12px;color:var(--text-muted);margin-bottom:20px;letter-spacing:1.5px;text-transform:uppercase"><span class="ko">월마트 연간 매출</span><span class="en">Walmart Annual Revenue</span></div>
+      <div style="font-size:clamp(56px,9vw,104px);font-weight:900;letter-spacing:-4px;line-height:0.92;color:var(--accent)">
+        <span class="ko">1,030<span style="font-size:0.42em;font-weight:800;letter-spacing:-1px;color:var(--text)">조원</span></span><span class="en">$648<span style="font-size:0.42em;font-weight:800;letter-spacing:-1px;color:var(--text)">B</span></span>
       </div>
-      <div class="compare-bar" style="max-width:600px;margin:24px auto 0">
-        <div style="flex:5;background:var(--accent);height:6px;border-radius:3px"></div>
-        <div style="flex:1;background:rgba(0,0,0,0.08);height:6px;border-radius:3px"></div>
+      <div style="margin-top:18px;font-size:16px;color:var(--text);font-weight:600;line-height:1.6">
+        <span class="ko">전 세계 매출 1위 유통기업 · Fortune Global 500 1위</span><span class="en">World's #1 retailer by revenue · Fortune Global 500 No.1</span>
       </div>
-      <div class="compare-insight" id="cms-compare-insight"><span class="ko">월마트의 사용자 기반은 쿠팡보다 <strong>4~5배</strong> 크며, 글로벌 19개국에 걸쳐 있습니다.</span><span class="en">Walmart's user base is <strong>4-5x larger</strong> than Coupang, spanning 19 countries globally.</span></div>
+      <div class="compare-insight" style="margin-top:14px;max-width:640px;margin-left:auto;margin-right:auto">
+        <span class="ko">월마트의 연간 매출은 대한민국 연간 정부 예산(약 660조 원)을 훌쩍 넘어서며, 한국 전체 이커머스 거래액의 <strong>몇 배</strong>에 달하는 규모입니다. 이 거대한 시장에 직접 입점하는 것이 본 프로그램의 목표입니다.</span><span class="en">Walmart's annual revenue far exceeds the Republic of Korea's entire annual government budget, and is several times the size of Korea's total e-commerce market. Entering this colossal market directly is the goal of this program.</span>
+      </div>
     </div>
 
     <!-- Success Stories -->
@@ -1994,26 +1985,19 @@ button{cursor:pointer;font-family:var(--font)}
           </div>
         </div>
 
-        <!-- ④ Walmart vs 쿠팡 비교 -->
+        <!-- ④ 월마트 연매출 강조 -->
         <div class="cms-section">
           <div class="cms-section-header" onclick="toggleCms(this)">
-            <div class="cms-section-title"><span class="cms-dot" style="background:#e74c3c"></span>④ Walmart vs 쿠팡 비교</div>
+            <div class="cms-section-title"><span class="cms-dot" style="background:#e74c3c"></span>④ 월마트 연매출 강조</div>
             <div class="cms-toggle">▼</div>
           </div>
           <div class="cms-section-body" style="display:none">
+            <div style="font-size:12px;color:rgba(0,0,0,0.6);margin-bottom:10px">메인 페이지의 연매출 임팩트 섹션 문구를 직접 수정합니다. (쿠팡 MAU 비교는 제거됨)</div>
             <div class="cms-field">
-              <label class="cms-label">Walmart MAU 수치</label>
-              <input class="cms-input" data-target="wm-num" value="120–150M">
+              <label class="cms-label">연매출 인사이트 문구</label>
+              <textarea class="cms-input" data-target="compare-insight" rows="3">월마트의 연간 매출은 대한민국 연간 정부 예산(약 660조 원)을 훌쩍 넘어서며, 한국 전체 이커머스 거래액의 몇 배에 달하는 규모입니다. 이 거대한 시장에 직접 입점하는 것이 본 프로그램의 목표입니다.</textarea>
             </div>
-            <div class="cms-field">
-              <label class="cms-label">쿠팡 MAU 수치</label>
-              <input class="cms-input" data-target="cp-num" value="30–33M">
-            </div>
-            <div class="cms-field">
-              <label class="cms-label">비교 인사이트 문구</label>
-              <textarea class="cms-input" data-target="compare-insight" rows="2">월마트의 사용자 기반은 쿠팡보다 4~5배 크며, 글로벌 19개국에 걸쳐 있습니다.</textarea>
-            </div>
-            <button class="cms-apply" onclick="applyCms('compare')">비교 섹션 적용</button>
+            <button class="cms-apply" onclick="applyCms('compare')">문구 적용</button>
           </div>
         </div>
 
@@ -3880,11 +3864,15 @@ function applyCms(section) {
     document.getElementById('cms-hero-bg').style.backgroundImage = 'url(' + url + ')';
   }
   if (section === 'compare') {
-    var wmVal = document.querySelector('[data-target="wm-num"]').value;
-    var cpVal = document.querySelector('[data-target="cp-num"]').value;
-    document.getElementById('cms-wm-num').innerHTML = wmVal.replace(/M/g, '<em style="color:var(--accent)">M</em>');
-    document.getElementById('cms-cp-num').innerHTML = cpVal.replace(/M/g, '<em style="color:rgba(0,0,0,0.62)">M</em>');
-    document.getElementById('cms-compare-insight').innerHTML = document.querySelector('[data-target="compare-insight"]').value;
+    // 쿠팡 MAU 비교 제거됨 — 연매출 인사이트 문구만 갱신
+    var insightEl = document.getElementById('cms-compare-insight');
+    var insightInput = document.querySelector('[data-target="compare-insight"]');
+    if (insightEl && insightInput) {
+      // 한국어 span 만 교체 (영문은 유지)
+      var koSpan = insightEl.querySelector('.ko');
+      if (koSpan) koSpan.innerHTML = insightInput.value;
+      else insightEl.innerHTML = insightInput.value;
+    }
   }
   if (section === 'success') {
     for (var i = 1; i <= 3; i++) {
