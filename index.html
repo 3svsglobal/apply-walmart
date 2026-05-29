@@ -1722,7 +1722,7 @@ button{cursor:pointer;font-family:var(--font)}
 
       <div class="form-field-label" style="margin-top:20px"><span class="ko">추가 서류 (선택)</span><span class="en">Additional Documents (optional)</span></div>
       <div class="file-upload-zone" id="file-zone-extra" onclick="document.getElementById('file-extra').click()" ondragover="event.preventDefault();this.classList.add('dragover')" ondragleave="this.classList.remove('dragover')" ondrop="event.preventDefault();this.classList.remove('dragover');handleFileDrop(event,'extra')">
-        <input type="file" id="file-extra" accept=".pdf,.ppt,.pptx,.jpg,.png,.xlsx" multiple style="display:none" onchange="handleFileSelect(this,'extra')">
+        <input type="file" id="file-extra" multiple style="display:none" onchange="handleFileSelect(this,'extra')">
         <div class="fuz-icon">📂</div>
         <div class="fuz-text">Certifications, product catalogs, etc.</div>
         <div class="fuz-hint">Multiple files allowed — Max 20MB each</div>
@@ -2579,8 +2579,8 @@ button{cursor:pointer;font-family:var(--font)}
             <div id="doc-upload-area" style="border:2px dashed var(--border-dark);border-radius:12px;padding:32px;text-align:center;cursor:pointer;transition:all .2s;background:#fff" onclick="document.getElementById('doc-file-input').click()" ondragover="event.preventDefault();this.style.borderColor='var(--accent)';this.style.background='rgba(0,113,220,0.05)'" ondragleave="this.style.borderColor='var(--border-dark)';this.style.background='#fff'" ondrop="event.preventDefault();this.style.borderColor='var(--border-dark)';this.style.background='#fff';handleDocFileDrop(event)">
               <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="var(--text-muted)" stroke-width="1.5" style="margin-bottom:8px"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
               <div style="font-size:14px;color:var(--text);margin-bottom:4px;font-weight:500"><span class="ko">파일을 끌어다 놓거나 클릭하여 선택</span><span class="en">Drag files here or click to select</span></div>
-              <div style="font-size:12px;color:var(--text-muted)"><span class="ko">PDF · Excel · 이미지 · ZIP 지원 (최대 25MB)</span><span class="en">PDF, Excel, images, ZIP supported (up to 25MB)</span></div>
-              <input type="file" id="doc-file-input" accept=".pdf,.xlsx,.xls,.csv,.png,.jpg,.jpeg,.zip,.docx,.pptx" style="display:none" onchange="uploadCategorizedDoc(this.files[0])">
+              <div style="font-size:12px;color:var(--text-muted)"><span class="ko">모든 형식 지원 (PDF · Word/HWP · Excel · PPT · 이미지 · ZIP 등, 최대 25MB)</span><span class="en">All file types supported (PDF, Word/HWP, Excel, PPT, images, ZIP, etc. — up to 25MB)</span></div>
+              <input type="file" id="doc-file-input" style="display:none" onchange="uploadCategorizedDoc(this.files[0])">
             </div>
           </div>
         </div>
