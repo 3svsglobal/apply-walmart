@@ -5899,6 +5899,7 @@ async function renderAdminReview() {
       '<div class="review-actions">' +
         '<button class="btn-approve" onclick="approveApplication(\'' + app.id + '\')"><span style="font-size:16px">\u2713</span> \uC2B9\uC778 \u2014 \uD3EC\uD138 \uAD8C\uD55C \uBD80\uC5EC</button>' +
         '<button class="btn-reject" onclick="rejectApplication(\'' + app.id + '\')">\uBC18\uB824</button>' +
+        '<button onclick="downloadApplicationPdf(\'' + app.id + '\')" title="\uC2E0\uCCAD\uC11C \uB2E4\uC6B4\uB85C\uB4DC (PDF)" style="background:#fff;color:#0071ce;border:1.5px solid #0071ce;padding:9px 16px;border-radius:8px;font-size:13px;font-weight:700;cursor:pointer;display:inline-flex;align-items:center;gap:6px;margin-left:auto"><span>\uD83D\uDCE5</span> \uC2E0\uCCAD\uC11C PDF</button>' +
       '</div>' +
     '</div>';
 
@@ -5915,9 +5916,11 @@ async function renderAdminReview() {
       var typeBadge = app.apply_type === 'voucher' ? '<span class="badge-voucher">voucher</span>' : '<span class="badge-direct">direct</span>';
       var dates = (app.created_at ? app.created_at.slice(0,10) : '') + (app.approved_at ? ' → ' + app.approved_at.slice(0,10) + ' 승인' : '');
       
-      html += '<div class="brand-card" style="opacity:0.6"><div class="brand-header" style="margin-bottom:0"><div class="brand-info"><div class="brand-icon">' + initial + '</div><div>' +
+      html += '<div class="brand-card" style="opacity:0.85"><div class="brand-header" style="margin-bottom:0"><div class="brand-info"><div class="brand-icon">' + initial + '</div><div>' +
         '<div class="brand-name">' + (app.brand_name_ko || app.brand_name_en) + ' ' + statusBadge + ' ' + typeBadge + '</div>' +
-        '<div class="brand-sub">' + dates + '</div></div></div>' + statusIcon + '</div></div>';
+        '<div class="brand-sub">' + dates + '</div></div></div><div style="display:flex;align-items:center;gap:10px">' + statusIcon +
+        '<button onclick="downloadApplicationPdf(\'' + app.id + '\')" title="신청서 다운로드 (PDF)" style="background:#fff;color:#0071ce;border:1.5px solid #0071ce;padding:7px 13px;border-radius:7px;font-size:12px;font-weight:700;cursor:pointer;display:inline-flex;align-items:center;gap:5px">📥 PDF</button>' +
+      '</div></div></div>';
     });
   }
   
@@ -8075,22 +8078,42 @@ async function downloadBrandInfoPdf(brandId) {
       .order('created_at', { ascending: false }).limit(1);
     app = aRes.data && aRes.data[0];
   }
-  // walmart_interest JSON
+  _openBrandPdfWindow(brand, app);
+}
+
+// ─── PDF 다운로드: 신청서 단독 (승인 전 접수 심사 카드용) ───
+async function downloadApplicationPdf(applicationId) {
+  if (!supabase) { alert('Supabase 연결이 없습니다.'); return; }
+  var aRes = await supabase.from('wm_applications').select('*').eq('id', applicationId).single();
+  if (!aRes.data) { alert('신청서를 찾을 수 없습니다.'); return; }
+  var app = aRes.data;
+  // 신청서만 갖고 있는 기본 정보로 가상의 brand 객체 구성 (id/phase 등 비어있음)
+  var brand = {
+    id: '',
+    name_ko: app.brand_name_ko || '',
+    name_en: app.brand_name_en || '',
+    category: app.product_category || '',
+    website: app.homepage || '',
+    current_phase: '',
+    portal_email: app.contact_email || ''
+  };
+  _openBrandPdfWindow(brand, app);
+}
+
+// 공통 헬퍼: 빌더 호출 + 새 창 인쇄
+function _openBrandPdfWindow(brand, app) {
   var interest = {};
   if (app && app.walmart_interest) {
     var wi = app.walmart_interest;
     if (typeof wi === 'string') { try { wi = JSON.parse(wi); } catch(e) { wi = {}; } }
     interest = wi || {};
   }
-
-  // 2) HTML 빌드 + 새 창 열고 인쇄 호출
-  var html = _buildBrandPdfHtml(brand, app, interest);
+  var html = _buildBrandPdfHtml(brand || {}, app, interest);
   var win = window.open('', '_blank', 'width=920,height=1100');
   if (!win) { alert('팝업이 차단되었습니다. 브라우저에서 팝업을 허용해주세요.'); return; }
   win.document.open();
   win.document.write(html);
   win.document.close();
-  // 폰트/이미지 로드 완료 후 자동으로 인쇄 대화창 띄움
   win.onload = function() {
     setTimeout(function(){ try { win.focus(); win.print(); } catch(e){} }, 600);
   };
@@ -8134,7 +8157,13 @@ function _buildBrandPdfHtml(brand, app, interest) {
   var brandNameEn = brand.name_en || (app && app.brand_name_en) || '';
   var applyType = (app && app.apply_type === 'voucher') ? '수출바우처 / Voucher Program'
                : (app && app.apply_type === 'direct')  ? '직접참여 / Direct Participation' : '-';
-  var phaseLbl = {contract:'Contract',phase1:'Phase 1',phase2:'Phase 2',phase3:'Phase 3',completed:'Completed'}[brand.current_phase] || brand.current_phase || '-';
+  // Phase가 있으면(승인 후) Phase, 없으면(승인 전) 신청서 status 표시
+  var statusMap = {
+    submitted:'심사 대기 / Submitted', reviewing:'심사 중 / Under Review',
+    approved:'승인됨 / Approved', rejected:'반려됨 / Rejected', contracted:'계약 진행 / Contracted'
+  };
+  var phaseLbl = {contract:'Contract',phase1:'Phase 1',phase2:'Phase 2',phase3:'Phase 3',completed:'Completed'}[brand.current_phase]
+              || (brand.current_phase ? brand.current_phase : (app && statusMap[app.status]) || '심사 대기 / Submitted');
   var submitted = app && app.created_at ? new Date(app.created_at).toLocaleDateString('ko-KR') : '-';
 
   // 첨부 파일
