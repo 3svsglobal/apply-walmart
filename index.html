@@ -8125,48 +8125,52 @@ function _buildBrandPdfHtml(brand, app, interest) {
       return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];
     });
   }
-  // 칩 값 한국어 라벨 매핑
+  // 칩 값 라벨 매핑 (영문 메인 / 한글 병기)
   var chipMap = {
-    'yes':'예 / Yes','no':'아니오 / No','partial':'일부 / Partial',
-    'considering':'고려 중 / Considering','walmart-focus':'Walmart 집중 / Walmart-focused',
-    'multi-retail':'멀티 리테일 / Multi-retail','walmart-only':'Walmart 만 / Walmart only',
-    'in-talks':'접촉·논의 중 / In talks','selling':'판매 중 / Selling',
-    'none':'없음 / None','undecided':'미정 / Undecided',
-    'open':'개방 / Open','brand-only':'자체 브랜드만 / Brand only',
-    'self':'자체 생산 / In-house','outsource':'OEM / Outsourced','both':'자체+OEM / Both',
-    'planned':'계획 있음 / Planned','in-progress':'진행 중 / In progress',
-    'N/A':'미답변 / Not answered',null:'',undefined:''
+    'yes':'Yes / 예','no':'No / 아니오','partial':'Partial / 일부',
+    'considering':'Considering / 고려 중','walmart-focus':'Walmart-focused / Walmart 집중',
+    'multi-retail':'Multi-retail / 멀티 리테일','walmart-only':'Walmart only / Walmart 만',
+    'in-talks':'In talks / 접촉·논의 중','selling':'Selling / 판매 중',
+    'none':'None / 없음','undecided':'Undecided / 미정',
+    'open':'Open / 개방','brand-only':'Brand only / 자체 브랜드만',
+    'self':'In-house / 자체 생산','outsource':'Outsourced (OEM) / OEM','both':'Both (in-house + OEM) / 자체+OEM',
+    'planned':'Planned / 계획 있음','in-progress':'In progress / 진행 중',
+    'N/A':'Not answered / 미답변',null:'',undefined:''
   };
   function chip(v) {
     if (v == null || v === '') return '';
     return chipMap[v] != null ? chipMap[v] : v;
   }
-  function row(labelKo, labelEn, value) {
+  // row(primary=English, secondary=Korean, value)
+  function row(labelEn, labelKo, value) {
     if (value == null || value === '' || value === 'N/A' || value === '-') return '';
-    return '<tr><th>' + esc(labelKo) + '<br/><span class="en-label">' + esc(labelEn) + '</span></th>'
+    return '<tr><th>' + esc(labelEn) + '<br/><span class="en-label">' + esc(labelKo) + '</span></th>'
          + '<td>' + esc(String(value)) + '</td></tr>';
   }
-  function longRow(labelKo, labelEn, value) {
+  function longRow(labelEn, labelKo, value) {
     if (value == null || value === '' || value === 'N/A' || value === '-') return '';
     var html = esc(String(value)).replace(/\n/g, '<br/>');
-    return '<tr><th>' + esc(labelKo) + '<br/><span class="en-label">' + esc(labelEn) + '</span></th>'
+    return '<tr><th>' + esc(labelEn) + '<br/><span class="en-label">' + esc(labelKo) + '</span></th>'
          + '<td class="long">' + html + '</td></tr>';
   }
 
-  var brandNameKo = brand.name_ko || (app && app.brand_name_ko) || brand.id || '-';
+  var brandNameKo = brand.name_ko || (app && app.brand_name_ko) || '';
   var brandNameEn = brand.name_en || (app && app.brand_name_en) || '';
-  var applyType = (app && app.apply_type === 'voucher') ? '수출바우처 / Voucher Program'
-               : (app && app.apply_type === 'direct')  ? '직접참여 / Direct Participation' : '-';
-  // Phase가 있으면(승인 후) Phase, 없으면(승인 전) 신청서 status 표시
+  // 영문 이름이 있으면 영문이 메인, 없으면 한글이 메인
+  var titleMain = brandNameEn || brandNameKo || brand.id || '-';
+  var titleSub  = (brandNameEn && brandNameKo && brandNameKo !== brandNameEn) ? brandNameKo : '';
+
+  var applyType = (app && app.apply_type === 'voucher') ? 'Voucher Program / 수출바우처'
+               : (app && app.apply_type === 'direct')  ? 'Direct Participation / 직접참여' : '-';
   var statusMap = {
-    submitted:'심사 대기 / Submitted', reviewing:'심사 중 / Under Review',
-    approved:'승인됨 / Approved', rejected:'반려됨 / Rejected', contracted:'계약 진행 / Contracted'
+    submitted:'Submitted / 심사 대기', reviewing:'Under Review / 심사 중',
+    approved:'Approved / 승인됨', rejected:'Rejected / 반려됨', contracted:'Contracted / 계약 진행'
   };
   var phaseLbl = {contract:'Contract',phase1:'Phase 1',phase2:'Phase 2',phase3:'Phase 3',completed:'Completed'}[brand.current_phase]
-              || (brand.current_phase ? brand.current_phase : (app && statusMap[app.status]) || '심사 대기 / Submitted');
-  var submitted = app && app.created_at ? new Date(app.created_at).toLocaleDateString('ko-KR') : '-';
+              || (brand.current_phase ? brand.current_phase : (app && statusMap[app.status]) || 'Submitted / 심사 대기');
+  var submitted = app && app.created_at ? new Date(app.created_at).toISOString().slice(0,10) : '-';
 
-  // 첨부 파일
+  // Attachments
   var filesHtml = '';
   if (app && Array.isArray(app.attached_files) && app.attached_files.length) {
     filesHtml = '<ul>' + app.attached_files.map(function(f){
@@ -8175,16 +8179,16 @@ function _buildBrandPdfHtml(brand, app, interest) {
       return '<li>' + esc(name) + sizeKb + '</li>';
     }).join('') + '</ul>';
   } else {
-    filesHtml = '<p class="muted">첨부 파일 없음 / No attached files</p>';
+    filesHtml = '<p class="muted">No attached files / 첨부 파일 없음</p>';
   }
 
   var h = '';
-  h += '<!DOCTYPE html><html lang="ko"><head><meta charset="utf-8">';
-  h += '<title>' + esc(brandNameKo) + (brandNameEn ? ' / ' + esc(brandNameEn) : '') + ' — Brand Information</title>';
+  h += '<!DOCTYPE html><html lang="en"><head><meta charset="utf-8">';
+  h += '<title>' + esc(titleMain) + (titleSub ? ' / ' + esc(titleSub) : '') + ' — Brand Profile</title>';
   h += '<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>';
   h += '<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css">';
   h += '<style>';
-  h += '@page{size:A4;margin:18mm 15mm}';
+  h += '@page{size:A4;margin:20mm 22mm}';
   h += '*{box-sizing:border-box}';
   h += 'html,body{margin:0;padding:0}';
   h += 'body{font-family:"Pretendard","Pretendard Variable",-apple-system,system-ui,"맑은 고딕","Malgun Gothic",sans-serif;color:#1c1c1c;line-height:1.55;font-size:10.5pt;background:#fff}';
@@ -8214,85 +8218,85 @@ function _buildBrandPdfHtml(brand, app, interest) {
   h += '@media print{.no-print{display:none !important}}';
   h += '</style></head><body>';
 
-  h += '<div class="no-print"><button class="secondary" onclick="window.close()">닫기 / Close</button><button onclick="window.print()">📥 PDF로 저장 / Save as PDF</button></div>';
+  h += '<div class="no-print"><button class="secondary" onclick="window.close()">Close / 닫기</button><button onclick="window.print()">📥 Save as PDF / PDF로 저장</button></div>';
 
-  // 표지
+  // Cover
   h += '<div class="cover">';
   h += '<div class="eyebrow">Walmart Entry Program · Brand Profile</div>';
-  h += '<h1>' + esc(brandNameKo) + '</h1>';
-  if (brandNameEn && brandNameEn !== brandNameKo) h += '<div class="en-title">' + esc(brandNameEn) + '</div>';
+  h += '<h1>' + esc(titleMain) + '</h1>';
+  if (titleSub) h += '<div class="en-title">' + esc(titleSub) + '</div>';
   h += '<div class="badges">';
   h += '<span>📋 ' + esc(applyType) + '</span>';
   h += '<span>🎯 ' + esc(phaseLbl) + '</span>';
-  h += '<span>📅 신청 ' + esc(submitted) + '</span>';
+  h += '<span>📅 Submitted ' + esc(submitted) + '</span>';
   h += '</div></div>';
 
-  // 회사 정보
-  h += '<h2>회사 정보 <span class="en">Company Information</span></h2><table>';
-  h += row('대표자','CEO', app && app.ceo_name);
-  h += row('사업자번호','Business Reg. No.', app && app.business_number);
-  h += row('업종','Industry', app && app.industry);
-  h += row('홈페이지','Website', brand.website || (app && app.homepage));
-  h += row('주소','Address', app && app.address);
+  // Company Information
+  h += '<h2>Company Information <span class="en">회사 정보</span></h2><table>';
+  h += row('CEO','대표자', app && app.ceo_name);
+  h += row('Business Registration No.','사업자번호', app && app.business_number);
+  h += row('Industry','업종', app && app.industry);
+  h += row('Website','홈페이지', brand.website || (app && app.homepage));
+  h += row('Address','주소', app && app.address);
   h += '</table>';
 
-  // 담당자
-  h += '<h2>담당자 <span class="en">Contact Person</span></h2><table>';
-  h += row('이름','Name', app && app.contact_name);
-  h += row('직함','Position', app && app.contact_position);
-  h += row('이메일','Email', app && app.contact_email);
-  h += row('전화','Phone', app && app.contact_phone);
+  // Contact Person
+  h += '<h2>Contact Person <span class="en">담당자</span></h2><table>';
+  h += row('Name','이름', app && app.contact_name);
+  h += row('Position','직함', app && app.contact_position);
+  h += row('Email','이메일', app && app.contact_email);
+  h += row('Phone','전화', app && app.contact_phone);
   h += '</table>';
 
-  // 제품·비즈니스
-  h += '<h2>제품 · 비즈니스 <span class="en">Product & Business</span></h2><table>';
-  h += row('제품 카테고리','Product Category', app && app.product_category);
-  h += row('연 매출 (USD)','Annual Revenue (USD)', app && app.annual_revenue);
-  h += row('수출 경험','Export Experience', app && app.export_experience);
-  h += row('Instagram 팔로워','Instagram Followers', interest.instagram_followers);
+  // Product & Business
+  h += '<h2>Product &amp; Business <span class="en">제품 · 비즈니스</span></h2><table>';
+  h += row('Product Category','제품 카테고리', app && app.product_category);
+  h += row('Annual Revenue (USD)','연 매출 (USD)', app && app.annual_revenue);
+  h += row('Export Experience','수출 경험', app && app.export_experience);
+  h += row('Instagram Followers','Instagram 팔로워', interest.instagram_followers);
   h += row('Amazon URL','Amazon URL', interest.amazon_url);
   h += row('Instagram URL','Instagram URL', interest.instagram_url);
-  h += longRow('제품 설명','Product Description', app && app.product_description);
-  h += longRow('브랜드 스토리','Brand Story', interest.brand_story);
+  h += longRow('Product Description','제품 설명', app && app.product_description);
+  h += longRow('Brand Story','브랜드 스토리', interest.brand_story);
   h += '</table>';
 
-  // 제조·물류·운영
-  h += '<h2>제조 · 물류 · 운영 <span class="en">Manufacturing & Logistics</span></h2><table>';
-  h += row('수출 국가','Export Countries', interest.export_countries);
-  h += row('생산 역량','Production Capacity', interest.production_capacity);
-  h += row('리드 타임','Lead Time', interest.lead_time);
-  h += row('연간 판매량','Annual Units Sold', interest.annual_units_sold);
-  h += row('미국 내 창고','US Warehouse', chip(interest.us_warehouse));
-  h += row('패키징 변경','Packaging Modify', chip(interest.packaging_modify));
-  h += row('제조 유형','Manufacturing Type', chip(interest.mfg_type));
-  h += row('영어 가능 인력','English-speaking Team', chip(interest.english_team));
-  h += row('마케팅 예산','Marketing Budget', chip(interest.marketing_budget));
-  h += longRow('주요 SKU / 제품','Key SKUs / Products', interest.sku_description);
+  // Manufacturing & Logistics
+  h += '<h2>Manufacturing &amp; Logistics <span class="en">제조 · 물류 · 운영</span></h2><table>';
+  h += row('Export Countries','수출 국가', interest.export_countries);
+  h += row('Production Capacity','생산 역량', interest.production_capacity);
+  h += row('Lead Time','리드 타임', interest.lead_time);
+  h += row('Annual Units Sold','연간 판매량', interest.annual_units_sold);
+  h += row('US Warehouse','미국 내 창고', chip(interest.us_warehouse));
+  h += row('Packaging Modification','패키징 변경', chip(interest.packaging_modify));
+  h += row('Manufacturing Type','제조 유형', chip(interest.mfg_type));
+  h += row('English-speaking Team','영어 가능 인력', chip(interest.english_team));
+  h += row('Marketing Budget','마케팅 예산', chip(interest.marketing_budget));
+  h += longRow('Key SKUs / Products','주요 SKU / 제품', interest.sku_description);
   h += '</table>';
 
-  // 리테일 채널 & 미국 확장 전략
-  h += '<h2>리테일 채널 · 미국 확장 전략 <span class="en">Retail Channels & US Strategy</span></h2><table>';
-  h += row('타 리테일 접촉·판매','Other Retailers — Status', chip(interest.other_retail_status));
-  h += row('타 리테일 채널 (상세)','Other Retail Channels (Detail)', interest.other_retail_channels);
-  h += row('채널별 세일즈 조직','Sales Org per Channel', chip(interest.channel_sales_org));
-  h += row("Sam's Club 관심도","Sam's Club Interest", chip(interest.sams_club_interest));
-  h += row('PB 상품 가능 여부','Private Label Open', chip(interest.pb_open));
-  h += row('전략 방향','Strategy Direction', chip(interest.strategy_direction));
-  h += row('Target — 미팅·접촉 계획','Target — Plan', chip(interest.target_plan));
-  h += row('Costco — 미팅·접촉 계획','Costco — Plan', chip(interest.costco_plan));
-  h += longRow('추가 논의 중인 채널','Additional Channels in Discussion', interest.additional_channels_discussion);
-  h += row('우선순위 채널','US Retail Priority Channel', interest.us_retail_priority_channel);
+  // Retail Channels & US Strategy
+  h += '<h2>Retail Channels &amp; US Strategy <span class="en">리테일 채널 · 미국 확장 전략</span></h2><table>';
+  h += row('Other Retailers — Status','타 리테일 접촉·판매', chip(interest.other_retail_status));
+  h += row('Other Retail Channels (Detail)','타 리테일 채널 (상세)', interest.other_retail_channels);
+  h += row('Sales Org per Channel','채널별 세일즈 조직', chip(interest.channel_sales_org));
+  h += row("Sam's Club Interest","Sam's Club 관심도", chip(interest.sams_club_interest));
+  h += row('Private Label Open','PB 상품 가능 여부', chip(interest.pb_open));
+  h += row('Strategy Direction','전략 방향', chip(interest.strategy_direction));
+  h += row('Target — Meeting/Contact Plan','Target — 미팅·접촉 계획', chip(interest.target_plan));
+  h += row('Costco — Meeting/Contact Plan','Costco — 미팅·접촉 계획', chip(interest.costco_plan));
+  h += longRow('Additional Channels in Discussion','추가 논의 중인 채널', interest.additional_channels_discussion);
+  h += row('US Retail Priority Channel','우선순위 채널', interest.us_retail_priority_channel);
   h += '</table>';
 
-  // 첨부 파일
-  h += '<h2>첨부 파일 <span class="en">Attachments</span></h2>';
+  // Attachments
+  h += '<h2>Attachments <span class="en">첨부 파일</span></h2>';
   h += filesHtml;
 
   // Footer
   var now = new Date();
   var stamp = now.getFullYear() + '-' + String(now.getMonth()+1).padStart(2,'0') + '-' + String(now.getDate()).padStart(2,'0')
             + ' ' + String(now.getHours()).padStart(2,'0') + ':' + String(now.getMinutes()).padStart(2,'0');
-  h += '<div class="footer">Walmart Entry Program · ' + esc(stamp) + ' 출력 / Generated · 3SVS × Startup Junkie Consulting</div>';
+  h += '<div class="footer">Walmart Entry Program · Generated ' + esc(stamp) + ' KST · 3SVS × Startup Junkie Consulting</div>';
 
   h += '</body></html>';
   return h;
