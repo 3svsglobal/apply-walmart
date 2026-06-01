@@ -7831,7 +7831,8 @@ async function showWmBrandDetailDB(brandId) {
   var brandNameEsc = (brand.name || brandId).replace(/'/g, "\\'");
   container.innerHTML =
     '<button class="wm-detail-back" onclick="showWmView(\x27pipeline\x27)">← Back to Pipeline</button>' +
-    '<div class="wm-brand-header"><div class="brand-icon" style="width:48px;height:48px;font-size:20px;border-radius:12px">' + (brand.nameEn || brand.name || '?')[0].toUpperCase() + '</div><div><h2 style="margin:0;font-size:22px">' + _esc(brand.name) + '</h2><p style="margin:4px 0 0;opacity:.6">' + phaseLabel + ' · ' + (brand.info.category || '-') + '</p></div></div>' +
+    '<div style="display:flex;justify-content:space-between;align-items:flex-start;gap:14px;flex-wrap:wrap;margin-bottom:6px"><div class="wm-brand-header" style="margin-bottom:0"><div class="brand-icon" style="width:48px;height:48px;font-size:20px;border-radius:12px">' + (brand.nameEn || brand.name || '?')[0].toUpperCase() + '</div><div><h2 style="margin:0;font-size:22px">' + _esc(brand.name) + '</h2><p style="margin:4px 0 0;opacity:.6">' + phaseLabel + ' · ' + (brand.info.category || '-') + '</p></div></div>' +
+    '<button onclick="downloadBrandInfoPdf(\x27' + brandId + '\x27)" title="Download brand profile as a printable PDF" style="background:#0071ce;color:#fff;border:none;padding:10px 18px;border-radius:8px;font-size:13px;font-weight:700;cursor:pointer;display:inline-flex;align-items:center;gap:6px;box-shadow:0 2px 6px rgba(0,113,206,0.25)"><span>📥</span> Download Brand Info (PDF)</button></div>' +
     '<div class="wm-section"><div class="wm-section-title">Phase Management</div><div style="display:flex;gap:8px;flex-wrap:wrap">' + phaseBtns + '</div></div>' +
     '<div class="wm-section"><div class="wm-section-title">Company Information</div><div class="wm-info-grid">' + (infoHtml || '<div style="opacity:.7">No information</div>') + '</div></div>' +
     '<div class="wm-section"><div class="wm-section-title" style="display:flex;justify-content:space-between;align-items:center"><span>🗒 Internal Notes</span><span id="admin-notes-status" style="font-size:11px;color:var(--text-muted)"></span></div><div style="margin-top:10px;font-size:11.5px;color:var(--text-muted);margin-bottom:8px">Visible to admin and Startup Junkie only. Not shown to brand.</div><div id="phase-tabs-notes" style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px"></div><div style="font-size:11.5px;color:var(--text-muted);margin-bottom:6px"><span id="admin-notes-phase-hint">Notes</span></div><textarea id="admin-brand-notes" rows="6" placeholder="Notes about this brand: contact history, negotiation points, things to watch..." style="width:100%;background:#fff;border:1px solid var(--border);border-radius:8px;padding:12px 14px;font-size:13.5px;color:var(--text);font-family:var(--font);resize:vertical;line-height:1.55"></textarea><div style="margin-top:8px;display:flex;justify-content:flex-end"><button onclick="adminSaveBrandNotes(\x27' + brandId + '\x27)" style="background:var(--accent);color:#fff;border:none;padding:8px 18px;border-radius:6px;font-size:12.5px;font-weight:600;cursor:pointer">Save</button></div></div>' +
@@ -7931,7 +7932,8 @@ async function showAdminBrandDetail(brandId) {
 
   var brandNameEsc = (brand.name || brandId).replace(/'/g, "\\'");
   container.innerHTML =
-    '<div class="wm-brand-header"><div class="brand-icon" style="width:48px;height:48px;font-size:20px;border-radius:12px">' + (brand.nameEn || brand.name || '?')[0].toUpperCase() + '</div><div><h2 style="margin:0;font-size:22px">' + _esc(brand.name) + '</h2><p style="margin:4px 0 0;opacity:.6">' + phaseLabel + ' · ' + (brand.info.category || '-') + '</p></div></div>' +
+    '<div style="display:flex;justify-content:space-between;align-items:flex-start;gap:14px;flex-wrap:wrap;margin-bottom:6px"><div class="wm-brand-header" style="margin-bottom:0"><div class="brand-icon" style="width:48px;height:48px;font-size:20px;border-radius:12px">' + (brand.nameEn || brand.name || '?')[0].toUpperCase() + '</div><div><h2 style="margin:0;font-size:22px">' + _esc(brand.name) + '</h2><p style="margin:4px 0 0;opacity:.6">' + phaseLabel + ' · ' + (brand.info.category || '-') + '</p></div></div>' +
+    '<button onclick="downloadBrandInfoPdf(\x27' + brandId + '\x27)" title="브랜드 정보를 인쇄용 PDF로 다운로드" style="background:#0071ce;color:#fff;border:none;padding:10px 18px;border-radius:8px;font-size:13px;font-weight:700;cursor:pointer;display:inline-flex;align-items:center;gap:6px;box-shadow:0 2px 6px rgba(0,113,206,0.25)"><span>📥</span><span class="ko">브랜드 정보 다운로드 (PDF)</span><span class="en">Download Brand Info (PDF)</span></button></div>' +
     '<div class="wm-section"><div class="wm-section-title"><span class="ko">Phase 관리</span><span class="en">Phase Management</span></div><div style="display:flex;gap:8px;flex-wrap:wrap">' + phaseBtns + '</div></div>' +
     '<div class="wm-section"><div class="wm-section-title"><span class="ko">기업 정보</span><span class="en">Company Information</span></div><div class="wm-info-grid">' + (infoHtml || '<div style="opacity:.7">정보 없음</div>') + '</div></div>' +
     '<div class="wm-section"><div class="wm-section-title" style="display:flex;justify-content:space-between;align-items:center"><span>🗒 <span class="ko">내부 메모</span><span class="en">Internal Notes</span></span><span id="admin-notes-status" style="font-size:11px;color:var(--text-muted)"></span></div><div style="margin-top:10px;font-size:11.5px;color:var(--text-muted);margin-bottom:8px"><span class="ko">관리자·Startup Junkie 만 접근. 브랜드에는 노출되지 않습니다.</span><span class="en">Visible to admin and Startup Junkie only. Not shown to brand.</span></div><div id="phase-tabs-notes" style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px"></div><div style="font-size:11.5px;color:var(--text-muted);margin-bottom:6px"><span id="admin-notes-phase-hint">Notes</span></div><textarea id="admin-brand-notes" rows="6" data-ph-ko="이 기업에 대한 메모: 연락 이력, 협상 포인트, 주의사항 등" data-ph-en="Notes about this brand: contact history, negotiation points, things to watch..." placeholder="이 기업에 대한 메모: 연락 이력, 협상 포인트, 주의사항 등" style="width:100%;background:#fff;border:1px solid var(--border);border-radius:8px;padding:12px 14px;font-size:13.5px;color:var(--text);font-family:var(--font);resize:vertical;line-height:1.55"></textarea><div style="margin-top:8px;display:flex;justify-content:flex-end"><button onclick="adminSaveBrandNotes(\x27' + brandId + '\x27)" style="background:var(--accent);color:#fff;border:none;padding:8px 18px;border-radius:6px;font-size:12.5px;font-weight:600;cursor:pointer"><span class="ko">저장</span><span class="en">Save</span></button></div></div>' +
@@ -8055,6 +8057,216 @@ async function loadAdminBrandApplication(brandId) {
 
 function _adminAppField(label, value) {
   return '<div><div style="font-size:11px;color:var(--text-muted);font-weight:600;margin-bottom:2px">' + _esc(label) + '</div><div style="font-size:13px;color:var(--text);font-weight:500">' + _esc(value) + '</div></div>';
+}
+
+// ─── PDF 다운로드: 브랜드 정보 한 장 요약 (관리자·Walmart 공용) ───
+async function downloadBrandInfoPdf(brandId) {
+  if (!supabase) { alert('Supabase 연결이 없습니다.'); return; }
+
+  // 1) 브랜드 + 신청 정보 로드
+  var bRes = await supabase.from('wm_brands').select('*').eq('id', brandId).single();
+  if (!bRes.data) { alert('브랜드를 찾을 수 없습니다.'); return; }
+  var brand = bRes.data;
+  var email = brand.portal_email || brand.contact_email || '';
+  var app = null;
+  if (email) {
+    var aRes = await supabase.from('wm_applications')
+      .select('*').eq('contact_email', email)
+      .order('created_at', { ascending: false }).limit(1);
+    app = aRes.data && aRes.data[0];
+  }
+  // walmart_interest JSON
+  var interest = {};
+  if (app && app.walmart_interest) {
+    var wi = app.walmart_interest;
+    if (typeof wi === 'string') { try { wi = JSON.parse(wi); } catch(e) { wi = {}; } }
+    interest = wi || {};
+  }
+
+  // 2) HTML 빌드 + 새 창 열고 인쇄 호출
+  var html = _buildBrandPdfHtml(brand, app, interest);
+  var win = window.open('', '_blank', 'width=920,height=1100');
+  if (!win) { alert('팝업이 차단되었습니다. 브라우저에서 팝업을 허용해주세요.'); return; }
+  win.document.open();
+  win.document.write(html);
+  win.document.close();
+  // 폰트/이미지 로드 완료 후 자동으로 인쇄 대화창 띄움
+  win.onload = function() {
+    setTimeout(function(){ try { win.focus(); win.print(); } catch(e){} }, 600);
+  };
+}
+
+function _buildBrandPdfHtml(brand, app, interest) {
+  function esc(s) {
+    return String(s == null ? '' : s).replace(/[&<>"']/g, function(c){
+      return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];
+    });
+  }
+  // 칩 값 한국어 라벨 매핑
+  var chipMap = {
+    'yes':'예 / Yes','no':'아니오 / No','partial':'일부 / Partial',
+    'considering':'고려 중 / Considering','walmart-focus':'Walmart 집중 / Walmart-focused',
+    'multi-retail':'멀티 리테일 / Multi-retail','walmart-only':'Walmart 만 / Walmart only',
+    'in-talks':'접촉·논의 중 / In talks','selling':'판매 중 / Selling',
+    'none':'없음 / None','undecided':'미정 / Undecided',
+    'open':'개방 / Open','brand-only':'자체 브랜드만 / Brand only',
+    'self':'자체 생산 / In-house','outsource':'OEM / Outsourced','both':'자체+OEM / Both',
+    'planned':'계획 있음 / Planned','in-progress':'진행 중 / In progress',
+    'N/A':'미답변 / Not answered',null:'',undefined:''
+  };
+  function chip(v) {
+    if (v == null || v === '') return '';
+    return chipMap[v] != null ? chipMap[v] : v;
+  }
+  function row(labelKo, labelEn, value) {
+    if (value == null || value === '' || value === 'N/A' || value === '-') return '';
+    return '<tr><th>' + esc(labelKo) + '<br/><span class="en-label">' + esc(labelEn) + '</span></th>'
+         + '<td>' + esc(String(value)) + '</td></tr>';
+  }
+  function longRow(labelKo, labelEn, value) {
+    if (value == null || value === '' || value === 'N/A' || value === '-') return '';
+    var html = esc(String(value)).replace(/\n/g, '<br/>');
+    return '<tr><th>' + esc(labelKo) + '<br/><span class="en-label">' + esc(labelEn) + '</span></th>'
+         + '<td class="long">' + html + '</td></tr>';
+  }
+
+  var brandNameKo = brand.name_ko || (app && app.brand_name_ko) || brand.id || '-';
+  var brandNameEn = brand.name_en || (app && app.brand_name_en) || '';
+  var applyType = (app && app.apply_type === 'voucher') ? '수출바우처 / Voucher Program'
+               : (app && app.apply_type === 'direct')  ? '직접참여 / Direct Participation' : '-';
+  var phaseLbl = {contract:'Contract',phase1:'Phase 1',phase2:'Phase 2',phase3:'Phase 3',completed:'Completed'}[brand.current_phase] || brand.current_phase || '-';
+  var submitted = app && app.created_at ? new Date(app.created_at).toLocaleDateString('ko-KR') : '-';
+
+  // 첨부 파일
+  var filesHtml = '';
+  if (app && Array.isArray(app.attached_files) && app.attached_files.length) {
+    filesHtml = '<ul>' + app.attached_files.map(function(f){
+      var name = f.name || f.original_name || 'File';
+      var sizeKb = f.size ? ' <span class="meta">(' + (Math.round(f.size/102.4)/10) + ' KB)</span>' : '';
+      return '<li>' + esc(name) + sizeKb + '</li>';
+    }).join('') + '</ul>';
+  } else {
+    filesHtml = '<p class="muted">첨부 파일 없음 / No attached files</p>';
+  }
+
+  var h = '';
+  h += '<!DOCTYPE html><html lang="ko"><head><meta charset="utf-8">';
+  h += '<title>' + esc(brandNameKo) + (brandNameEn ? ' / ' + esc(brandNameEn) : '') + ' — Brand Information</title>';
+  h += '<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>';
+  h += '<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css">';
+  h += '<style>';
+  h += '@page{size:A4;margin:18mm 15mm}';
+  h += '*{box-sizing:border-box}';
+  h += 'html,body{margin:0;padding:0}';
+  h += 'body{font-family:"Pretendard","Pretendard Variable",-apple-system,system-ui,"맑은 고딕","Malgun Gothic",sans-serif;color:#1c1c1c;line-height:1.55;font-size:10.5pt;background:#fff}';
+  h += '.cover{padding:8pt 0 16pt;border-bottom:3px solid #0071ce;margin-bottom:18pt}';
+  h += '.cover .eyebrow{font-size:8.5pt;color:#666;letter-spacing:2px;text-transform:uppercase;font-weight:700}';
+  h += '.cover h1{font-size:22pt;font-weight:800;margin:5pt 0 0;color:#0d2453;line-height:1.2}';
+  h += '.cover .en-title{font-size:13pt;color:#555;font-weight:500;margin-top:2pt}';
+  h += '.cover .badges{display:flex;gap:8pt;flex-wrap:wrap;margin-top:12pt;font-size:9.5pt;color:#1c1c1c}';
+  h += '.cover .badges span{padding:4pt 10pt;background:#eef3fb;border:1px solid #d6e1f0;border-radius:14pt;font-weight:600}';
+  h += 'h2{font-size:12.5pt;color:#0d2453;border-left:4pt solid #0071ce;padding:1pt 0 1pt 9pt;margin:18pt 0 8pt;font-weight:700;page-break-after:avoid}';
+  h += 'h2 .en{color:#888;font-size:9.5pt;font-weight:500;margin-left:8pt;letter-spacing:0.3px}';
+  h += 'table{width:100%;border-collapse:collapse;border:1px solid #e3e6ec;border-radius:6pt;overflow:hidden}';
+  h += 'table tr{page-break-inside:avoid}';
+  h += 'th{width:30%;text-align:left;padding:8pt 12pt;font-size:9.5pt;font-weight:600;background:#f6f7fa;border-bottom:1px solid #e3e6ec;color:#444;vertical-align:top;line-height:1.35}';
+  h += 'th .en-label{display:inline-block;color:#999;font-size:8.5pt;font-weight:400;margin-top:1pt}';
+  h += 'td{padding:8pt 12pt;font-size:10.5pt;border-bottom:1px solid #e3e6ec;vertical-align:top;word-break:break-word;line-height:1.55}';
+  h += 'tr:last-child th,tr:last-child td{border-bottom:none}';
+  h += 'td.long{white-space:normal;line-height:1.65;font-size:10pt}';
+  h += 'td a{color:#0071ce;text-decoration:none}';
+  h += 'ul{padding-left:18pt;margin:4pt 0}';
+  h += 'li{font-size:10pt;padding:3pt 0}';
+  h += '.muted{color:#999;font-style:italic;font-size:10pt;padding:6pt 0}';
+  h += '.meta{color:#999;font-size:9pt}';
+  h += '.footer{margin-top:28pt;padding-top:10pt;border-top:1px solid #ddd;font-size:8.5pt;color:#888;text-align:center}';
+  h += '.no-print{display:none}';
+  h += '@media screen{body{max-width:820px;margin:24px auto;padding:30px 36px;background:#fff;box-shadow:0 4px 22px rgba(0,0,0,.10);border-radius:8px} .no-print{display:flex;justify-content:flex-end;gap:8px;margin-bottom:20px} .no-print button{background:#0071ce;color:#fff;border:none;padding:10px 22px;font-size:13.5px;font-weight:700;border-radius:6px;cursor:pointer;font-family:inherit} .no-print .secondary{background:#f0f4fa;color:#0071ce;border:1px solid #cdd9ee}}';
+  h += '@media print{.no-print{display:none !important}}';
+  h += '</style></head><body>';
+
+  h += '<div class="no-print"><button class="secondary" onclick="window.close()">닫기 / Close</button><button onclick="window.print()">📥 PDF로 저장 / Save as PDF</button></div>';
+
+  // 표지
+  h += '<div class="cover">';
+  h += '<div class="eyebrow">Walmart Entry Program · Brand Profile</div>';
+  h += '<h1>' + esc(brandNameKo) + '</h1>';
+  if (brandNameEn && brandNameEn !== brandNameKo) h += '<div class="en-title">' + esc(brandNameEn) + '</div>';
+  h += '<div class="badges">';
+  h += '<span>📋 ' + esc(applyType) + '</span>';
+  h += '<span>🎯 ' + esc(phaseLbl) + '</span>';
+  h += '<span>📅 신청 ' + esc(submitted) + '</span>';
+  h += '</div></div>';
+
+  // 회사 정보
+  h += '<h2>회사 정보 <span class="en">Company Information</span></h2><table>';
+  h += row('대표자','CEO', app && app.ceo_name);
+  h += row('사업자번호','Business Reg. No.', app && app.business_number);
+  h += row('업종','Industry', app && app.industry);
+  h += row('홈페이지','Website', brand.website || (app && app.homepage));
+  h += row('주소','Address', app && app.address);
+  h += '</table>';
+
+  // 담당자
+  h += '<h2>담당자 <span class="en">Contact Person</span></h2><table>';
+  h += row('이름','Name', app && app.contact_name);
+  h += row('직함','Position', app && app.contact_position);
+  h += row('이메일','Email', app && app.contact_email);
+  h += row('전화','Phone', app && app.contact_phone);
+  h += '</table>';
+
+  // 제품·비즈니스
+  h += '<h2>제품 · 비즈니스 <span class="en">Product & Business</span></h2><table>';
+  h += row('제품 카테고리','Product Category', app && app.product_category);
+  h += row('연 매출 (USD)','Annual Revenue (USD)', app && app.annual_revenue);
+  h += row('수출 경험','Export Experience', app && app.export_experience);
+  h += row('Instagram 팔로워','Instagram Followers', interest.instagram_followers);
+  h += row('Amazon URL','Amazon URL', interest.amazon_url);
+  h += row('Instagram URL','Instagram URL', interest.instagram_url);
+  h += longRow('제품 설명','Product Description', app && app.product_description);
+  h += longRow('브랜드 스토리','Brand Story', interest.brand_story);
+  h += '</table>';
+
+  // 제조·물류·운영
+  h += '<h2>제조 · 물류 · 운영 <span class="en">Manufacturing & Logistics</span></h2><table>';
+  h += row('수출 국가','Export Countries', interest.export_countries);
+  h += row('생산 역량','Production Capacity', interest.production_capacity);
+  h += row('리드 타임','Lead Time', interest.lead_time);
+  h += row('연간 판매량','Annual Units Sold', interest.annual_units_sold);
+  h += row('미국 내 창고','US Warehouse', chip(interest.us_warehouse));
+  h += row('패키징 변경','Packaging Modify', chip(interest.packaging_modify));
+  h += row('제조 유형','Manufacturing Type', chip(interest.mfg_type));
+  h += row('영어 가능 인력','English-speaking Team', chip(interest.english_team));
+  h += row('마케팅 예산','Marketing Budget', chip(interest.marketing_budget));
+  h += longRow('주요 SKU / 제품','Key SKUs / Products', interest.sku_description);
+  h += '</table>';
+
+  // 리테일 채널 & 미국 확장 전략
+  h += '<h2>리테일 채널 · 미국 확장 전략 <span class="en">Retail Channels & US Strategy</span></h2><table>';
+  h += row('타 리테일 접촉·판매','Other Retailers — Status', chip(interest.other_retail_status));
+  h += row('타 리테일 채널 (상세)','Other Retail Channels (Detail)', interest.other_retail_channels);
+  h += row('채널별 세일즈 조직','Sales Org per Channel', chip(interest.channel_sales_org));
+  h += row("Sam's Club 관심도","Sam's Club Interest", chip(interest.sams_club_interest));
+  h += row('PB 상품 가능 여부','Private Label Open', chip(interest.pb_open));
+  h += row('전략 방향','Strategy Direction', chip(interest.strategy_direction));
+  h += row('Target — 미팅·접촉 계획','Target — Plan', chip(interest.target_plan));
+  h += row('Costco — 미팅·접촉 계획','Costco — Plan', chip(interest.costco_plan));
+  h += longRow('추가 논의 중인 채널','Additional Channels in Discussion', interest.additional_channels_discussion);
+  h += row('우선순위 채널','US Retail Priority Channel', interest.us_retail_priority_channel);
+  h += '</table>';
+
+  // 첨부 파일
+  h += '<h2>첨부 파일 <span class="en">Attachments</span></h2>';
+  h += filesHtml;
+
+  // Footer
+  var now = new Date();
+  var stamp = now.getFullYear() + '-' + String(now.getMonth()+1).padStart(2,'0') + '-' + String(now.getDate()).padStart(2,'0')
+            + ' ' + String(now.getHours()).padStart(2,'0') + ':' + String(now.getMinutes()).padStart(2,'0');
+  h += '<div class="footer">Walmart Entry Program · ' + esc(stamp) + ' 출력 / Generated · 3SVS × Startup Junkie Consulting</div>';
+
+  h += '</body></html>';
+  return h;
 }
 
 // ─── ADMIN: 최근 메시지 미리보기 (브랜드 상세 페이지용) ───
