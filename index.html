@@ -2723,6 +2723,7 @@ button{cursor:pointer;font-family:var(--font)}
       <div class="sidebar-logo"><div class="sidebar-logo-icon" style="background:#0071dc">W</div><div class="sidebar-logo-text">Walmart <span>Buyer Portal</span></div></div>
       <div class="sidebar-nav">
         <div class="sidebar-item active" data-wm-view="pipeline" onclick="showWmView('pipeline')" style="cursor:pointer"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>Pipeline</div>
+        <div class="sidebar-item" data-wm-view="review" id="wm-nav-review" onclick="showWmView('review')" style="cursor:pointer"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><rect x="8" y="2" width="8" height="4" rx="1"/></svg>Application Review<span class="sidebar-badge" id="wm-review-badge" style="background:#ff3b30;color:#fff;margin-left:auto;padding:2px 8px;border-radius:10px;font-size:11px;font-weight:700;display:none">0</span></div>
         <div class="sidebar-item" data-wm-view="meetings" onclick="showWmView('meetings')" style="cursor:pointer"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>Meetings</div>
       </div>
       <div class="sidebar-bottom"><div style="cursor:pointer;color:rgba(0,0,0,0.6);margin-bottom:8px" onclick="switchTab('landing')">← Log out</div>Walmart Marketplace<br>Entry Program</div>
@@ -2747,6 +2748,15 @@ button{cursor:pointer;font-family:var(--font)}
         <div class="pipeline-summary"><div class="pipe-stat"><div class="val" id="wm-stat-total">0</div><div class="lbl">Total Brands</div></div><div class="pipe-stat"><div class="val" id="wm-stat-review">0</div><div class="lbl">Under Review</div></div><div class="pipe-stat"><div class="val" id="wm-stat-p1">0</div><div class="lbl">Phase 1</div></div><div class="pipe-stat"><div class="val" id="wm-stat-p2">0</div><div class="lbl">Phase 2</div></div><div class="pipe-stat"><div class="val" id="wm-stat-p3">0</div><div class="lbl">Phase 3</div></div></div>
 
         <div id="wm-brand-list" style="text-align:center;padding:48px 0;color:rgba(0,0,0,0.6);font-size:14px">No brands registered yet.<br><span style="font-size:12px">Approved brands will appear here.</span></div>
+      </div>
+
+      <!-- APPLICATION REVIEW VIEW (월마트 측 — 관리자와 동일 데이터) -->
+      <div class="dash-content" id="wm-review" style="display:none">
+        <div style="margin-bottom:24px">
+          <h3 style="font-size:18px;font-weight:700;color:var(--text);letter-spacing:-0.5px;margin-bottom:4px">Application Review</h3>
+          <p style="font-size:13px;color:rgba(0,0,0,0.6)">Pending applications from Korean brands — same view as 3SVS Admin</p>
+        </div>
+        <div id="wm-review-list"><div style="text-align:center;padding:40px;opacity:.75">Loading applications...</div></div>
       </div>
 
       <!-- MEETINGS VIEW -->
@@ -4053,7 +4063,7 @@ var wmBrandData = {}; // DB에서 로딩
 function showWmView(view) {
   try {
     // 1) 모든 dash-content 숨김
-    var views = ['pipeline','meetings','brand-detail'];
+    var views = ['pipeline','meetings','review','brand-detail'];
     views.forEach(function(v) {
       var el = document.getElementById('wm-' + v);
       if (el) el.style.display = 'none';
@@ -4071,11 +4081,23 @@ function showWmView(view) {
       document.documentElement.lang = 'en';
       if (typeof setLang === 'function') setLang('en');
     }
-    // 5) 뷰별 데이터 로드
+    // 5) 뷰별 데이터 로드 + topbar 타이틀 업데이트
+    var topTitle = document.getElementById('wm-topbar-title');
+    var topSub = document.getElementById('wm-topbar-sub');
     if (view === 'pipeline') {
+      if (topTitle) topTitle.textContent = 'Brand Pipeline';
+      if (topSub) topSub.textContent = 'Walmart Marketplace Entry Program — Active Brands';
       if (typeof loadWmBrands === 'function') loadWmBrands();
       if (typeof loadAdminMeetingRequests === 'function') loadAdminMeetingRequests();
+      // Badge 갱신을 위해 백그라운드로 review 데이터도 로드 (innerHTML도 함께 갱신되지만 다른 뷰에 있어 영향 없음)
+      if (typeof renderAdminReview === 'function') renderAdminReview();
+    } else if (view === 'review') {
+      if (topTitle) topTitle.textContent = 'Application Review';
+      if (topSub) topSub.textContent = 'Pending applications from Korean brands';
+      if (typeof renderAdminReview === 'function') renderAdminReview();
     } else if (view === 'meetings') {
+      if (topTitle) topTitle.textContent = 'Upcoming Meetings';
+      if (topSub) topSub.textContent = 'Scheduled meetings with assigned brands';
       if (typeof loadWmAllMeetings === 'function') loadWmAllMeetings();
     }
     // 6) 스크롤 최상단
@@ -5681,13 +5703,16 @@ function openAllAttachments(urls) {
 }
 
 async function renderAdminReview() {
-  var el = document.getElementById('admin-review-list');
-  if (!el) return;
-  el.innerHTML = '<div style="text-align:center;padding:40px;opacity:.75">Loading...</div>';
-  
+  // 관리자(admin-review-list) + 월마트(wm-review-list) 양쪽 동일 데이터로 렌더
+  var els = [document.getElementById('admin-review-list'), document.getElementById('wm-review-list')].filter(Boolean);
+  if (!els.length) return;
+  var loadingHtml = '<div style="text-align:center;padding:40px;opacity:.75">Loading...</div>';
+  els.forEach(function(e){ e.innerHTML = loadingHtml; });
+
   var apps = await dbLoadApplications();
   if (!apps || apps.length === 0) {
-    el.innerHTML = '<div style="text-align:center;padding:40px;opacity:.75">접수된 신청이 없습니다.</div>';
+    var emptyHtml = '<div style="text-align:center;padding:40px;opacity:.75">접수된 신청이 없습니다. / No pending applications.</div>';
+    els.forEach(function(e){ e.innerHTML = emptyHtml; });
     return;
   }
   
@@ -5924,10 +5949,16 @@ async function renderAdminReview() {
     });
   }
   
-  // Update sidebar badge count
+  // Update sidebar badge count (관리자)
   var badge = document.querySelector('#admin-nav-review .sidebar-badge');
   if (badge) badge.textContent = pending.length;
-  
+  // Update Walmart sidebar badge (월마트)
+  var wmBadge = document.getElementById('wm-review-badge');
+  if (wmBadge) {
+    wmBadge.textContent = pending.length;
+    wmBadge.style.display = pending.length > 0 ? 'inline-block' : 'none';
+  }
+
   // Update dashboard stat
   var statEl = document.querySelector('.stat-card .lbl');
   document.querySelectorAll('.stat-card').forEach(function(card) {
@@ -5935,8 +5966,9 @@ async function renderAdminReview() {
       card.querySelector('.val').textContent = pending.length;
     }
   });
-  
-  el.innerHTML = html || '<div style="text-align:center;padding:40px;opacity:.75">접수된 신청이 없습니다.</div>';
+
+  var finalHtml = html || '<div style="text-align:center;padding:40px;opacity:.75">접수된 신청이 없습니다. / No pending applications.</div>';
+  els.forEach(function(e){ e.innerHTML = finalHtml; });
 }
 
 async function approveApplication(appId) {
