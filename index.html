@@ -8141,11 +8141,18 @@ function _buildBrandPdfHtml(brand, app, interest) {
     if (v == null || v === '') return '';
     return chipMap[v] != null ? chipMap[v] : v;
   }
+  // URL 자동 감지 → 클릭 가능한 링크로 변환 (PDF에서도 하이퍼링크 보존됨)
+  function linkify(v) {
+    var s = esc(String(v));
+    return /^https?:\/\//i.test(v)
+      ? '<a href="' + s + '" target="_blank" rel="noopener">' + s + '</a>'
+      : s;
+  }
   // row(primary=English, secondary=Korean, value)
   function row(labelEn, labelKo, value) {
     if (value == null || value === '' || value === 'N/A' || value === '-') return '';
     return '<tr><th>' + esc(labelEn) + '<br/><span class="en-label">' + esc(labelKo) + '</span></th>'
-         + '<td>' + esc(String(value)) + '</td></tr>';
+         + '<td>' + linkify(value) + '</td></tr>';
   }
   function longRow(labelEn, labelKo, value) {
     if (value == null || value === '' || value === 'N/A' || value === '-') return '';
@@ -8170,14 +8177,34 @@ function _buildBrandPdfHtml(brand, app, interest) {
               || (brand.current_phase ? brand.current_phase : (app && statusMap[app.status]) || 'Submitted / 심사 대기');
   var submitted = app && app.created_at ? new Date(app.created_at).toISOString().slice(0,10) : '-';
 
-  // Attachments
+  // Attachments — 각 파일을 클릭 가능한 카드(하이퍼링크) 로 렌더
   var filesHtml = '';
   if (app && Array.isArray(app.attached_files) && app.attached_files.length) {
-    filesHtml = '<ul>' + app.attached_files.map(function(f){
+    var fileItems = app.attached_files.map(function(f){
       var name = f.name || f.original_name || 'File';
-      var sizeKb = f.size ? ' <span class="meta">(' + (Math.round(f.size/102.4)/10) + ' KB)</span>' : '';
-      return '<li>' + esc(name) + sizeKb + '</li>';
-    }).join('') + '</ul>';
+      var url  = f.url || f.public_url || '';
+      var ext  = (name.split('.').pop() || '').toLowerCase();
+      var icon = ({pdf:'📄', doc:'📝', docx:'📝', xls:'📊', xlsx:'📊', csv:'📊',
+                   ppt:'📽', pptx:'📽', png:'🖼', jpg:'🖼', jpeg:'🖼', gif:'🖼',
+                   webp:'🖼', zip:'🗜', mp4:'🎬', mov:'🎬'})[ext] || '📎';
+      var sizeKb = f.size ? (Math.round(f.size/102.4)/10) + ' KB' : '';
+      var inner =
+        '<div class="att-row">' +
+          '<span class="att-icon">' + icon + '</span>' +
+          '<div class="att-body">' +
+            '<div class="att-name">' + esc(name) + '</div>' +
+            '<div class="att-meta">' + (sizeKb ? esc(sizeKb) + ' · ' : '') +
+              (url ? '<span class="att-cta">Click to download / 클릭하여 다운로드 ↗</span>'
+                   : '<span class="muted">No link available / 링크 없음</span>') +
+            '</div>' +
+          '</div>' +
+        '</div>';
+      return url
+        ? '<a class="att-link" href="' + esc(url) + '" target="_blank" rel="noopener">' + inner + '</a>'
+        : '<div class="att-link att-disabled">' + inner + '</div>';
+    }).join('');
+    filesHtml = '<div class="att-list">' + fileItems + '</div>' +
+                '<p class="att-hint">💡 Click any file above to download / 위 파일을 클릭하면 다운로드됩니다.</p>';
   } else {
     filesHtml = '<p class="muted">No attached files / 첨부 파일 없음</p>';
   }
@@ -8214,6 +8241,19 @@ function _buildBrandPdfHtml(brand, app, interest) {
   h += 'li{font-size:10pt;padding:3pt 0}';
   h += '.muted{color:#999;font-style:italic;font-size:10pt;padding:6pt 0}';
   h += '.meta{color:#999;font-size:9pt}';
+  // 표 안의 긴 URL이 페이지 밖으로 흐르지 않도록
+  h += 'td a{color:#0071ce;text-decoration:underline;word-break:break-all;overflow-wrap:anywhere}';
+  // 첨부 파일 카드 스타일 (PDF 안에서도 클릭 가능한 하이퍼링크)
+  h += '.att-list{display:block;margin:6pt 0 4pt}';
+  h += '.att-link{display:block;text-decoration:none;color:inherit;background:#fff;border:1px solid #d6e1f0;border-left:3pt solid #0071ce;border-radius:6pt;padding:9pt 12pt;margin-bottom:6pt;page-break-inside:avoid}';
+  h += '.att-link.att-disabled{border-left-color:#bbb;background:#fafbfc;cursor:default}';
+  h += '.att-row{display:flex;align-items:center;gap:10pt}';
+  h += '.att-icon{font-size:18pt;line-height:1;flex:0 0 auto;width:24pt;text-align:center}';
+  h += '.att-body{flex:1;min-width:0}';
+  h += '.att-name{font-size:11pt;font-weight:700;color:#0d2453;word-break:break-all;line-height:1.35}';
+  h += '.att-meta{font-size:9pt;color:#666;margin-top:2pt}';
+  h += '.att-cta{color:#0071ce;font-weight:600}';
+  h += '.att-hint{font-size:9pt;color:#888;margin:8pt 0 0;font-style:italic}';
   h += '.footer{margin-top:28pt;padding-top:10pt;border-top:1px solid #ddd;font-size:8.5pt;color:#888;text-align:center}';
   h += '.no-print{display:none}';
   h += '@media screen{body{max-width:820px;margin:24px auto;padding:30px 36px;background:#fff;box-shadow:0 4px 22px rgba(0,0,0,.10);border-radius:8px} .no-print{display:flex;justify-content:flex-end;gap:8px;margin-bottom:20px} .no-print button{background:#0071ce;color:#fff;border:none;padding:10px 22px;font-size:13.5px;font-weight:700;border-radius:6px;cursor:pointer;font-family:inherit} .no-print .secondary{background:#f0f4fa;color:#0071ce;border:1px solid #cdd9ee}}';
