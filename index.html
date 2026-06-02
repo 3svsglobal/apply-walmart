@@ -8270,10 +8270,10 @@ function _buildBrandPdfHtml(brand, app, interest) {
   h += '.cover .en-title{font-size:13pt;color:#555;font-weight:500;margin-top:2pt}';
   h += '.cover .badges{display:flex;gap:8pt;flex-wrap:wrap;margin-top:12pt;font-size:9.5pt;color:#1c1c1c}';
   h += '.cover .badges span{padding:4pt 10pt;background:#eef3fb;border:1px solid #d6e1f0;border-radius:14pt;font-weight:600}';
-  h += 'h2{font-size:12.5pt;color:#0d2453;border-left:4pt solid #0071ce;padding:1pt 0 1pt 9pt;margin:18pt 0 8pt;font-weight:700;page-break-after:avoid}';
+  h += 'h2{font-size:12.5pt;color:#0d2453;border-left:4pt solid #0071ce;padding:1pt 0 1pt 9pt;margin:18pt 0 8pt;font-weight:700;page-break-after:avoid;break-after:avoid;page-break-inside:avoid;break-inside:avoid}';
   h += 'h2 .en{color:#888;font-size:9.5pt;font-weight:500;margin-left:8pt;letter-spacing:0.3px}';
   h += 'table{width:100%;border-collapse:collapse;border:1px solid #e3e6ec;border-radius:6pt;overflow:hidden}';
-  h += 'table tr{page-break-inside:avoid}';
+  h += 'table tr{page-break-inside:avoid;break-inside:avoid}';
   h += 'th{width:30%;text-align:left;padding:8pt 12pt;font-size:9.5pt;font-weight:600;background:#f6f7fa;border-bottom:1px solid #e3e6ec;color:#444;vertical-align:top;line-height:1.35}';
   h += 'th .en-label{display:inline-block;color:#999;font-size:8.5pt;font-weight:400;margin-top:1pt}';
   h += 'td{padding:8pt 12pt;font-size:10.5pt;border-bottom:1px solid #e3e6ec;vertical-align:top;word-break:break-word;line-height:1.55}';
@@ -8288,9 +8288,10 @@ function _buildBrandPdfHtml(brand, app, interest) {
   h += 'td a{color:#0071ce;text-decoration:underline;word-break:break-all;overflow-wrap:anywhere}';
   // 첨부 파일 카드 스타일 (PDF 안에서도 클릭 가능한 하이퍼링크)
   h += '.att-list{display:block;margin:6pt 0 4pt}';
-  h += '.att-link{display:block;text-decoration:none;color:inherit;background:#fff;border:1px solid #d6e1f0;border-left:3pt solid #0071ce;border-radius:6pt;padding:9pt 12pt;margin-bottom:6pt;page-break-inside:avoid}';
+  // page-break-inside + break-inside 동시 적용 → Chrome/Edge/Safari/Firefox 모두에서 카드가 페이지 경계에서 잘리지 않음
+  h += '.att-link{display:block;text-decoration:none;color:inherit;background:#fff;border:1px solid #d6e1f0;border-left:3pt solid #0071ce;border-radius:6pt;padding:9pt 12pt;margin-bottom:6pt;page-break-inside:avoid;break-inside:avoid;-webkit-column-break-inside:avoid}';
   h += '.att-link.att-disabled{border-left-color:#bbb;background:#fafbfc;cursor:default}';
-  h += '.att-row{display:flex;align-items:center;gap:10pt}';
+  h += '.att-row{display:flex;align-items:center;gap:10pt;page-break-inside:avoid;break-inside:avoid}';
   h += '.att-icon{font-size:18pt;line-height:1;flex:0 0 auto;width:24pt;text-align:center}';
   h += '.att-body{flex:1;min-width:0}';
   h += '.att-name{font-size:11pt;font-weight:700;color:#0d2453;word-break:break-all;line-height:1.35}';
