@@ -8025,11 +8025,15 @@ async function loadAdminBrandApplication(brandId) {
     return;
   }
 
-  // 첨부 파일 렌더링
+  // 첨부 파일 렌더링 (attached_files 는 TEXT 컬럼이라 string 으로 들어올 수 있음 → JSON.parse)
   var attachedHtml = '';
-  if (app.attached_files && Array.isArray(app.attached_files) && app.attached_files.length) {
-    attachedHtml = '<div style="margin-bottom:14px"><div style="font-size:12px;font-weight:700;color:var(--text-muted);margin-bottom:8px;letter-spacing:0.2px">📎 ' + _kn('첨부 파일','Attached Files') + ' (' + app.attached_files.length + ')</div>' +
-      app.attached_files.map(function(f) {
+  var _attached = app.attached_files;
+  if (typeof _attached === 'string') {
+    try { _attached = JSON.parse(_attached); } catch(e) { _attached = null; }
+  }
+  if (_attached && Array.isArray(_attached) && _attached.length) {
+    attachedHtml = '<div style="margin-bottom:14px"><div style="font-size:12px;font-weight:700;color:var(--text-muted);margin-bottom:8px;letter-spacing:0.2px">📎 ' + _kn('첨부 파일','Attached Files') + ' (' + _attached.length + ')</div>' +
+      _attached.map(function(f) {
         var name = f.name || f.original_name || _kn('파일','File');
         var url = f.url || f.public_url || '';
         var sizeKb = f.size ? (Math.round(f.size/102.4)/10) + ' KB' : '';
@@ -8210,9 +8214,14 @@ function _buildBrandPdfHtml(brand, app, interest) {
   var submitted = app && app.created_at ? new Date(app.created_at).toISOString().slice(0,10) : '-';
 
   // Attachments — 각 파일을 클릭 가능한 카드(하이퍼링크) 로 렌더
+  // attached_files 가 TEXT 컬럼이라 string 으로 들어올 수 있음 → JSON.parse 필요
+  var attachedFiles = app && app.attached_files;
+  if (typeof attachedFiles === 'string') {
+    try { attachedFiles = JSON.parse(attachedFiles); } catch(e) { attachedFiles = null; }
+  }
   var filesHtml = '';
-  if (app && Array.isArray(app.attached_files) && app.attached_files.length) {
-    var fileItems = app.attached_files.map(function(f){
+  if (Array.isArray(attachedFiles) && attachedFiles.length) {
+    var fileItems = attachedFiles.map(function(f){
       var name = f.name || f.original_name || 'File';
       var url  = f.url || f.public_url || '';
       var ext  = (name.split('.').pop() || '').toLowerCase();
