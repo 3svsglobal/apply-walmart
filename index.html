@@ -1868,6 +1868,10 @@ button{cursor:pointer;font-family:var(--font)}
         <div class="sidebar-item" onclick="showAdminView('voucher')" id="admin-nav-voucher" style="display:none"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg><span class="ko">수출바우처</span><span class="en">Voucher</span></div>
         <div class="sidebar-item" onclick="showAdminView('contracts')" id="admin-nav-contracts"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg><span class="ko">계약 관리</span><span class="en">Contracts</span></div>
         <div class="sidebar-item" onclick="showAdminView('settings')" id="admin-nav-settings"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg><span class="ko">설정</span><span class="en">Settings</span></div>
+
+        <!-- Walmart Tools — 관리자도 월마트 측 뷰 접근 가능 -->
+        <div style="margin:18px 0 6px;padding:0 16px;font-size:10.5px;font-weight:700;color:rgba(0,0,0,0.35);letter-spacing:1.3px;text-transform:uppercase"><span class="ko">월마트 뷰</span><span class="en">Walmart View</span></div>
+        <div class="sidebar-item" onclick="adminSwitchToWm()" style="cursor:pointer"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12l9-9 9 9"/><path d="M5 10v10h14V10"/></svg><span class="ko">Walmart Pipeline</span><span class="en">Walmart Pipeline</span></div>
       </div>
       <div class="sidebar-bottom">
         <div style="display:flex;gap:4px;margin-bottom:10px" class="portal-lang-toggle">
@@ -2725,6 +2729,14 @@ button{cursor:pointer;font-family:var(--font)}
         <div class="sidebar-item active" data-wm-view="pipeline" onclick="showWmView('pipeline')" style="cursor:pointer"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>Pipeline</div>
         <div class="sidebar-item" data-wm-view="review" id="wm-nav-review" onclick="showWmView('review')" style="cursor:pointer"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><rect x="8" y="2" width="8" height="4" rx="1"/></svg>Application Review<span class="sidebar-badge" id="wm-review-badge" style="background:#ff3b30;color:#fff;margin-left:auto;padding:2px 8px;border-radius:10px;font-size:11px;font-weight:700;display:none">0</span></div>
         <div class="sidebar-item" data-wm-view="meetings" onclick="showWmView('meetings')" style="cursor:pointer"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>Meetings</div>
+
+        <!-- 3SVS Admin Tools — 월마트도 관리자 기능 전체 접근 가능 -->
+        <div style="margin:18px 0 6px;padding:0 16px;font-size:10.5px;font-weight:700;color:rgba(0,0,0,0.35);letter-spacing:1.3px;text-transform:uppercase">3SVS Admin Tools</div>
+        <div class="sidebar-item" onclick="wmSwitchToAdmin('dashboard')" style="cursor:pointer"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3h7v9H3z"/><path d="M14 3h7v5h-7z"/><path d="M14 12h7v9h-7z"/><path d="M3 16h7v5H3z"/></svg>Dashboard</div>
+        <div class="sidebar-item" onclick="wmSwitchToAdmin('brands')" style="cursor:pointer"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 22V4a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v18Z"/><path d="M6 12H4a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h2"/><path d="M18 9h2a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2h-2"/></svg>Brand Management</div>
+        <div class="sidebar-item" onclick="wmSwitchToAdmin('contracts')" style="cursor:pointer"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>Contracts</div>
+        <div class="sidebar-item" onclick="wmSwitchToAdmin('cms')" style="cursor:pointer"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>Content Management</div>
+        <div class="sidebar-item" onclick="wmSwitchToAdmin('settings')" style="cursor:pointer"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>Settings</div>
       </div>
       <div class="sidebar-bottom"><div style="cursor:pointer;color:rgba(0,0,0,0.6);margin-bottom:8px" onclick="switchTab('landing')">← Log out</div>Walmart Marketplace<br>Entry Program</div>
     </div>
@@ -4059,6 +4071,24 @@ document.querySelectorAll('input[name="apply-type"]').forEach(function(radio) {
 var wmBrandData = {}; // DB에서 로딩
 
 // Phase 체크리스트 기능은 2026-05-28 제거됨 (Tasks 시스템으로 대체)
+
+// 월마트 → 관리자 뷰로 컨텍스트 전환 (관리자 기능 전체 접근)
+function wmSwitchToAdmin(adminView) {
+  // 세션 정보는 유지하면서 view 만 admin 으로 전환
+  switchTab('admin');
+  // 약간의 지연 후 해당 admin section 으로
+  setTimeout(function(){
+    if (typeof showAdminView === 'function') showAdminView(adminView || 'dashboard');
+  }, 50);
+}
+
+// 관리자 → 월마트 Pipeline 으로 컨텍스트 전환
+function adminSwitchToWm() {
+  switchTab('walmart');
+  setTimeout(function(){
+    if (typeof showWmView === 'function') showWmView('pipeline');
+  }, 50);
+}
 
 function showWmView(view) {
   try {
