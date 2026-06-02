@@ -5804,6 +5804,8 @@ async function renderAdminReview() {
           '<div class="brand-sub">\uC811\uC218\uC77C ' + _esc(date) + ' \u00B7 ID <code style="font-family:var(--mono);font-size:11.5px;color:var(--text-muted)">' + _esc((app.id||'').slice(0,8)) + '</code></div>' +
         '</div>' +
       '</div>' +
+      // \uC6B0\uCE21: \uC798 \uBCF4\uC774\uB294 \uD070 PDF \uB2E4\uC6B4\uB85C\uB4DC \uBC84\uD2BC
+      '<button onclick="downloadApplicationPdf(\'' + app.id + '\')" title="\uC2E0\uCCAD\uC11C + \uCCA8\uBD80 \uD30C\uC77C \uB9C1\uD06C\uAC00 \uD3EC\uD568\uB41C PDF \uB2E4\uC6B4\uB85C\uB4DC" style="background:linear-gradient(135deg,#0071ce 0%,#005ea8 100%);color:#fff;border:none;padding:11px 18px;border-radius:10px;font-size:13.5px;font-weight:700;cursor:pointer;display:inline-flex;align-items:center;gap:7px;box-shadow:0 4px 12px rgba(0,113,206,0.30);white-space:nowrap;flex-shrink:0" onmouseover="this.style.transform=\'translateY(-1px)\';this.style.boxShadow=\'0 6px 16px rgba(0,113,206,0.40)\'" onmouseout="this.style.transform=\'\';this.style.boxShadow=\'0 4px 12px rgba(0,113,206,0.30)\'"><span style="font-size:16px">\uD83D\uDCE5</span> <span class="ko">\uC2E0\uCCAD\uC11C PDF \uB2E4\uC6B4\uB85C\uB4DC</span><span class="en">Download PDF</span></button>' +
       '</div>';
 
     html += '<div class="review-body">';
