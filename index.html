@@ -1730,35 +1730,106 @@ button{cursor:pointer;font-family:var(--font)}
       <h3 class="form-sec-title"><span class="ko">자료 제출 & 담당자 정보</span><span class="en">Documents & Contact Information</span></h3>
       <p class="form-sec-desc"><span class="ko">브랜드 자료를 업로드하고 주요 담당자 정보를 입력해주세요.</span><span class="en">Upload your brand materials and provide key contact details (English-speaking decision maker).</span></p>
 
-      <div class="form-field-label"><span class="ko">브랜드 소개서 (PPT or PDF) *</span><span class="en">Brand Deck (PPT or PDF) *</span></div>
-      <div class="file-upload-zone" id="file-zone-deck" onclick="document.getElementById('file-deck').click()" ondragover="event.preventDefault();this.classList.add('dragover')" ondragleave="this.classList.remove('dragover')" ondrop="event.preventDefault();this.classList.remove('dragover');handleFileDrop(event,'deck')">
-        <input type="file" id="file-deck" accept=".pdf,.ppt,.pptx" style="display:none" onchange="handleFileSelect(this,'deck')">
-        <div class="fuz-icon">📎</div>
-        <div class="fuz-text">Drag & drop your file here, or <span style="color:var(--accent);font-weight:600">click to browse</span></div>
-        <div class="fuz-hint">PDF, PPT, PPTX — Max 20MB</div>
-      </div>
-      <div class="file-preview" id="file-preview-deck" style="display:none"></div>
-
       <div class="form-field-label" style="margin-top:20px"><span class="ko">주요 SKU / 제품 정보 *</span><span class="en">Key Products / SKU Information *</span></div>
       <textarea class="form-input" name="SKU Description" data-req="5" placeholder="Enter key SKU info: product names, categories, retail prices (USD), pack sizes, key selling points, etc." style="min-height:100px;resize:vertical;font-family:var(--font);line-height:1.6"></textarea>
 
-      <div class="form-field-label" style="margin-top:20px"><span class="ko">SKU 리스트 파일 (선택)</span><span class="en">SKU List File (optional)</span></div>
-      <div class="file-upload-zone" id="file-zone-sku" onclick="document.getElementById('file-sku').click()" ondragover="event.preventDefault();this.classList.add('dragover')" ondragleave="this.classList.remove('dragover')" ondrop="event.preventDefault();this.classList.remove('dragover');handleFileDrop(event,'sku')">
-        <input type="file" id="file-sku" accept=".pdf,.xlsx,.xls,.csv" multiple style="display:none" onchange="handleFileSelect(this,'sku')">
-        <div class="fuz-icon">📦</div>
-        <div class="fuz-text">SKU \uc2dc\ud2b8 (Excel, CSV, PDF) — <span style="color:var(--accent);font-weight:600">click to browse</span></div>
-        <div class="fuz-hint">Excel, CSV, PDF — Max 20MB each</div>
+      <!-- 카테고리별 첨부 파일 (6개 카테고리 + Startup Junkie 안내) -->
+      <div style="margin-top:32px;margin-bottom:8px;padding:0;font-size:13px;font-weight:700;color:var(--text)">
+        <span class="ko">📎 자료 업로드 — 카테고리별 첨부</span>
+        <span class="en">📎 Document Uploads — Categorized Attachments</span>
       </div>
-      <div class="file-preview" id="file-preview-sku" style="display:none"></div>
+      <p style="font-size:12px;color:var(--text-muted);margin-bottom:14px;line-height:1.5">
+        <span class="ko">아래 6개 카테고리에 맞게 자료를 업로드해주세요. 모든 카테고리가 필수는 아니지만 더 많이 제공할수록 빠른 입점 진행이 가능합니다.</span>
+        <span class="en">Please upload materials matching the 6 categories below. Not all categories are required, but more materials enable faster onboarding.</span>
+      </p>
 
-      <div class="form-field-label" style="margin-top:20px"><span class="ko">추가 서류 (선택)</span><span class="en">Additional Documents (optional)</span></div>
+      <!-- 1. Master SKU Excel -->
+      <div class="form-field-label"><span class="ko">1. Master SKU Excel 파일 *</span><span class="en">1. Master SKU Excel File *</span></div>
+      <p style="font-size:11.5px;color:var(--text-muted);margin:0 0 6px;line-height:1.4"><span class="ko">상품명(KR/EN) · UPC/바코드 · 사이즈·옵션·성분 · 상품 설명 · 케이스팩·물류 정보</span><span class="en">Product names (KR/EN) · UPCs/barcodes · Sizes, variants, ingredients · Product descriptions · Case pack and logistics</span></p>
+      <div class="file-upload-zone" id="file-zone-sku_excel" onclick="document.getElementById('file-sku_excel').click()" ondragover="event.preventDefault();this.classList.add('dragover')" ondragleave="this.classList.remove('dragover')" ondrop="event.preventDefault();this.classList.remove('dragover');handleFileDrop(event,'sku_excel')">
+        <input type="file" id="file-sku_excel" accept=".xlsx,.xls,.csv,.pdf" multiple style="display:none" onchange="handleFileSelect(this,'sku_excel')">
+        <div class="fuz-icon">📊</div>
+        <div class="fuz-text">Excel · CSV · PDF — <span style="color:var(--accent);font-weight:600">click to browse</span></div>
+        <div class="fuz-hint">Multiple files — Max 20MB each</div>
+      </div>
+      <div class="file-preview" id="file-preview-sku_excel" style="display:none"></div>
+
+      <!-- 2. Product Images -->
+      <div class="form-field-label" style="margin-top:20px"><span class="ko">2. 제품 이미지</span><span class="en">2. Product Images</span></div>
+      <p style="font-size:11.5px;color:var(--text-muted);margin:0 0 6px;line-height:1.4"><span class="ko">히어로 이미지(흰 배경) · 패키지 앞/뒤 · 라이프스타일·텍스처 컷</span><span class="en">Hero images (white background) · Front/back packaging · Lifestyle and texture images</span></p>
+      <div class="file-upload-zone" id="file-zone-images" onclick="document.getElementById('file-images').click()" ondragover="event.preventDefault();this.classList.add('dragover')" ondragleave="this.classList.remove('dragover')" ondrop="event.preventDefault();this.classList.remove('dragover');handleFileDrop(event,'images')">
+        <input type="file" id="file-images" accept="image/*" multiple style="display:none" onchange="handleFileSelect(this,'images')">
+        <div class="fuz-icon">🖼️</div>
+        <div class="fuz-text">PNG · JPG · WebP — <span style="color:var(--accent);font-weight:600">click to browse</span></div>
+        <div class="fuz-hint">Multiple files — Max 20MB each</div>
+      </div>
+      <div class="file-preview" id="file-preview-images" style="display:none"></div>
+
+      <!-- 3. Brand Assets -->
+      <div class="form-field-label" style="margin-top:20px"><span class="ko">3. 브랜드 자료 *</span><span class="en">3. Brand Assets *</span></div>
+      <p style="font-size:11.5px;color:var(--text-muted);margin:0 0 6px;line-height:1.4"><span class="ko">로고 (AI · EPS · PNG) · 브랜드 소개서/스토리 · 브랜드 가이드라인 (있는 경우)</span><span class="en">Logos (AI, EPS, PNG) · Brand story and overview · Brand guidelines (if available)</span></p>
+      <div class="file-upload-zone" id="file-zone-brand_assets" onclick="document.getElementById('file-brand_assets').click()" ondragover="event.preventDefault();this.classList.add('dragover')" ondragleave="this.classList.remove('dragover')" ondrop="event.preventDefault();this.classList.remove('dragover');handleFileDrop(event,'brand_assets')">
+        <input type="file" id="file-brand_assets" multiple style="display:none" onchange="handleFileSelect(this,'brand_assets')">
+        <div class="fuz-icon">🎨</div>
+        <div class="fuz-text">AI · EPS · PNG · PDF · PPT — <span style="color:var(--accent);font-weight:600">click to browse</span></div>
+        <div class="fuz-hint">Multiple files — Max 20MB each</div>
+      </div>
+      <div class="file-preview" id="file-preview-brand_assets" style="display:none"></div>
+
+      <!-- 4. Compliance Documents -->
+      <div class="form-field-label" style="margin-top:20px"><span class="ko">4. 인증·컴플라이언스 서류</span><span class="en">4. Compliance Documents</span></div>
+      <p style="font-size:11.5px;color:var(--text-muted);margin:0 0 6px;line-height:1.4"><span class="ko">제품 테스트·안전 문서 · 인증서·클레임 근거 자료 · 보험 정보 (있는 경우)</span><span class="en">Product testing/safety documentation · Certifications and claims support · Insurance information (if available)</span></p>
+      <div class="file-upload-zone" id="file-zone-compliance" onclick="document.getElementById('file-compliance').click()" ondragover="event.preventDefault();this.classList.add('dragover')" ondragleave="this.classList.remove('dragover')" ondrop="event.preventDefault();this.classList.remove('dragover');handleFileDrop(event,'compliance')">
+        <input type="file" id="file-compliance" accept=".pdf,.jpg,.jpeg,.png" multiple style="display:none" onchange="handleFileSelect(this,'compliance')">
+        <div class="fuz-icon">📋</div>
+        <div class="fuz-text">PDF · 인증서 스캔 — <span style="color:var(--accent);font-weight:600">click to browse</span></div>
+        <div class="fuz-hint">Multiple files — Max 20MB each</div>
+      </div>
+      <div class="file-preview" id="file-preview-compliance" style="display:none"></div>
+
+      <!-- 5. Video Assets -->
+      <div class="form-field-label" style="margin-top:20px"><span class="ko">5. 영상 자료</span><span class="en">5. Video Assets</span></div>
+      <p style="font-size:11.5px;color:var(--text-muted);margin:0 0 6px;line-height:1.4"><span class="ko">제품 시연 영상 · 사용 가이드 튜토리얼 · 브랜드 영상</span><span class="en">Product demonstrations · Usage tutorials · Brand videos</span></p>
+      <div class="file-upload-zone" id="file-zone-videos" onclick="document.getElementById('file-videos').click()" ondragover="event.preventDefault();this.classList.add('dragover')" ondragleave="this.classList.remove('dragover')" ondrop="event.preventDefault();this.classList.remove('dragover');handleFileDrop(event,'videos')">
+        <input type="file" id="file-videos" accept="video/*,.mp4,.mov,.webm" multiple style="display:none" onchange="handleFileSelect(this,'videos')">
+        <div class="fuz-icon">🎬</div>
+        <div class="fuz-text">MP4 · MOV · WebM — <span style="color:var(--accent);font-weight:600">click to browse</span></div>
+        <div class="fuz-hint">Multiple files — Max 20MB each (큰 영상은 URL 첨부 권장)</div>
+      </div>
+      <div class="file-preview" id="file-preview-videos" style="display:none"></div>
+
+      <!-- 6. Sales & Performance Data -->
+      <div class="form-field-label" style="margin-top:20px"><span class="ko">6. 매출·실적 데이터</span><span class="en">6. Sales & Performance Data</span></div>
+      <p style="font-size:11.5px;color:var(--text-muted);margin:0 0 6px;line-height:1.4"><span class="ko">베스트셀러 SKU · 매출 순위 · 리테일·이커머스 현황 · 수상·언론·소셜 지표</span><span class="en">Best-selling SKUs · Sales rankings · Retail and e-commerce presence · Awards, press, and social metrics</span></p>
+      <div class="file-upload-zone" id="file-zone-sales_data" onclick="document.getElementById('file-sales_data').click()" ondragover="event.preventDefault();this.classList.add('dragover')" ondragleave="this.classList.remove('dragover')" ondrop="event.preventDefault();this.classList.remove('dragover');handleFileDrop(event,'sales_data')">
+        <input type="file" id="file-sales_data" multiple style="display:none" onchange="handleFileSelect(this,'sales_data')">
+        <div class="fuz-icon">📈</div>
+        <div class="fuz-text">PDF · Excel · 보고서 — <span style="color:var(--accent);font-weight:600">click to browse</span></div>
+        <div class="fuz-hint">Multiple files — Max 20MB each</div>
+      </div>
+      <div class="file-preview" id="file-preview-sales_data" style="display:none"></div>
+
+      <!-- 7. Extra / catch-all -->
+      <div class="form-field-label" style="margin-top:20px"><span class="ko">7. 기타 서류 (선택)</span><span class="en">7. Additional Documents (optional)</span></div>
+      <p style="font-size:11.5px;color:var(--text-muted);margin:0 0 6px;line-height:1.4"><span class="ko">위 카테고리에 속하지 않는 기타 자료</span><span class="en">Anything else that does not fit the categories above</span></p>
       <div class="file-upload-zone" id="file-zone-extra" onclick="document.getElementById('file-extra').click()" ondragover="event.preventDefault();this.classList.add('dragover')" ondragleave="this.classList.remove('dragover')" ondrop="event.preventDefault();this.classList.remove('dragover');handleFileDrop(event,'extra')">
         <input type="file" id="file-extra" multiple style="display:none" onchange="handleFileSelect(this,'extra')">
         <div class="fuz-icon">📂</div>
-        <div class="fuz-text">Certifications, product catalogs, etc.</div>
-        <div class="fuz-hint">Multiple files allowed — Max 20MB each</div>
+        <div class="fuz-text">Any file type — <span style="color:var(--accent);font-weight:600">click to browse</span></div>
+        <div class="fuz-hint">Multiple files — Max 20MB each</div>
       </div>
       <div class="file-preview" id="file-preview-extra" style="display:none"></div>
+
+      <!-- Startup Junkie Support 정보성 안내 (업로드 X) -->
+      <div style="margin-top:24px;padding:16px 18px;background:linear-gradient(135deg,#eff6ff 0%,#dbeafe 100%);border:1px solid #93c5fd;border-radius:12px">
+        <div style="display:flex;align-items:flex-start;gap:10px">
+          <div style="font-size:20px;flex-shrink:0">💡</div>
+          <div>
+            <div style="font-size:12.5px;font-weight:700;color:#1e40af;margin-bottom:4px"><span class="ko">Retail Content Support — Startup Junkie 지원 안내</span><span class="en">Retail Content Support — Startup Junkie can help</span></div>
+            <div style="font-size:11.5px;color:#1e3a8a;line-height:1.55"><span class="ko">위 자료를 제출해주시면, Startup Junkie 팀이 SKU 셋업, SEO 최적화, Walmart·Sam\'s 콘텐츠 제작, Enhanced Content, 리스팅 관리 등 입점 후 전 과정을 지원합니다.</span><span class="en">Once the above materials are provided, Startup Junkie can support SKU setup, SEO optimization, Walmart/Sam\'s content creation, enhanced content, and listing management.</span></div>
+          </div>
+        </div>
+      </div>
 
       <div style="height:1px;background:var(--border);margin:32px 0"></div>
 
@@ -3006,14 +3077,19 @@ async function dbSaveApplication(formData) {
       saved = res.data ? res.data[0] : null;
       if (!saved) return null;
     }
-    // 첨부파일 업로드 (Brand Deck + Additional Docs + SKU List)
+    // 첨부파일 업로드 — 6개 카테고리 + 기타 + 이전 호환 (Brand Deck/SKU List)
+    var ATTACHMENT_FIELDS = [
+      'Master SKU Excel', 'Product Images', 'Brand Assets',
+      'Compliance Documents', 'Video Assets', 'Sales & Performance Data',
+      'Additional Docs', 'Brand Deck', 'SKU List'
+    ];
     var attachedFiles = [];
     var uploadFailures = [];
     var attemptedFiles = 0;
     for (var entry of formData.entries()) {
       var fkey = entry[0];
       var fval = entry[1];
-      if (fval instanceof File && (fkey === 'Brand Deck' || fkey === 'Additional Docs' || fkey === 'SKU List')) {
+      if (fval instanceof File && ATTACHMENT_FIELDS.indexOf(fkey) >= 0) {
         attemptedFiles++;
         // Supabase Storage path\uB294 ASCII\uB9CC \uD5C8\uC6A9 \u2014 \uBE44 ASCII(\uD55C\uAE00 \uB4F1) \uBAA8\uB450 underscore\uB85C
         // \uC6D0\uBCF8 \uD30C\uC77C\uBA85\uC740 attached_files.name\uC5D0 \uADF8\uB300\uB85C \uBCF4\uC874\uB418\uBBC0\uB85C \uD45C\uC2DC\uC5D4 \uC601\uD5A5 \uC5C6\uC74C
@@ -3364,7 +3440,18 @@ function validateAndGo(currentStep, nextStep) {
 }
 
 // ─── FILE UPLOAD ───
-const uploadedFiles = {deck: [], extra: [], sku: []};
+// 6개 카테고리 + extra (catch-all). 'deck'/'sku' 는 backwards compat 용 alias 유지
+const uploadedFiles = {
+  sku_excel: [],      // 1. Master SKU Excel File
+  images: [],         // 2. Product Images
+  brand_assets: [],   // 3. Brand Assets (logo, deck, guidelines)
+  compliance: [],     // 4. Compliance Documents
+  videos: [],         // 5. Video Assets
+  sales_data: [],     // 6. Sales & Performance Data
+  extra: [],          // 7. Catch-all
+  deck: [],           // 이전 호환
+  sku: []             // 이전 호환
+};
 
 function handleFileSelect(input, type) {
   const files = Array.from(input.files);
@@ -3394,10 +3481,20 @@ function removeFile(type, index) {
   if (uploadedFiles[type].length === 0) {
     const zone = document.getElementById('file-zone-' + type);
     var defaultText;
-    if (type === 'deck') defaultText = 'Drag & drop your file here, or <span style="color:var(--accent);font-weight:600">click to browse</span>';
-    else if (type === 'sku') defaultText = 'SKU \uc2dc\ud2b8 (Excel, CSV, PDF) — <span style="color:var(--accent);font-weight:600">click to browse</span>';
-    else defaultText = 'Certifications, product catalogs, etc.';
-    zone.querySelector('.fuz-text').innerHTML = defaultText;
+    var defaults = {
+      sku_excel:    'Excel · CSV · PDF — <span style="color:var(--accent);font-weight:600">click to browse</span>',
+      images:       'PNG · JPG · WebP — <span style="color:var(--accent);font-weight:600">click to browse</span>',
+      brand_assets: 'AI · EPS · PNG · PDF · PPT — <span style="color:var(--accent);font-weight:600">click to browse</span>',
+      compliance:   'PDF · 인증서 스캔 — <span style="color:var(--accent);font-weight:600">click to browse</span>',
+      videos:       'MP4 · MOV · WebM — <span style="color:var(--accent);font-weight:600">click to browse</span>',
+      sales_data:   'PDF · Excel · 보고서 — <span style="color:var(--accent);font-weight:600">click to browse</span>',
+      extra:        'Any file type — <span style="color:var(--accent);font-weight:600">click to browse</span>',
+      deck:         'Drag & drop your file here, or <span style="color:var(--accent);font-weight:600">click to browse</span>',
+      sku:          'SKU 시트 (Excel, CSV, PDF) — <span style="color:var(--accent);font-weight:600">click to browse</span>'
+    };
+    defaultText = defaults[type] || 'Click to browse';
+    var fuzText = zone && zone.querySelector('.fuz-text');
+    if (fuzText) fuzText.innerHTML = defaultText;
   }
 }
 
@@ -3456,8 +3553,9 @@ function submitApply() {
     alert('Please agree to the program terms and conditions.');
     return;
   }
-  if (uploadedFiles.deck.length === 0) {
-    alert('Please upload your brand deck (PPT or PDF).');
+  // 필수: Master SKU Excel 또는 Brand Assets 중 최소 1개 (브랜드를 식별할 핵심 자료)
+  if (uploadedFiles.sku_excel.length === 0 && uploadedFiles.brand_assets.length === 0 && uploadedFiles.deck.length === 0) {
+    alert('필수 자료를 업로드해주세요: Master SKU Excel 파일 또는 브랜드 자료(로고/소개서) 중 최소 한 가지.\n\nPlease upload required materials: at least one of Master SKU Excel File or Brand Assets (logo/deck).');
     return;
   }
 
@@ -3500,9 +3598,15 @@ function submitApply() {
     fd.append(name, checked ? checked.value : 'N/A');
   });
 
-  // Files
-  uploadedFiles.deck.forEach(f => fd.append('Brand Deck', f));
+  // Files — 6개 카테고리 + 기타 + 이전 호환 (deck/sku)
+  uploadedFiles.sku_excel.forEach(f => fd.append('Master SKU Excel', f));
+  uploadedFiles.images.forEach(f => fd.append('Product Images', f));
+  uploadedFiles.brand_assets.forEach(f => fd.append('Brand Assets', f));
+  uploadedFiles.compliance.forEach(f => fd.append('Compliance Documents', f));
+  uploadedFiles.videos.forEach(f => fd.append('Video Assets', f));
+  uploadedFiles.sales_data.forEach(f => fd.append('Sales & Performance Data', f));
   uploadedFiles.extra.forEach(f => fd.append('Additional Docs', f));
+  uploadedFiles.deck.forEach(f => fd.append('Brand Deck', f));
   uploadedFiles.sku.forEach(f => fd.append('SKU List', f));
 
   // Disable submit button
@@ -5925,7 +6029,18 @@ async function renderAdminReview() {
         var fext = fname.split('.').pop().toLowerCase();
         var icon = fext === 'pdf' ? '\uD83D\uDCC4' : (fext === 'pptx' || fext === 'ppt') ? '\uD83D\uDCCA' : (fext === 'xlsx' || fext === 'xls' || fext === 'csv') ? '\uD83D\uDCC8' : (['png','jpg','jpeg','gif'].indexOf(fext) >= 0) ? '\uD83D\uDDBC\uFE0F' : '\uD83D\uDCCE';
         var sizeStr = f.size ? (f.size < 1048576 ? (f.size/1024).toFixed(1) + ' KB' : (f.size/1048576).toFixed(1) + ' MB') : '';
-        var fieldLabel = f.field === 'Brand Deck' ? '\uBE0C\uB79C\uB4DC \uC18C\uAC1C\uC11C' : (f.field === 'Additional Docs' ? '\uCD94\uAC00 \uC11C\uB958' : (f.field === 'SKU List' ? 'SKU \uB9AC\uC2A4\uD2B8' : (f.field || '')));
+        var _fieldLabels = {
+          'Master SKU Excel':         'Master SKU Excel',
+          'Product Images':           '\uC81C\uD488 \uC774\uBBF8\uC9C0',
+          'Brand Assets':             '\uBE0C\uB79C\uB4DC \uC790\uB8CC',
+          'Compliance Documents':     '\uC778\uC99D\u00B7\uCEF4\uD50C\uB77C\uC774\uC5B8\uC2A4',
+          'Video Assets':             '\uC601\uC0C1 \uC790\uB8CC',
+          'Sales & Performance Data': '\uB9E4\uCD9C\u00B7\uC2E4\uC801 \uB370\uC774\uD130',
+          'Additional Docs':          '\uAE30\uD0C0 \uC11C\uB958',
+          'Brand Deck':               '\uBE0C\uB79C\uB4DC \uC18C\uAC1C\uC11C',
+          'SKU List':                 'SKU \uB9AC\uC2A4\uD2B8'
+        };
+        var fieldLabel = _fieldLabels[f.field] || f.field || '';
         html += '<div style="display:flex;align-items:center;gap:12px;padding:12px 16px;border:1px solid var(--border);border-radius:8px;margin-bottom:8px;background:#fff;transition:all .15s" onmouseenter="this.style.borderColor=\'rgba(0,113,220,0.4)\'" onmouseleave="this.style.borderColor=\'\'">' +
           '<span style="font-size:22px;flex-shrink:0">' + icon + '</span>' +
           '<div style="flex:1;min-width:0">' +
@@ -8064,8 +8179,32 @@ async function loadAdminBrandApplication(brandId) {
     try { _attached = JSON.parse(_attached); } catch(e) { _attached = null; }
   }
   if (_attached && Array.isArray(_attached) && _attached.length) {
-    attachedHtml = '<div style="margin-bottom:14px"><div style="font-size:12px;font-weight:700;color:var(--text-muted);margin-bottom:8px;letter-spacing:0.2px">📎 ' + _kn('첨부 파일','Attached Files') + ' (' + _attached.length + ')</div>' +
-      _attached.map(function(f) {
+    // 카테고리별 그룹화
+    var CAT_ORDER_AD = ['Master SKU Excel','Product Images','Brand Assets','Compliance Documents','Video Assets','Sales & Performance Data','Additional Docs','Brand Deck','SKU List'];
+    var CAT_LBL = {
+      'Master SKU Excel':         _kn('1. Master SKU Excel 파일','1. Master SKU Excel File'),
+      'Product Images':           _kn('2. 제품 이미지','2. Product Images'),
+      'Brand Assets':             _kn('3. 브랜드 자료','3. Brand Assets'),
+      'Compliance Documents':     _kn('4. 인증·컴플라이언스','4. Compliance Documents'),
+      'Video Assets':             _kn('5. 영상 자료','5. Video Assets'),
+      'Sales & Performance Data': _kn('6. 매출·실적 데이터','6. Sales & Performance Data'),
+      'Additional Docs':          _kn('7. 기타 서류','7. Additional Documents'),
+      'Brand Deck':               _kn('브랜드 소개서','Brand Deck'),
+      'SKU List':                 _kn('SKU 리스트','SKU List')
+    };
+    var groups = {};
+    _attached.forEach(function(f){
+      var c = f.field || 'Additional Docs';
+      if (!groups[c]) groups[c] = [];
+      groups[c].push(f);
+    });
+    var ordered = CAT_ORDER_AD.filter(function(c){ return groups[c]; });
+    Object.keys(groups).forEach(function(c){ if (ordered.indexOf(c) < 0) ordered.push(c); });
+
+    attachedHtml = '<div style="margin-bottom:14px"><div style="font-size:12px;font-weight:700;color:var(--text-muted);margin-bottom:8px;letter-spacing:0.2px">📎 ' + _kn('첨부 파일','Attached Files') + ' (' + _attached.length + ')</div>';
+    attachedHtml += ordered.map(function(cat){
+      var label = CAT_LBL[cat] || cat;
+      var filesHtml = groups[cat].map(function(f){
         var name = f.name || f.original_name || _kn('파일','File');
         var url = f.url || f.public_url || '';
         var sizeKb = f.size ? (Math.round(f.size/102.4)/10) + ' KB' : '';
@@ -8075,7 +8214,13 @@ async function loadAdminBrandApplication(brandId) {
           (sizeKb ? '<div style="font-size:11px;color:var(--text-muted)">' + sizeKb + '</div>' : '') + '</div>' +
           (url ? '<a href="' + _esc(url) + '" target="_blank" rel="noopener" style="font-size:12px;color:var(--accent);text-decoration:underline;font-weight:600">' + _kn('다운로드','Download') + '</a>' : '<span style="font-size:11px;color:var(--text-muted)">' + _kn('링크 없음','No link') + '</span>') +
         '</div>';
-      }).join('') + '</div>';
+      }).join('');
+      return '<div style="margin-bottom:12px">' +
+               '<div style="font-size:11.5px;font-weight:700;color:#0d2453;background:#f0f4fa;border:1px solid #d6e1f0;padding:5px 10px;border-radius:5px;margin-bottom:6px;display:inline-block">' + _esc(label) + ' <span style="font-weight:500;color:#666;font-size:11px">(' + groups[cat].length + ')</span></div>' +
+               filesHtml +
+             '</div>';
+    }).join('');
+    attachedHtml += '</div>';
   } else {
     attachedHtml = '<div style="margin-bottom:14px;padding:12px;background:var(--surface-alt);border-radius:8px;font-size:12.5px;color:var(--text-muted)">📎 ' + _kn('첨부된 파일이 없습니다.','No attached files.') + '</div>';
   }
@@ -8253,30 +8398,62 @@ function _buildBrandPdfHtml(brand, app, interest) {
   }
   var filesHtml = '';
   if (Array.isArray(attachedFiles) && attachedFiles.length) {
-    var fileItems = attachedFiles.map(function(f){
-      var name = f.name || f.original_name || 'File';
-      var url  = f.url || f.public_url || '';
-      var ext  = (name.split('.').pop() || '').toLowerCase();
-      var icon = ({pdf:'📄', doc:'📝', docx:'📝', xls:'📊', xlsx:'📊', csv:'📊',
-                   ppt:'📽', pptx:'📽', png:'🖼', jpg:'🖼', jpeg:'🖼', gif:'🖼',
-                   webp:'🖼', zip:'🗜', mp4:'🎬', mov:'🎬'})[ext] || '📎';
-      var sizeKb = f.size ? (Math.round(f.size/102.4)/10) + ' KB' : '';
-      var inner =
-        '<div class="att-row">' +
-          '<span class="att-icon">' + icon + '</span>' +
-          '<div class="att-body">' +
-            '<div class="att-name">' + esc(name) + '</div>' +
-            '<div class="att-meta">' + (sizeKb ? esc(sizeKb) + ' · ' : '') +
-              (url ? '<span class="att-cta">Click to download / 클릭하여 다운로드 ↗</span>'
-                   : '<span class="muted">No link available / 링크 없음</span>') +
+    // 카테고리 순서 + 영/한 라벨
+    var CAT_ORDER = ['Master SKU Excel','Product Images','Brand Assets','Compliance Documents','Video Assets','Sales & Performance Data','Additional Docs','Brand Deck','SKU List'];
+    var CAT_LABELS = {
+      'Master SKU Excel':         '1. Master SKU Excel / Master SKU Excel 파일',
+      'Product Images':           '2. Product Images / 제품 이미지',
+      'Brand Assets':             '3. Brand Assets / 브랜드 자료',
+      'Compliance Documents':     '4. Compliance Documents / 인증·컴플라이언스',
+      'Video Assets':             '5. Video Assets / 영상 자료',
+      'Sales & Performance Data': '6. Sales & Performance Data / 매출·실적',
+      'Additional Docs':          '7. Additional Documents / 기타 서류',
+      'Brand Deck':               'Brand Deck / 브랜드 소개서',
+      'SKU List':                 'SKU List / SKU 리스트'
+    };
+    // 카테고리별 그룹화
+    var groups = {};
+    attachedFiles.forEach(function(f){
+      var cat = f.field || 'Additional Docs';
+      if (!groups[cat]) groups[cat] = [];
+      groups[cat].push(f);
+    });
+    // 알려진 순서 → 미지의 카테고리는 뒤에
+    var sortedCats = CAT_ORDER.filter(function(c){ return groups[c]; });
+    Object.keys(groups).forEach(function(c){ if (sortedCats.indexOf(c) < 0) sortedCats.push(c); });
+
+    var allGroupsHtml = sortedCats.map(function(cat){
+      var label = CAT_LABELS[cat] || cat;
+      var fileCards = groups[cat].map(function(f){
+        var name = f.name || f.original_name || 'File';
+        var url  = f.url || f.public_url || '';
+        var ext  = (name.split('.').pop() || '').toLowerCase();
+        var icon = ({pdf:'📄', doc:'📝', docx:'📝', xls:'📊', xlsx:'📊', csv:'📊',
+                     ppt:'📽', pptx:'📽', png:'🖼', jpg:'🖼', jpeg:'🖼', gif:'🖼',
+                     webp:'🖼', zip:'🗜', mp4:'🎬', mov:'🎬', ai:'🎨', eps:'🎨'})[ext] || '📎';
+        var sizeKb = f.size ? (Math.round(f.size/102.4)/10) + ' KB' : '';
+        var inner =
+          '<div class="att-row">' +
+            '<span class="att-icon">' + icon + '</span>' +
+            '<div class="att-body">' +
+              '<div class="att-name">' + esc(name) + '</div>' +
+              '<div class="att-meta">' + (sizeKb ? esc(sizeKb) + ' · ' : '') +
+                (url ? '<span class="att-cta">Click to download / 클릭하여 다운로드 ↗</span>'
+                     : '<span class="muted">No link available / 링크 없음</span>') +
+              '</div>' +
             '</div>' +
-          '</div>' +
-        '</div>';
-      return url
-        ? '<a class="att-link" href="' + esc(url) + '" target="_blank" rel="noopener">' + inner + '</a>'
-        : '<div class="att-link att-disabled">' + inner + '</div>';
+          '</div>';
+        return url
+          ? '<a class="att-link" href="' + esc(url) + '" target="_blank" rel="noopener">' + inner + '</a>'
+          : '<div class="att-link att-disabled">' + inner + '</div>';
+      }).join('');
+      return '<div class="att-cat-group">' +
+               '<div class="att-cat-label">' + esc(label) + ' <span class="att-cat-count">(' + groups[cat].length + ')</span></div>' +
+               fileCards +
+             '</div>';
     }).join('');
-    filesHtml = '<div class="att-list">' + fileItems + '</div>' +
+
+    filesHtml = '<div class="att-list">' + allGroupsHtml + '</div>' +
                 '<p class="att-hint">💡 Click any file above to download / 위 파일을 클릭하면 다운로드됩니다.</p>';
   } else {
     filesHtml = '<p class="muted">No attached files / 첨부 파일 없음</p>';
@@ -8318,6 +8495,9 @@ function _buildBrandPdfHtml(brand, app, interest) {
   h += 'td a{color:#0071ce;text-decoration:underline;word-break:break-all;overflow-wrap:anywhere}';
   // 첨부 파일 카드 스타일 (PDF 안에서도 클릭 가능한 하이퍼링크)
   h += '.att-list{display:block;margin:6pt 0 4pt}';
+  h += '.att-cat-group{margin:0 0 12pt;page-break-inside:auto;break-inside:auto}';
+  h += '.att-cat-label{font-size:10pt;font-weight:700;color:#0d2453;background:#f0f4fa;border:1px solid #d6e1f0;padding:5pt 10pt;border-radius:5pt;margin:0 0 6pt;display:inline-block}';
+  h += '.att-cat-count{font-weight:500;color:#666;font-size:9pt;margin-left:4pt}';
   // page-break-inside + break-inside 동시 적용 → Chrome/Edge/Safari/Firefox 모두에서 카드가 페이지 경계에서 잘리지 않음
   h += '.att-link{display:block;text-decoration:none;color:inherit;background:#fff;border:1px solid #d6e1f0;border-left:3pt solid #0071ce;border-radius:6pt;padding:9pt 12pt;margin-bottom:6pt;page-break-inside:avoid;break-inside:avoid;-webkit-column-break-inside:avoid}';
   h += '.att-link.att-disabled{border-left-color:#bbb;background:#fafbfc;cursor:default}';
