@@ -1981,6 +1981,7 @@ button{cursor:pointer;font-family:var(--font)}
           <div class="stat-card"><div class="val" id="dash-stat-mtd">-</div><div class="lbl"><span class="ko">이번 달 신규</span><span class="en">New This Month</span></div><div class="change" id="dash-stat-mtd-sub">loading...</div></div>
           <div class="stat-card"><div class="val" id="dash-stat-attachments">-</div><div class="lbl"><span class="ko">첨부 파일</span><span class="en">Attachments</span></div><div class="change" id="dash-stat-attachments-sub">loading...</div></div>
         </div>
+        <div id="dash-insights" style="margin-top:12px"></div>
         <div class="dash-grid">
           <div><div class="panel"><div class="panel-title"><span class="ko">브랜드 파이프라인</span><span class="en">Brand Pipeline</span> <span class="count" id="admin-brand-count">0 brands</span></div>
             <div id="admin-brand-pipeline" style="text-align:center;padding:40px 0;color:rgba(0,0,0,0.6);font-size:14px"><span class="ko">로딩 중...</span><span class="en">Loading...</span></div>
@@ -6616,10 +6617,131 @@ async function renderAdminDashboard() {
     phaseEl.innerHTML = phHtml;
   }
 
+  // 대시보드 인사이트 (전환 퍼널/아웃리치/주의)
+  try {
+    var _prospRes = await supabase.from('wm_prospects').select('*');
+    if (typeof renderDashInsights === 'function') renderDashInsights(brands, apps, ctrs, (_prospRes && _prospRes.data) || []);
+  } catch(e) { console.warn('dash insights', e); }
+
   // unread 메시지 배지 갱신
   if (typeof loadAdminUnreadCounts === 'function') loadAdminUnreadCounts();
 }
 
+
+// ═══ 대시보드 인사이트: 전환 퍼널 · 아웃리치 현황 · 주의 필요 항목 ═══
+function renderDashInsights(brands, apps, ctrs, prospects) {
+  var host = document.getElementById('dash-insights');
+  if (!host) return;
+  brands = brands || []; apps = apps || []; ctrs = ctrs || []; prospects = prospects || [];
+
+  var approved = apps.filter(function(a){ return a.status === 'approved' || a.status === 'contracted'; }).length;
+  var completed = ctrs.filter(function(c){ return c.sig_brand_signed && c.sig_admin_signed && c.sig_walmart_signed; }).length;
+  var operating = brands.filter(function(b){ return b.portal_active; }).length;
+
+  // ── 1) 전환 퍼널 ──
+  var stages = [
+    { label: _kn('잠재 브랜드','Prospects'),  n: prospects.length, color: '#94a3b8' },
+    { label: _kn('신청','Applied'),           n: apps.length,      color: 'var(--accent)' },
+    { label: _kn('승인','Approved'),          n: approved,         color: '#f0ad4e' },
+    { label: _kn('계약 체결','Contracted'),   n: completed,        color: '#00b894' },
+    { label: _kn('운영 중','Operating'),      n: operating,        color: '#00875a' }
+  ];
+  var maxN = 1;
+  stages.forEach(function(s){ if (s.n > maxN) maxN = s.n; });
+  var funnelRows = stages.map(function(s, i) {
+    var w = Math.round(s.n / maxN * 100);
+    var conv = '';
+    if (i > 0) {
+      var prev = stages[i-1].n;
+      conv = prev > 0 ? Math.round(s.n / prev * 100) + '%' : '—';
+    }
+    return '<div style="display:flex;align-items:center;gap:12px;padding:7px 0">' +
+      '<span style="width:88px;font-size:12.5px;color:var(--text-muted);flex-shrink:0">' + s.label + '</span>' +
+      '<div style="flex:1;height:26px;background:rgba(0,0,0,0.04);border-radius:6px;overflow:hidden;position:relative">' +
+        '<div style="width:' + Math.max(w,3) + '%;height:100%;background:' + s.color + ';border-radius:6px;transition:width .4s;display:flex;align-items:center;padding-left:10px"><span style="font-size:12px;font-weight:800;color:#fff">' + s.n + '</span></div>' +
+      '</div>' +
+      '<span style="width:44px;text-align:right;font-size:11px;color:var(--text-faint);flex-shrink:0">' + (conv ? '▸ ' + conv : '') + '</span>' +
+    '</div>';
+  }).join('');
+  var funnelPanel = '<div class="panel" style="margin-bottom:8px">' +
+    '<div class="panel-title"><span>' + _kn('전환 퍼널','Conversion Funnel') + '</span>' +
+    '<span class="count">' + _kn('단계별 전환율','stage conversion') + '</span></div>' +
+    funnelRows + '</div>';
+
+  // ── 2) 아웃리치 현황 ──
+  var outreachInner;
+  if (!prospects.length) {
+    outreachInner = '<div style="text-align:center;padding:24px 0;color:var(--text-muted);font-size:13px">' + _kn('아직 잠재 브랜드가 없습니다. [브랜드 발굴]에서 추가하세요.','No prospects yet. Add them in [Outreach].') + '</div>';
+  } else {
+    var unassigned = prospects.filter(function(p){ return !p.claimed_by; }).length;
+    var convertedN = prospects.filter(function(p){ return p.status === 'converted'; }).length;
+    var convRate = prospects.length > 0 ? Math.round(convertedN / prospects.length * 100) : 0;
+    // 담당자별
+    var byOwner = {};
+    prospects.forEach(function(p){ if (p.claimed_by) { var k = p.claimed_by_name || p.claimed_by; byOwner[k] = (byOwner[k]||0)+1; } });
+    var ownerRows = Object.keys(byOwner).sort(function(a,b){ return byOwner[b]-byOwner[a]; }).map(function(k){
+      return '<div style="display:flex;justify-content:space-between;font-size:12.5px;padding:3px 0"><span style="color:var(--text)"><span style="display:inline-block;width:6px;height:6px;border-radius:50%;background:#10b981;margin-right:6px"></span>' + _esc(k) + '</span><span style="font-weight:700">' + byOwner[k] + '</span></div>';
+    }).join('') || '<div style="font-size:12px;color:var(--text-faint)">' + _kn('배정된 담당 없음','none assigned') + '</div>';
+    // 상태별 미니 바
+    var statusOrder = ['new','contacted','in_talks','converted','dropped'];
+    var segs = statusOrder.map(function(k){
+      var cnt = prospects.filter(function(p){ return (p.status||'new') === k; }).length;
+      if (!cnt) return '';
+      var m = (typeof _prospectStatusMeta !== 'undefined' && _prospectStatusMeta[k]) ? _prospectStatusMeta[k] : { color:'#999', ko:k, en:k };
+      var w = Math.round(cnt / prospects.length * 100);
+      return '<div title="' + _kn(m.ko,m.en) + ': ' + cnt + '" style="width:' + w + '%;background:' + m.color + '"></div>';
+    }).join('');
+    var legend = statusOrder.map(function(k){
+      var cnt = prospects.filter(function(p){ return (p.status||'new') === k; }).length;
+      if (!cnt) return '';
+      var m = (typeof _prospectStatusMeta !== 'undefined' && _prospectStatusMeta[k]) ? _prospectStatusMeta[k] : { color:'#999', ko:k, en:k };
+      return '<span style="font-size:11px;color:var(--text-muted);margin-right:10px;white-space:nowrap"><span style="display:inline-block;width:8px;height:8px;border-radius:2px;background:' + m.color + ';margin-right:4px"></span>' + _kn(m.ko,m.en) + ' ' + cnt + '</span>';
+    }).join('');
+    outreachInner =
+      '<div style="display:flex;gap:8px;margin-bottom:12px">' +
+        '<div style="flex:1;background:var(--surface-alt);border-radius:8px;padding:10px 12px"><div style="font-size:22px;font-weight:900;color:var(--text)">' + prospects.length + '</div><div style="font-size:11px;color:var(--text-muted)">' + _kn('총 잠재','Total') + '</div></div>' +
+        '<div style="flex:1;background:var(--surface-alt);border-radius:8px;padding:10px 12px"><div style="font-size:22px;font-weight:900;color:' + (unassigned>0?'#ef4444':'var(--text)') + '">' + unassigned + '</div><div style="font-size:11px;color:var(--text-muted)">' + _kn('미배정','Unclaimed') + '</div></div>' +
+        '<div style="flex:1;background:var(--surface-alt);border-radius:8px;padding:10px 12px"><div style="font-size:22px;font-weight:900;color:#00875a">' + convRate + '%</div><div style="font-size:11px;color:var(--text-muted)">' + _kn('전환율','Conv.') + '</div></div>' +
+      '</div>' +
+      '<div style="display:flex;height:8px;border-radius:4px;overflow:hidden;background:rgba(0,0,0,0.05);margin-bottom:8px">' + segs + '</div>' +
+      '<div style="margin-bottom:12px;line-height:1.9">' + legend + '</div>' +
+      '<div style="font-size:11px;color:var(--text-faint);font-weight:700;text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px">' + _kn('담당자별','By owner') + '</div>' +
+      ownerRows;
+  }
+  var outreachPanel = '<div class="panel"><div class="panel-title"><span>' + _kn('아웃리치 현황','Outreach') + '</span>' +
+    '<span class="count" style="cursor:pointer;color:var(--accent)" onclick="showAdminView(\'outreach\')">' + _kn('브랜드 발굴 →','Open →') + '</span></div>' + outreachInner + '</div>';
+
+  // ── 3) 주의 필요 항목 ──
+  var now = Date.now();
+  var DAY = 86400000;
+  function daysOld(iso){ return iso ? (now - new Date(iso).getTime()) / DAY : 0; }
+  var staleReview = apps.filter(function(a){ return (a.status==='submitted'||a.status==='reviewing') && daysOld(a.created_at) >= 7; });
+  var pendingSign = ctrs.filter(function(c){ var s=[c.sig_brand_signed,c.sig_admin_signed,c.sig_walmart_signed].filter(Boolean).length; return s>0 && s<3; });
+  var staleProspect = prospects.filter(function(p){ return (p.status==='new') && !p.last_contact_at && daysOld(p.created_at) >= 7; });
+
+  var items = [];
+  if (staleReview.length) items.push({ icon:'📋', color:'#ef4444', text:_kn('7일 이상 미처리 심사','Reviews idle 7+ days'), n:staleReview.length, action:"showAdminView('review')" });
+  if (pendingSign.length) items.push({ icon:'✍️', color:'#f0ad4e', text:_kn('서명 진행 중(미완료) 계약','Contracts awaiting signatures'), n:pendingSign.length, action:"showAdminView('contracts')" });
+  if (staleProspect.length) items.push({ icon:'📵', color:'#f0ad4e', text:_kn('7일 이상 미접촉 잠재 브랜드','Prospects uncontacted 7+ days'), n:staleProspect.length, action:"showAdminView('outreach')" });
+
+  var attentionInner;
+  if (!items.length) {
+    attentionInner = '<div style="text-align:center;padding:28px 0;color:#00875a;font-size:13px;font-weight:600">✓ ' + _kn('바로 처리할 항목이 없습니다.','All clear — nothing needs attention.') + '</div>';
+  } else {
+    attentionInner = items.map(function(it){
+      return '<div onclick="' + it.action + '" style="display:flex;align-items:center;gap:10px;padding:10px 12px;border:1px solid var(--border);border-left:3px solid ' + it.color + ';border-radius:8px;margin-bottom:8px;cursor:pointer;transition:background .15s" onmouseover="this.style.background=\'var(--surface-alt)\'" onmouseout="this.style.background=\'\'">' +
+        '<span style="font-size:16px">' + it.icon + '</span>' +
+        '<span style="flex:1;font-size:13px;color:var(--text)">' + it.text + '</span>' +
+        '<span style="font-size:15px;font-weight:900;color:' + it.color + '">' + it.n + '</span>' +
+        '<span style="color:var(--text-faint);font-size:13px">›</span>' +
+      '</div>';
+    }).join('');
+  }
+  var attentionPanel = '<div class="panel"><div class="panel-title"><span>' + _kn('주의 필요 항목','Needs Attention') + '</span></div>' + attentionInner + '</div>';
+
+  host.innerHTML = funnelPanel +
+    '<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">' + outreachPanel + attentionPanel + '</div>';
+}
 
 // ─── CONTRACT TEMPLATE CUSTOMIZATION ───
 var _templateEdits = {};
