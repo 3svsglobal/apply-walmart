@@ -1890,7 +1890,6 @@ button{cursor:pointer;font-family:var(--font)}
         <div class="login-tabs">
           <button class="login-tab active" data-role="brand"><span class="ko">브랜드 기업</span><span class="en">Brand</span></button>
           <button class="login-tab" data-role="admin"><span class="ko">3SVS 관리자</span><span class="en">Admin</span></button>
-          <button class="login-tab" data-role="walmart">Walmart</button>
         </div>
         <div style="margin-bottom:12px"><input class="form-input" placeholder="이메일"></div>
         <div style="margin-bottom:24px"><input class="form-input" type="password" placeholder="비밀번호" onkeydown="if(event.key==='Enter')handleLogin()"></div>
@@ -1901,10 +1900,8 @@ button{cursor:pointer;font-family:var(--font)}
           <div style="font-family:var(--font);font-size:12px;color:var(--text-muted);margin-bottom:12px;letter-spacing:0"><span class="ko">접속 안내</span><span class="en">Access Guide</span></div>
           <div style="font-size:13px;color:var(--text-muted);line-height:1.8">
             <span class="ko"><strong style="color:var(--text)">브랜드 기업</strong> — 승인 완료 후 안내받은 이메일/비밀번호로 로그인<br>
-            <strong style="color:var(--text)">3SVS 관리자</strong> — 관리자 탭 선택 후 비밀번호 입력<br>
-            <strong style="color:var(--text)">Walmart</strong> — Buyer 전용 파이프라인 뷰 접속</span><span class="en"><strong style="color:var(--text)">Brand</strong> — Log in with the email/password provided after approval<br>
-            <strong style="color:var(--text)">3SVS Admin</strong> — Select the Admin tab and enter password<br>
-            <strong style="color:var(--text)">Walmart</strong> — Access the Buyer-exclusive pipeline view</span>
+            <strong style="color:var(--text)">3SVS 관리자</strong> — 관리자 탭 선택 후 비밀번호 입력</span><span class="en"><strong style="color:var(--text)">Brand</strong> — Log in with the email/password provided after approval<br>
+            <strong style="color:var(--text)">3SVS Admin</strong> — Select the Admin tab and enter password</span>
           </div>
         </div>
 
@@ -1934,6 +1931,7 @@ button{cursor:pointer;font-family:var(--font)}
         <div class="sidebar-item" onclick="showAdminView('dashboard')" id="admin-nav-dashboard"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg><span class="ko">대시보드</span><span class="en">Dashboard</span></div>
         <div class="sidebar-item" onclick="showAdminView('brands')" id="admin-nav-brands"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 22V4a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v18Z"/><path d="M6 12H4a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h2"/><path d="M18 9h2a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2h-2"/></svg><span class="ko">브랜드 관리</span><span class="en">Brands</span><span class="sidebar-badge">3</span></div>
         <div class="sidebar-item" onclick="showAdminView('review')" id="admin-nav-review"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><rect x="8" y="2" width="8" height="4" rx="1"/></svg><span class="ko">접수 심사</span><span class="en">Review</span><span class="sidebar-badge">2</span></div>
+        <div class="sidebar-item" onclick="showAdminView('outreach')" id="admin-nav-outreach"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg><span class="ko">브랜드 발굴</span><span class="en">Outreach</span></div>
         <div class="sidebar-item" onclick="showAdminView('cms')" id="admin-nav-cms"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg><span class="ko">콘텐츠 관리</span><span class="en">CMS</span></div>
         <!-- VOUCHER_HIDDEN: 바우처 사업 일시 중단 (2026-04-30). 재활성화 시 style="display:none" 제거 -->
         <div class="sidebar-item" onclick="showAdminView('voucher')" id="admin-nav-voucher" style="display:none"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg><span class="ko">수출바우처</span><span class="en">Voucher</span></div>
@@ -2375,6 +2373,26 @@ button{cursor:pointer;font-family:var(--font)}
         </div>
       </div>
 
+      <div class="dash-content" id="admin-outreach" style="display:none">
+        <div style="display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:16px;flex-wrap:wrap">
+          <div style="font-size:13px;color:var(--text-muted)"><span class="ko">잠재 브랜드 아웃리치 — 담당을 찍으면 다른 팀에 표시되어 중복 접촉이 방지됩니다.</span><span class="en">Prospect outreach — claiming a brand shows it to the other team and prevents duplicate contact.</span></div>
+          <button onclick="toggleProspectAdd()" style="background:var(--accent);color:#fff;border:none;padding:10px 16px;border-radius:8px;font-weight:600;font-size:13px;cursor:pointer;font-family:var(--font)">+ <span class="ko">잠재브랜드 추가</span><span class="en">Add Prospect</span></button>
+        </div>
+        <div id="prospect-add-panel" style="display:none;background:#fff;border:1px solid var(--border);border-radius:12px;padding:16px;margin-bottom:16px">
+          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:10px;margin-bottom:10px">
+            <input id="pr-name" placeholder="브랜드명 *" style="padding:9px 12px;border:1px solid var(--border);border-radius:8px;font-size:13px;font-family:var(--font)">
+            <input id="pr-category" placeholder="카테고리 (예: 뷰티)" style="padding:9px 12px;border:1px solid var(--border);border-radius:8px;font-size:13px;font-family:var(--font)">
+            <input id="pr-contact" placeholder="연락처 / 담당자" style="padding:9px 12px;border:1px solid var(--border);border-radius:8px;font-size:13px;font-family:var(--font)">
+            <input id="pr-source" placeholder="발굴 경로" style="padding:9px 12px;border:1px solid var(--border);border-radius:8px;font-size:13px;font-family:var(--font)">
+          </div>
+          <textarea id="pr-notes" placeholder="메모" rows="2" style="width:100%;padding:9px 12px;border:1px solid var(--border);border-radius:8px;font-size:13px;font-family:var(--font);resize:vertical;margin-bottom:10px;box-sizing:border-box"></textarea>
+          <div style="display:flex;gap:8px;justify-content:flex-end">
+            <button onclick="toggleProspectAdd()" style="background:#fff;border:1px solid var(--border);padding:9px 16px;border-radius:8px;font-size:13px;cursor:pointer;font-family:var(--font)"><span class="ko">취소</span><span class="en">Cancel</span></button>
+            <button onclick="submitProspect()" style="background:var(--accent);color:#fff;border:none;padding:9px 16px;border-radius:8px;font-weight:600;font-size:13px;cursor:pointer;font-family:var(--font)"><span class="ko">저장</span><span class="en">Save</span></button>
+          </div>
+        </div>
+        <div id="prospect-board"><div style="text-align:center;padding:40px;opacity:.6">Loading...</div></div>
+      </div>
       <div class="dash-content" id="admin-settings" style="display:none">
         <div style="margin-bottom:24px">
           <h3 style="font-size:18px;font-weight:700;color:var(--text);letter-spacing:-0.5px;margin-bottom:4px"><span class="ko">설정</span><span class="en">Settings</span></h3>
@@ -3811,7 +3829,7 @@ document.addEventListener('click', function(e) {
 
 // Admin sub-views
 function showAdminView(view) {
-  var views = ['dashboard','review','cms','voucher','settings','contracts','brand-detail'];
+  var views = ['dashboard','review','cms','voucher','settings','contracts','brand-detail','outreach'];
   views.forEach(function(v) {
     var el = document.getElementById('admin-' + v);
     if (el) el.style.display = 'none';
@@ -3831,7 +3849,8 @@ function showAdminView(view) {
     voucher: ['수출바우처', '수출바우처 연계 기업 관리', 'Export Voucher', 'Voucher-linked brand management'],
     settings: ['설정', '프로그램 관리 설정', 'Settings', 'Admin account and system settings'],
     contracts: ['계약 관리', '전자서명 계약 생성 · 서명 현황 관리', 'Contract Management', 'E-signed contract creation and signature tracking'],
-    'brand-detail': ['기업 상세', '브랜드별 상세 관리 (메모·할 일·미팅·자료·메시지·계약)', 'Brand Detail', 'Per-brand management (notes, tasks, meetings, docs, messages, contracts)']
+    'brand-detail': ['기업 상세', '브랜드별 상세 관리 (메모·할 일·미팅·자료·메시지·계약)', 'Brand Detail', 'Per-brand management (notes, tasks, meetings, docs, messages, contracts)'],
+    outreach: ['브랜드 발굴', '잠재 브랜드 아웃리치 · 담당 배정 · 중복 방지', 'Outreach', 'Prospect outreach — claim brands and avoid duplicate contact']
   };
   var t = titles[view] || titles.dashboard;
   topTitle.innerHTML = '<span class="ko">' + t[0] + '</span><span class="en">' + t[2] + '</span>';
@@ -3840,6 +3859,7 @@ function showAdminView(view) {
   if (view === 'contracts') { renderAdminContracts(); loadApprovedBrandsForContract(); }
   if (view === 'review') renderAdminReview();
   if (view === 'settings') { if (typeof loadStaffAccounts === 'function') loadStaffAccounts(); }
+  if (view === 'outreach') { if (typeof loadProspects === 'function') loadProspects(); }
 }
 
 // ─── ADMIN: 스태프 계정 관리 ───
@@ -7641,7 +7661,7 @@ function _detectSessionRole() {
     if (!s) return null;
     if (s.type === 'brand') return 'brand';
     if (s.type === 'admin') return 'admin';
-    if (s.type === 'walmart') return 'walmart';
+    if (s.type === 'walmart') return 'admin';
   } catch(e) {}
   return null;
 }
@@ -7735,7 +7755,7 @@ async function restoreSession() {
     } else if (sess.type === 'admin') {
       switchTab('admin');
     } else if (sess.type === 'walmart') {
-      switchTab('walmart');
+      switchTab('admin');
     }
   } catch(e) { console.log('Session restore failed:', e); }
 }
@@ -9341,6 +9361,126 @@ function formatFileSize(bytes) {
   if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(1) + ' KB';
   return (bytes / (1024 * 1024)).toFixed(1) + ' MB';
 }
+
+// ═══ 아웃리치 (잠재 브랜드 발굴) — wm_prospects ═══
+var _prospectStatusMeta = {
+  'new':       { ko:'신규', en:'New',       color:'#6b7280' },
+  'contacted': { ko:'접촉', en:'Contacted', color:'#0071dc' },
+  'in_talks':  { ko:'협의', en:'In Talks',  color:'#f59e0b' },
+  'converted': { ko:'전환', en:'Converted', color:'#10b981' },
+  'dropped':   { ko:'보류', en:'Dropped',   color:'#ef4444' }
+};
+function _meAdmin() {
+  try { var s = JSON.parse(sessionStorage.getItem('wm_session') || 'null'); if (s && s.username) return { username: s.username, name: s.name || s.username }; } catch(e){}
+  if (typeof _currentAdminUser !== 'undefined' && _currentAdminUser && _currentAdminUser.username) return { username: _currentAdminUser.username, name: _currentAdminUser.name || _currentAdminUser.username };
+  return { username: 'admin', name: _kn('관리자','Admin') };
+}
+function toggleProspectAdd() {
+  var p = document.getElementById('prospect-add-panel');
+  if (p) p.style.display = (p.style.display === 'none' || !p.style.display) ? 'block' : 'none';
+}
+async function loadProspects() {
+  var board = document.getElementById('prospect-board');
+  if (!board || !supabase) return;
+  var res = await supabase.from('wm_prospects').select('*').order('created_at', { ascending: false });
+  if (res.error) { board.innerHTML = '<div style="text-align:center;padding:32px;color:#ef4444;font-size:13px">' + _kn('불러오기 실패: ','Load failed: ') + _esc(res.error.message) + '</div>'; return; }
+  renderProspects(res.data || []);
+}
+function renderProspects(rows) {
+  var board = document.getElementById('prospect-board');
+  if (!board) return;
+  if (!rows.length) {
+    board.innerHTML = '<div style="text-align:center;padding:48px 0;color:var(--text-muted);font-size:13px">' + _kn('아직 등록된 잠재 브랜드가 없습니다. 우측 상단 [+ 잠재브랜드 추가]로 시작하세요.','No prospects yet. Use [+ Add Prospect] to start.') + '</div>';
+    return;
+  }
+  var me = _meAdmin();
+  var head = '<div style="overflow-x:auto"><table style="width:100%;border-collapse:collapse;font-size:13px;min-width:720px">'
+    + '<thead><tr style="text-align:left;color:var(--text-muted);font-size:11px;border-bottom:1px solid var(--border)">'
+    + '<th style="padding:8px 10px">' + _kn('브랜드','Brand') + '</th>'
+    + '<th style="padding:8px 10px">' + _kn('카테고리','Category') + '</th>'
+    + '<th style="padding:8px 10px">' + _kn('상태','Status') + '</th>'
+    + '<th style="padding:8px 10px">' + _kn('담당','Owner') + '</th>'
+    + '<th style="padding:8px 10px">' + _kn('마지막 접촉','Last Contact') + '</th>'
+    + '<th style="padding:8px 10px"></th></tr></thead><tbody>';
+  var body = rows.map(function(r) {
+    var meta = _prospectStatusMeta[r.status] || _prospectStatusMeta['new'];
+    var statusSel = '<select onchange="setProspectStatus(\'' + r.id + '\', this.value)" style="border:1px solid var(--border);border-radius:6px;padding:4px 6px;font-size:12px;font-family:var(--font);color:' + meta.color + ';font-weight:600">'
+      + Object.keys(_prospectStatusMeta).map(function(k){ var m = _prospectStatusMeta[k]; return '<option value="' + k + '"' + (k === r.status ? ' selected' : '') + '>' + _kn(m.ko, m.en) + '</option>'; }).join('')
+      + '</select>';
+    var owner;
+    if (!r.claimed_by) {
+      owner = '<button onclick="claimProspect(\'' + r.id + '\')" style="background:var(--accent-light);color:var(--accent);border:1px solid rgba(0,113,220,0.3);border-radius:999px;padding:4px 12px;font-size:12px;font-weight:600;cursor:pointer;font-family:var(--font)">' + _kn('내가 찍기','Claim') + '</button>';
+    } else {
+      var mine = r.claimed_by === me.username;
+      owner = '<span style="display:inline-flex;align-items:center;gap:6px;color:' + (mine ? '#10b981' : 'var(--text)') + '"><span style="width:7px;height:7px;border-radius:50%;background:' + (mine ? '#10b981' : '#f59e0b') + '"></span>' + _esc(r.claimed_by_name || r.claimed_by) + '</span>';
+      if (mine) owner += ' <button onclick="releaseProspect(\'' + r.id + '\')" style="background:none;border:none;color:var(--text-muted);font-size:11px;cursor:pointer;text-decoration:underline">' + _kn('해제','Release') + '</button>';
+    }
+    var last = r.last_contact_at ? String(r.last_contact_at).slice(0,10) : '<span style="color:var(--text-muted)">—</span>';
+    return '<tr style="border-bottom:1px solid var(--border)">'
+      + '<td style="padding:9px 10px;font-weight:600;color:var(--text)">' + _esc(r.brand_name) + (r.contact_info ? '<div style="font-size:11px;color:var(--text-muted);font-weight:400">' + _esc(r.contact_info) + '</div>' : '') + '</td>'
+      + '<td style="padding:9px 10px;color:var(--text-muted)">' + (r.category ? _esc(r.category) : '—') + '</td>'
+      + '<td style="padding:9px 10px">' + statusSel + '</td>'
+      + '<td style="padding:9px 10px">' + owner + '</td>'
+      + '<td style="padding:9px 10px;color:var(--text-muted);white-space:nowrap">' + last + ' <button onclick="markProspectContacted(\'' + r.id + '\')" style="background:none;border:1px solid var(--border);border-radius:6px;padding:2px 7px;font-size:11px;cursor:pointer;color:var(--accent)">' + _kn('접촉','Log') + '</button></td>'
+      + '<td style="padding:9px 10px;text-align:right;white-space:nowrap">'
+      +   '<button onclick="editProspectNotes(\'' + r.id + '\')" style="background:none;border:none;cursor:pointer;font-size:14px;opacity:.6" title="' + _kn('메모','Notes') + '">📝</button>'
+      +   '<button onclick="deleteProspect(\'' + r.id + '\')" style="background:none;border:none;cursor:pointer;font-size:14px;opacity:.6" title="' + _kn('삭제','Delete') + '">🗑</button>'
+      + '</td></tr>'
+      + (r.notes ? '<tr><td colspan="6" style="padding:0 10px 9px;font-size:12px;color:var(--text-muted)">↳ ' + _esc(r.notes) + '</td></tr>' : '');
+  }).join('');
+  board.innerHTML = head + body + '</tbody></table></div>';
+}
+async function submitProspect() {
+  var nameEl = document.getElementById('pr-name');
+  var name = (nameEl && nameEl.value || '').trim();
+  if (!name) { alert(_kn('브랜드명을 입력하세요.','Brand name is required.')); return; }
+  var me = _meAdmin();
+  function _v(id){ var e = document.getElementById(id); return (e && e.value || '').trim() || null; }
+  var payload = { brand_name: name, category: _v('pr-category'), contact_info: _v('pr-contact'), source: _v('pr-source'), notes: _v('pr-notes'), created_by: me.username };
+  var res = await supabase.from('wm_prospects').insert(payload);
+  if (res.error) { alert(_kn('저장 실패: ','Save failed: ') + res.error.message); return; }
+  ['pr-name','pr-category','pr-contact','pr-source','pr-notes'].forEach(function(id){ var e = document.getElementById(id); if (e) e.value = ''; });
+  toggleProspectAdd();
+  loadProspects();
+}
+async function claimProspect(id) {
+  var me = _meAdmin();
+  var now = new Date().toISOString();
+  await supabase.from('wm_prospects').update({ claimed_by: me.username, claimed_by_name: me.name, claimed_at: now, updated_at: now }).eq('id', id).is('claimed_by', null);
+  loadProspects();
+}
+async function releaseProspect(id) {
+  var res = await supabase.from('wm_prospects').update({ claimed_by: null, claimed_by_name: null, claimed_at: null, updated_at: new Date().toISOString() }).eq('id', id);
+  if (res.error) { alert(res.error.message); return; }
+  loadProspects();
+}
+async function setProspectStatus(id, status) {
+  var res = await supabase.from('wm_prospects').update({ status: status, updated_at: new Date().toISOString() }).eq('id', id);
+  if (res.error) { alert(res.error.message); return; }
+  loadProspects();
+}
+async function markProspectContacted(id) {
+  var now = new Date().toISOString();
+  var res = await supabase.from('wm_prospects').update({ last_contact_at: now, updated_at: now }).eq('id', id);
+  if (res.error) { alert(res.error.message); return; }
+  loadProspects();
+}
+async function editProspectNotes(id) {
+  var cur = '';
+  try { var g = await supabase.from('wm_prospects').select('notes').eq('id', id).single(); cur = (g.data && g.data.notes) || ''; } catch(e){}
+  var v = prompt(_kn('메모','Notes'), cur);
+  if (v === null) return;
+  var res = await supabase.from('wm_prospects').update({ notes: v.trim() || null, updated_at: new Date().toISOString() }).eq('id', id);
+  if (res.error) { alert(res.error.message); return; }
+  loadProspects();
+}
+async function deleteProspect(id) {
+  if (!confirm(_kn('이 잠재 브랜드를 삭제할까요?','Delete this prospect?'))) return;
+  var res = await supabase.from('wm_prospects').delete().eq('id', id);
+  if (res.error) { alert(res.error.message); return; }
+  loadProspects();
+}
+
 
 </script>
 
