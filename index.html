@@ -387,16 +387,16 @@ button{cursor:pointer;font-family:var(--font)}
 .dash-layout{display:grid;grid-template-columns:240px 1fr;min-height:100vh;background:var(--bg);color:var(--text)}
 .sidebar{background:var(--surface-alt);border-right:1px solid var(--border);display:flex;flex-direction:column}
 .sidebar-logo{padding:20px 24px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px}
-.sidebar-logo-icon{width:32px;height:32px;background:var(--accent);border-radius:6px;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:14px;color:var(--text);flex-shrink:0}
+.sidebar-logo-icon{width:32px;height:32px;background:var(--accent);border-radius:6px;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:14px;color:#fff;flex-shrink:0}
 .sidebar-logo-text{font-size:14px;font-weight:600;color:var(--text)}
 .sidebar-logo-text span{font-weight:400;color:var(--text-muted);display:block;font-size:12px}
 .sidebar-nav{padding:16px 12px;flex:1}
-.sidebar-item{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:6px;font-size:14px;font-weight:500;color:var(--text-muted);margin-bottom:2px;transition:all .2s;cursor:pointer}
+.sidebar-item{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:8px;font-size:14px;font-weight:500;color:var(--text-muted);margin-bottom:2px;transition:all .2s;cursor:pointer}
 .sidebar-item:hover{background:var(--surface-hover);color:var(--text)}
-.sidebar-item.active{background:var(--accent-light);color:var(--accent)}
+.sidebar-item.active{background:var(--accent-light);color:var(--accent);font-weight:600}
 .sidebar-item svg{width:18px;height:18px;opacity:0.6}
 .sidebar-item.active svg{opacity:1}
-.sidebar-badge{margin-left:auto;background:var(--red);color:var(--text);font-size:12px;font-weight:600;padding:2px 7px;border-radius:10px}
+.sidebar-badge{margin-left:auto;background:var(--accent);color:#fff;font-size:11px;font-weight:700;min-width:19px;height:19px;padding:0 6px;border-radius:9px;display:inline-flex;align-items:center;justify-content:center;line-height:1}
 .sidebar-bottom{padding:16px 24px;border-top:1px solid var(--border);font-size:12px;color:var(--text-faint)}
 .dash-main{overflow-y:auto;background:var(--bg)}
 .dash-topbar{padding:20px 32px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;background:var(--bg)}
@@ -411,7 +411,7 @@ button{cursor:pointer;font-family:var(--font)}
 .noti-dot::after{content:'';position:absolute;top:4px;right:4px;width:7px;height:7px;border-radius:50%;background:var(--red)}
 .dash-content{padding:32px;background:var(--bg)}
 .stat-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:32px}
-.stat-card{padding:28px;border:1px solid var(--border);border-radius:8px;background:var(--surface);transition:all .2s}
+.stat-card{padding:28px;border:1px solid var(--border);border-radius:12px;background:var(--surface);box-shadow:0 1px 2px rgba(0,0,0,0.03);transition:all .2s}
 .stat-card:hover{border-color:rgba(0,113,220,0.4);box-shadow:0 4px 12px rgba(0,0,0,0.04);transform:translateY(-2px)}
 .stat-card .val{font-size:36px;font-weight:900;letter-spacing:-2px;color:var(--text);margin-bottom:4px}
 .stat-card .val em{font-style:normal;color:var(--accent)}
@@ -419,7 +419,7 @@ button{cursor:pointer;font-family:var(--font)}
 .stat-card .change{font-family:var(--font);font-size:12px;margin-top:10px;color:var(--lime);font-weight:500}
 .stat-card .change.warn{color:var(--accent-orange)}
 .dash-grid{display:grid;grid-template-columns:1fr 360px;gap:8px}
-.panel{padding:28px;border:1px solid var(--border);border-radius:8px;background:var(--surface)}
+.panel{padding:28px;border:1px solid var(--border);border-radius:12px;background:var(--surface)}
 .panel-title{font-size:15px;font-weight:700;letter-spacing:-0.5px;margin-bottom:20px;color:var(--text);display:flex;align-items:center;justify-content:space-between}
 .panel-title .count{font-family:var(--font);font-size:12px;color:var(--text-faint)}
 .brand-card{padding:28px;border:1px solid var(--border);border-radius:8px;background:var(--surface);margin-bottom:8px;transition:all .2s}
