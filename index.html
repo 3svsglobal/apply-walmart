@@ -8542,14 +8542,14 @@ async function loadAdminBrandApplication(brandId) {
     contact_name:_kn('담당자','Contact'), contact_position:_kn('직함','Title'), contact_email:_kn('이메일','Email'),
     contact_phone:_kn('전화','Phone'), export_experience:_kn('수출 경험','Export Exp.'),
     voucher_number:_kn('바우처 번호','Voucher No.'), voucher_amount:_kn('바우처 금액','Voucher Amount'),
-    created_at:_kn('신청일','Submitted')
+    created_at:_kn('신청일','Submitted'), approved_at:_kn('승인일','Approved')
   };
-  var _skipCols = { id:1, updated_at:1, walmart_interest:1, attached_files:1, application_id:1, product_description:1, brand_story:1 };
+  var _skipCols = { id:1, updated_at:1, walmart_interest:1, attached_files:1, application_id:1, product_description:1, brand_story:1, edit_token:1 };
   function _appVal(k, v){
     if (k === 'annual_revenue') return _fmtMoney(v, '$', 'USD');
     if (k === 'voucher_amount') return _fmtMoney(v, '₩', 'KRW');
     if (k === 'apply_type') return v === 'voucher' ? _kn('수출바우처','Voucher') : _kn('직접참여','Direct');
-    if (k === 'created_at') { try { return _fmtDate(v); } catch(e){ return String(v).slice(0,10); } }
+    if (k === 'created_at' || k === 'approved_at') { try { return _fmtDate(v); } catch(e){ return String(v).slice(0,10); } }
     if (Array.isArray(v)) return v.join(', ');
     return String(v);
   }
