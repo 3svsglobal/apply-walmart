@@ -2450,12 +2450,12 @@ button{cursor:pointer;font-family:var(--font)}
         </div>
         <div id="prospect-add-panel" style="display:none;background:#fff;border:1px solid var(--border);border-radius:12px;padding:16px;margin-bottom:16px">
           <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:10px;margin-bottom:10px">
-            <input id="pr-name" placeholder="브랜드명 *" style="padding:9px 12px;border:1px solid var(--border);border-radius:8px;font-size:13px;font-family:var(--font)">
-            <input id="pr-category" placeholder="카테고리 (예: 뷰티)" style="padding:9px 12px;border:1px solid var(--border);border-radius:8px;font-size:13px;font-family:var(--font)">
-            <input id="pr-contact" placeholder="연락처 / 담당자" style="padding:9px 12px;border:1px solid var(--border);border-radius:8px;font-size:13px;font-family:var(--font)">
-            <input id="pr-source" placeholder="발굴 경로" style="padding:9px 12px;border:1px solid var(--border);border-radius:8px;font-size:13px;font-family:var(--font)">
+            <input id="pr-name" placeholder="Brand name *" data-ph-ko="브랜드명 *" data-ph-en="Brand name *" style="padding:9px 12px;border:1px solid var(--border);border-radius:8px;font-size:13px;font-family:var(--font)">
+            <input id="pr-category" placeholder="Category (e.g. Beauty)" data-ph-ko="카테고리 (예: 뷰티)" data-ph-en="Category (e.g. Beauty)" style="padding:9px 12px;border:1px solid var(--border);border-radius:8px;font-size:13px;font-family:var(--font)">
+            <input id="pr-contact" placeholder="Contact / manager" data-ph-ko="연락처 / 담당자" data-ph-en="Contact / manager" style="padding:9px 12px;border:1px solid var(--border);border-radius:8px;font-size:13px;font-family:var(--font)">
+            <input id="pr-source" placeholder="Source" data-ph-ko="발굴 경로" data-ph-en="Source" style="padding:9px 12px;border:1px solid var(--border);border-radius:8px;font-size:13px;font-family:var(--font)">
           </div>
-          <textarea id="pr-notes" placeholder="메모" rows="2" style="width:100%;padding:9px 12px;border:1px solid var(--border);border-radius:8px;font-size:13px;font-family:var(--font);resize:vertical;margin-bottom:10px;box-sizing:border-box"></textarea>
+          <textarea id="pr-notes" placeholder="Notes" data-ph-ko="메모" data-ph-en="Notes" rows="2" style="width:100%;padding:9px 12px;border:1px solid var(--border);border-radius:8px;font-size:13px;font-family:var(--font);resize:vertical;margin-bottom:10px;box-sizing:border-box"></textarea>
           <div style="display:flex;gap:8px;justify-content:flex-end">
             <button onclick="toggleProspectAdd()" style="background:#fff;border:1px solid var(--border);padding:9px 16px;border-radius:8px;font-size:13px;cursor:pointer;font-family:var(--font)"><span class="ko">취소</span><span class="en">Cancel</span></button>
             <button onclick="submitProspect()" style="background:var(--accent);color:#fff;border:none;padding:9px 16px;border-radius:8px;font-weight:600;font-size:13px;cursor:pointer;font-family:var(--font)"><span class="ko">저장</span><span class="en">Save</span></button>
@@ -3797,6 +3797,12 @@ function setLang(lang) {
   }
   if (typeof renderAdminReview === 'function' && document.getElementById('admin-review') && document.getElementById('admin-review').style.display !== 'none') {
     try { renderAdminReview(); } catch(e){}
+  }
+  if (typeof loadProspects === 'function' && document.getElementById('admin-outreach') && document.getElementById('admin-outreach').style.display !== 'none') {
+    try { loadProspects(); } catch(e){}
+  }
+  if (typeof loadAdminBrandsList === 'function' && document.getElementById('admin-brands') && document.getElementById('admin-brands').style.display !== 'none') {
+    try { loadAdminBrandsList(); } catch(e){}
   }
   // data-ko/data-en 속성이 있는 <option> 요소 텍스트 동기화
   document.querySelectorAll('option[data-ko][data-en]').forEach(function(o) {
