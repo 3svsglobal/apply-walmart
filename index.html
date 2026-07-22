@@ -8293,11 +8293,11 @@ async function showWmBrandDetailDB(brandId) {
     '<button onclick="downloadBrandInfoPdf(\x27' + brandId + '\x27)" title="Download brand profile as a printable PDF" style="background:#0071ce;color:#fff;border:none;padding:10px 18px;border-radius:8px;font-size:13px;font-weight:700;cursor:pointer;display:inline-flex;align-items:center;gap:6px;box-shadow:0 2px 6px rgba(0,113,206,0.25)"><span>📥</span> Download Brand Info (PDF)</button></div>' +
     '<div class="wm-section"><div class="wm-section-title">Phase Management</div><div style="display:flex;gap:8px;flex-wrap:wrap">' + phaseBtns + '</div></div>' +
     '<div class="wm-section"><div class="wm-section-title">Company Information</div><div class="wm-info-grid">' + (infoHtml || '<div style="opacity:.7">No information</div>') + '</div></div>' +
+    '<div class="wm-section"><div class="wm-section-title"><span class="ko">📋 심사요청 신청서 · 제출 자료</span><span class="en">📋 Application &amp; Submitted Materials</span></div><div id="admin-brand-application" style="margin-top:10px"><div style="color:var(--text-muted);font-size:12px">Loading...</div></div></div>' +
     '<div class="wm-section"><div class="wm-section-title" style="display:flex;justify-content:space-between;align-items:center"><span>🗒 Internal Notes</span><span id="admin-notes-status" style="font-size:11px;color:var(--text-muted)"></span></div><div style="margin-top:10px;font-size:11.5px;color:var(--text-muted);margin-bottom:8px">Visible to admin and Startup Junkie only. Not shown to brand.</div><div id="phase-tabs-notes" style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px"></div><div style="font-size:11.5px;color:var(--text-muted);margin-bottom:6px"><span id="admin-notes-phase-hint">Notes</span></div><textarea id="admin-brand-notes" rows="6" placeholder="Notes about this brand: contact history, negotiation points, things to watch..." style="width:100%;background:#fff;border:1px solid var(--border);border-radius:8px;padding:12px 14px;font-size:13.5px;color:var(--text);font-family:var(--font);resize:vertical;line-height:1.55"></textarea><div style="margin-top:8px;display:flex;justify-content:flex-end"><button onclick="adminSaveBrandNotes(\x27' + brandId + '\x27)" style="background:var(--accent);color:#fff;border:none;padding:8px 18px;border-radius:6px;font-size:12.5px;font-weight:600;cursor:pointer">Save</button></div></div>' +
     '<div class="wm-section"><div class="wm-section-title" style="display:flex;justify-content:space-between;align-items:center"><span>Tasks</span><button onclick="showAdminTaskAddModal(\x27' + brandId + '\x27)" style="background:var(--accent);color:#fff;border:none;padding:6px 12px;border-radius:6px;font-size:12px;font-weight:600;cursor:pointer">+ Add task</button></div><div id="phase-tabs-tasks" style="display:flex;gap:6px;flex-wrap:wrap;margin:10px 0 8px"></div><div id="admin-brand-tasks-list" style="margin-top:10px"><div style="color:var(--text-muted);font-size:12px">Loading...</div></div></div>' +
     '<div class="wm-section"><div class="wm-section-title" style="display:flex;justify-content:space-between;align-items:center"><span>Meetings</span><button onclick="showAdminMeetingAddModal(\x27' + brandId + '\x27)" style="background:var(--accent);color:#fff;border:none;padding:6px 12px;border-radius:6px;font-size:12px;font-weight:600;cursor:pointer">+ Propose meeting</button></div><div id="admin-brand-meetings-list" style="margin-top:10px"><div style="color:var(--text-muted);font-size:12px">Loading...</div></div></div>' +
     '<div class="wm-section"><div class="wm-section-title" style="display:flex;justify-content:space-between;align-items:center"><span>Documents</span><button onclick="showAdminDocRequestModal(\x27' + brandId + '\x27)" style="background:var(--accent);color:#fff;border:none;padding:6px 12px;border-radius:6px;font-size:12px;font-weight:600;cursor:pointer">+ Request document</button></div><div id="admin-brand-docs-list" style="margin-top:10px"><div style="color:var(--text-muted);font-size:12px">Loading...</div></div></div>' +
-    '<div class="wm-section"><div class="wm-section-title">Application & Attachments</div><div id="admin-brand-application" style="margin-top:10px"><div style="color:var(--text-muted);font-size:12px">Loading...</div></div></div>' +
     '<div class="wm-section"><div class="wm-section-title" style="display:flex;justify-content:space-between;align-items:center"><span>Recent Messages</span><button onclick="showAdminBrandMessages(\x27' + brandId + '\x27, \x27' + brandNameEsc + '\x27)" style="background:var(--accent);color:#fff;border:none;padding:7px 16px;border-radius:7px;cursor:pointer;font-size:12.5px;font-weight:600">Open / Reply</button></div><div id="admin-brand-messages-preview" style="margin-top:10px"><div style="color:var(--text-muted);font-size:12px">Loading...</div></div></div>' +
     '<div class="wm-section"><div class="wm-section-title">Contracts</div>' + getWmContractsHtml(brandId) + '</div>';
 
@@ -8430,21 +8430,21 @@ async function loadAdminBrandApplication(brandId) {
   if (!supabase) return;
   var el = document.getElementById('admin-brand-application');
   if (!el) return;
-  // 브랜드 → 신청 매칭: portal_email 로 찾기
-  var bRes = await supabase.from('wm_brands').select('portal_email, contact_email').eq('id', brandId).single();
-  var email = (bRes.data && (bRes.data.portal_email || bRes.data.contact_email)) || '';
-  if (!email) {
-    el.innerHTML = '<div style="color:var(--text-muted);font-size:12.5px">' + _kn('신청서를 찾을 수 없습니다 (이메일 매칭 불가).','Application not found (no email match).') + '</div>';
-    return;
+  // 브랜드 → 신청 매칭: application_id 우선, 없으면 이메일
+  var bRes = await supabase.from('wm_brands').select('*').eq('id', brandId).single();
+  var brandRow = bRes.data || {};
+  var email = brandRow.portal_email || brandRow.contact_email || '';
+  var app = null;
+  if (brandRow.application_id) {
+    var aById = await supabase.from('wm_applications').select('*').eq('id', brandRow.application_id).limit(1);
+    app = aById.data && aById.data[0];
   }
-  var aRes = await supabase.from('wm_applications')
-    .select('*')
-    .eq('contact_email', email)
-    .order('created_at', { ascending: false })
-    .limit(1);
-  var app = aRes.data && aRes.data[0];
+  if (!app && email) {
+    var aRes = await supabase.from('wm_applications').select('*').eq('contact_email', email).order('created_at', { ascending: false }).limit(1);
+    app = aRes.data && aRes.data[0];
+  }
   if (!app) {
-    el.innerHTML = '<div style="color:var(--text-muted);font-size:12.5px">' + _kn('이메일로 매칭된 신청서가 없습니다','No application matched for') + ': ' + _esc(email) + '</div>';
+    el.innerHTML = '<div style="color:var(--text-muted);font-size:12.5px">' + _kn('매칭된 신청서를 찾을 수 없습니다','No matching application found') + (email ? ': ' + _esc(email) : '') + '</div>';
     return;
   }
 
@@ -8533,18 +8533,36 @@ async function loadAdminBrandApplication(brandId) {
     }
   }
 
-  // 기본 신청 정보
-  var basicHtml = '<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:8px 16px;margin-bottom:14px;padding:12px 14px;background:#fff;border:1px solid var(--border);border-radius:8px">' +
-    _adminAppField(_kn('신청 유형','Apply Type'), app.apply_type === 'voucher' ? _kn('수출바우처','Voucher') : _kn('직접참여','Direct')) +
-    _adminAppField(_kn('상태','Status'), app.status || '-') +
-    _adminAppField(_kn('담당자','Contact'), app.contact_name || '-') +
-    _adminAppField(_kn('이메일','Email'), app.contact_email || '-') +
-    _adminAppField(_kn('전화','Phone'), app.contact_phone || '-') +
-    _adminAppField(_kn('사업자번호','Business No.'), app.business_number || '-') +
-    _adminAppField(_kn('신청일','Submitted'), app.created_at ? _fmtDate(app.created_at) : '-') +
-    '</div>';
+  // 기본 신청 정보 — 신청서 전 컬럼을 빠짐없이 표시
+  var _appLabels = {
+    brand_name_ko:_kn('브랜드명(국문)','Brand (KR)'), brand_name_en:_kn('브랜드명(영문)','Brand (EN)'),
+    product_category:_kn('카테고리','Category'), homepage:_kn('홈페이지','Website'),
+    annual_revenue:_kn('연매출(USD)','Annual Revenue'), apply_type:_kn('신청 유형','Apply Type'),
+    status:_kn('상태','Status'), ceo_name:_kn('대표자','CEO'), business_number:_kn('사업자번호','Business No.'),
+    contact_name:_kn('담당자','Contact'), contact_position:_kn('직함','Title'), contact_email:_kn('이메일','Email'),
+    contact_phone:_kn('전화','Phone'), export_experience:_kn('수출 경험','Export Exp.'),
+    voucher_number:_kn('바우처 번호','Voucher No.'), voucher_amount:_kn('바우처 금액','Voucher Amount'),
+    created_at:_kn('신청일','Submitted')
+  };
+  var _skipCols = { id:1, updated_at:1, walmart_interest:1, attached_files:1, application_id:1, product_description:1, brand_story:1 };
+  function _appVal(k, v){
+    if (k === 'apply_type') return v === 'voucher' ? _kn('수출바우처','Voucher') : _kn('직접참여','Direct');
+    if (k === 'created_at') { try { return _fmtDate(v); } catch(e){ return String(v).slice(0,10); } }
+    if (Array.isArray(v)) return v.join(', ');
+    return String(v);
+  }
+  var fieldsHtml = Object.keys(app).filter(function(k){
+    if (_skipCols[k]) return false;
+    var v = app[k];
+    return v != null && v !== '' && v !== 'N/A';
+  }).map(function(k){
+    return _adminAppField(_appLabels[k] || k.replace(/_/g,' '), _appVal(k, app[k]));
+  }).join('');
+  var basicHtml = '<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:10px 18px;margin-bottom:14px;padding:14px 16px;background:#fff;border:1px solid var(--border);border-radius:10px">' + fieldsHtml + '</div>';
+  function _appLongBlock(label, val){ if (val == null || val === '') return ''; return '<div style="margin-bottom:12px;padding:14px 16px;background:#fff;border:1px solid var(--border);border-radius:10px"><div style="font-size:11.5px;font-weight:700;color:var(--text-muted);margin-bottom:6px">' + label + '</div><div style="font-size:13px;color:var(--text);line-height:1.6;white-space:pre-wrap">' + _esc(String(val)) + '</div></div>'; }
+  var longHtml = _appLongBlock(_kn('제품 / 브랜드 설명','Product / Brand Description'), app.product_description);
 
-  el.innerHTML = basicHtml + attachedHtml + interestHtml;
+  el.innerHTML = basicHtml + longHtml + attachedHtml + interestHtml;
 }
 
 function _adminAppField(label, value) {
