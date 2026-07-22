@@ -2894,7 +2894,7 @@ button{cursor:pointer;font-family:var(--font)}
         <div class="sidebar-item" onclick="wmSwitchToAdmin('dashboard')" style="cursor:pointer"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3h7v9H3z"/><path d="M14 3h7v5h-7z"/><path d="M14 12h7v9h-7z"/><path d="M3 16h7v5H3z"/></svg>Dashboard</div>
         <div class="sidebar-item" onclick="wmSwitchToAdmin('brands')" style="cursor:pointer"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 22V4a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v18Z"/><path d="M6 12H4a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h2"/><path d="M18 9h2a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2h-2"/></svg>Brand Management</div>
         <div class="sidebar-item" onclick="wmSwitchToAdmin('contracts')" style="cursor:pointer"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>Contracts</div>
-        <div class="sidebar-item" onclick="wmSwitchToAdmin('cms')" style="cursor:pointer"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>Content Management</div>
+        <div class="sidebar-item" id="wm-nav-cms" onclick="wmSwitchToAdmin('cms')" style="cursor:pointer"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>Content Management</div>
         <div class="sidebar-item" onclick="wmSwitchToAdmin('settings')" style="cursor:pointer"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>Settings</div>
       </div>
       <div class="sidebar-bottom"><div style="cursor:pointer;color:rgba(0,0,0,0.6);margin-bottom:8px" onclick="switchTab('landing')">← Log out</div>Walmart Marketplace<br>Entry Program</div>
@@ -3393,7 +3393,8 @@ async function loginAdmin(emailOrUsername, pw, requestedRole) {
         sessionStorage.setItem('wm_session', JSON.stringify({
           type: actualRole,
           username: acc.username,
-          name: acc.name
+          name: acc.name,
+          email: acc.email
         }));
         switchTab(actualRole === 'walmart' ? 'walmart' : 'admin');
         return;
@@ -3870,7 +3871,7 @@ function switchTab(id) {
   closeMobileMenu();
   window.scrollTo(0, 0);
   if (id === 'admin') showAdminView('dashboard');
-  if (id === 'walmart') loadWmBrands();
+  if (id === 'walmart') { loadWmBrands(); if (typeof _applyCmsAccess === 'function') _applyCmsAccess(); }
 }
 
 function toggleMobileMenu() {
@@ -3898,12 +3899,32 @@ document.addEventListener('click', function(e) {
 });
 
 // Admin sub-views
+function _canEditCms() {
+  try {
+    var s = JSON.parse(sessionStorage.getItem('wm_session') || 'null');
+    var email = (s && s.email) || (typeof _currentAdminUser !== 'undefined' && _currentAdminUser && _currentAdminUser.email) || '';
+    var uname = (s && s.username) || (typeof _currentAdminUser !== 'undefined' && _currentAdminUser && _currentAdminUser.username) || '';
+    if (/startupjunkie/i.test(email)) return false;
+    if (uname === 'louis') return false;
+    return true;
+  } catch(e) { return true; }
+}
+function _applyCmsAccess() {
+  var ok = _canEditCms();
+  ['admin-nav-cms','wm-nav-cms'].forEach(function(id){
+    var el = document.getElementById(id);
+    if (el) el.style.display = ok ? '' : 'none';
+  });
+}
+
 function showAdminView(view) {
   var views = ['dashboard','brands','review','cms','voucher','settings','contracts','brand-detail','outreach'];
   views.forEach(function(v) {
     var el = document.getElementById('admin-' + v);
     if (el) el.style.display = 'none';
   });
+  if (typeof _applyCmsAccess === 'function') _applyCmsAccess();
+  if (view === 'cms' && !_canEditCms()) view = 'dashboard';
   var target = document.getElementById('admin-' + view);
   if (target) target.style.display = '';
   document.querySelectorAll('#view-admin .sidebar-item').forEach(function(item) { item.classList.remove('active'); });
