@@ -3316,7 +3316,7 @@ function dbContractToLocal(row) {
 
 
 // ─── ADMIN PASSWORD ───
-let ADMIN_PW = '3svs2026';
+/* 단일 관리자 비밀번호 제거됨 — 스태프 계정 + 서버측 RPC 로그인으로 대체 */
 
 function showAdminModal() {
   document.getElementById('admin-pw-input').value = '';
@@ -3329,25 +3329,25 @@ function hideAdminModal() {
 }
 async function checkAdminPw() {
   const pw = document.getElementById('admin-pw-input').value;
-  // Try Supabase Auth first (if email is provided)
   var emailInput = document.getElementById('admin-pw-email');
-  if (emailInput && emailInput.value && supabase) {
+  var uname = (emailInput && emailInput.value && emailInput.value.trim()) || '';
+  var ok = false;
+  if (uname && supabase) {
     try {
-      var authRes = await supabase.auth.signInWithPassword({ email: emailInput.value.trim(), password: pw });
-      if (authRes.data && authRes.data.user) {
-        _currentAdminUser = authRes.data.user;
+      var lr = await supabase.rpc('wm_login_staff', { p_input: uname, p_pw: pw });
+      var acc = lr.data && lr.data[0];
+      if (acc) {
+        _currentAdminUser = acc;
+        sessionStorage.setItem('wm_session', JSON.stringify({ type: acc.role, username: acc.username, name: acc.name, email: acc.email }));
         hideAdminModal();
-        switchTab('admin');
-        return;
+        switchTab(acc.role === 'walmart' ? 'walmart' : 'admin');
+        ok = true;
       }
-    } catch(e) {}
+    } catch(e) { console.warn('admin modal login', e); }
   }
-  // Fallback: simple password
-  if (pw === ADMIN_PW) {
-    hideAdminModal();
-    switchTab('admin');
-  } else {
-    document.getElementById('admin-pw-error').style.display = 'block';
+  if (!ok) {
+    var errEl = document.getElementById('admin-pw-error');
+    if (errEl) { errEl.style.display = 'block'; errEl.textContent = uname ? '사용자명/이메일 또는 비밀번호가 올바르지 않습니다.' : '사용자명(또는 이메일)을 함께 입력하세요.'; }
     document.getElementById('admin-pw-input').value = '';
     document.getElementById('admin-pw-input').focus();
   }
@@ -3378,12 +3378,7 @@ async function loginAdmin(emailOrUsername, pw, requestedRole) {
   if (supabase) {
     try {
       var input = String(emailOrUsername).trim();
-      var res = await supabase.from('wm_staff_accounts')
-        .select('*')
-        .or('username.eq.' + input + ',email.eq.' + input)
-        .eq('password', pw)
-        .eq('active', true)
-        .limit(1);
+      var res = await supabase.rpc('wm_login_staff', { p_input: input, p_pw: pw });
       var acc = res.data && res.data[0];
       if (acc) {
         // 마지막 로그인 시각 업데이트 (실패해도 무시)
@@ -3401,13 +3396,6 @@ async function loginAdmin(emailOrUsername, pw, requestedRole) {
       }
     } catch(e) { console.warn('staff login error', e); }
   }
-  // 2) Fallback: 단일 ADMIN_PW (이전 호환)
-  if (pw === ADMIN_PW) {
-    var role = requestedRole === 'walmart' ? 'walmart' : 'admin';
-    sessionStorage.setItem('wm_session', JSON.stringify({type: role}));
-    switchTab(role === 'walmart' ? 'walmart' : 'admin');
-    return;
-  }
   alert('Username/email or password is incorrect.\n사용자명/이메일 또는 비밀번호가 올바르지 않습니다.');
 }
 
@@ -3416,12 +3404,13 @@ var _currentAdminUser = null;
 async function loginBrand(email, pw) {
   if (!supabase) { alert('시스템 오류. 잠시 후 다시 시도해주세요.'); return; }
 
-  var res = await supabase.from('wm_brands')
-    .select('*')
-    .eq('portal_email', email)
-    .eq('portal_password', pw)
-    .eq('portal_active', true)
-    .single();
+  var _lr = await supabase.rpc('wm_login_brand', { p_email: email, p_pw: pw });
+  var _authed = _lr.data && _lr.data[0];
+  var res = { data: null };
+  if (_authed) {
+    var _full = await supabase.from('wm_brands').select('*').eq('id', _authed.id).single();
+    res.data = _full.data || _authed;
+  }
 
   if (res.data) {
     var brand = res.data;
@@ -4004,12 +3993,14 @@ function showStaffAddModal() {
       if (!data.username || !data.password) throw new Error('Username and password required');
       var res = await supabase.from('wm_staff_accounts').insert({
         username: data.username.trim().toLowerCase(),
-        password: data.password.trim(),
         role: data.role || 'admin',
         name: data.name || null,
         email: data.email || null,
         active: true
-      });
+      }).select('id').single();
+      if (!res.error && res.data && res.data.id) {
+        await supabase.rpc('wm_set_staff_pw', { p_account_id: res.data.id, p_pw: data.password.trim() });
+      }
       if (res.error) {
         if (res.error.message && res.error.message.indexOf('duplicate') >= 0) {
           alert(_kn('이미 사용 중인 사용자명입니다.','Username already in use.'));
@@ -4027,7 +4018,7 @@ async function staffResetPassword(id, username) {
   var newPw = prompt(_kn('새 비밀번호를 입력하세요 (' + username + ')','New password for ' + username));
   if (!newPw) return;
   if (newPw.length < 4) { alert(_kn('비밀번호는 최소 4자','Password must be at least 4 chars')); return; }
-  var res = await supabase.from('wm_staff_accounts').update({ password: newPw }).eq('id', id);
+  var res = await supabase.rpc('wm_set_staff_pw', { p_account_id: id, p_pw: newPw });
   if (res.error) { alert('Error: ' + res.error.message); return; }
   alert(_kn('비밀번호가 변경되었습니다.','Password updated.'));
   loadStaffAccounts();
@@ -4467,15 +4458,21 @@ function saveWmMemo(brandId) {
   if (btn) { btn.textContent = 'Saved ✓'; setTimeout(function(){ btn.textContent = 'Save Note'; }, 1500); }
 }
 
-function changeAdminPw() {
+async function changeAdminPw() {
   var cur = document.getElementById('settings-cur-pw');
   var nw = document.getElementById('settings-new-pw');
   var cf = document.getElementById('settings-cf-pw');
   if (!cur || !nw || !cf) return;
-  if (cur.value !== ADMIN_PW) { alert('현재 비밀번호가 일치하지 않습니다.'); return; }
   if (nw.value.length < 4) { alert('새 비밀번호는 4자 이상이어야 합니다.'); return; }
   if (nw.value !== cf.value) { alert('새 비밀번호가 일치하지 않습니다.'); return; }
-  ADMIN_PW = nw.value;
+  var sess = {}; try { sess = JSON.parse(sessionStorage.getItem('wm_session') || '{}'); } catch(e) {}
+  var uname = sess.username || (_currentAdminUser && _currentAdminUser.username);
+  if (!uname) { alert('로그인 정보를 확인할 수 없습니다. 다시 로그인해주세요.'); return; }
+  var lr = await supabase.rpc('wm_login_staff', { p_input: uname, p_pw: cur.value });
+  var acc = lr.data && lr.data[0];
+  if (!acc) { alert('현재 비밀번호가 일치하지 않습니다.'); return; }
+  var srr = await supabase.rpc('wm_set_staff_pw', { p_account_id: acc.id, p_pw: nw.value });
+  if (srr.error) { alert('변경 실패: ' + srr.error.message); return; }
   alert('비밀번호가 변경되었습니다.');
   cur.value = ''; nw.value = ''; cf.value = '';
 }
@@ -6278,9 +6275,9 @@ async function approveApplication(appId) {
     status: 'active',
     portal_active: true,
     portal_email: loginEmail,
-    portal_password: tempPw,
     current_phase: 'phase1'
   }]);
+  await supabase.rpc('wm_set_brand_pw', { p_brand_id: brandSlug, p_pw: tempPw });
 
   // Update application status
   await supabase.from('wm_applications').update({
@@ -6468,22 +6465,13 @@ async function submitBrandPwChange() {
   }
 
   // Verify current password
-  var check = await supabase.from('wm_brands')
-    .select('id')
-    .eq('portal_email', _currentBrandEmail)
-    .eq('portal_password', curPw)
-    .single();
-
-  if (!check.data) {
+  var chg = await supabase.rpc('wm_change_brand_pw', { p_email: _currentBrandEmail, p_old: curPw, p_new: newPw });
+  if (chg.error || chg.data !== true) {
     errEl.textContent = '현재 비밀번호가 올바르지 않습니다.';
     errEl.style.display = 'block';
     return;
   }
-
-  // Update password
-  var res = await supabase.from('wm_brands')
-    .update({ portal_password: newPw })
-    .eq('portal_email', _currentBrandEmail);
+  var res = { error: null };
 
   if (res.error) {
     errEl.textContent = '변경 실패: ' + res.error.message;
