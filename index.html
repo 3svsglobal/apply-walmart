@@ -491,11 +491,27 @@ button{cursor:pointer;font-family:var(--font)}
 
 /* ─── REVIEW PANEL (Admin) ─── */
 /* ─── REVIEW CARD — Redesigned (larger, cleaner) ─── */
-.review-card{padding:0;border:1px solid var(--border);border-radius:14px;margin-bottom:24px;background:#fff;box-shadow:0 4px 16px rgba(0,0,0,0.04);overflow:hidden;font-family:var(--font)}
+.review-card{padding:0;border:1px solid var(--border);border-radius:14px;margin-bottom:16px;background:#fff;box-shadow:0 4px 16px rgba(0,0,0,0.04);overflow:hidden;font-family:var(--font);transition:box-shadow .2s,border-color .2s}
 .review-card:hover{box-shadow:0 8px 24px rgba(0,0,0,0.07)}
 
-/* Header */
-.review-header{display:flex;justify-content:space-between;align-items:flex-start;padding:26px 30px 22px;border-bottom:1px solid var(--border);background:linear-gradient(180deg,rgba(0,113,220,0.03) 0%,transparent 100%)}
+/* 접힘 상태: body / actions-bar 숨김 */
+.review-card:not(.expanded) .review-body,
+.review-card:not(.expanded) .review-actions-bar{display:none}
+/* 펼침 상태: 헤더 하단 강조 */
+.review-card.expanded{border-color:rgba(0,113,220,0.35);box-shadow:0 8px 28px rgba(0,113,206,0.10)}
+.review-card.expanded .review-header{border-bottom-color:rgba(0,113,220,0.25)}
+
+/* Header — 접힘 상태에서 클릭 가능 */
+.review-header{display:flex;justify-content:space-between;align-items:flex-start;padding:22px 28px;border-bottom:1px solid var(--border);background:linear-gradient(180deg,rgba(0,113,220,0.03) 0%,transparent 100%);cursor:pointer;user-select:none}
+.review-header:hover{background:linear-gradient(180deg,rgba(0,113,220,0.06) 0%,rgba(0,113,220,0.01) 100%)}
+/* 펼침 상태에서는 헤더 padding 원래대로 */
+.review-card.expanded .review-header{padding:26px 30px 22px}
+/* 접기/펼치기 화살표 */
+.expand-chevron{width:28px;height:28px;display:inline-flex;align-items:center;justify-content:center;border-radius:8px;background:rgba(0,113,220,0.08);color:#0071ce;transition:transform .25s,background .15s;flex-shrink:0;margin-left:12px}
+.expand-chevron svg{width:16px;height:16px}
+.review-card.expanded .expand-chevron{transform:rotate(180deg);background:rgba(0,113,220,0.15)}
+/* 헤더 우측 액션 영역: PDF 버튼 + chevron 정렬 */
+.review-header-right{display:flex;align-items:center;gap:8px;flex-shrink:0}
 .review-info{display:flex;gap:18px;align-items:center}
 .review-info .brand-icon{width:62px;height:62px;font-size:26px;border-radius:14px;font-weight:800}
 .review-info .brand-name{font-size:26px;font-weight:800;letter-spacing:-0.7px;display:flex;align-items:center;flex-wrap:wrap;gap:10px;color:var(--text);font-family:var(--font)}
@@ -3158,12 +3174,48 @@ async function dbSaveApplication(formData) {
       if (!saved) { alert('수정 권한 확인 실패. 링크가 만료됐거나 잘못된 링크입니다.'); return null; }
       saved._wasUpdate = true;
     } else {
-      // 신규 신청 — 토큰 생성 후 insert
-      obj.edit_token = _generateEditToken();
-      res = await supabase.from('wm_applications').insert([obj]).select();
-      console.log('Application saved to DB:', res);
-      saved = res.data ? res.data[0] : null;
-      if (!saved) return null;
+      // 신규 신청 전 — 같은 이메일의 기존 신청이 있는지 확인 (중복 방지)
+      var existingRes = null;
+      if (obj.contact_email && obj.contact_email !== 'N/A') {
+        existingRes = await supabase.from('wm_applications')
+          .select('id, edit_token, status, brand_name_en, created_at')
+          .eq('contact_email', obj.contact_email)
+          .order('created_at', { ascending: false })
+          .limit(1);
+      }
+      var existing = existingRes && existingRes.data && existingRes.data[0];
+
+      if (existing) {
+        // 승인/반려·계약 완료된 신청은 새로 제출 불가
+        if (existing.status === 'approved' || existing.status === 'contracted') {
+          alert('이 이메일 (' + obj.contact_email + ') 로 이미 승인된 신청이 있습니다.\n관리자에게 문의해주세요.\n\nAn application from this email has already been approved. Please contact the admin.');
+          return null;
+        }
+        if (existing.status === 'rejected') {
+          alert('이 이메일 (' + obj.contact_email + ') 로 이미 반려된 신청이 있습니다.\n재신청은 관리자에게 문의해주세요.\n\nAn application from this email was previously rejected. Please contact the admin to reapply.');
+          return null;
+        }
+        // 심사 중(submitted/reviewing) — 사용자에게 확인 후 기존 신청 덮어쓰기
+        var ok = confirm('이 이메일 (' + obj.contact_email + ') 로 이미 접수된 신청이 있습니다.\n\n[확인] — 기존 신청서를 이번 내용으로 덮어씁니다 (권장)\n[취소] — 제출을 중단합니다.\n\nAn application with this email exists.\n[OK] to overwrite the existing application with the new content.\n[Cancel] to abort.');
+        if (!ok) return null;
+        // 기존 행 UPDATE (edit_token 유지)
+        res = await supabase.from('wm_applications')
+          .update(obj)
+          .eq('id', existing.id)
+          .select();
+        console.log('Duplicate detected — merged into existing:', existing.id, res);
+        saved = res.data ? res.data[0] : null;
+        if (!saved) { alert('업데이트 실패. 잠시 후 다시 시도해주세요.'); return null; }
+        saved._wasUpdate = true;
+        saved._wasDupeMerge = true;
+      } else {
+        // 진짜 신규 — 토큰 생성 후 insert
+        obj.edit_token = _generateEditToken();
+        res = await supabase.from('wm_applications').insert([obj]).select();
+        console.log('Application saved to DB (new):', res);
+        saved = res.data ? res.data[0] : null;
+        if (!saved) return null;
+      }
     }
     // 첨부파일 업로드 — 6개 카테고리 + 기타 + 이전 호환 (Brand Deck/SKU List)
     var ATTACHMENT_FIELDS = [
@@ -5943,6 +5995,12 @@ function prefillApplicationForm(app) {
 }
 
 
+// 접수 심사 카드 접기/펼치기 (헤더 클릭 → expanded 토글)
+function _toggleReviewCard(headerEl) {
+  var card = headerEl && headerEl.closest && headerEl.closest('.review-card');
+  if (card) card.classList.toggle('expanded');
+}
+
 function openAllAttachments(urls) {
   if (!Array.isArray(urls) || urls.length === 0) return;
   if (urls.length > 6 && !confirm('첨부파일 ' + urls.length + '개를 모두 새 탭으로 엽니다. 계속할까요?')) return;
@@ -6041,7 +6099,7 @@ async function renderAdminReview() {
 
     html += '<div class="review-card" data-app-id="' + app.id + '">';
 
-    html += '<div class="review-header">' +
+    html += '<div class="review-header" onclick="_toggleReviewCard(this)">' +
       '<div class="review-info">' +
         '<div class="brand-icon">' + _esc(initial) + '</div>' +
         '<div>' +
@@ -6053,8 +6111,11 @@ async function renderAdminReview() {
           '<div class="brand-sub">\uC811\uC218\uC77C ' + _esc(date) + ' \u00B7 ID <code style="font-family:var(--mono);font-size:11.5px;color:var(--text-muted)">' + _esc((app.id||'').slice(0,8)) + '</code></div>' +
         '</div>' +
       '</div>' +
-      // \uC6B0\uCE21: \uC798 \uBCF4\uC774\uB294 \uD070 PDF \uB2E4\uC6B4\uB85C\uB4DC \uBC84\uD2BC
-      '<button onclick="downloadApplicationPdf(\'' + app.id + '\')" title="\uC2E0\uCCAD\uC11C + \uCCA8\uBD80 \uD30C\uC77C \uB9C1\uD06C\uAC00 \uD3EC\uD568\uB41C PDF \uB2E4\uC6B4\uB85C\uB4DC" style="background:linear-gradient(135deg,#0071ce 0%,#005ea8 100%);color:#fff;border:none;padding:11px 18px;border-radius:10px;font-size:13.5px;font-weight:700;cursor:pointer;display:inline-flex;align-items:center;gap:7px;box-shadow:0 4px 12px rgba(0,113,206,0.30);white-space:nowrap;flex-shrink:0" onmouseover="this.style.transform=\'translateY(-1px)\';this.style.boxShadow=\'0 6px 16px rgba(0,113,206,0.40)\'" onmouseout="this.style.transform=\'\';this.style.boxShadow=\'0 4px 12px rgba(0,113,206,0.30)\'"><span style="font-size:16px">\uD83D\uDCE5</span> <span class="ko">\uC2E0\uCCAD\uC11C PDF \uB2E4\uC6B4\uB85C\uB4DC</span><span class="en">Download PDF</span></button>' +
+      // \uC6B0\uCE21: PDF \uBC84\uD2BC + \uC811\uAE30/\uD3BC\uCE58\uAE30 chevron
+      '<div class="review-header-right">' +
+        '<button onclick="event.stopPropagation();downloadApplicationPdf(\'' + app.id + '\')" title="\uC2E0\uCCAD\uC11C + \uCCA8\uBD80 \uD30C\uC77C \uB9C1\uD06C\uAC00 \uD3EC\uD568\uB41C PDF \uB2E4\uC6B4\uB85C\uB4DC" style="background:linear-gradient(135deg,#0071ce 0%,#005ea8 100%);color:#fff;border:none;padding:11px 18px;border-radius:10px;font-size:13.5px;font-weight:700;cursor:pointer;display:inline-flex;align-items:center;gap:7px;box-shadow:0 4px 12px rgba(0,113,206,0.30);white-space:nowrap;flex-shrink:0"><span style="font-size:16px">\uD83D\uDCE5</span> <span class="ko">\uC2E0\uCCAD\uC11C PDF</span><span class="en">Download PDF</span></button>' +
+        '<span class="expand-chevron" title="\uC790\uC138\uD788 \uBCF4\uAE30 / Expand"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></span>' +
+      '</div>' +
       '</div>';
 
     html += '<div class="review-body">';
