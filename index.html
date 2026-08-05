@@ -6037,7 +6037,11 @@ async function renderAdminReview() {
     if (opts.link && /^https?:\/\//.test(val)) val = '<a href="' + _esc(val) + '" target="_blank" rel="noopener">' + _esc(val) + '</a>';
     else val = _esc(val);
     var fieldCls = 'review-field' + (opts.full ? ' rf-full' : '');
-    return '<div class="' + fieldCls + '"><div class="rf-label">' + _esc(label) + '</div><div class="rf-value"' + (opts.pre ? ' style="white-space:pre-wrap"' : '') + '>' + val + '</div></div>';
+    // label 이 {ko, en} 객체면 이중언어 span, string 이면 그대로
+    var labelHtml = (typeof label === 'object' && label !== null)
+      ? '<span class="ko">' + _esc(label.ko) + '</span><span class="en">' + _esc(label.en || label.ko) + '</span>'
+      : _esc(label);
+    return '<div class="' + fieldCls + '"><div class="rf-label">' + labelHtml + '</div><div class="rf-value"' + (opts.pre ? ' style="white-space:pre-wrap"' : '') + '>' + val + '</div></div>';
   }
   function _section(title, fieldsHtml, opts) {
     // fieldsHtml: string of joined _fieldHtml outputs (빈 문자열들 포함 가능). 모두 빈 문자열이면 카드 자체를 안 그림.
@@ -6045,41 +6049,53 @@ async function renderAdminReview() {
     opts = opts || {};
     var cls = 'review-section' + (opts.full ? ' full' : '');
     var gridCls = opts.cols2 ? 'rs-fields cols-2' : 'rs-fields';
-    return '<div class="' + cls + '"><div class="rs-title">' + _esc(title) + '</div><div class="' + gridCls + '">' + fieldsHtml + '</div></div>';
+    var titleHtml = (typeof title === 'object' && title !== null)
+      ? '<span class="ko">' + _esc(title.ko) + '</span><span class="en">' + _esc(title.en || title.ko) + '</span>'
+      : _esc(title);
+    return '<div class="' + cls + '"><div class="rs-title">' + titleHtml + '</div><div class="' + gridCls + '">' + fieldsHtml + '</div></div>';
   }
   function _chipFormat(value) {
+    // 이중언어 라벨 (HTML) + raw:true
     var map = {
-      'selling':       {label:'\uD310\uB9E4 \uC911',     color:'green'},
-      'in-talks':      {label:'\uC811\uCD09/\uB17C\uC758 \uC911', color:'orange'},
-      'none':          {label:'\uC5C6\uC74C',        color:'gray'},
-      'undecided':     {label:'\uBBF8\uC815',        color:'gray'},
-      'yes':           {label:'\uC608',          color:'green'},
-      'no':            {label:'\uC544\uB2C8\uC624',      color:'gray'},
-      'partial':       {label:'\uC77C\uBD80',        color:'orange'},
-      'considering':   {label:'\uACE0\uB824 \uC911',     color:'orange'},
-      'walmart-only':  {label:'\uC6D4\uB9C8\uD2B8\uB9CC',    color:'blue'},
-      'open':          {label:'\uC624\uD508',        color:'green'},
-      'brand-only':    {label:'\uC790\uC0AC \uBE0C\uB79C\uB4DC\uB9CC', color:'gray'},
-      'walmart-focus': {label:'\uC6D4\uB9C8\uD2B8 \uC9D1\uC911',  color:'blue'},
-      'multi-retail':  {label:'\uBA40\uD2F0 \uB9AC\uD14C\uC77C', color:'orange'},
-      'own':           {label:'\uC790\uCCB4 \uACF5\uC7A5',   color:'green'},
-      'outsource':     {label:'OEM',         color:'orange'},
-      'both':          {label:'\uC790\uCCB4+OEM',    color:'blue'},
-      'planned':       {label:'\uACC4\uD68D \uC788\uC74C',  color:'orange'},
-      'in-progress':   {label:'\uC9C4\uD589 \uC911',     color:'green'}
+      'selling':       {label:'<span class="ko">판매 중</span><span class="en">Selling</span>', color:'green',  raw:true},
+      'in-talks':      {label:'<span class="ko">접촉·논의 중</span><span class="en">In talks</span>', color:'orange', raw:true},
+      'none':          {label:'<span class="ko">없음</span><span class="en">None</span>',    color:'gray',   raw:true},
+      'undecided':     {label:'<span class="ko">미정</span><span class="en">TBD</span>',    color:'gray',   raw:true},
+      'yes':           {label:'<span class="ko">예</span><span class="en">Yes</span>',      color:'green',  raw:true},
+      'no':            {label:'<span class="ko">아니오</span><span class="en">No</span>',    color:'gray',   raw:true},
+      'partial':       {label:'<span class="ko">일부</span><span class="en">Partial</span>', color:'orange', raw:true},
+      'considering':   {label:'<span class="ko">고려 중</span><span class="en">Considering</span>', color:'orange', raw:true},
+      'walmart-only':  {label:'<span class="ko">Walmart만</span><span class="en">Walmart only</span>', color:'blue',   raw:true},
+      'open':          {label:'<span class="ko">오픈</span><span class="en">Open</span>',    color:'green',  raw:true},
+      'brand-only':    {label:'<span class="ko">자체 브랜드만</span><span class="en">Brand only</span>', color:'gray',   raw:true},
+      'walmart-focus': {label:'<span class="ko">Walmart 집중</span><span class="en">Walmart-focused</span>', color:'blue',   raw:true},
+      'multi-retail':  {label:'<span class="ko">멀티 리테일</span><span class="en">Multi-retail</span>', color:'orange', raw:true},
+      'own':           {label:'<span class="ko">자체 공장</span><span class="en">In-house</span>', color:'green',  raw:true},
+      'outsource':     {label:'OEM',    color:'orange', raw:true},
+      'both':          {label:'<span class="ko">자체+OEM</span><span class="en">In-house + OEM</span>', color:'blue',   raw:true},
+      'planned':       {label:'<span class="ko">계획 있음</span><span class="en">Planned</span>', color:'orange', raw:true},
+      'in-progress':   {label:'<span class="ko">진행 중</span><span class="en">In progress</span>', color:'green',  raw:true}
     };
     return map[value] || {label:value, color:'gray'};
   }
   function _chip(key, value) {
     // 미답변(N/A/빈값)도 회색 '미답변' 칩으로 표시 — 자동 숨김하지 않음
-    var f = (!value || value === 'N/A') ? {label:'미답변', color:'gray'} : _chipFormat(value);
-    return '<span class="strategy-chip"><span class="sc-key">' + _esc(key) + '</span><span class="sc-val ' + f.color + '">' + _esc(f.label) + '</span></span>';
+    var f = (!value || value === 'N/A')
+      ? {label:'<span class="ko">미답변</span><span class="en">Not answered</span>', color:'gray', raw:true}
+      : _chipFormat(value);
+    var keyHtml = (typeof key === 'object' && key !== null)
+      ? '<span class="ko">' + _esc(key.ko) + '</span><span class="en">' + _esc(key.en || key.ko) + '</span>'
+      : _esc(key);
+    var labelHtml = f.raw ? f.label : _esc(f.label);
+    return '<span class="strategy-chip"><span class="sc-key">' + keyHtml + '</span><span class="sc-val ' + f.color + '">' + labelHtml + '</span></span>';
   }
 
   // Pending applications
   pending.forEach(function(app) {
     var initial = (app.brand_name_ko || app.brand_name_en || '?')[0];
-    var typeLabel = app.apply_type === 'voucher' ? '\uC218\uCD9C\uBC14\uC6B0\uCC98' : '\uC9C1\uC811\uCC38\uC5EC';
+    var typeLabel = app.apply_type === 'voucher'
+      ? '<span class="ko">\uC218\uCD9C\uBC14\uC6B0\uCC98</span><span class="en">Voucher</span>'
+      : '<span class="ko">\uC9C1\uC811\uCC38\uC5EC</span><span class="en">Direct</span>';
     var date = app.created_at ? app.created_at.slice(0,10) : '';
 
     var extra = {};
@@ -6104,11 +6120,11 @@ async function renderAdminReview() {
         '<div class="brand-icon">' + _esc(initial) + '</div>' +
         '<div>' +
           '<div class="brand-name">' + _esc(app.brand_name_ko || app.brand_name_en || 'Unknown') +
-            ' <span class="brand-badge badge-pending">\uC2EC\uC0AC \uB300\uAE30</span>' +
-            ' <span class="badge-direct">' + _esc(typeLabel) + '</span>' +
+            ' <span class="brand-badge badge-pending"><span class="ko">\uC2EC\uC0AC \uB300\uAE30</span><span class="en">Under Review</span></span>' +
+            ' <span class="badge-direct">' + typeLabel + '</span>' +
             (attachBadge ? ' ' + attachBadge : '') +
           '</div>' +
-          '<div class="brand-sub">\uC811\uC218\uC77C ' + _esc(date) + ' \u00B7 ID <code style="font-family:var(--mono);font-size:11.5px;color:var(--text-muted)">' + _esc((app.id||'').slice(0,8)) + '</code></div>' +
+          '<div class="brand-sub"><span class="ko">\uC811\uC218\uC77C</span><span class="en">Submitted</span> ' + _esc(date) + ' \u00B7 ID <code style="font-family:var(--mono);font-size:11.5px;color:var(--text-muted)">' + _esc((app.id||'').slice(0,8)) + '</code></div>' +
         '</div>' +
       '</div>' +
       // \uC6B0\uCE21: PDF \uBC84\uD2BC + \uC811\uAE30/\uD3BC\uCE58\uAE30 chevron
@@ -6120,64 +6136,64 @@ async function renderAdminReview() {
 
     html += '<div class="review-body">';
 
-    html += _section('\uD68C\uC0AC \uC815\uBCF4',
-      _fieldHtml('\uB300\uD45C\uC790', app.ceo_name) +
-      _fieldHtml('\uC5C5\uC885', app.industry) +
-      _fieldHtml('\uD648\uD398\uC774\uC9C0', app.homepage, {link:true}) +
-      _fieldHtml('\uC8FC\uC18C', app.address)
+    html += _section({ko:'회사 정보', en:'Company Information'},
+      _fieldHtml({ko:'대표자', en:'CEO'}, app.ceo_name) +
+      _fieldHtml({ko:'업종', en:'Industry'}, app.industry) +
+      _fieldHtml({ko:'홈페이지', en:'Website'}, app.homepage, {link:true}) +
+      _fieldHtml({ko:'주소', en:'Address'}, app.address)
     );
 
-    html += _section('\uB2F4\uB2F9\uC790',
-      _fieldHtml('\uC774\uB984', app.contact_name) +
-      _fieldHtml('\uC9C1\uD568', app.contact_position) +
-      _fieldHtml('\uC774\uBA54\uC77C', app.contact_email) +
-      _fieldHtml('\uC804\uD654', app.contact_phone)
+    html += _section({ko:'담당자', en:'Contact Person'},
+      _fieldHtml({ko:'이름', en:'Name'}, app.contact_name) +
+      _fieldHtml({ko:'직함', en:'Position'}, app.contact_position) +
+      _fieldHtml({ko:'이메일', en:'Email'}, app.contact_email) +
+      _fieldHtml({ko:'전화', en:'Phone'}, app.contact_phone)
     );
 
-    html += _section('\uC81C\uD488 \u00B7 \uBE44\uC988\uB2C8\uC2A4',
-      _fieldHtml('\uC81C\uD488 \uCE74\uD14C\uACE0\uB9AC', app.product_category) +
-      _fieldHtml('\uC5F0 \uB9E4\uCD9C (USD)', app.annual_revenue) +
-      _fieldHtml('\uC218\uCD9C \uACBD\uD5D8', app.export_experience) +
-      _fieldHtml('Instagram \uD314\uB85C\uC6CC', extra.instagram_followers) +
+    html += _section({ko:'제품 · 비즈니스', en:'Product & Business'},
+      _fieldHtml({ko:'제품 카테고리', en:'Product Category'}, app.product_category) +
+      _fieldHtml({ko:'연 매출 (USD)', en:'Annual Revenue (USD)'}, app.annual_revenue) +
+      _fieldHtml({ko:'수출 경험', en:'Export Experience'}, app.export_experience) +
+      _fieldHtml({ko:'Instagram 팔로워', en:'Instagram Followers'}, extra.instagram_followers) +
       _fieldHtml('Amazon URL', extra.amazon_url, {link:true}) +
       _fieldHtml('Instagram URL', extra.instagram_url, {link:true}) +
-      _fieldHtml('\uC81C\uD488 \uC124\uBA85', app.product_description, {pre:true, full:true}) +
-      _fieldHtml('\uBE0C\uB79C\uB4DC \uC2A4\uD1A0\uB9AC', extra.brand_story, {pre:true, full:true}),
+      _fieldHtml({ko:'제품 설명', en:'Product Description'}, app.product_description, {pre:true, full:true}) +
+      _fieldHtml({ko:'브랜드 스토리', en:'Brand Story'}, extra.brand_story, {pre:true, full:true}),
       {full:true, cols2:true}
     );
 
-    html += _section('\uC81C\uC870 \u00B7 \uBB3C\uB958 \u00B7 \uC6B4\uC601',
-      _fieldHtml('\uC218\uCD9C \uAD6D\uAC00', extra.export_countries) +
-      _fieldHtml('\uC0DD\uC0B0 \uC5ED\uB7C9', extra.production_capacity) +
-      _fieldHtml('\uB9AC\uB4DC \uD0C0\uC784', extra.lead_time) +
-      _fieldHtml('\uC5F0\uAC04 \uD310\uB9E4\uB7C9', extra.annual_units_sold) +
-      _fieldHtml('\uBBF8\uAD6D \uB0B4 \uCC3D\uACE0', extra.us_warehouse) +
-      _fieldHtml('\uD328\uD0A4\uC9D5 \uBCC0\uACBD', extra.packaging_modify) +
-      _fieldHtml('\uC81C\uC870 \uC720\uD615', extra.mfg_type) +
-      _fieldHtml('\uC601\uC5B4 \uAC00\uB2A5 \uC778\uB825', extra.english_team) +
-      _fieldHtml('\uB9C8\uCF00\uD305 \uC608\uC0B0', extra.marketing_budget) +
-      _fieldHtml('\uC8FC\uC694 SKU / \uC81C\uD488', extra.sku_description, {pre:true, full:true}),
+    html += _section({ko:'제조 · 물류 · 운영', en:'Manufacturing & Logistics'},
+      _fieldHtml({ko:'수출 국가', en:'Export Countries'}, extra.export_countries) +
+      _fieldHtml({ko:'생산 역량', en:'Production Capacity'}, extra.production_capacity) +
+      _fieldHtml({ko:'리드 타임', en:'Lead Time'}, extra.lead_time) +
+      _fieldHtml({ko:'연간 판매량', en:'Annual Units Sold'}, extra.annual_units_sold) +
+      _fieldHtml({ko:'미국 내 창고', en:'US Warehouse'}, extra.us_warehouse) +
+      _fieldHtml({ko:'패키징 변경', en:'Packaging Modify'}, extra.packaging_modify) +
+      _fieldHtml({ko:'제조 유형', en:'Manufacturing Type'}, extra.mfg_type) +
+      _fieldHtml({ko:'영어 가능 인력', en:'English-speaking Team'}, extra.english_team) +
+      _fieldHtml({ko:'마케팅 예산', en:'Marketing Budget'}, extra.marketing_budget) +
+      _fieldHtml({ko:'주요 SKU / 제품', en:'Key SKUs / Products'}, extra.sku_description, {pre:true, full:true}),
       {full:true, cols2:true}
     );
 
     var strategyChipsHtml = '';
-    strategyChipsHtml += _chip('\uD0C0 \uB9AC\uD14C\uC77C',         extra.other_retail_status);
-    strategyChipsHtml += _chip('\uCC44\uB110\uBCC4 \uC138\uC77C\uC988\uC870\uC9C1', extra.channel_sales_org);
-    strategyChipsHtml += _chip("Sam's Club",        extra.sams_club_interest);
-    strategyChipsHtml += _chip('PB \uC0C1\uD488',           extra.pb_open);
-    strategyChipsHtml += _chip('\uC804\uB7B5 \uBC29\uD5A5',         extra.strategy_direction);
-    strategyChipsHtml += _chip('Target',            extra.target_plan);
-    strategyChipsHtml += _chip('Costco',            extra.costco_plan);
+    strategyChipsHtml += _chip({ko:'타 리테일', en:'Other Retailers'},         extra.other_retail_status);
+    strategyChipsHtml += _chip({ko:'\uCC44\uB110\uBCC4 \uC138\uC77C\uC988\uC870\uC9C1', en:'Sales Org per Channel'}, extra.channel_sales_org);
+    strategyChipsHtml += _chip({ko:"Sam's Club", en:"Sam's Club"},                 extra.sams_club_interest);
+    strategyChipsHtml += _chip({ko:'PB \uC0C1\uD488', en:'Private Label'},                extra.pb_open);
+    strategyChipsHtml += _chip({ko:'\uC804\uB7B5 \uBC29\uD5A5', en:'Strategy Direction'},          extra.strategy_direction);
+    strategyChipsHtml += _chip({ko:'Target', en:'Target'},            extra.target_plan);
+    strategyChipsHtml += _chip({ko:'Costco', en:'Costco'},            extra.costco_plan);
     var otherRetailDetail = extra.other_retail_channels && String(extra.other_retail_channels).trim();
     var addlChannels = extra.additional_channels_discussion && String(extra.additional_channels_discussion).trim();
     var priorityChannel = extra.us_retail_priority_channel && String(extra.us_retail_priority_channel).trim();
     if (strategyChipsHtml || otherRetailDetail || addlChannels || priorityChannel) {
       html += '<div class="review-section full">' +
-        '<div class="rs-title">\uB9AC\uD14C\uC77C \uCC44\uB110 & \uBBF8\uAD6D \uD655\uC7A5 \uC804\uB7B5</div>' +
+        '<div class="rs-title"><span class="ko">\uB9AC\uD14C\uC77C \uCC44\uB110 \u00B7 \uBBF8\uAD6D \uD655\uC7A5 \uC804\uB7B5</span><span class="en">Retail Channels &amp; US Strategy</span></div>' +
         (strategyChipsHtml ? '<div class="strategy-chips" style="margin-bottom:14px">' + strategyChipsHtml + '</div>' : '') +
-        (otherRetailDetail ? '<div class="review-field" style="margin-bottom:10px"><div class="rf-label">\uD0C0 \uCC44\uB110 \uC0C1\uC138</div><div class="rf-value">' + _esc(otherRetailDetail) + '</div></div>' : '') +
-        (addlChannels ? '<div class="review-field" style="margin-bottom:10px"><div class="rf-label">\uCD94\uAC00 \uB17C\uC758 \uC911\uC778 \uCC44\uB110</div><div class="rf-value">' + _esc(addlChannels) + '</div></div>' : '') +
-        (priorityChannel ? '<div class="review-field"><div class="rf-label">\uC6B0\uC120\uC21C\uC704 \uCC44\uB110</div><div class="rf-value">' + _esc(priorityChannel) + '</div></div>' : '') +
+        (otherRetailDetail ? '<div class="review-field" style="margin-bottom:10px"><div class="rf-label"><span class="ko">\uD0C0 \uCC44\uB110 \uC0C1\uC138</span><span class="en">Other Channels (Detail)</span></div><div class="rf-value">' + _esc(otherRetailDetail) + '</div></div>' : '') +
+        (addlChannels ? '<div class="review-field" style="margin-bottom:10px"><div class="rf-label"><span class="ko">\uCD94\uAC00 \uB17C\uC758 \uC911\uC778 \uCC44\uB110</span><span class="en">Additional Channels in Discussion</span></div><div class="rf-value">' + _esc(addlChannels) + '</div></div>' : '') +
+        (priorityChannel ? '<div class="review-field"><div class="rf-label"><span class="ko">\uC6B0\uC120\uC21C\uC704 \uCC44\uB110</span><span class="en">Priority Channel</span></div><div class="rf-value">' + _esc(priorityChannel) + '</div></div>' : '') +
       '</div>';
     }
 
@@ -6198,7 +6214,7 @@ async function renderAdminReview() {
       var _urlsJson = JSON.stringify(attachedList.map(function(x){ return x.url; }).filter(Boolean)).replace(/"/g,'&quot;');
       html += '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px">' +
         '<div class="rs-title" style="margin-bottom:0">\uCCA8\uBD80\uD30C\uC77C (' + attachedCount + ') \u00B7 ' + _totalStr + '</div>' +
-        '<button onclick="openAllAttachments(' + _urlsJson + ')" style="background:var(--accent);border:none;color:#fff;font-size:12px;font-weight:600;padding:7px 14px;border-radius:8px;cursor:pointer;box-shadow:0 2px 6px rgba(0,113,220,0.25)">\u2197 \uC804\uCCB4 \uC5F4\uAE30</button>' +
+        '<button onclick="openAllAttachments(' + _urlsJson + ')" style="background:var(--accent);border:none;color:#fff;font-size:12px;font-weight:600;padding:7px 14px;border-radius:8px;cursor:pointer;box-shadow:0 2px 6px rgba(0,113,220,0.25)">\u2197 <span class="ko">\uC804\uCCB4 \uC5F4\uAE30</span><span class="en">Open all</span></button>' +
         '</div>';
       attachedList.forEach(function(f) {
         var fname = f.name || 'file';
@@ -6207,47 +6223,47 @@ async function renderAdminReview() {
         var sizeStr = f.size ? (f.size < 1048576 ? (f.size/1024).toFixed(1) + ' KB' : (f.size/1048576).toFixed(1) + ' MB') : '';
         var _fieldLabels = {
           'Master SKU Excel':         'Master SKU Excel',
-          'Product Images':           '\uC81C\uD488 \uC774\uBBF8\uC9C0',
-          'Brand Assets':             '\uBE0C\uB79C\uB4DC \uC790\uB8CC',
-          'Compliance Documents':     '\uC778\uC99D\u00B7\uCEF4\uD50C\uB77C\uC774\uC5B8\uC2A4',
-          'Video Assets':             '\uC601\uC0C1 \uC790\uB8CC',
-          'Sales & Performance Data': '\uB9E4\uCD9C\u00B7\uC2E4\uC801 \uB370\uC774\uD130',
-          'Additional Docs':          '\uAE30\uD0C0 \uC11C\uB958',
-          'Brand Deck':               '\uBE0C\uB79C\uB4DC \uC18C\uAC1C\uC11C',
-          'SKU List':                 'SKU \uB9AC\uC2A4\uD2B8'
+          'Product Images':           '<span class="ko">제품 이미지</span><span class="en">Product Images</span>',
+          'Brand Assets':             '<span class="ko">브랜드 자료</span><span class="en">Brand Assets</span>',
+          'Compliance Documents':     '<span class="ko">인증·컴플라이언스</span><span class="en">Compliance</span>',
+          'Video Assets':             '<span class="ko">영상 자료</span><span class="en">Video Assets</span>',
+          'Sales & Performance Data': '<span class="ko">매출·실적 데이터</span><span class="en">Sales & Performance</span>',
+          'Additional Docs':          '<span class="ko">기타 서류</span><span class="en">Additional Docs</span>',
+          'Brand Deck':               '<span class="ko">브랜드 소개서</span><span class="en">Brand Deck</span>',
+          'SKU List':                 '<span class="ko">SKU 리스트</span><span class="en">SKU List</span>'
         };
         var fieldLabel = _fieldLabels[f.field] || f.field || '';
         html += '<div style="display:flex;align-items:center;gap:12px;padding:12px 16px;border:1px solid var(--border);border-radius:8px;margin-bottom:8px;background:#fff;transition:all .15s" onmouseenter="this.style.borderColor=\'rgba(0,113,220,0.4)\'" onmouseleave="this.style.borderColor=\'\'">' +
           '<span style="font-size:22px;flex-shrink:0">' + icon + '</span>' +
           '<div style="flex:1;min-width:0">' +
             '<div style="font-size:14px;color:var(--text);font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">' + _esc(fname) + '</div>' +
-            '<div style="font-size:12px;color:var(--text-muted);margin-top:2px">' + _esc(fieldLabel) + (sizeStr ? ' \u00B7 ' + sizeStr : '') + '</div>' +
+            '<div style="font-size:12px;color:var(--text-muted);margin-top:2px">' + fieldLabel + (sizeStr ? ' \u00B7 ' + sizeStr : '') + '</div>' +
           '</div>' +
-          '<a href="' + _esc(f.url || '#') + '" target="_blank" rel="noopener" style="color:var(--accent);font-size:13px;font-weight:600;text-decoration:none;white-space:nowrap;padding:8px 14px;border:1px solid rgba(0,113,220,0.3);border-radius:8px;background:var(--accent-light)">\uC5F4\uAE30 \u2192</a>' +
+          '<a href="' + _esc(f.url || '#') + '" target="_blank" rel="noopener" style="color:var(--accent);font-size:13px;font-weight:600;text-decoration:none;white-space:nowrap;padding:8px 14px;border:1px solid rgba(0,113,220,0.3);border-radius:8px;background:var(--accent-light)"><span class="ko">\uC5F4\uAE30</span><span class="en">Open</span> \u2192</a>' +
         '</div>';
       });
     } else {
-      html += '<div class="rs-title">\uCCA8\uBD80\uD30C\uC77C</div>' +
-        '<div style="padding:18px 20px;border:1.5px dashed var(--border);border-radius:8px;background:#fff;color:var(--text-muted);font-size:13.5px;display:flex;align-items:center;gap:12px"><span style="font-size:20px;opacity:0.5">\uD83D\uDCCE</span><span>\uC774 \uC2E0\uCCAD\uC5D0\uB294 \uCCA8\uBD80\uB41C \uD30C\uC77C\uC774 \uC5C6\uC2B5\uB2C8\uB2E4.</span></div>';
+      html += '<div class="rs-title"><span class="ko">첨부 파일</span><span class="en">Attachments</span></div>' +
+        '<div style="padding:18px 20px;border:1.5px dashed var(--border);border-radius:8px;background:#fff;color:var(--text-muted);font-size:13.5px;display:flex;align-items:center;gap:12px"><span style="font-size:20px;opacity:0.5">\uD83D\uDCCE</span><span><span class="ko">이 신청에는 첨부된 파일이 없습니다.</span><span class="en">No files attached to this application.</span></span></div>';
     }
     html += '</div>';
 
     html += '</div>'; // /.review-body
 
     html += '<div class="review-actions-bar">' +
-      '<div class="ab-title">\uAE30\uC5C5 \uC720\uD615 \uD655\uC815</div>' +
+      '<div class="ab-title"><span class="ko">기업 유형 확정</span><span class="en">Confirm Participation Type</span></div>' +
       '<div class="review-type-select">' +
         '<button class="review-type-btn' + (app.apply_type !== 'voucher' ? ' selected' : '') + '" onclick="selectReviewType(this,\'direct\')">' +
-          '<span class="rtb-label">A Type</span>\uC9C1\uC811 \uCC38\uC5EC \uAE30\uC5C5' +
+          '<span class="rtb-label">A Type</span><span class="ko">직접 참여 기업</span><span class="en">Direct Participation</span>' +
         '</button>' +
         '<button class="review-type-btn' + (app.apply_type === 'voucher' ? ' selected' : '') + '" onclick="selectReviewType(this,\'voucher\')" style="display:none">' +
-          '<span class="rtb-label">B Type</span>\uC218\uCD9C\uBC14\uC6B0\uCC98 \uC5F0\uACC4 \uAE30\uC5C5' +
+          '<span class="rtb-label">B Type</span><span class="ko">수출바우처 연계 기업</span><span class="en">Voucher-linked</span>' +
         '</button>' +
       '</div>' +
       '<div class="review-actions">' +
-        '<button class="btn-approve" onclick="approveApplication(\'' + app.id + '\')"><span style="font-size:16px">\u2713</span> \uC2B9\uC778 \u2014 \uD3EC\uD138 \uAD8C\uD55C \uBD80\uC5EC</button>' +
-        '<button class="btn-reject" onclick="rejectApplication(\'' + app.id + '\')">\uBC18\uB824</button>' +
-        '<button onclick="downloadApplicationPdf(\'' + app.id + '\')" title="\uC2E0\uCCAD\uC11C \uB2E4\uC6B4\uB85C\uB4DC (PDF)" style="background:#fff;color:#0071ce;border:1.5px solid #0071ce;padding:9px 16px;border-radius:8px;font-size:13px;font-weight:700;cursor:pointer;display:inline-flex;align-items:center;gap:6px;margin-left:auto"><span>\uD83D\uDCE5</span> \uC2E0\uCCAD\uC11C PDF</button>' +
+        '<button class="btn-approve" onclick="approveApplication(\'' + app.id + '\')"><span style="font-size:16px">\u2713</span> <span class="ko">승인 — 포털 권한 부여</span><span class="en">Approve — Grant Portal Access</span></button>' +
+        '<button class="btn-reject" onclick="rejectApplication(\'' + app.id + '\')"><span class="ko">반려</span><span class="en">Reject</span></button>' +
+        '<button onclick="downloadApplicationPdf(\'' + app.id + '\')" title="Download application (PDF)" style="background:#fff;color:#0071ce;border:1.5px solid #0071ce;padding:9px 16px;border-radius:8px;font-size:13px;font-weight:700;cursor:pointer;display:inline-flex;align-items:center;gap:6px;margin-left:auto"><span>\uD83D\uDCE5</span> <span class="ko">신청서 PDF</span><span class="en">Download PDF</span></button>' +
       '</div>' +
     '</div>';
 
@@ -6256,10 +6272,10 @@ async function renderAdminReview() {
 
     // Processed applications
   if (processed.length > 0) {
-    html += '<div style="margin-top:32px;margin-bottom:12px;font-size:13px;color:rgba(0,0,0,0.62);font-family:var(--mono)">최근 처리 완료</div>';
+    html += '<div style="margin-top:32px;margin-bottom:12px;font-size:13px;color:rgba(0,0,0,0.62);font-family:var(--mono)"><span class="ko">최근 처리 완료</span><span class="en">Recently Processed</span></div>';
     processed.forEach(function(app) {
       var initial = (app.brand_name_ko || app.brand_name_en || '?')[0];
-      var statusBadge = app.status === 'approved' ? '<span class="brand-badge badge-active">승인됨</span>' : '<span class="brand-badge badge-rejected" style="background:rgba(255,59,48,.15);color:#ff3b30">반려</span>';
+      var statusBadge = app.status === 'approved' ? '<span class="brand-badge badge-active"><span class="ko">승인됨</span><span class="en">Approved</span></span>' : '<span class="brand-badge badge-rejected" style="background:rgba(255,59,48,.15);color:#ff3b30"><span class="ko">반려</span><span class="en">Rejected</span></span>';
       var statusIcon = app.status === 'approved' ? '<div style="font-size:12px;color:#00d68f;font-family:var(--mono)">✓ Approved</div>' : '<div style="font-size:12px;color:#ff3b30;font-family:var(--mono)">✗ Rejected</div>';
       var typeBadge = app.apply_type === 'voucher' ? '<span class="badge-voucher">voucher</span>' : '<span class="badge-direct">direct</span>';
       var dates = (app.created_at ? app.created_at.slice(0,10) : '') + (app.approved_at ? ' → ' + app.approved_at.slice(0,10) + ' 승인' : '');
