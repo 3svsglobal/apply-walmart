@@ -2101,28 +2101,28 @@ button{cursor:pointer;font-family:var(--font)}
           <div id="admin-meeting-requests-list"></div>
         </div>
         <div class="stat-grid">
-          <div class="stat-card"><div class="val" id="dash-stat-brands">-</div><div class="lbl"><span class="ko">참여 브랜드</span><span class="en">Active Brands</span></div><div class="change" id="dash-stat-brands-sub">loading...</div></div>
-          <div class="stat-card"><div class="val" id="dash-stat-pending">-</div><div class="lbl"><span class="ko">접수 심사 대기</span><span class="en">Pending Review</span></div><div class="change warn" id="dash-stat-pending-sub">loading...</div></div>
-          <div class="stat-card"><div class="val" id="dash-stat-contracts">-</div><div class="lbl"><span class="ko">계약 현황</span><span class="en">Contracts</span></div><div class="change" id="dash-stat-contracts-sub">loading...</div></div>
-          <div class="stat-card"><div class="val" id="dash-stat-completed">-</div><div class="lbl"><span class="ko">서명 완료</span><span class="en">Signed</span></div><div class="change" id="dash-stat-completed-sub">loading...</div></div>
+          <div class="stat-card" onclick="showAdminView('brands')" style="cursor:pointer" title="브랜드 관리 / Brands"><div class="val" id="dash-stat-brands">-</div><div class="lbl"><span class="ko">참여 브랜드</span><span class="en">Active Brands</span></div><div class="change" id="dash-stat-brands-sub">loading...</div></div>
+          <div class="stat-card" onclick="showAdminView('review')" style="cursor:pointer" title="접수 심사 / Review"><div class="val" id="dash-stat-pending">-</div><div class="lbl"><span class="ko">접수 심사 대기</span><span class="en">Pending Review</span></div><div class="change warn" id="dash-stat-pending-sub">loading...</div></div>
+          <div class="stat-card" onclick="showAdminView('contracts')" style="cursor:pointer" title="계약 관리 / Contracts"><div class="val" id="dash-stat-contracts">-</div><div class="lbl"><span class="ko">계약 현황</span><span class="en">Contracts</span></div><div class="change" id="dash-stat-contracts-sub">loading...</div></div>
+          <div class="stat-card" onclick="showAdminView('contracts')" style="cursor:pointer" title="계약 관리 / Contracts"><div class="val" id="dash-stat-completed">-</div><div class="lbl"><span class="ko">서명 완료</span><span class="en">Signed</span></div><div class="change" id="dash-stat-completed-sub">loading...</div></div>
         </div>
         <div class="stat-grid" style="margin-top:12px">
-          <div class="stat-card"><div class="val" id="dash-stat-approval">-</div><div class="lbl"><span class="ko">승인률</span><span class="en">Approval Rate</span></div><div class="change" id="dash-stat-approval-sub">loading...</div></div>
-          <div class="stat-card"><div class="val" id="dash-stat-avgdays">-</div><div class="lbl"><span class="ko">평균 처리일</span><span class="en">Avg. Days</span></div><div class="change" id="dash-stat-avgdays-sub">loading...</div></div>
-          <div class="stat-card"><div class="val" id="dash-stat-mtd">-</div><div class="lbl"><span class="ko">이번 달 신규</span><span class="en">New This Month</span></div><div class="change" id="dash-stat-mtd-sub">loading...</div></div>
-          <div class="stat-card"><div class="val" id="dash-stat-attachments">-</div><div class="lbl"><span class="ko">첨부 파일</span><span class="en">Attachments</span></div><div class="change" id="dash-stat-attachments-sub">loading...</div></div>
+          <div class="stat-card" onclick="showAdminView('review')" style="cursor:pointer" title="접수 심사 / Review"><div class="val" id="dash-stat-approval">-</div><div class="lbl"><span class="ko">승인률</span><span class="en">Approval Rate</span></div><div class="change" id="dash-stat-approval-sub">loading...</div></div>
+          <div class="stat-card" onclick="showAdminView('review')" style="cursor:pointer" title="접수 심사 / Review"><div class="val" id="dash-stat-avgdays">-</div><div class="lbl"><span class="ko">평균 처리일</span><span class="en">Avg. Days</span></div><div class="change" id="dash-stat-avgdays-sub">loading...</div></div>
+          <div class="stat-card" onclick="showAdminView('review')" style="cursor:pointer" title="접수 심사 / Review"><div class="val" id="dash-stat-mtd">-</div><div class="lbl"><span class="ko">이번 달 신규</span><span class="en">New This Month</span></div><div class="change" id="dash-stat-mtd-sub">loading...</div></div>
+          <div class="stat-card" onclick="showAdminView('brands')" style="cursor:pointer" title="브랜드 관리 / Brands"><div class="val" id="dash-stat-attachments">-</div><div class="lbl"><span class="ko">첨부 파일</span><span class="en">Attachments</span></div><div class="change" id="dash-stat-attachments-sub">loading...</div></div>
         </div>
         <div id="dash-insights" style="margin-top:12px"></div>
         <div class="dash-grid">
-          <div><div class="panel"><div class="panel-title"><span class="ko">브랜드 파이프라인</span><span class="en">Brand Pipeline</span> <span class="count" id="admin-brand-count">0 brands</span></div>
+          <div><div class="panel" onclick="showAdminView('brands')" style="cursor:pointer" title="브랜드 관리 / Brands"><div class="panel-title"><span class="ko">브랜드 파이프라인</span><span class="en">Brand Pipeline</span> <span class="count" id="admin-brand-count">0 brands</span></div>
             <div id="admin-brand-pipeline" style="text-align:center;padding:40px 0;color:rgba(0,0,0,0.6);font-size:14px"><span class="ko">로딩 중...</span><span class="en">Loading...</span></div>
           </div></div>
           <div style="display:flex;flex-direction:column;gap:8px">
-            <div class="panel"><div class="panel-title"><span class="ko">최근 활동</span><span class="en">Recent Activity</span> <span class="count" id="admin-noti-count">0</span></div>
+            <div class="panel" onclick="showAdminView('review')" style="cursor:pointer" title="접수 심사 / Review"><div class="panel-title"><span class="ko">최근 활동</span><span class="en">Recent Activity</span> <span class="count" id="admin-noti-count">0</span></div>
               <div id="admin-noti-list" style="text-align:center;padding:24px 0;color:rgba(0,0,0,0.6);font-size:13px"><span class="ko">로딩 중...</span><span class="en">Loading...</span></div>
             </div>
-            <div class="panel"><div class="panel-title"><span class="ko">계약 요약</span><span class="en">Contract Summary</span></div><div id="admin-contract-summary" style="text-align:center;padding:24px 0;color:rgba(0,0,0,0.6);font-size:13px"><span class="ko">로딩 중...</span><span class="en">Loading...</span></div></div>
-            <div class="panel"><div class="panel-title"><span class="ko">Phase 분포</span><span class="en">Phase Distribution</span></div><div id="admin-phase-dist" style="text-align:center;padding:24px 0;color:rgba(0,0,0,0.6);font-size:13px"><span class="ko">로딩 중...</span><span class="en">Loading...</span></div></div>
+            <div class="panel" onclick="showAdminView('contracts')" style="cursor:pointer" title="계약 관리 / Contracts"><div class="panel-title"><span class="ko">계약 요약</span><span class="en">Contract Summary</span></div><div id="admin-contract-summary" style="text-align:center;padding:24px 0;color:rgba(0,0,0,0.6);font-size:13px"><span class="ko">로딩 중...</span><span class="en">Loading...</span></div></div>
+            <div class="panel" onclick="showAdminView('brands')" style="cursor:pointer" title="브랜드 관리 / Brands"><div class="panel-title"><span class="ko">Phase 분포</span><span class="en">Phase Distribution</span></div><div id="admin-phase-dist" style="text-align:center;padding:24px 0;color:rgba(0,0,0,0.6);font-size:13px"><span class="ko">로딩 중...</span><span class="en">Loading...</span></div></div>
           </div>
         </div>
       </div>
