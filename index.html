@@ -6054,6 +6054,179 @@ function _toggleReviewCard(headerEl) {
   if (card) card.classList.toggle('expanded');
 }
 
+// ══════════════════════════════════════════════════════════════════════════
+// 신청서 자동 스코어링 (100점 만점, 참고용) — 월마트 입점 우선순위 반영
+//   A. 미국 레퍼런스 & 리테일 진출 (40) — 최우선
+//   B. 수출·매출 실적 (25)
+//   C. 캐파·실행력 (20)
+//   D. 브랜드·인지도 (15)
+// ══════════════════════════════════════════════════════════════════════════
+function calculateBrandScore(app) {
+  var interest = {};
+  if (app && app.walmart_interest) {
+    var wi = app.walmart_interest;
+    if (typeof wi === 'string') { try { wi = JSON.parse(wi); } catch(e) { wi = {}; } }
+    interest = wi || {};
+  }
+  var attached = [];
+  if (app && app.attached_files) {
+    var af = app.attached_files;
+    if (typeof af === 'string') { try { af = JSON.parse(af); } catch(e) { af = []; } }
+    attached = Array.isArray(af) ? af : [];
+  }
+  var fileCats = {};
+  attached.forEach(function(f){ if (f && f.field) fileCats[f.field] = (fileCats[f.field]||0) + 1; });
+
+  var A=[], B=[], C=[], D=[];
+  var sA=0, sB=0, sC=0, sD=0;
+  function add(bucket, label, pts) { if (pts > 0) { bucket.push({label:label, pts:pts}); } return pts; }
+
+  // ─── A. US Reference & Retail Presence (40) ───
+  var ors = interest.other_retail_status;
+  if (ors === 'selling')      sA += add(A, '타 미국 리테일 판매 중', 15);
+  else if (ors === 'in-talks')     sA += add(A, '타 리테일 접촉·논의 중', 8);
+  else if (ors === 'considering' || ors === 'planned') sA += add(A, '타 리테일 검토 중', 4);
+
+  var orc = String(interest.other_retail_channels || '').toLowerCase();
+  var retailPts = 0;
+  if (/\bamazon\b/.test(orc))                     retailPts += 5;
+  if (/\btarget\b/.test(orc))                     retailPts += 3;
+  if (/\bcostco\b/.test(orc))                     retailPts += 3;
+  if (/sam.{0,3}s?\s*club/.test(orc))             retailPts += 3;
+  if (/\bwalmart\b/.test(orc))                    retailPts += 3;
+  if (/\bulta\b/.test(orc))                       retailPts += 2;
+  if (/\bsephora\b/.test(orc))                    retailPts += 2;
+  if (/whole\s*foods?/.test(orc))                 retailPts += 2;
+  if (/trader\s*joe/.test(orc))                   retailPts += 2;
+  if (/\bhmart\b|\bh-?mart\b/.test(orc))          retailPts += 2;
+  retailPts = Math.min(retailPts, 15);
+  if (retailPts) sA += add(A, '메이저 채널 진출', retailPts);
+
+  if (interest.us_warehouse === 'yes')            sA += add(A, '미국 창고 보유', 7);
+  else if (interest.us_warehouse === 'considering') sA += add(A, '미국 창고 검토 중', 3);
+
+  var amazonUrl = String(interest.amazon_url || '').trim();
+  if (amazonUrl && /^https?:\/\//.test(amazonUrl)) sA += add(A, 'Amazon URL 제출', 3);
+
+  // ─── B. Export Experience (25) ───
+  var expExp = String(app.export_experience || '').toLowerCase();
+  if (expExp === 'yes' || expExp.indexOf('yes') === 0) sB += add(B, '수출 경험 있음', 10);
+
+  var countries = String(interest.export_countries || '').split(/[,;·]/).map(function(s){return s.trim();}).filter(Boolean);
+  var cc = countries.length;
+  var cPts = cc >= 4 ? 10 : cc === 3 ? 8 : cc === 2 ? 6 : cc === 1 ? 3 : 0;
+  if (cPts) sB += add(B, cc + '개국 수출', cPts);
+
+  var revStr = String(app.annual_revenue || '').replace(/[^0-9.]/g, '');
+  var revNum = parseFloat(revStr) || 0;
+  if (revNum >= 10000000)      sB += add(B, '연매출 10M USD+', 5);
+  else if (revNum >= 1000000)  sB += add(B, '연매출 1M~10M USD', 3);
+  else if (revNum > 0)         sB += add(B, '연매출 <1M USD', 1);
+
+  // ─── C. Capacity & Execution (20) ───
+  if (String(interest.production_capacity || '').trim()) sC += add(C, '생산 역량 기재', 5);
+  var units = parseFloat(String(interest.annual_units_sold || '').replace(/[^0-9.]/g, '')) || 0;
+  if (units > 0) sC += add(C, '연 판매량 기재', 5);
+
+  var lt = String(interest.lead_time || '').toLowerCase();
+  var ltMatch = lt.match(/\d+(\.\d+)?/);
+  var ltNum = ltMatch ? parseFloat(ltMatch[0]) : 0;
+  var isMonth = /month|개월|달\b/.test(lt);
+  var isDay = /day|일\b/.test(lt);
+  var weeksEq = isMonth ? ltNum * 4.33 : isDay ? ltNum / 7 : ltNum;
+  if (ltNum > 0) {
+    if (weeksEq < 4)      sC += add(C, '리드타임 <4주', 5);
+    else if (weeksEq < 8) sC += add(C, '리드타임 <8주', 3);
+    else                  sC += add(C, '리드타임 8주+', 1);
+  }
+  if (interest.packaging_modify === 'yes') sC += add(C, '패키징 커스터마이징 가능', 3);
+  if (interest.english_team === 'yes')     sC += add(C, '영어 가능 인력 보유', 2);
+
+  // ─── D. Brand & Awareness (15) ───
+  var ig = String(interest.instagram_followers || '').toLowerCase();
+  if (/over 100|100.?000\+?|100k|1m/.test(ig))       sD += add(D, 'IG 팔로워 100K+', 5);
+  else if (/50.?000|50k|100.?000|10.?000.{0,3}100/.test(ig)) sD += add(D, 'IG 팔로워 10K~100K', 3);
+  else if (/1.?000|1k|5.?000|10.?000/.test(ig))       sD += add(D, 'IG 팔로워 1K~10K', 1);
+
+  var story = String(interest.brand_story || '').trim();
+  if (story.length > 100)      sD += add(D, '브랜드 스토리 상세 (100자+)', 3);
+  else if (story.length > 30)  sD += add(D, '브랜드 스토리 기재', 1);
+
+  if (fileCats['Brand Assets'])              sD += add(D, '브랜드 자료 첨부', 2);
+  if (fileCats['Master SKU Excel'])          sD += add(D, 'SKU Excel 첨부', 2);
+  if (fileCats['Sales & Performance Data'])  sD += add(D, '판매·실적 데이터 첨부', 2);
+  if (fileCats['Compliance Documents'])      sD += add(D, '인증 서류 첨부', 1);
+
+  // 각 카테고리 상한
+  sA = Math.min(sA, 40);
+  sB = Math.min(sB, 25);
+  sC = Math.min(sC, 20);
+  sD = Math.min(sD, 15);
+  var total = sA + sB + sC + sD;
+
+  // Tier
+  var tier;
+  if (total >= 80)      tier = {key:'excellent', color:'#10b981', ko:'우수',        en:'Excellent'};
+  else if (total >= 65) tier = {key:'good',      color:'#0071ce', ko:'양호',        en:'Good'};
+  else if (total >= 45) tier = {key:'fair',      color:'#f59e0b', ko:'보통',        en:'Fair'};
+  else                  tier = {key:'review',    color:'#ef4444', ko:'주의 검토',   en:'Needs Review'};
+
+  return {
+    total: total,
+    A: {score: sA, max: 40, ko:'미국 레퍼런스',    en:'US Reference',        items: A},
+    B: {score: sB, max: 25, ko:'수출·매출 실적',  en:'Export Experience',   items: B},
+    C: {score: sC, max: 20, ko:'캐파·실행력',      en:'Capacity & Execution', items: C},
+    D: {score: sD, max: 15, ko:'브랜드·인지도',    en:'Brand & Awareness',   items: D},
+    tier: tier
+  };
+}
+
+// 스코어 배지 HTML (카드 헤더용 — 작고 눈에 띔)
+function _scoreBadgeHtml(score) {
+  var c = score.tier.color;
+  return '<span title="AI 자동 산정 점수 (참고용) / AI-calculated score (reference only)" style="display:inline-flex;align-items:center;gap:6px;padding:5px 11px;border-radius:999px;background:' + c + '15;border:1.5px solid ' + c + '55;color:' + c + ';font-weight:800;font-size:12.5px;font-family:var(--font);white-space:nowrap">'
+    + '<span style="font-size:14px">🤖</span>'
+    + '<span>' + score.total + '<span style="opacity:0.55;font-weight:600">/100</span></span>'
+    + '<span style="opacity:0.35">·</span>'
+    + '<span class="ko">' + score.tier.ko + '</span><span class="en">' + score.tier.en + '</span>'
+    + '</span>';
+}
+
+// 스코어 상세 섹션 HTML (펼침 상태 body 최상단)
+function _scoreDetailHtml(score) {
+  function _esc(s){return String(s==null?'':s).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];});}
+  var cats = ['A','B','C','D'];
+  var barsHtml = cats.map(function(k){
+    var cat = score[k];
+    var pct = Math.round((cat.score/cat.max)*100);
+    var itemsHtml = cat.items.length
+      ? cat.items.map(function(it){ return '<div style="display:flex;justify-content:space-between;font-size:11.5px;color:var(--text-muted);padding:2px 0"><span>· ' + _esc(it.label) + '</span><span style="color:#10b981;font-weight:600">+' + it.pts + '</span></div>'; }).join('')
+      : '<div style="font-size:11.5px;color:#ef4444;padding:2px 0">· <span class="ko">해당 항목에 대한 정보 없음</span><span class="en">No information for this category</span></div>';
+    return '<div style="margin-bottom:12px">'
+      + '<div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:5px">'
+        + '<div style="font-size:12.5px;font-weight:700;color:var(--text)"><span class="ko">' + _esc(cat.ko) + '</span><span class="en">' + _esc(cat.en) + '</span></div>'
+        + '<div style="font-size:12px;color:var(--text-muted);font-family:var(--mono);font-weight:600">' + cat.score + ' / ' + cat.max + '</div>'
+      + '</div>'
+      + '<div style="height:6px;background:rgba(0,0,0,0.06);border-radius:3px;overflow:hidden;margin-bottom:6px">'
+        + '<div style="height:100%;background:' + score.tier.color + ';width:' + pct + '%;transition:width .4s"></div>'
+      + '</div>'
+      + '<div>' + itemsHtml + '</div>'
+    + '</div>';
+  }).join('');
+
+  return '<div class="review-section full" style="background:linear-gradient(180deg,' + score.tier.color + '08 0%,transparent 100%);border-color:' + score.tier.color + '40">'
+    + '<div class="rs-title" style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px">'
+      + '<span>🤖 <span class="ko">AI 자동 심사 점수</span><span class="en">AI Application Score</span></span>'
+      + '<span style="font-size:22px;font-weight:900;color:' + score.tier.color + ';letter-spacing:-1px">' + score.total + '<span style="font-size:14px;color:var(--text-muted);font-weight:500">/100</span> <span style="font-size:14px;padding:2px 10px;border-radius:6px;background:' + score.tier.color + '15;color:' + score.tier.color + '"><span class="ko">' + score.tier.ko + '</span><span class="en">' + score.tier.en + '</span></span></span>'
+    + '</div>'
+    + '<div style="font-size:11.5px;color:var(--text-muted);margin:-4px 0 12px;line-height:1.55">'
+      + '<span class="ko">신청서 데이터로 자동 산정된 참고용 점수. 최종 판단은 관리자가 내립니다.</span>'
+      + '<span class="en">Auto-calculated reference score from application data. Final decision is made by the admin.</span>'
+    + '</div>'
+    + barsHtml
+    + '</div>';
+}
+
 function openAllAttachments(urls) {
   if (!Array.isArray(urls) || urls.length === 0) return;
   if (urls.length > 6 && !confirm('첨부파일 ' + urls.length + '개를 모두 새 탭으로 엽니다. 계속할까요?')) return;
@@ -6166,6 +6339,10 @@ async function renderAdminReview() {
       ? '<span title="\uCCA8\uBD80 ' + attachedCount + '\uAC74" style="display:inline-flex;align-items:center;gap:4px;font-size:11.5px;padding:3px 9px;border-radius:999px;background:var(--accent-light);color:var(--accent);font-weight:700">\uD83D\uDCCE ' + attachedCount + '</span>'
       : '';
 
+    // AI \uC790\uB3D9 \uC2A4\uCF54\uC5B4 \uACC4\uC0B0
+    var _score = calculateBrandScore(app);
+    var _scoreBadge = _scoreBadgeHtml(_score);
+
     html += '<div class="review-card" data-app-id="' + app.id + '">';
 
     html += '<div class="review-header" onclick="_toggleReviewCard(this)">' +
@@ -6176,6 +6353,7 @@ async function renderAdminReview() {
             ' <span class="brand-badge badge-pending"><span class="ko">\uC2EC\uC0AC \uB300\uAE30</span><span class="en">Under Review</span></span>' +
             ' <span class="badge-direct">' + typeLabel + '</span>' +
             (attachBadge ? ' ' + attachBadge : '') +
+            ' ' + _scoreBadge +
           '</div>' +
           '<div class="brand-sub"><span class="ko">\uC811\uC218\uC77C</span><span class="en">Submitted</span> ' + _esc(date) + ' \u00B7 ID <code style="font-family:var(--mono);font-size:11.5px;color:var(--text-muted)">' + _esc((app.id||'').slice(0,8)) + '</code></div>' +
         '</div>' +
@@ -6188,6 +6366,9 @@ async function renderAdminReview() {
       '</div>';
 
     html += '<div class="review-body">';
+
+    // AI 스코어 상세 (body 최상단)
+    html += _scoreDetailHtml(_score);
 
     html += _section({ko:'회사 정보', en:'Company Information'},
       _fieldHtml({ko:'대표자', en:'CEO'}, app.ceo_name) +
