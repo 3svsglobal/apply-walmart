@@ -1,0 +1,993 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Walmart Entry Program — Playbook</title>
+<meta property="og:title" content="Walmart Entry Program Playbook">
+<meta property="og:description" content="3자 공용 참조 문서 — 3SVS · Startup Junkie · 참여 브랜드">
+<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css">
+<style>
+:root {
+  --accent: #0071ce;
+  --accent-dark: #005ea8;
+  --accent-light: rgba(0,113,206,0.08);
+  --text: #0d1117;
+  --text-mut: rgba(13,17,23,0.62);
+  --text-faint: rgba(13,17,23,0.4);
+  --border: rgba(13,17,23,0.10);
+  --border-strong: rgba(13,17,23,0.18);
+  --bg: #ffffff;
+  --surface: #ffffff;
+  --surface-alt: #f6f7fa;
+  --lime: #10b981;
+  --orange: #f59e0b;
+  --red: #ef4444;
+  --font: 'Pretendard Variable', 'Pretendard', -apple-system, system-ui, 'Malgun Gothic', 'Apple SD Gothic Neo', sans-serif;
+  --mono: ui-monospace, SFMono-Regular, 'SF Mono', Menlo, Consolas, monospace;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; }
+body {
+  font-family: var(--font);
+  color: var(--text);
+  background: var(--bg);
+  line-height: 1.6;
+  font-size: 15px;
+  -webkit-font-smoothing: antialiased;
+}
+a { color: var(--accent); text-decoration: none; }
+a:hover { text-decoration: underline; }
+code { font-family: var(--mono); background: var(--surface-alt); padding: 1px 6px; border-radius: 4px; font-size: 0.88em; }
+pre { background: var(--surface-alt); padding: 14px 18px; border-radius: 8px; overflow-x: auto; font-family: var(--mono); font-size: 13px; line-height: 1.6; border: 1px solid var(--border); }
+
+/* Layout */
+.playbook-wrap { display: grid; grid-template-columns: 280px 1fr; min-height: 100vh; }
+.toc {
+  border-right: 1px solid var(--border);
+  padding: 24px 20px;
+  position: sticky;
+  top: 0;
+  max-height: 100vh;
+  overflow-y: auto;
+  background: var(--surface-alt);
+}
+.toc-header {
+  font-size: 13.5px;
+  font-weight: 800;
+  color: var(--text);
+  letter-spacing: -0.3px;
+  margin-bottom: 4px;
+  line-height: 1.35;
+}
+.toc-sub {
+  font-size: 10.5px;
+  font-weight: 600;
+  color: var(--text-mut);
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+  margin-bottom: 16px;
+}
+.toc-nav { margin-bottom: 18px; }
+.toc-nav a {
+  display: block;
+  padding: 7px 10px;
+  color: var(--text-mut);
+  font-size: 12.5px;
+  font-weight: 500;
+  border-radius: 6px;
+  border-left: 2px solid transparent;
+  margin-bottom: 1px;
+  transition: all .12s;
+}
+.toc-nav a:hover { background: rgba(0,0,0,0.04); color: var(--text); text-decoration: none; }
+.toc-nav a.active { background: rgba(0,113,206,0.10); color: var(--accent); border-left-color: var(--accent); font-weight: 700; }
+.toc-actions {
+  padding-top: 14px;
+  border-top: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.lang-filter { display: flex; gap: 4px; padding: 4px; background: var(--bg); border-radius: 8px; border: 1px solid var(--border); }
+.lang-filter button {
+  flex: 1;
+  border: none;
+  background: transparent;
+  padding: 6px 8px;
+  border-radius: 5px;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text-mut);
+  cursor: pointer;
+  font-family: inherit;
+  transition: all .12s;
+}
+.lang-filter button.active { background: var(--accent); color: #fff; }
+.print-btn {
+  padding: 9px 14px;
+  border: none;
+  background: var(--accent);
+  color: #fff;
+  border-radius: 8px;
+  font-size: 12.5px;
+  font-weight: 700;
+  cursor: pointer;
+  font-family: inherit;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  transition: background .12s;
+}
+.print-btn:hover { background: var(--accent-dark); }
+
+/* Content */
+.content { padding: 48px 56px 96px; max-width: 940px; margin: 0 auto; }
+
+.doc-header { padding-bottom: 30px; margin-bottom: 36px; border-bottom: 3px solid var(--accent); }
+.doc-eyebrow { font-size: 10.5px; font-weight: 700; letter-spacing: 2px; color: var(--accent); text-transform: uppercase; margin-bottom: 8px; }
+.doc-title { font-size: 34px; font-weight: 900; letter-spacing: -1.2px; color: var(--text); line-height: 1.2; margin: 0 0 10px; }
+.doc-sub { font-size: 14px; color: var(--text-mut); line-height: 1.6; margin-bottom: 14px; }
+.doc-meta { display: flex; flex-wrap: wrap; gap: 8px; }
+.doc-meta span { display: inline-flex; align-items: center; gap: 6px; padding: 5px 12px; background: var(--surface-alt); border: 1px solid var(--border); border-radius: 999px; font-size: 12px; color: var(--text); font-weight: 600; }
+
+section { margin-bottom: 42px; scroll-margin-top: 20px; }
+section h2 {
+  font-size: 22px;
+  font-weight: 800;
+  letter-spacing: -0.6px;
+  color: var(--text);
+  border-left: 4px solid var(--accent);
+  padding: 3px 0 3px 14px;
+  margin: 0 0 14px;
+  line-height: 1.35;
+}
+section h3 { font-size: 17px; font-weight: 700; color: var(--text); margin: 24px 0 10px; letter-spacing: -0.3px; }
+section h4 { font-size: 14.5px; font-weight: 700; color: var(--text); margin: 18px 0 6px; letter-spacing: -0.2px; }
+section p { margin: 0 0 12px; color: var(--text); line-height: 1.7; }
+
+.callout { background: var(--surface-alt); border-left: 4px solid var(--accent); padding: 14px 18px; margin: 12px 0 18px; border-radius: 0 8px 8px 0; font-size: 13.5px; line-height: 1.65; color: var(--text-mut); }
+.callout.warn { border-left-color: var(--orange); background: rgba(245,158,11,0.05); }
+.callout.info { border-left-color: var(--accent); background: rgba(0,113,206,0.04); }
+
+table { width: 100%; border-collapse: collapse; margin: 12px 0 20px; font-size: 13.5px; }
+table th, table td { border-bottom: 1px solid var(--border); padding: 10px 12px; text-align: left; vertical-align: top; }
+table th { background: var(--surface-alt); font-weight: 700; color: var(--text); font-size: 12.5px; letter-spacing: -0.1px; }
+table tbody tr:hover { background: rgba(0,113,206,0.02); }
+table td strong, table th strong { color: var(--accent); }
+
+ul, ol { margin: 0 0 14px; padding-left: 22px; }
+ul li, ol li { margin-bottom: 5px; line-height: 1.65; color: var(--text); }
+ul.checkbox { list-style: none; padding-left: 0; }
+ul.checkbox li { padding-left: 26px; position: relative; margin-bottom: 8px; }
+ul.checkbox li::before { content: '☐'; position: absolute; left: 0; top: -1px; font-size: 15px; color: var(--accent); }
+
+.role-card { border: 1px solid var(--border); border-radius: 12px; padding: 20px 22px; margin-bottom: 14px; background: var(--surface); }
+.role-card h4 { margin-top: 0; display: flex; align-items: center; gap: 8px; font-size: 15px; }
+.role-card p { font-size: 13.5px; margin-bottom: 8px; }
+.role-card ul { padding-left: 18px; margin-bottom: 10px; font-size: 13.5px; }
+
+.timeline { border: 1px solid var(--border); border-radius: 10px; overflow: hidden; margin: 12px 0 20px; }
+.timeline pre { margin: 0; background: var(--surface-alt); border: none; border-radius: 0; padding: 20px 24px; }
+
+.gate-list { list-style: none; padding: 0; margin: 0 0 16px; }
+.gate-list li { padding: 10px 14px; background: var(--surface-alt); border-left: 3px solid var(--accent); border-radius: 0 6px 6px 0; margin-bottom: 6px; font-size: 13.5px; }
+.gate-list li strong { color: var(--accent); }
+
+.todo { background: rgba(245,158,11,0.10); border: 1px dashed var(--orange); padding: 8px 12px; border-radius: 6px; color: #92400e; font-size: 12.5px; font-weight: 600; display: inline-block; margin: 4px 0; }
+
+.faq-item { margin-bottom: 18px; padding-bottom: 14px; border-bottom: 1px dashed var(--border); }
+.faq-item p:first-child { font-weight: 700; color: var(--text); margin-bottom: 4px; }
+.faq-item p:last-child { color: var(--text-mut); font-size: 14px; margin-bottom: 0; }
+
+.change-log { font-size: 13px; }
+.change-log th { width: 100px; }
+
+/* Language toggle */
+body[data-lang="ko"] .en, body[data-lang="ko"] .en-inline { display: none !important; }
+body[data-lang="en"] .ko, body[data-lang="en"] .ko-inline { display: none !important; }
+body[data-lang="en"] { font-family: -apple-system, system-ui, 'Segoe UI', Roboto, sans-serif; }
+.ko-inline, .en-inline { display: inline; }
+.ko, .en { display: block; }
+.ko + .en { margin-top: 2px; color: var(--text-mut); font-size: 0.94em; font-weight: 400; }
+body[data-lang="both"] .ko + .en { font-style: italic; }
+
+/* Mobile hamburger */
+.toc-toggle { display: none; }
+
+@media (max-width: 900px) {
+  .playbook-wrap { grid-template-columns: 1fr; }
+  .toc {
+    position: fixed;
+    top: 0; left: 0;
+    width: 280px;
+    max-width: 85vw;
+    height: 100vh;
+    z-index: 1000;
+    transform: translateX(-100%);
+    transition: transform .25s ease;
+    box-shadow: 4px 0 20px rgba(0,0,0,0.15);
+  }
+  .toc.open { transform: translateX(0); }
+  .toc-toggle {
+    display: flex;
+    position: fixed;
+    top: 12px; left: 12px;
+    z-index: 1100;
+    width: 42px; height: 42px;
+    background: var(--accent);
+    color: #fff;
+    border: none;
+    border-radius: 10px;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(0,113,206,0.35);
+  }
+  .toc-backdrop { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.45); z-index: 999; }
+  .toc-backdrop.show { display: block; }
+  .content { padding: 68px 20px 60px; max-width: 100%; }
+  .doc-title { font-size: 26px; }
+  section h2 { font-size: 19px; }
+  table { font-size: 12.5px; display: block; overflow-x: auto; }
+}
+
+/* Print */
+@media print {
+  @page { size: A4; margin: 0; }
+  body { padding: 15mm 18mm; font-size: 11pt; }
+  .toc, .toc-toggle, .toc-backdrop, .print-btn { display: none !important; }
+  .playbook-wrap { display: block; }
+  .content { padding: 0; max-width: 100%; }
+  .doc-title { font-size: 22pt; }
+  section { page-break-inside: auto; }
+  section h2 { font-size: 14pt; page-break-after: avoid; }
+  table, .role-card, .callout { page-break-inside: avoid; }
+  a { color: var(--text); text-decoration: none; }
+  .print-only { display: block !important; }
+}
+</style>
+</head>
+<body data-lang="both">
+
+<button class="toc-toggle" onclick="toggleToc()" aria-label="목차 열기"><span style="font-size:20px">☰</span></button>
+<div class="toc-backdrop" onclick="toggleToc()"></div>
+
+<div class="playbook-wrap">
+
+<aside class="toc" id="toc">
+  <div class="toc-header">📖 Walmart Entry Program</div>
+  <div class="toc-sub">Playbook v0.1</div>
+  <nav class="toc-nav" id="toc-nav">
+    <a href="#s1">1. 프로그램 개요</a>
+    <a href="#s2">2. 3자 역할과 책임</a>
+    <a href="#s3">3. 전체 여정</a>
+    <a href="#s4">4. Phase 1 — Foundation</a>
+    <a href="#s5">5. Phase 2 — Market Test</a>
+    <a href="#s6">6. Phase 3 — Test P.O.</a>
+    <a href="#s7">7. Post-Launch</a>
+    <a href="#s8">8. 커뮤니케이션·회의</a>
+    <a href="#s9">9. 필수 자료</a>
+    <a href="#s10">10. 계약 유형·비용</a>
+    <a href="#s11">11. 포털 사용법</a>
+    <a href="#s12">12. 컴플라이언스·품질</a>
+    <a href="#s13">13. 의사결정·에스컬레이션</a>
+    <a href="#s14">14. FAQ</a>
+    <a href="#s15">15. 부록</a>
+  </nav>
+  <div class="toc-actions">
+    <div class="lang-filter" role="group" aria-label="언어 선택">
+      <button data-lang="both" class="active" onclick="setLang('both', this)">KR/EN</button>
+      <button data-lang="ko" onclick="setLang('ko', this)">한국어</button>
+      <button data-lang="en" onclick="setLang('en', this)">English</button>
+    </div>
+    <button class="print-btn" onclick="window.print()">📥 <span>PDF로 저장 / Save as PDF</span></button>
+    <a href="/" style="display:block;text-align:center;font-size:11.5px;color:var(--text-mut);padding:6px 0;">← 메인으로 / Back to main</a>
+  </div>
+</aside>
+
+<main class="content">
+
+<header class="doc-header">
+  <div class="doc-eyebrow">Walmart Marketplace Entry Program</div>
+  <h1 class="doc-title">Playbook <span style="font-size:16px;color:var(--text-mut);font-weight:600;letter-spacing:0">v0.1 (Draft)</span></h1>
+  <p class="doc-sub">
+    <span class="ko">3자 공용 참조 문서 · Last updated 2026-08-11</span>
+    <span class="en">Shared reference document · Last updated 2026-08-11</span>
+  </p>
+  <div class="doc-meta">
+    <span>🇰🇷 참여 브랜드 / Participating Brands</span>
+    <span>🇰🇷 3SVS (3Stripe Venture Studio)</span>
+    <span>🇺🇸 Startup Junkie Consulting</span>
+  </div>
+  <div class="callout info" style="margin-top:20px">
+    <span class="ko">이 플레이북은 한국 브랜드가 Walmart Marketplace에 진입하고, 궁극적으로 Walmart 오프라인 매장까지 확장하는 전 과정을 3자가 동일한 기준으로 협업하기 위한 단일 참조 문서입니다.</span>
+    <span class="en">This playbook is the single source of truth for how our three parties work together to bring Korean brands into Walmart Marketplace and eventually Walmart's physical stores.</span>
+  </div>
+</header>
+
+<!-- ══════════ 1. 프로그램 개요 ══════════ -->
+<section id="s1">
+<h2>1. 프로그램 개요 / Program Overview</h2>
+
+<h3>미션 / Mission</h3>
+<p>
+  <span class="ko">한국 브랜드가 Walmart 마켓플레이스에 안전하고 검증 가능한 방식으로 진입해, 온라인 판매 실적을 근거로 오프라인 매장까지 확장하도록 지원합니다.</span>
+  <span class="en">Enable Korean brands to enter Walmart Marketplace in a de-risked, evidence-based way — starting online and scaling into physical stores based on validated performance.</span>
+</p>
+
+<h3>프로그램 규모 / Scale</h3>
+<ul>
+  <li><strong><span class="ko-inline">대상 시장</span><span class="en-inline">Target market</span></strong>: Walmart 연 매출 약 US$685B (약 1,030조원), 세계 1위 유통기업</li>
+  <li><strong><span class="ko-inline">대상</span><span class="en-inline">Target brands</span></strong>: <span class="ko-inline">미국 시장에 진출하고자 하는 한국 브랜드 (K-Food, K-Beauty, K-Lifestyle 우선)</span><span class="en-inline">Korean brands entering the US market (K-Food, K-Beauty, K-Lifestyle priority)</span></li>
+  <li><strong><span class="ko-inline">채널</span><span class="en-inline">Channels</span></strong>: Walmart.com Marketplace (<span class="ko-inline">온라인</span><span class="en-inline">online</span>) → Walmart <span class="ko-inline">4,600여개 매장 (오프라인)</span><span class="en-inline">~4,600 stores (offline)</span></li>
+</ul>
+
+<h3>단계별 리스크 최소화 / Staged De-Risking</h3>
+<div class="timeline"><pre>Application  →  Contract  →  Phase 1  →  Phase 2  →  Phase 3  →  Post-Launch
+   신청           계약        온라인 준비    시장 테스트     Test P.O.       상시 운영
+                              (4–8주)     (4–8주)      (4–8주)      (커미션 기반)</pre></div>
+<p style="font-size:13px;color:var(--text-mut)">
+  <span class="ko">각 Phase는 이전 단계의 검증을 통과해야 진행됩니다.</span>
+  <span class="en">Each Phase requires the previous stage's validation before proceeding.</span>
+</p>
+</section>
+
+<!-- ══════════ 2. 3자 역할과 책임 ══════════ -->
+<section id="s2">
+<h2>2. 3자 역할과 책임 / Three Parties — Roles & Responsibilities</h2>
+
+<div class="role-card">
+  <h4>🇰🇷 <span class="ko-inline">참여 브랜드사</span><span class="en-inline">Participating Brand</span></h4>
+  <p><strong>Core responsibilities</strong></p>
+  <ul>
+    <li><span class="ko">제품 공급, 인증·컴플라이언스, 물류 캐파, 브랜드 자료 제공</span><span class="en">Product supply, certification/compliance, logistics capacity, brand assets</span></li>
+    <li><span class="ko">미국 시장용 패키징·라벨 승인</span><span class="en">US market packaging & labeling approval</span></li>
+    <li><span class="ko">Walmart Buyer 미팅 참석 (필요 시)</span><span class="en">Attend Walmart Buyer meetings when required</span></li>
+    <li><span class="ko">결제 및 정산 관리</span><span class="en">Payment and settlement management</span></li>
+  </ul>
+  <p><strong>Decisions owned</strong></p>
+  <ul>
+    <li><span class="ko">가격 정책, SKU 라인업 선정</span><span class="en">Pricing, SKU lineup selection</span></li>
+    <li><span class="ko">마케팅 예산 승인</span><span class="en">Marketing budget approval</span></li>
+    <li><span class="ko">최종 매장 입점 및 확장 승인</span><span class="en">Final store entry & expansion approval</span></li>
+  </ul>
+</div>
+
+<div class="role-card">
+  <h4>🇰🇷 3SVS — 3Stripe Venture Studio (KOR)</h4>
+  <p><strong>Core responsibilities</strong></p>
+  <ul>
+    <li><span class="ko">브랜드 발굴·심사·계약 체결</span><span class="en">Brand sourcing, review, contracting</span></li>
+    <li><span class="ko">한국 측 커뮤니케이션 창구</span><span class="en">Primary Korea-side communication</span></li>
+    <li><span class="ko">프로그램 오케스트레이션 및 진행 관리</span><span class="en">Program orchestration & progress management</span></li>
+    <li><span class="ko">Startup Junkie와의 미국 실행 협업</span><span class="en">Collaboration with Startup Junkie on US execution</span></li>
+    <li><span class="ko">포털·시스템 운영</span><span class="en">Portal & systems operations</span></li>
+  </ul>
+  <p><strong>Decisions owned</strong></p>
+  <ul>
+    <li><span class="ko">신청 승인·반려</span><span class="en">Application approval/rejection</span></li>
+    <li><span class="ko">Phase 진행 및 확장 여부 판단</span><span class="en">Phase progression & expansion decisions</span></li>
+    <li><span class="ko">계약 조건 협상</span><span class="en">Contract negotiations</span></li>
+  </ul>
+</div>
+
+<div class="role-card">
+  <h4>🇺🇸 Startup Junkie Consulting (USA)</h4>
+  <p><strong>Core responsibilities</strong></p>
+  <ul>
+    <li><span class="ko">Walmart 벤더 등록·시스템 온보딩</span><span class="en">Walmart vendor registration & system onboarding</span></li>
+    <li><span class="ko">Item 360 · Seller Center · Walmart Connect 실행</span><span class="en">Item 360, Seller Center, Walmart Connect execution</span></li>
+    <li><span class="ko">Walmart Buyer 관계 관리 및 미팅 주선</span><span class="en">Walmart Buyer relationship & meeting coordination</span></li>
+    <li><span class="ko">리스팅 최적화, SEO, 광고 캠페인 운영</span><span class="en">Listing optimization, SEO, ad campaign operations</span></li>
+    <li><span class="ko">Enhanced Content, SKU 셋업, 리스팅 관리</span><span class="en">Enhanced content, SKU setup, listing management</span></li>
+    <li><span class="ko">미국 물류·창고·컴플라이언스 지원</span><span class="en">US logistics, warehousing, compliance support</span></li>
+  </ul>
+  <p><strong>Decisions owned</strong></p>
+  <ul>
+    <li><span class="ko">Walmart 시스템 내 운영 판단</span><span class="en">Walmart system operational decisions</span></li>
+    <li><span class="ko">Buyer 커뮤니케이션 및 미팅 스케줄</span><span class="en">Buyer communication & meeting scheduling</span></li>
+    <li><span class="ko">광고 예산 배분 및 최적화 전략</span><span class="en">Ad budget allocation & optimization strategy</span></li>
+  </ul>
+</div>
+
+<h3><span class="ko-inline">Phase별 책임 매트릭스</span><span class="en-inline">Phase Responsibility Matrix</span></h3>
+<table>
+  <thead><tr><th>Phase</th><th>Brand</th><th>3SVS</th><th>Startup Junkie</th><th>Walmart Buyer</th></tr></thead>
+  <tbody>
+    <tr><td><strong>Phase 1</strong></td><td>제품·자료 공급, 패키징 승인</td><td>조율·진행 관리</td><td>계정·리스팅·컴플라이언스 실행</td><td>모니터링</td></tr>
+    <tr><td><strong>Phase 2</strong></td><td>재고 준비, 시장 피드백 반영</td><td>데이터 리뷰·미팅 조율</td><td>데이터 분석·Buyer 리포트 작성</td><td>판매 데이터 검토, 미팅 참석</td></tr>
+    <tr><td><strong>Phase 3</strong></td><td>대량 생산·SRP 승인</td><td>계약 이행 관리</td><td>물류 스트레스테스트·PO 실행</td><td>매장 배정, P.O. 발행</td></tr>
+    <tr><td><strong>Post-Launch</strong></td><td>지속 공급·품질 유지</td><td>커미션 정산 관리</td><td>상시 운영·확대 지원</td><td>확장 결정</td></tr>
+  </tbody>
+</table>
+</section>
+
+<!-- ══════════ 3. 전체 여정 ══════════ -->
+<section id="s3">
+<h2>3. 전체 여정 / End-to-End Journey</h2>
+
+<h3><span class="ko-inline">단계별 소요 기간 (예상)</span><span class="en-inline">Timeline (Estimated)</span></h3>
+<table>
+  <thead><tr><th><span class="ko-inline">단계</span><span class="en-inline">Stage</span></th><th><span class="ko-inline">기간</span><span class="en-inline">Duration</span></th><th><span class="ko-inline">주요 산출물</span><span class="en-inline">Key Deliverable</span></th></tr></thead>
+  <tbody>
+    <tr><td>1. Application <span class="ko-inline">신청서 제출</span></td><td>1일</td><td>신청서 + 자료 6개 카테고리</td></tr>
+    <tr><td>2. Review <span class="ko-inline">심사</span></td><td>3–5<span class="ko-inline">영업일</span><span class="en-inline"> business days</span></td><td><span class="ko-inline">승인·반려 결정</span><span class="en-inline">Approve/reject decision</span></td></tr>
+    <tr><td>3. Contract <span class="ko-inline">계약 체결</span></td><td>5–10<span class="ko-inline">영업일</span><span class="en-inline"> business days</span></td><td><span class="ko-inline">3자 전자서명 계약서</span><span class="en-inline">3-party e-signed contract</span></td></tr>
+    <tr><td>4. <strong>Phase 1</strong> — Foundation</td><td><strong>4–8<span class="ko-inline">주</span><span class="en-inline"> weeks</span></strong></td><td>Walmart.com <span class="ko-inline">라이브 리스팅</span><span class="en-inline">live listing</span></td></tr>
+    <tr><td>5. <strong>Phase 2</strong> — Market Test</td><td><strong>4–8<span class="ko-inline">주</span><span class="en-inline"> weeks</span></strong></td><td>Buyer <span class="ko-inline">제출용 데이터 패키지</span><span class="en-inline"> data package</span></td></tr>
+    <tr><td>6. <strong>Phase 3</strong> — Test P.O.</td><td><strong>4–8<span class="ko-inline">주</span><span class="en-inline"> weeks</span></strong></td><td>Test P.O., 500–1,000 <span class="ko-inline">매장 입점</span><span class="en-inline">store launch</span></td></tr>
+    <tr><td>7. <strong>Post-Launch</strong></td><td><span class="ko-inline">상시</span><span class="en-inline">Ongoing</span></td><td><span class="ko-inline">매출 데이터·확대 전략</span><span class="en-inline">Sales data & expansion strategy</span></td></tr>
+  </tbody>
+</table>
+<div class="callout info">
+  <span class="ko"><strong>전체 예상 소요: 3.5개월 ~ 6개월</strong> (Application → Store Launch)</span>
+  <span class="en"><strong>Total estimated duration: 3.5–6 months</strong> (Application → Store Launch)</span>
+</div>
+
+<h3><span class="ko-inline">각 단계 게이트</span><span class="en-inline">Stage Gates</span></h3>
+<p style="font-size:13px;color:var(--text-mut)"><span class="ko">다음 단계로 넘어가려면 아래 조건이 반드시 충족되어야 함</span><span class="en">The following conditions must be met to advance</span></p>
+<ul class="gate-list">
+  <li><strong>Application → Contract</strong>: <span class="ko-inline">심사 승인 + 참여 유형(A/B) 확정</span><span class="en-inline">Approval + participation type (A/B) confirmed</span></li>
+  <li><strong>Contract → Phase 1</strong>: <span class="ko-inline">3자 전자서명 완료 + 초기 자료 제출</span><span class="en-inline">3-party e-signature complete + initial materials submitted</span></li>
+  <li><strong>Phase 1 → Phase 2</strong>: Walmart.com <span class="ko-inline">리스팅 라이브 + 컴플라이언스 완료</span><span class="en-inline">listing live + compliance complete</span></li>
+  <li><strong>Phase 2 → Phase 3</strong>: Buyer <span class="ko-inline">미팅 완료 + 오프라인 진출 승인</span><span class="en-inline">meeting complete + offline entry approved</span></li>
+  <li><strong>Phase 3 → Post-Launch</strong>: Test P.O. <span class="ko-inline">수주 + 첫 매장 입점 확인</span><span class="en-inline">received + first store entry confirmed</span></li>
+</ul>
+</section>
+
+<!-- ══════════ 4. Phase 1 ══════════ -->
+<section id="s4">
+<h2>4. Phase 1 — Foundation & Online Setup</h2>
+<p><strong>Goal.</strong> <span class="ko">브랜드 제품이 Walmart.com 마켓플레이스에 정식 등록되어 온라인 판매가 가능한 상태를 만드는 것.</span><span class="en">List brand's products on Walmart.com and enable online sales.</span></p>
+<p style="color:var(--text-mut);font-size:13.5px"><strong>소요: 4–8주</strong> · 총 14개 세부 단계</p>
+
+<h3><span class="ko-inline">4.1 세부 단계</span><span class="en-inline">4.1 Step-by-Step</span></h3>
+<table>
+  <thead><tr><th>#</th><th>Step</th><th>Owner</th><th>Deliverable</th></tr></thead>
+  <tbody>
+    <tr><td>01</td><td>Marketplace Application</td><td>Startup Junkie</td><td>승인된 셀러 계정</td></tr>
+    <tr><td>02</td><td>Seller Center & API 연동</td><td>Startup Junkie</td><td>API 키, 통합 완료</td></tr>
+    <tr><td>03</td><td>Partner Profile 구축</td><td>3SVS + Brand</td><td>브랜드 정보 등록</td></tr>
+    <tr><td>04</td><td>Item 360 & Supplier One</td><td>Startup Junkie + Brand</td><td>GTIN·UPC·규격·이미지·속성</td></tr>
+    <tr><td>05</td><td>Packaging & SRP Design</td><td>Brand</td><td>US 시장 패키징 승인</td></tr>
+    <tr><td>06</td><td>DAM System</td><td>Startup Junkie</td><td>이미지·영상·마케팅 자산</td></tr>
+    <tr><td>07</td><td>Listings & SEO A/B Testing</td><td>Startup Junkie</td><td>최적화된 리스팅</td></tr>
+    <tr><td>08</td><td>Sponsored Products Campaign</td><td>Startup Junkie</td><td>광고 활성화</td></tr>
+    <tr><td>09</td><td>Scintilla Dashboard</td><td>Startup Junkie</td><td>실시간 판매 모니터링</td></tr>
+    <tr><td>10</td><td>OTIF & SQEP</td><td>Brand + Startup Junkie</td><td>OTIF 기준 · SQEP 준비</td></tr>
+    <tr><td>11</td><td>Supplier Training</td><td>Startup Junkie</td><td>Walmart 시스템 교육</td></tr>
+    <tr><td>12</td><td>Product Compliance</td><td>Brand</td><td>FDA/FSMA/라벨링 인증</td></tr>
+    <tr><td>13</td><td>Sustainability & CSR</td><td>Brand</td><td>Walmart ESG 요건</td></tr>
+    <tr><td>14</td><td>Operational SLAs & Metrics</td><td>Startup Junkie</td><td>SLA·모니터링 체계</td></tr>
+  </tbody>
+</table>
+
+<h3><span class="ko-inline">4.2 Phase 1 완료 기준</span><span class="en-inline">4.2 Completion Criteria</span></h3>
+<ul>
+  <li>✅ Walmart.com <span class="ko-inline">에 제품 라이브</span><span class="en-inline">products live</span></li>
+  <li>✅ <span class="ko">셀러 계정·물류·컴플라이언스 셋업 완료</span><span class="en">Seller account, logistics, compliance setup complete</span></li>
+  <li>✅ <span class="ko">초기 광고 캠페인 세팅</span><span class="en">Initial ad campaign set up</span></li>
+  <li>✅ Scintilla <span class="ko-inline">대시보드 실시간 데이터 흐름 확인</span><span class="en-inline">real-time data flow verified</span></li>
+</ul>
+
+<h3><span class="ko-inline">4.3 브랜드가 미리 준비할 것</span><span class="en-inline">4.3 What the Brand should prepare</span></h3>
+<ul>
+  <li>Master SKU Excel (KR/EN 상품명, UPC, 사이즈, 성분, 케이스팩)</li>
+  <li><span class="ko-inline">제품 이미지 (히어로 · 패키지 앞뒤 · 라이프스타일 · 텍스처)</span><span class="en-inline">Product images (hero, packaging front/back, lifestyle, texture)</span></li>
+  <li><span class="ko-inline">브랜드 로고 (AI/EPS/PNG)</span><span class="en-inline">Brand logo (AI/EPS/PNG)</span></li>
+  <li><span class="ko-inline">컴플라이언스 서류 (FDA 등록, MSDS 등)</span><span class="en-inline">Compliance documents (FDA registration, MSDS, etc.)</span></li>
+</ul>
+<div class="todo">[TODO — 사용자 추가] 기타 준비 사항</div>
+</section>
+
+<!-- ══════════ 5. Phase 2 ══════════ -->
+<section id="s5">
+<h2>5. Phase 2 — Market Test & Data Collection</h2>
+<p><strong>Goal.</strong> <span class="ko">실제 Walmart.com에서 판매하며 미국 시장용 마케팅 전략을 실험·데이터 수집하고, 오프라인 입점 가능 여부를 판단.</span><span class="en">Sell on Walmart.com while testing marketing strategies and collecting data to assess offline entry feasibility.</span></p>
+<p style="color:var(--text-mut);font-size:13.5px"><span class="ko-inline"><strong>소요: 기본 4주 (합의 시 4주 연장, 추가 운영비 발생)</strong></span><span class="en-inline"><strong>Duration: 4 weeks default (extendable 4 more with mutual agreement + extra fee)</strong></span> · 9<span class="ko-inline">개 세부 단계</span><span class="en-inline"> steps</span></p>
+
+<h3><span class="ko-inline">5.1 세부 단계</span><span class="en-inline">5.1 Step-by-Step</span></h3>
+<table>
+  <thead><tr><th>#</th><th>Step</th><th>Owner</th><th>Deliverable</th></tr></thead>
+  <tbody>
+    <tr><td>01</td><td>Listing Health 최적화</td><td>Startup Junkie</td><td>리스팅 품질 점수 개선</td></tr>
+    <tr><td>02</td><td>Consumer Insights 분석</td><td>Startup Junkie</td><td>타겟 소비자 프로파일</td></tr>
+    <tr><td>03</td><td>Advanced Ads (Sponsored Brands, Display)</td><td>Startup Junkie</td><td>고급 광고 캠페인</td></tr>
+    <tr><td>04</td><td>Dynamic Pricing 전략</td><td>Startup Junkie + Brand</td><td>동적 가격 최적화</td></tr>
+    <tr><td>05</td><td>Demand Forecast</td><td>Startup Junkie</td><td>수요 예측 모델</td></tr>
+    <tr><td>06</td><td>Replenishment Alerts</td><td>Startup Junkie + Brand</td><td>자동 보충 시스템</td></tr>
+    <tr><td>07</td><td>Seller Center Reports</td><td>Startup Junkie</td><td>Buyer 미팅용 종합 리포트</td></tr>
+    <tr><td>08</td><td>Buyer Portal Automation</td><td>Startup Junkie</td><td>Walmart Buyer Portal 자동화</td></tr>
+    <tr><td>09</td><td>Offline Buyer Coordination</td><td>Startup Junkie + 3SVS</td><td><strong>Walmart Buyer 미팅 성사</strong></td></tr>
+  </tbody>
+</table>
+
+<h3><span class="ko-inline">5.2 Phase 2 완료 기준</span><span class="en-inline">5.2 Completion Criteria</span></h3>
+<ul>
+  <li>✅ <span class="ko">온라인 판매 데이터 리포트</span><span class="en">Online sales data report</span></li>
+  <li>✅ <span class="ko">마케팅 전략 실험 결과</span><span class="en">Marketing strategy test results</span></li>
+  <li>✅ <span class="ko">오프라인 진출 판단 보고서</span><span class="en">Offline entry feasibility report</span></li>
+  <li>✅ <strong><span class="ko-inline">Buyer 제출용 데이터 패키지</span><span class="en-inline">Buyer data package</span></strong></li>
+  <li>✅ <span class="ko">수요 예측 & 가격 전략</span><span class="en">Demand forecast & pricing strategy</span></li>
+</ul>
+
+<h3><span class="ko-inline">5.3 이번 Phase의 성패 지표</span><span class="en-inline">5.3 Key Success Signals</span></h3>
+<ul>
+  <li><span class="ko-inline">리스팅 conversion rate 개선 추이</span><span class="en-inline">Listing conversion rate trend</span></li>
+  <li>Sponsored Ads <span class="ko-inline">의 ACOS (Advertising Cost of Sales)</span><span class="en-inline"> ACOS (Advertising Cost of Sales)</span></li>
+  <li><span class="ko-inline">리뷰 평점 및 개수</span><span class="en-inline">Review rating & count</span></li>
+  <li><span class="ko-inline">재구매율 · 리텐션</span><span class="en-inline">Repeat purchase rate · retention</span></li>
+</ul>
+<div class="todo">[TODO — 사용자 추가] 브랜드별 커스텀 KPI 지표</div>
+</section>
+
+<!-- ══════════ 6. Phase 3 ══════════ -->
+<section id="s6">
+<h2>6. Phase 3 — Test P.O. & Store Launch</h2>
+<p><strong>Goal.</strong> <span class="ko">Phase 2 데이터·전략을 근거로 Walmart Buyer의 최종 검토를 거쳐 실제 Test P.O.가 발생하고, 500–1,000개 매장에 입점.</span><span class="en">Based on Phase 2 data, Walmart Buyer conducts final review, issues Test P.O., and product enters 500–1,000 stores.</span></p>
+<p style="color:var(--text-mut);font-size:13.5px"><strong>소요: 4–8주</strong> · 11<span class="ko-inline">개 세부 단계</span><span class="en-inline"> steps</span></p>
+
+<h3><span class="ko-inline">6.1 세부 단계</span><span class="en-inline">6.1 Step-by-Step</span></h3>
+<table>
+  <thead><tr><th>#</th><th>Step</th><th>Owner</th><th>Deliverable</th></tr></thead>
+  <tbody>
+    <tr><td>01</td><td>Final Line Review</td><td>Walmart Buyer + Startup Junkie</td><td>오프라인 입점 결정</td></tr>
+    <tr><td>02</td><td>Onboarding & Access Audit</td><td>Startup Junkie</td><td>오프라인 시스템 접근</td></tr>
+    <tr><td>03</td><td>Transaction Monitoring</td><td>Startup Junkie</td><td>주문·결제·배송 모니터링</td></tr>
+    <tr><td>04</td><td>Ship-Point Network Stress Test</td><td>Brand + Startup Junkie</td><td>대량 발주 대응 검증</td></tr>
+    <tr><td>05</td><td>Verify SRP Packaging</td><td>Brand</td><td>SRP 승인</td></tr>
+    <tr><td>06</td><td>PO Forecast & SSO Simulation</td><td>Startup Junkie</td><td>공급망 시뮬레이션</td></tr>
+    <tr><td>07</td><td>Sales Launch Coordination</td><td>3SVS + Startup Junkie</td><td>런칭 조율</td></tr>
+    <tr><td>08</td><td>Buyer Store Allocation</td><td>Walmart Buyer</td><td>500–1,000 매장 배정</td></tr>
+    <tr><td>09</td><td>Scintilla Updates</td><td>Startup Junkie</td><td>오프라인 데이터 통합</td></tr>
+    <tr><td>10</td><td>Post-Launch Store Scan</td><td>Startup Junkie</td><td>매장 실사</td></tr>
+    <tr><td>11</td><td>Post-Launch 360° Review</td><td>전 파트너</td><td>종합 성과 리뷰</td></tr>
+  </tbody>
+</table>
+
+<h3><span class="ko-inline">6.2 Phase 3 완료 기준</span><span class="en-inline">6.2 Completion Criteria</span></h3>
+<ul>
+  <li>✅ <strong><span class="ko-inline">Test P.O. 발행 확인</span><span class="en-inline">Test P.O. issued & confirmed</span></strong></li>
+  <li>✅ <span class="ko">오프라인 매장 입점 완료</span><span class="en">Offline store launch complete</span></li>
+  <li>✅ Post-Launch <span class="ko-inline">성과 리포트</span><span class="en-inline"> performance report</span></li>
+  <li>✅ <span class="ko">전국 확대 로드맵 수립</span><span class="en">Nationwide expansion roadmap</span></li>
+  <li>✅ <span class="ko">커미션 모델로 전환</span><span class="en">Transition to commission model</span></li>
+</ul>
+
+<h3><span class="ko-inline">6.3 무엇이 잘못될 수 있나</span><span class="en-inline">6.3 What can go wrong</span></h3>
+<div class="callout warn">
+  <ul style="margin:0">
+    <li><span class="ko-inline">OTIF 미달로 인한 페널티</span><span class="en-inline">OTIF violation penalty</span></li>
+    <li><span class="ko-inline">SRP 패키징 이슈로 매장 진열 실패</span><span class="en-inline">SRP packaging issue → store display failure</span></li>
+    <li><span class="ko-inline">재고 부족으로 매장 shelf empty</span><span class="en-inline">Stock-out → empty shelves</span></li>
+  </ul>
+</div>
+<div class="todo">[TODO — 사용자 추가] 과거 사례에서 배운 리스크</div>
+</section>
+
+<!-- ══════════ 7. Post-Launch ══════════ -->
+<section id="s7">
+<h2>7. Post-Launch (Phase 3 이후) / After Test P.O.</h2>
+
+<h3><span class="ko-inline">모델 전환</span><span class="en-inline">Model Transition</span></h3>
+<div class="callout info">
+  <span class="ko">Phase 3 완료 후 3SVS는 <strong>커미션(수수료) 기반</strong> 모델로 전환. 브랜드의 지속 성장을 지원.</span>
+  <span class="en">After Phase 3, 3SVS transitions to a <strong>commission-based</strong> model to support the brand's ongoing growth.</span>
+</div>
+
+<h3><span class="ko-inline">7.1 상시 운영 항목</span><span class="en-inline">7.1 Ongoing Operations</span></h3>
+<ul>
+  <li><span class="ko-inline">매출 모니터링 (Scintilla)</span><span class="en-inline">Sales monitoring (Scintilla)</span></li>
+  <li><span class="ko-inline">재고 보충 · Demand Forecast</span><span class="en-inline">Replenishment · Demand Forecast</span></li>
+  <li>Buyer <span class="ko-inline">관계 관리 (분기별 리뷰)</span><span class="en-inline"> relationship (quarterly reviews)</span></li>
+  <li><span class="ko-inline">광고 최적화 (Walmart Connect)</span><span class="en-inline">Ad optimization (Walmart Connect)</span></li>
+  <li><span class="ko-inline">신규 SKU 확장 · 라인업 관리</span><span class="en-inline">New SKU expansion · lineup management</span></li>
+  <li><span class="ko-inline">오프라인 매장 확대 (500 → 1,000 → 4,600)</span><span class="en-inline">Store expansion (500 → 1,000 → 4,600)</span></li>
+</ul>
+
+<h3><span class="ko-inline">7.2 확장 결정 게이트</span><span class="en-inline">7.2 Expansion Gates</span></h3>
+<ul class="gate-list">
+  <li><strong>200 → 500 <span class="ko-inline">매장</span><span class="en-inline"> stores</span></strong>: <span class="ko-inline">초기 sell-through 기준</span><span class="en-inline">Initial sell-through threshold</span> <span class="todo" style="margin-left:6px;font-size:11px">[TODO — 기준 수치 확정]</span></li>
+  <li><strong>500 → 1,000 <span class="ko-inline">매장</span><span class="en-inline"> stores</span></strong>: <span class="ko-inline">카테고리별 리뷰</span><span class="en-inline">Category-level review</span></li>
+  <li><strong>1,000 → 4,600 <span class="ko-inline">전국</span><span class="en-inline"> nationwide</span></strong>: Walmart Buyer <span class="ko-inline">승인</span><span class="en-inline"> approval</span></li>
+</ul>
+</section>
+
+<!-- ══════════ 8. 커뮤니케이션 ══════════ -->
+<section id="s8">
+<h2>8. 커뮤니케이션·회의 규칙 / Communication & Cadence</h2>
+
+<h3><span class="ko-inline">8.1 정기 회의</span><span class="en-inline">8.1 Regular Meetings</span></h3>
+<table>
+  <thead><tr><th>Meeting</th><th>Participants</th><th>Cadence</th><th>Time</th><th>Purpose</th></tr></thead>
+  <tbody>
+    <tr><td><strong>Weekly Sync</strong></td><td>3SVS + Startup Junkie</td><td>매주</td><td>KST 목요일 오후</td><td>전 브랜드 진행 리뷰</td></tr>
+    <tr><td><strong>Brand Kickoff</strong></td><td>3자 + Brand</td><td>Phase 1 시작 시 1회</td><td>KST 오전</td><td>목표·역할·타임라인</td></tr>
+    <tr><td><strong>Phase Gate Review</strong></td><td>3자 + Brand</td><td>각 Phase 종료 시</td><td>사전 조율</td><td>다음 단계 승인</td></tr>
+    <tr><td><strong>Buyer Meeting</strong></td><td>Startup Junkie + Brand (+ 3SVS)</td><td>Phase 2 후반</td><td>Buyer 일정</td><td>오프라인 입점 협상</td></tr>
+    <tr><td><strong>Post-Launch Review</strong></td><td>3자 + Brand</td><td>Phase 3 완료 후</td><td>사전 조율</td><td>확장 전략</td></tr>
+  </tbody>
+</table>
+
+<h3><span class="ko-inline">8.2 커뮤니케이션 채널</span><span class="en-inline">8.2 Communication Channels</span></h3>
+<ul>
+  <li><strong><span class="ko-inline">공식 문서·자료</span><span class="en-inline">Formal docs & assets</span></strong>: applywalmart.info <span class="ko-inline">포털</span><span class="en-inline"> portal</span> (<span class="ko-inline">브랜드 상세, 메시지, 자료 요청</span><span class="en-inline">brand detail, messages, doc requests</span>)</li>
+  <li><strong><span class="ko-inline">일상 메시지</span><span class="en-inline">Daily messages</span></strong>: <span class="ko-inline">브랜드 포털 메시지 시스템 (실시간 3자 공유)</span><span class="en-inline">Portal message system (real-time 3-party)</span></li>
+  <li><strong><span class="ko-inline">긴급 이슈</span><span class="en-inline">Urgent issues</span></strong>: <span class="ko-inline">이메일</span><span class="en-inline">Email</span> (jw@3svs.com · louis@startupjunkieconsulting.com)</li>
+  <li><strong><span class="ko-inline">파일 공유</span><span class="en-inline">File sharing</span></strong>: Supabase Storage (<span class="ko-inline">포털 통해 관리</span><span class="en-inline">via portal</span>)</li>
+</ul>
+<div class="todo">[TODO — 사용자 추가] Slack · WhatsApp 등 실시간 채널 필요 여부</div>
+
+<h3><span class="ko-inline">8.3 시간대 안내</span><span class="en-inline">8.3 Timezone Reference</span></h3>
+<ul>
+  <li>KST (Korea Standard Time, UTC+9) — 3SVS · Brand</li>
+  <li>CST (Central Standard Time, UTC-6) — Arkansas, Startup Junkie <span class="ko-inline">본사</span><span class="en-inline"> HQ</span></li>
+  <li>KST <span class="ko-inline">목요일 오후 = CST 목요일 오전 (약 13–14시간 차이, DST 변동)</span><span class="en-inline">Thu PM = CST Thu AM (~13–14h diff, DST varies)</span></li>
+  <li><strong><span class="ko-inline">모든 미팅 시간은 KST로 표기 (포털 자동 처리)</span><span class="en-inline">All meeting times shown in KST (portal auto-handles)</span></strong></li>
+</ul>
+
+<h3><span class="ko-inline">8.4 응답 시간 SLA</span><span class="en-inline">8.4 Response Time SLA</span></h3>
+<table>
+  <thead><tr><th>Priority</th><th>Response Deadline</th></tr></thead>
+  <tbody>
+    <tr><td><span class="ko-inline">일반 문의</span><span class="en-inline">General inquiry</span></td><td>2 <span class="ko-inline">영업일</span><span class="en-inline">business days</span></td></tr>
+    <tr><td><span class="ko-inline">Phase 진행 관련</span><span class="en-inline">Phase-related</span></td><td>1 <span class="ko-inline">영업일</span><span class="en-inline">business day</span></td></tr>
+    <tr><td><span class="ko-inline">Buyer 관련 긴급</span><span class="en-inline">Buyer urgent</span></td><td>4<span class="ko-inline">시간 (근무 시간 내)</span><span class="en-inline"> hours (business hours)</span></td></tr>
+    <tr><td><span class="ko-inline">매장 이슈</span><span class="en-inline">Store issue</span></td><td><span class="ko-inline">즉시 (24시간 내)</span><span class="en-inline">Immediate (within 24h)</span></td></tr>
+  </tbody>
+</table>
+</section>
+
+<!-- ══════════ 9. 필수 자료 ══════════ -->
+<section id="s9">
+<h2>9. 필수 자료 / Required Documents & Assets</h2>
+<p><span class="ko">브랜드가 신청 시 6개 카테고리로 제출. 승인 후 지속 업데이트.</span><span class="en">Brand submits in 6 categories at application. Continues updating after approval.</span></p>
+
+<table>
+  <thead><tr><th>#</th><th>Category</th><th>Contents</th><th>Format</th></tr></thead>
+  <tbody>
+    <tr><td>1</td><td><strong>Master SKU Excel</strong></td><td>상품명(KR/EN)·UPC·사이즈·성분·상품 설명·케이스팩</td><td>XLSX/CSV/PDF</td></tr>
+    <tr><td>2</td><td><strong>Product Images</strong></td><td>히어로(흰 배경)·패키지 앞뒤·라이프스타일·텍스처</td><td>PNG/JPG/WebP (고해상도)</td></tr>
+    <tr><td>3</td><td><strong>Brand Assets</strong></td><td>로고 (AI/EPS/PNG)·브랜드 스토리·가이드라인</td><td>AI/EPS/PNG/PDF</td></tr>
+    <tr><td>4</td><td><strong>Compliance</strong></td><td>제품 테스트·안전·인증서·보험 정보</td><td>PDF</td></tr>
+    <tr><td>5</td><td><strong>Video Assets</strong></td><td>제품 시연·튜토리얼·브랜드 영상</td><td>MP4/MOV/WebM</td></tr>
+    <tr><td>6</td><td><strong>Sales & Performance</strong></td><td>베스트셀러 SKU·순위·리테일 현황·수상·언론·소셜</td><td>PDF/Excel</td></tr>
+  </tbody>
+</table>
+
+<h3><span class="ko-inline">산출물 저장 위치</span><span class="en-inline">Deliverable Storage</span></h3>
+<ul>
+  <li><span class="ko-inline">브랜드 자료</span><span class="en-inline">Brand assets</span>: <code>wm-signatures/applications/{brand-id}/</code></li>
+  <li><span class="ko-inline">계약서 서명</span><span class="en-inline">Contract signatures</span>: <code>wm-signatures/contracts/{contract-id}/</code></li>
+  <li><span class="ko-inline">스캔 계약서</span><span class="en-inline">Scanned contract</span>: <code>wm-signatures/contracts/{contract-id}/scanned/</code></li>
+</ul>
+<div class="todo">[TODO — 사용자 추가] 자료 접근 권한·보관 기간 정책</div>
+</section>
+
+<!-- ══════════ 10. 계약 유형 ══════════ -->
+<section id="s10">
+<h2>10. 계약 유형과 비용 / Contract Types & Costs</h2>
+
+<h3><span class="ko-inline">10.1 두 가지 유형</span><span class="en-inline">10.1 Two Types</span></h3>
+<table>
+  <thead><tr><th>구분</th><th>A Type — <span class="ko-inline">직접 참여</span><span class="en-inline">Direct</span></th><th>B Type — <span class="ko-inline">수출바우처</span><span class="en-inline">Voucher</span></th></tr></thead>
+  <tbody>
+    <tr><td><span class="ko-inline">대상</span><span class="en-inline">Target</span></td><td>자체 자본</td><td>정부 수출바우처</td></tr>
+    <tr><td><span class="ko-inline">초기 행정비</span><span class="en-inline">Init fee</span></td><td>없음</td><td>계약 체결 시</td></tr>
+    <tr><td>Phase <span class="ko-inline">운영비</span><span class="en-inline"> ops</span></td><td>후불</td><td>후불</td></tr>
+    <tr><td>PO <span class="ko-inline">커미션</span><span class="en-inline"> commission</span></td><td><strong>8%</strong> (Vendor of Record)</td><td><strong>8%</strong></td></tr>
+    <tr><td><span class="ko-inline">지급 조건</span><span class="en-inline">Payment</span></td><td>그룹사 정기 자금 집행일</td><td>10 영업일 이내</td></tr>
+    <tr><td>PO <span class="ko-inline">범위</span><span class="en-inline"> scope</span></td><td>자체 브랜드</td><td>협력사·관계사·벤더사 포함</td></tr>
+  </tbody>
+</table>
+
+<h3><span class="ko-inline">10.2 3자 계약 서명</span><span class="en-inline">10.2 3-Party Signing</span></h3>
+<ul>
+  <li><span class="ko">브랜드사 · 3SVS · Startup Junkie 모두 서명 필요</span><span class="en">All three parties must sign</span></li>
+  <li><span class="ko">전자서명 — Korean Electronic Signature Act + US ESIGN Act 준수</span><span class="en">E-signature — compliant with Korean Electronic Signature Act + US ESIGN Act</span></li>
+  <li><span class="ko-inline">서명 방법: 마우스 그리기 또는 서명 이미지 업로드</span><span class="en-inline">Sign method: mouse drawing or image upload</span></li>
+  <li><span class="ko-inline">이메일 OTP 인증 (6자리 코드, 5분 유효)</span><span class="en-inline">Email OTP (6-digit code, 5-min validity)</span></li>
+  <li><span class="ko-inline">서명 완료 시 자동 PDF 생성 + SHA-256 해시 저장</span><span class="en-inline">Auto PDF generation + SHA-256 hash on completion</span></li>
+  <li><span class="ko-inline">스캔한 수기 서명 계약서 별도 첨부 가능</span><span class="en-inline">Scanned handwritten contracts can be attached separately</span></li>
+</ul>
+
+<h3><span class="ko-inline">10.3 계약 조항 요약 (10개)</span><span class="en-inline">10.3 Contract Clauses (10 Articles)</span></h3>
+<ol>
+  <li><span class="ko-inline">당사자</span><span class="en-inline">Parties</span></li>
+  <li><span class="ko-inline">목적</span><span class="en-inline">Purpose</span></li>
+  <li><span class="ko-inline">공동 수행 구조</span><span class="en-inline">Joint Performance Structure</span></li>
+  <li><span class="ko-inline">대금 지급 — 하나은행, 5 영업일</span><span class="en-inline">Payment Terms — Hana Bank, 5 business days</span></li>
+  <li><span class="ko-inline">지식재산권</span><span class="en-inline">IP</span></li>
+  <li><span class="ko-inline">비밀유지</span><span class="en-inline">Confidentiality</span></li>
+  <li><span class="ko-inline">계약 기간·해지</span><span class="en-inline">Term & Termination</span></li>
+  <li><span class="ko-inline">손해배상</span><span class="en-inline">Liability</span></li>
+  <li><span class="ko-inline">분쟁 해결</span><span class="en-inline">Dispute Resolution</span></li>
+  <li><span class="ko-inline">일반 조항</span><span class="en-inline">General</span></li>
+</ol>
+</section>
+
+<!-- ══════════ 11. 포털 ══════════ -->
+<section id="s11">
+<h2>11. 포털 사용법 / Portal Usage</h2>
+<p><strong>URL</strong>: <a href="https://www.applywalmart.info" target="_blank">https://www.applywalmart.info</a></p>
+
+<div class="role-card">
+  <h4>🏢 <span class="ko-inline">브랜드사 포털</span><span class="en-inline">Brand Portal</span></h4>
+  <ul>
+    <li><strong><span class="ko-inline">로그인</span><span class="en-inline">Login</span></strong>: <span class="ko-inline">이메일 + 임시 비밀번호 (승인 시 자동 발급)</span><span class="en-inline">Email + temp password (auto-issued on approval)</span></li>
+    <li><strong>Menu</strong>: Dashboard · Documents · Meetings · Tasks · Messages · Contracts</li>
+    <li><strong><span class="ko-inline">자료 업로드</span><span class="en-inline">Uploads</span></strong>: <span class="ko-inline">카테고리별 첨부 (다양한 포맷 지원)</span><span class="en-inline">Categorized attachments (multi-format)</span></li>
+    <li><strong><span class="ko-inline">미팅 요청</span><span class="en-inline">Meetings</span></strong>: <span class="ko-inline">30분 단위, KST 기준, 3개 시간 슬롯 제안</span><span class="en-inline">30-min slots, KST-based, 3 options</span></li>
+    <li><strong><span class="ko-inline">계약서 서명</span><span class="en-inline">Signing</span></strong>: <span class="ko-inline">마우스 서명 or 이미지 업로드</span><span class="en-inline">Mouse or upload</span></li>
+  </ul>
+</div>
+
+<div class="role-card">
+  <h4>🇰🇷 3SVS <span class="ko-inline">관리자 포털</span><span class="en-inline"> Admin Portal</span></h4>
+  <ul>
+    <li><strong>Menu</strong>: Dashboard · Brands · Review · Contracts · CMS · Settings</li>
+    <li><strong><span class="ko-inline">접수 심사</span><span class="en-inline">Review</span></strong>: <span class="ko-inline">승인·반려, PDF 다운로드, AI 자동 스코어 참고</span><span class="en-inline">Approve/reject, PDF download, AI auto-score reference</span></li>
+    <li><strong><span class="ko-inline">브랜드 상세</span><span class="en-inline">Brand detail</span></strong>: Phase <span class="ko-inline">관리, 내부 메모 (Phase별), Tasks, Meetings, Documents, Messages, Contracts</span><span class="en-inline"> management, internal notes (per phase), Tasks, Meetings, Documents, Messages, Contracts</span></li>
+  </ul>
+</div>
+
+<div class="role-card">
+  <h4>🇺🇸 Startup Junkie / Walmart <span class="ko-inline">포털</span><span class="en-inline"> Portal</span></h4>
+  <ul>
+    <li><strong>Menu</strong>: Pipeline · Application Review · Meetings + 3SVS Admin Tools (<span class="ko-inline">전체 관리자 기능 접근</span><span class="en-inline">full admin access</span>)</li>
+    <li><strong><span class="ko-inline">언어</span><span class="en-inline">Language</span></strong>: <span class="ko-inline">영문 강제</span><span class="en-inline">English enforced</span></li>
+    <li><strong><span class="ko-inline">역할</span><span class="en-inline">Role</span></strong>: <span class="ko-inline">브랜드 조회, 메시지 답변, Buyer 미팅 조율, 문서 요청</span><span class="en-inline">Brand access, message reply, Buyer meeting coordination, doc requests</span></li>
+  </ul>
+</div>
+
+<h3><span class="ko-inline">공통 기능</span><span class="en-inline">Shared Features</span></h3>
+<ul>
+  <li><strong>AI <span class="ko-inline">자동 스코어</span><span class="en-inline"> auto-score</span></strong>: <span class="ko-inline">신청서 데이터 기반 100점 만점 (참고용)</span><span class="en-inline">100-point score from application data (reference)</span></li>
+  <li><strong>PDF <span class="ko-inline">다운로드</span><span class="en-inline"> export</span></strong>: <span class="ko-inline">브랜드 정보 · 첨부 파일 링크 포함 (영문 메인, 한글 병기)</span><span class="en-inline">Brand info + clickable attachment links (EN main, KR sub)</span></li>
+  <li><strong><span class="ko-inline">양방향 컨텍스트 전환</span><span class="en-inline">Bi-directional switching</span></strong>: <span class="ko-inline">관리자 ↔ Walmart 뷰 원클릭</span><span class="en-inline">Admin ↔ Walmart view one-click</span></li>
+</ul>
+</section>
+
+<!-- ══════════ 12. 컴플라이언스 ══════════ -->
+<section id="s12">
+<h2>12. 컴플라이언스 · 품질 기준 / Compliance & Quality</h2>
+
+<h3><span class="ko-inline">12.1 미국 시장 필수 인증</span><span class="en-inline">12.1 US Market Required Certifications</span></h3>
+<ul>
+  <li><strong><span class="ko-inline">식품</span><span class="en-inline">Food</span></strong>: FDA <span class="ko-inline">등록</span><span class="en-inline"> registration</span>, FSMA, <span class="ko-inline">성분 라벨링, 알러젠 표시</span><span class="en-inline">ingredient labeling, allergen disclosure</span></li>
+  <li><strong><span class="ko-inline">뷰티</span><span class="en-inline">Beauty</span></strong>: FDA Cosmetic Registration, INCI <span class="ko-inline">성분 표기</span><span class="en-inline"> ingredient notation</span></li>
+  <li><strong><span class="ko-inline">일반 소비재</span><span class="en-inline">Consumer goods</span></strong>: CPSC <span class="ko-inline">안전 기준</span><span class="en-inline"> safety</span>, Prop 65 (California)</li>
+  <li><strong><span class="ko-inline">패키징</span><span class="en-inline">Packaging</span></strong>: SRP (Shelf-Ready Packaging) <span class="ko-inline">규격</span><span class="en-inline"> standards</span></li>
+</ul>
+
+<h3><span class="ko-inline">12.2 Walmart 특수 요건</span><span class="en-inline">12.2 Walmart-Specific Requirements</span></h3>
+<ul>
+  <li><strong>OTIF</strong> (On-Time In-Full): <span class="ko-inline">배송 정확도 (98% 이상 권장)</span><span class="en-inline">Delivery accuracy (≥98% recommended)</span></li>
+  <li><strong>SQEP</strong> (Supplier Quality Excellence Program): <span class="ko-inline">품질 인증</span><span class="en-inline">Quality certification</span></li>
+  <li><strong>ESG / Sustainability</strong>: <span class="ko-inline">지속가능성 · CSR 요건</span><span class="en-inline">Sustainability · CSR requirements</span></li>
+  <li><strong>Item 360</strong>: <span class="ko-inline">제품 마스터 데이터 정합성</span><span class="en-inline">Product master data integrity</span></li>
+</ul>
+
+<h3><span class="ko-inline">12.3 위반 시 페널티</span><span class="en-inline">12.3 Penalties for Violation</span></h3>
+<div class="callout warn">
+  <ul style="margin:0">
+    <li>OTIF <span class="ko-inline">미달</span><span class="en-inline"> non-compliance</span>: <span class="ko-inline">매출의 일정 비율 페널티</span><span class="en-inline">% of sales penalty</span></li>
+    <li>SRP <span class="ko-inline">규격 위반</span><span class="en-inline"> violation</span>: <span class="ko-inline">매장 진열 거부</span><span class="en-inline">Store display rejection</span></li>
+  </ul>
+</div>
+<div class="todo">[TODO — 사용자 추가] 구체적 페널티 금액·기준</div>
+</section>
+
+<!-- ══════════ 13. 의사결정 ══════════ -->
+<section id="s13">
+<h2>13. 의사결정 · 에스컬레이션 / Decisions & Escalation</h2>
+
+<h3><span class="ko-inline">13.1 의사결정 프레임워크</span><span class="en-inline">13.1 Decision Framework</span></h3>
+<table>
+  <thead><tr><th>Decision</th><th>Approver</th><th>Consulted</th></tr></thead>
+  <tbody>
+    <tr><td>SKU 라인업 확정</td><td>Brand</td><td>3SVS + Startup Junkie</td></tr>
+    <tr><td>가격 정책</td><td>Brand</td><td>Startup Junkie (경쟁분석)</td></tr>
+    <tr><td>광고 예산</td><td>Brand</td><td>Startup Junkie (제안)</td></tr>
+    <tr><td>Phase 진행·연장</td><td>Brand + 3SVS</td><td>Startup Junkie</td></tr>
+    <tr><td>오프라인 입점 확정</td><td>Brand + Walmart Buyer</td><td>3자</td></tr>
+    <tr><td>계약 조건 변경</td><td>3자 전부</td><td>—</td></tr>
+    <tr><td>매장 확대</td><td>Brand + Walmart Buyer</td><td>3SVS + Startup Junkie</td></tr>
+  </tbody>
+</table>
+
+<h3><span class="ko-inline">13.2 에스컬레이션 경로</span><span class="en-inline">13.2 Escalation Path</span></h3>
+<ol>
+  <li><strong>1<span class="ko-inline">차</span><span class="en-inline">st</span></strong>: <span class="ko-inline">담당자 간 포털 메시지 (2 영업일 내 응답 못 받으면)</span><span class="en-inline">Portal messages (if no response within 2 business days)</span></li>
+  <li><strong>2<span class="ko-inline">차</span><span class="en-inline">nd</span></strong>: <span class="ko-inline">이메일 (jw@3svs.com 참조)</span><span class="en-inline">Email (jw@3svs.com CC)</span></li>
+  <li><strong>3<span class="ko-inline">차</span><span class="en-inline">rd</span></strong>: <span class="ko-inline">긴급 전화 · 주간 sync에서 논의</span><span class="en-inline">Urgent call · Weekly sync discussion</span></li>
+  <li><strong><span class="ko-inline">최종</span><span class="en-inline">Final</span></strong>: <span class="ko-inline">3자 대표 회의</span><span class="en-inline">3-party executive meeting</span></li>
+</ol>
+
+<h3><span class="ko-inline">13.3 분쟁 해결</span><span class="en-inline">13.3 Dispute Resolution</span></h3>
+<p><span class="ko-inline">계약서 제9조에 따름</span><span class="en-inline">Per contract Article 9</span></p>
+<div class="todo">[TODO — 사용자 추가] 실무적 중재 프로세스</div>
+</section>
+
+<!-- ══════════ 14. FAQ ══════════ -->
+<section id="s14">
+<h2>14. FAQ</h2>
+
+<div class="faq-item">
+  <p><span class="ko">Q. 신청 후 얼마나 걸리나요?</span><span class="en">Q. How long after applying?</span></p>
+  <p><span class="ko">A. 심사 3–5영업일, 계약 5–10영업일, Phase 1 시작까지 약 2–3주.</span><span class="en">A. Review 3–5 business days, contract 5–10 business days, ~2–3 weeks until Phase 1 begins.</span></p>
+</div>
+
+<div class="faq-item">
+  <p><span class="ko">Q. 참여 유형 A와 B는 언제 결정되나요?</span><span class="en">Q. When are participation types A/B decided?</span></p>
+  <p><span class="ko">A. 심사 단계에서 관리자가 브랜드와 협의 후 확정. 계약서 조건이 달라짐.</span><span class="en">A. Confirmed during review after admin-brand consultation. Contract terms differ.</span></p>
+</div>
+
+<div class="faq-item">
+  <p><span class="ko">Q. Phase 2에서 반드시 오프라인으로 넘어가야 하나요?</span><span class="en">Q. Must Phase 2 transition to offline?</span></p>
+  <p><span class="ko">A. 아닙니다. Phase 2 데이터 기반으로 오프라인 진출 여부를 판단. 온라인 판매 지속도 가능한 옵션.</span><span class="en">A. No. Data from Phase 2 informs offline entry decision. Continuing online-only is a valid option.</span></p>
+</div>
+
+<div class="faq-item">
+  <p><span class="ko">Q. 재고는 언제 미국으로 보내야 하나요?</span><span class="en">Q. When to ship inventory to US?</span></p>
+  <p><span class="ko">A. Phase 1 완료 전 (Walmart.com 라이브 시점) 초기 재고가 미국 창고에 도착해야 함. Startup Junkie가 물류 상세 안내.</span><span class="en">A. Initial inventory must arrive at US warehouse before Phase 1 completion (Walmart.com go-live). Startup Junkie provides logistics details.</span></p>
+</div>
+
+<div class="faq-item">
+  <p><span class="ko">Q. Walmart Buyer 미팅에 브랜드 대표가 참석해야 하나요?</span><span class="en">Q. Does the brand representative need to attend Buyer meetings?</span></p>
+  <p><span class="ko">A. 필수는 아니지만 강력히 권장. Startup Junkie가 대리 진행도 가능.</span><span class="en">A. Not required but strongly recommended. Startup Junkie can attend on behalf.</span></p>
+</div>
+
+<div class="faq-item">
+  <p><span class="ko">Q. 계약 후 중도 해지 가능한가요?</span><span class="en">Q. Can the contract be terminated mid-way?</span></p>
+  <p><span class="ko">A. 계약서 제7조 참조. 사전 통보와 정산 조건 있음.</span><span class="en">A. Refer to contract Article 7. Advance notice and settlement conditions apply.</span></p>
+</div>
+
+<div class="todo">[TODO — 사용자가 자주 받는 질문 추가]</div>
+</section>
+
+<!-- ══════════ 15. 부록 ══════════ -->
+<section id="s15">
+<h2>15. 부록 / Appendix</h2>
+
+<h3><span class="ko-inline">15.1 용어집</span><span class="en-inline">15.1 Glossary</span></h3>
+<table>
+  <thead><tr><th>Term</th><th>Meaning</th></tr></thead>
+  <tbody>
+    <tr><td><strong>GTIN</strong></td><td>Global Trade Item Number — 국제 상품 식별 코드</td></tr>
+    <tr><td><strong>UPC</strong></td><td>Universal Product Code — 미국 표준 바코드</td></tr>
+    <tr><td><strong>SRP</strong></td><td>Shelf-Ready Packaging — 매장 진열용 포장</td></tr>
+    <tr><td><strong>OTIF</strong></td><td>On-Time In-Full — 정시·전량 배송 기준</td></tr>
+    <tr><td><strong>SQEP</strong></td><td>Supplier Quality Excellence Program</td></tr>
+    <tr><td><strong>P.O.</strong></td><td>Purchase Order — 발주서</td></tr>
+    <tr><td><strong>Line Review</strong></td><td>Walmart Buyer의 제품 라인 검토 미팅</td></tr>
+    <tr><td><strong>DAM</strong></td><td>Digital Asset Management — 디지털 자산 관리</td></tr>
+    <tr><td><strong>Scintilla</strong></td><td>Walmart 내부 판매 분석 대시보드</td></tr>
+    <tr><td><strong>Item 360</strong></td><td>Walmart 상품 마스터 데이터 시스템</td></tr>
+    <tr><td><strong>Seller Center</strong></td><td>Walmart Marketplace 셀러 콘솔</td></tr>
+    <tr><td><strong>Walmart Connect</strong></td><td>Walmart 광고 플랫폼</td></tr>
+    <tr><td><strong>Vendor of Record</strong></td><td>공식 벤더 등록 방식 (A Type)</td></tr>
+    <tr><td><strong>FSMA</strong></td><td>Food Safety Modernization Act</td></tr>
+    <tr><td><strong>CPSC</strong></td><td>Consumer Product Safety Commission</td></tr>
+    <tr><td><strong>INCI</strong></td><td>International Nomenclature of Cosmetic Ingredients</td></tr>
+  </tbody>
+</table>
+
+<h3><span class="ko-inline">15.2 체크리스트</span><span class="en-inline">15.2 Checklists</span></h3>
+
+<h4>Brand: Phase 1 <span class="ko-inline">착수 전</span><span class="en-inline"> Kickoff</span></h4>
+<ul class="checkbox">
+  <li>Master SKU Excel <span class="ko-inline">확정 (KR/EN, UPC 발급 완료)</span><span class="en-inline">confirmed (KR/EN, UPC issued)</span></li>
+  <li><span class="ko-inline">제품 이미지 촬영 완료 (히어로·패키지·라이프스타일)</span><span class="en-inline">Product images shot (hero, packaging, lifestyle)</span></li>
+  <li><span class="ko-inline">브랜드 로고 · 가이드라인 제출</span><span class="en-inline">Brand logo & guidelines submitted</span></li>
+  <li>FDA/FSMA <span class="ko-inline">관련 인증서 스캔본 제출</span><span class="en-inline">certification scans submitted</span></li>
+  <li><span class="ko-inline">미국 창고 파트너 확정</span><span class="en-inline">US warehouse partner confirmed</span></li>
+  <li><span class="ko-inline">초기 재고 생산 계획 수립</span><span class="en-inline">Initial inventory production plan</span></li>
+</ul>
+
+<h4>3SVS: <span class="ko-inline">브랜드 승인 후</span><span class="en-inline">After Brand Approval</span></h4>
+<ul class="checkbox">
+  <li>wm_brands <span class="ko-inline">레코드 생성 확인</span><span class="en-inline">record created</span></li>
+  <li><span class="ko-inline">브랜드 임시 비밀번호 안내 이메일 발송</span><span class="en-inline">Send temp password email to brand</span></li>
+  <li>Startup Junkie <span class="ko-inline">에게 새 브랜드 알림</span><span class="en-inline">notified of new brand</span></li>
+  <li>Kickoff <span class="ko-inline">미팅 일정 조율</span><span class="en-inline">meeting scheduled</span></li>
+  <li>Phase 1 kick-off task <span class="ko-inline">등록</span><span class="en-inline">created</span></li>
+</ul>
+
+<h4>Startup Junkie: Phase 1 <span class="ko-inline">착수 후</span><span class="en-inline"> Kickoff</span></h4>
+<ul class="checkbox">
+  <li>Walmart Marketplace <span class="ko-inline">셀러 신청 상태 공유</span><span class="en-inline">seller application status shared</span></li>
+  <li>Item 360 <span class="ko-inline">데이터 매칭 및 등록</span><span class="en-inline">data matched & registered</span></li>
+  <li>Scintilla <span class="ko-inline">대시보드 세팅</span><span class="en-inline">dashboard setup</span></li>
+  <li><span class="ko-inline">초기 광고 캠페인 제안서 준비</span><span class="en-inline">Initial ad campaign proposal ready</span></li>
+</ul>
+
+<h3><span class="ko-inline">15.3 참고 링크</span><span class="en-inline">15.3 Reference Links</span></h3>
+<ul>
+  <li>Walmart Marketplace: <a href="https://marketplace.walmart.com" target="_blank">marketplace.walmart.com</a></li>
+  <li>Item 360 Help: <a href="https://sellerhelp.walmart.com" target="_blank">sellerhelp.walmart.com</a></li>
+  <li>Seller Center: <a href="https://seller.walmart.com" target="_blank">seller.walmart.com</a></li>
+  <li>Walmart Connect: <a href="https://advertising.walmart.com" target="_blank">advertising.walmart.com</a></li>
+</ul>
+</section>
+
+<section id="change-log">
+<h2><span class="ko-inline">변경 이력</span><span class="en-inline">Change Log</span></h2>
+<table class="change-log">
+  <thead><tr><th>Version</th><th>Date</th><th>Change</th><th>Author</th></tr></thead>
+  <tbody>
+    <tr><td>0.1</td><td>2026-08-11</td><td>초안 작성 (사이트 콘텐츠 기반 뼈대)</td><td>3SVS</td></tr>
+    <tr><td colspan="4"><em><span class="ko-inline">[사용자 후속 업데이트 시 추가]</span><span class="en-inline">[User adds subsequent updates here]</span></em></td></tr>
+  </tbody>
+</table>
+</section>
+
+<footer style="margin-top:60px;padding-top:24px;border-top:1px solid var(--border);font-size:12px;color:var(--text-faint);text-align:center">
+  <span class="ko">이 문서는 3자 공용 참조 문서입니다. 수정 사항은 3SVS에서 통합 관리하며, 주요 변경 시 3자에게 공지됩니다.</span>
+  <span class="en">This document is a shared reference. 3SVS manages revisions; major changes are notified to all three parties.</span>
+  <div style="margin-top:8px">© 2026 3Stripe Venture Studio × Startup Junkie Consulting</div>
+</footer>
+
+</main>
+</div>
+
+<script>
+// 언어 토글
+function setLang(lang, btn) {
+  document.body.setAttribute('data-lang', lang);
+  document.querySelectorAll('.lang-filter button').forEach(function(b){ b.classList.remove('active'); });
+  if (btn) btn.classList.add('active');
+  try { localStorage.setItem('playbook_lang', lang); } catch(e) {}
+}
+// 저장된 언어 복원
+(function() {
+  try {
+    var saved = localStorage.getItem('playbook_lang');
+    if (saved) {
+      document.body.setAttribute('data-lang', saved);
+      document.querySelectorAll('.lang-filter button').forEach(function(b){
+        b.classList.toggle('active', b.getAttribute('data-lang') === saved);
+      });
+    }
+  } catch(e) {}
+})();
+
+// TOC 스크롤 하이라이트
+(function() {
+  var links = document.querySelectorAll('.toc-nav a');
+  var sections = Array.from(document.querySelectorAll('section[id]'));
+  function updateActive() {
+    var y = window.scrollY + 100;
+    var current = null;
+    sections.forEach(function(s) { if (s.offsetTop <= y) current = s.id; });
+    links.forEach(function(a) {
+      a.classList.toggle('active', a.getAttribute('href') === '#' + current);
+    });
+  }
+  window.addEventListener('scroll', updateActive, { passive: true });
+  updateActive();
+})();
+
+// 모바일 TOC 토글
+function toggleToc() {
+  var toc = document.getElementById('toc');
+  var bd = document.querySelector('.toc-backdrop');
+  toc.classList.toggle('open');
+  bd.classList.toggle('show');
+}
+// TOC 링크 클릭 시 모바일에서 자동 닫기
+document.querySelectorAll('.toc-nav a').forEach(function(a) {
+  a.addEventListener('click', function() {
+    if (window.innerWidth <= 900) {
+      document.getElementById('toc').classList.remove('open');
+      document.querySelector('.toc-backdrop').classList.remove('show');
+    }
+  });
+});
+</script>
+
+</body>
+</html>
